@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.mariadb.jdbc.Driver
+    jdbc-url: jdbc:mariadb://{{rds endpoint}}:3306/coupon?useSSL=false&serverTimezone=Asia/Seoul
+    username: {{username}}
+    password: {{password}}
+    auto-commit: false
+    connectionTimeout: 3000
+    maxLifeTime: 50000
+    maximumPoolSize: 30
+    poolName: Hikari-coupon
+  jpa:
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 128
+        id:
+          new_generator_mappings: true
+        format_sql: true
+        show_sql: true
+        use_sql_comments: true
+        hbm2ddl:
+          auto: none
+        connection:
+          provider_disables_autocommit: true
+        query:
+          in_clause_parameter_padding: true
+    open-in-view: false
+
+logging:
+  config: classpath:logback-local.xml
+
+server:
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 50
+    max-connections: 8192
