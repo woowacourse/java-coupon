@@ -1,0 +1,18 @@
+# editorconfig.org
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{ts,tsx,js,jsx}]
+tab_width = 2
+indent_size = 2
+indent_style = space
+
+[*.json]
+tab_width = 2
+indent_size = 2
+indent_style = space
