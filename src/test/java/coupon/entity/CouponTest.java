@@ -10,8 +10,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class CouponTest {
 
-    private String validName = "name";
-    private int validAmount = 5000;
+    private final String validName = "name";
+    private final int validAmount = 5000;
+    private final int validMinimumOrder = 50000;
 
     @DisplayName("쿠폰의 이름은 30자 이하여야한다.")
     @Test
@@ -20,7 +21,7 @@ class CouponTest {
         String invalidName = "thisStringHasLengthWhichIs31abc";
 
         // when & then
-        assertThatThrownBy(() -> new Coupon(invalidName, validAmount))
+        assertThatThrownBy(() -> new Coupon(invalidName, validAmount, validMinimumOrder))
                 .isInstanceOf(CouponException.class);
     }
 
@@ -28,7 +29,15 @@ class CouponTest {
     @ParameterizedTest
     @ValueSource(ints = {999, 10001})
     void validateAmount(int amount) {
-        assertThatThrownBy(() -> new Coupon(validName, amount))
+        assertThatThrownBy(() -> new Coupon(validName, amount, validMinimumOrder))
+                .isInstanceOf(CouponException.class);
+    }
+
+    @DisplayName("쿠폰의 최소 주문 금액은 5000원 이상 100000원 이하여야 한다.")
+    @ParameterizedTest
+    @ValueSource(ints = {4999, 100001})
+    void validateMinimumOrder(int minimumOrder) {
+        assertThatThrownBy(() -> new Coupon(validName, validAmount, minimumOrder))
                 .isInstanceOf(CouponException.class);
     }
 }
