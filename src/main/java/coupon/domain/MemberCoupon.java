@@ -5,7 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 @Entity
 public class MemberCoupon {
 
@@ -17,9 +21,6 @@ public class MemberCoupon {
     private Long memberId;
     private boolean used;
     private LocalDateTime issuedAt;
-
-    public MemberCoupon() {
-    }
 
     public MemberCoupon(Long couponId, Long memberId, boolean used, LocalDateTime issuedAt) {
         this(null, couponId, memberId, used, issuedAt);

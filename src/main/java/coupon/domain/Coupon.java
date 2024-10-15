@@ -5,7 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 @Entity
 public class Coupon {
 
@@ -28,9 +32,6 @@ public class Coupon {
     private LocalDate startDate;
     private LocalDate endDate;
     private Category category;
-
-    public Coupon() {
-    }
 
     public Coupon(String name, int discount, int minAmount, LocalDate startDate, LocalDate endDate, Category category) {
         this(null, name, discount, minAmount, startDate, endDate, category);
@@ -85,9 +86,5 @@ public class Coupon {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
         }
-    }
-
-    public Long getId() {
-        return id;
     }
 }
