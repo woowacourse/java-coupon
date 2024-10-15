@@ -31,7 +31,7 @@ class CouponNameTest {
         CouponName couponName = new CouponName(name);
 
         // then
-        assertThat(couponName.getName()).isEqualTo("쿠폰 이름");
+        assertThat(couponName.getValue()).isEqualTo("쿠폰 이름");
     }
 
     @ParameterizedTest

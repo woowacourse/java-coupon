@@ -14,14 +14,14 @@ public class CouponName {
     private static final int MAX_NAME_LENGTH = 30;
 
     @Column(name = "coupon_name", nullable = false)
-    private String name;
+    private String value;
 
     public CouponName(String name) {
         String strippedName = name.strip();
 
         validateNameLength(strippedName);
 
-        this.name = strippedName;
+        this.value = strippedName;
     }
 
     public void validateNameLength(String name) {
