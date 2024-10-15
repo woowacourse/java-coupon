@@ -1,6 +1,7 @@
 package coupon.entity;
 
 import coupon.CouponException;
+import java.time.LocalDate;
 import lombok.Getter;
 
 @Getter
@@ -19,19 +20,24 @@ public class Coupon {
     private final int discount;
     private final int minimumOrder;
     private final Category category;
+    private final LocalDate start;
+    private final LocalDate end;
 
-    public Coupon(String name, int discount, int minimumOrder, Category category) {
-        validate(name, discount, minimumOrder);
+    public Coupon(String name, int discount, int minimumOrder, Category category, LocalDate start, LocalDate end) {
+        validate(name, discount, minimumOrder, start, end);
         this.name = name;
         this.discount = discount;
         this.minimumOrder = minimumOrder;
         this.category = category;
+        this.start = start;
+        this.end = end;
     }
 
-    private void validate(String name, int discount, int minimumOrder) {
+    private void validate(String name, int discount, int minimumOrder, LocalDate start, LocalDate end) {
         validateName(name);
         validateMinimumOrder(minimumOrder);
         validateDiscount(discount, minimumOrder);
+        validateDate(start, end);
     }
 
     private void validateName(String name) {
@@ -53,6 +59,12 @@ public class Coupon {
         int rate = (discount * PERCENT_MULTIPLIER) / minimumOrder;
         if (rate < MIN_DISCOUNT_RATE || rate > MAX_DISCOUNT_RATE) {
             throw new CouponException("discount rate is out of range");
+        }
+    }
+
+    private void validateDate(LocalDate start, LocalDate end) {
+        if (start.isAfter(end)) {
+            throw new CouponException("Start date cannot be after end date");
         }
     }
 }
