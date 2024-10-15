@@ -18,7 +18,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ProblemDetail> handleBadRequestException(BadRequestException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
-        return ResponseEntity.badRequest().body(problemDetail));
+        return ResponseEntity.badRequest().body(problemDetail);
+    }
+
+    @ExceptionHandler(DomainException.class)
+    public ResponseEntity<ProblemDetail> handleDomainException(DomainException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
+        return ResponseEntity.badRequest().body(problemDetail);
     }
 
     @ExceptionHandler(RuntimeException.class)
