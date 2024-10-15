@@ -15,12 +15,12 @@ public class CouponMinOrderAmount {
     private static final int MAX_ORDER_AMOUNT_SIZE = 100_000;
 
     @Column(name = "min_order_amount", nullable = false)
-    private int minOrderAmount;
+    private int value;
 
     public CouponMinOrderAmount(int minOrderAmount) {
         validateOrderAmountSize(minOrderAmount);
 
-        this.minOrderAmount = minOrderAmount;
+        this.value = minOrderAmount;
     }
 
     private void validateOrderAmountSize(int minOrderAmount) {
