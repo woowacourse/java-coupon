@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class MinimumOrderAmount {
 
-    private static final BigDecimal MIN_ORDER_AMOUNT = new BigDecimal(5000);
-    private static final BigDecimal MAX_ORDER_AMOUNT = new BigDecimal(100000);
+    private static final BigDecimal MIN_ORDER_AMOUNT = BigDecimal.valueOf(5000);
+    private static final BigDecimal MAX_ORDER_AMOUNT = BigDecimal.valueOf(100000);
 
     @Column(name = "minimum_order_amount")
     private BigDecimal value;
