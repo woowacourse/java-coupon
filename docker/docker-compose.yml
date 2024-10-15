@@ -16,7 +16,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: coupon
+      MYSQL_DATABASE: coupons
       TZ: Asia/Seoul
 
   mysql_reader:
@@ -34,7 +34,7 @@ services:
     container_name: mysql_reader
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: coupon
+      MYSQL_DATABASE: coupons
       TZ: Asia/Seoul
     depends_on:
       - mysql_writer
