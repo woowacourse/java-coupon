@@ -1,6 +1,7 @@
 package coupon.domain.coupon;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import coupon.exception.CouponException;
 import coupon.exception.ExceptionType;
 import jakarta.persistence.Column;
@@ -77,5 +78,17 @@ public class Coupon {
             discountRate.compareTo(BigDecimal.valueOf(MAXIMUM_DISCOUNT_RATE)) > 0) {
             throw new CouponException(ExceptionType.COUPON_DISCOUNT_RATE);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Coupon coupon = (Coupon) o;
+        return Objects.equals(id, coupon.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
