@@ -1,4 +1,4 @@
-package coupon.domain.coupon;
+package coupon.domain;
 
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
