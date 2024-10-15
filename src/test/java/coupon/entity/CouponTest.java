@@ -21,7 +21,7 @@ class CouponTest {
         String invalidName = "thisStringHasLengthWhichIs31abc";
 
         // when & then
-        assertThatThrownBy(() -> new Coupon(invalidName, validAmount, validMinimumOrder))
+        assertThatThrownBy(() -> new Coupon(invalidName, validAmount, validMinimumOrder, Category.FOOD))
                 .isInstanceOf(CouponException.class);
     }
 
@@ -29,7 +29,7 @@ class CouponTest {
     @ParameterizedTest
     @ValueSource(ints = {999, 10001})
     void validateAmount(int amount) {
-        assertThatThrownBy(() -> new Coupon(validName, amount, validMinimumOrder))
+        assertThatThrownBy(() -> new Coupon(validName, amount, validMinimumOrder, Category.FOOD))
                 .isInstanceOf(CouponException.class);
     }
 
@@ -37,7 +37,7 @@ class CouponTest {
     @ParameterizedTest
     @ValueSource(ints = {4999, 100001})
     void validateMinimumOrder(int minimumOrder) {
-        assertThatThrownBy(() -> new Coupon(validName, validAmount, minimumOrder))
+        assertThatThrownBy(() -> new Coupon(validName, validAmount, minimumOrder, Category.FOOD))
                 .isInstanceOf(CouponException.class);
     }
 
@@ -45,7 +45,7 @@ class CouponTest {
     @ParameterizedTest
     @ValueSource(ints = {1199, 8400})
     void validateAmountRate(int amount) {
-        assertThatThrownBy(() -> new Coupon(validName, amount, validMinimumOrder))
+        assertThatThrownBy(() -> new Coupon(validName, amount, validMinimumOrder, Category.FOOD))
                 .isInstanceOf(CouponException.class);
     }
 }

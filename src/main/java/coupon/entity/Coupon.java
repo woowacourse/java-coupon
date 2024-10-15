@@ -18,12 +18,14 @@ public class Coupon {
     private final String name;
     private final int discount;
     private final int minimumOrder;
+    private final Category category;
 
-    public Coupon(String name, int discount, int minimumOrder) {
+    public Coupon(String name, int discount, int minimumOrder, Category category) {
         validate(name, discount, minimumOrder);
         this.name = name;
         this.discount = discount;
         this.minimumOrder = minimumOrder;
+        this.category = category;
     }
 
     private void validate(String name, int discount, int minimumOrder) {
