@@ -12,7 +12,7 @@ class CouponTest {
 
     private final String validName = "name";
     private final int validAmount = 5000;
-    private final int validMinimumOrder = 50000;
+    private final int validMinimumOrder = 40000;
 
     @DisplayName("쿠폰의 이름은 30자 이하여야한다.")
     @Test
@@ -38,6 +38,14 @@ class CouponTest {
     @ValueSource(ints = {4999, 100001})
     void validateMinimumOrder(int minimumOrder) {
         assertThatThrownBy(() -> new Coupon(validName, validAmount, minimumOrder))
+                .isInstanceOf(CouponException.class);
+    }
+
+    @DisplayName("쿠폰 할인 금액은 최소 주문 금액의 3% 이상 20% 이하여야 한다.")
+    @ParameterizedTest
+    @ValueSource(ints = {1199, 8400})
+    void validateAmountRate(int amount) {
+        assertThatThrownBy(() -> new Coupon(validName, amount, validMinimumOrder))
                 .isInstanceOf(CouponException.class);
     }
 }
