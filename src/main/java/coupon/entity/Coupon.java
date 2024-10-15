@@ -1,9 +1,18 @@
 package coupon.entity;
 
 import coupon.CouponException;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.time.LocalDate;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Coupon {
 
@@ -16,12 +25,22 @@ public class Coupon {
     private static final int MAX_DISCOUNT_RATE = 20;
     private static final int PERCENT_MULTIPLIER = 100;
 
-    private final String name;
-    private final int discount;
-    private final int minimumOrder;
-    private final Category category;
-    private final LocalDate start;
-    private final LocalDate end;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    private int discount;
+
+    @Column(name = "minimum_order")
+    private int minimumOrder;
+
+    private Category category;
+
+    private LocalDate start;
+
+    private LocalDate end;
 
     public Coupon(String name, int discount, int minimumOrder, Category category, LocalDate start, LocalDate end) {
         validate(name, discount, minimumOrder, start, end);
