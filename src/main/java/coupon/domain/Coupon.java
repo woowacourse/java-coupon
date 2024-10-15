@@ -1,4 +1,4 @@
-package coupon;
+package coupon.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +15,8 @@ public class Coupon {
     private static final int DISCOUNT_UNIT = 500;
     private static final int MIN_MIN_AMOUNT = 5_000;
     private static final int MAX_MIN_AMOUNT = 100_000;
+    private static final int MIN_DISCOUNT_RATE = 3;
+    private static final int MAX_DISCOUNT_RATE = 20;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -40,6 +42,7 @@ public class Coupon {
         validateName(name);
         validateDiscount(discount);
         validateMinAmount(minAmount);
+        validateDiscountRate(discount, minAmount);
         validatePeriod(startDate, endDate);
         this.id = id;
         this.name = name;
@@ -68,6 +71,13 @@ public class Coupon {
     private void validateMinAmount(int minAmount) {
         if (minAmount < MIN_MIN_AMOUNT || minAmount > MAX_MIN_AMOUNT) {
             throw new IllegalArgumentException("올바르지 않은 최소 주문 금액입니다.");
+        }
+    }
+
+    private void validateDiscountRate(int discount, int minAmount) {
+        int discountRate = (int) Math.floor(((double) discount / minAmount) * 100);
+        if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
+            throw new IllegalArgumentException("유효하지 않은 할인율입니다.");
         }
     }
 
