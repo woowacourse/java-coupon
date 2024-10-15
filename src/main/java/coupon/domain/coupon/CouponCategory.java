@@ -6,7 +6,7 @@ import coupon.exception.ExceptionType;
 import lombok.Getter;
 
 @Getter
-public enum Category {
+public enum CouponCategory {
     FASHION("패션"),
     ELECTRONICS("가전"),
     FURNITURE("가구"),
@@ -14,13 +14,13 @@ public enum Category {
 
     private final String name;
 
-    Category(String name) {
+    CouponCategory(String name) {
         this.name = name;
     }
 
-    public static Category getCategory(String name) {
+    public static CouponCategory getCategory(String name) {
         return Arrays.stream(values())
-                .filter(category -> category.name.equals(name))
+                .filter(couponCategory -> couponCategory.name.equals(name))
                 .findFirst()
                 .orElseThrow(() -> new CouponException(ExceptionType.COUPON_CATEGORY_NOT_FOUND));
     }
