@@ -1,6 +1,7 @@
 package coupon.domain.coupon;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -67,5 +69,9 @@ public class Coupon {
         this.discountAmount = new CouponDiscountAmount(discountAmount, this.minOrderAmount);
         this.category = category;
         this.issueDate = CouponIssueDate.createWithTime(issueStartDate, issueEndDate);
+    }
+
+    public LocalDateTime getIssueEndedAt() {
+        return issueDate.getIssueEndedAt();
     }
 }

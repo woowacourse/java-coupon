@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CouponIssueDate {
 
-    @Column(name = "issue_start_date", nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(name = "issue_start_date", nullable = false)
     private LocalDateTime issueStartedAt;
 
-    @Column(name = "issue_end_date", nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(name = "issue_end_date", nullable = false)
     private LocalDateTime issueEndedAt;
 
     private CouponIssueDate(LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
