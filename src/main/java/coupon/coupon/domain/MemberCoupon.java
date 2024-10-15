@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,5 +51,22 @@ public class MemberCoupon extends BaseEntity {
 
     private LocalDateTime calculateIssueEndDate(LocalDateTime issueStartedAt) {
         return issueStartedAt.plusDays(7).withHour(23).withMinute(59).withSecond(59).withNano(999_999);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MemberCoupon that = (MemberCoupon) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
     }
 }
