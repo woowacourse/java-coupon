@@ -43,4 +43,15 @@ class CouponServiceTest {
                 .isInstanceOf(CouponException.class)
                 .hasMessage(ExceptionType.COUPON_NOT_FOUND.getMessage());
     }
+
+    @DisplayName("쿠폰을 저장한다.")
+    @Test
+    void create() {
+        Coupon coupon = CouponTestData.defaultCoupon().build();
+        couponService.create(coupon);
+
+        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+
+        assertThat(savedCoupon).isEqualTo(coupon);
+    }
 }
