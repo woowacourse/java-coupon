@@ -20,13 +20,13 @@ public class DataSourceConfig {
     private static final String ROUTE_DATA_SOURCE = "routeDataSource";
 
     @Bean
-    @ConfigurationProperties("coupon.datasource.writer")
+    @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writeDataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
 
     @Bean
-    @ConfigurationProperties("coupon.datasource.reader")
+    @ConfigurationProperties(prefix = "coupon.datasource.reader")
     public DataSource readDataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
