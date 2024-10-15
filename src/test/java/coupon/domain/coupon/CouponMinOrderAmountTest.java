@@ -23,7 +23,7 @@ class CouponMinOrderAmountTest {
     @ParameterizedTest
     @DisplayName("쿠폰 최소 주문 금액은 5,000원 이상 100,000원 이하이어야 한다.")
     @ValueSource(ints = {4_999, 100_001})
-    void couponMinOrderAmountShouldBeBetween5_000And100_000(int minOrderAmount) {
+    void validateMinOrderAmountSize(int minOrderAmount) {
         // when & then
         assertThatCode(() -> new CouponMinOrderAmount(minOrderAmount))
                 .isInstanceOf(IllegalArgumentException.class)
