@@ -37,7 +37,19 @@ class CouponNameTest {
     @ParameterizedTest
     @DisplayName("쿠폰 이름은 공백일 수 없다.")
     @ValueSource(strings = {"", " "})
-    void couponNameShouldNotBeBlank(String name) {
+    void validateCouponNameNotBlank(String name) {
+        // when & then
+        assertThatCode(() -> new CouponName(name))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("쿠폰 이름은 30자 이하의 비어 있지 않은 문자열이어야 합니다.");
+    }
+
+    @Test
+    @DisplayName("쿠폰 이름은 30자를 초과할 수 없다.")
+    void validateCouponNameLength() {
+        // given
+        String name = "a".repeat(31);
+
         // when & then
         assertThatCode(() -> new CouponName(name))
                 .isInstanceOf(IllegalArgumentException.class)
