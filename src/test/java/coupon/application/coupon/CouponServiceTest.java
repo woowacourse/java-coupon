@@ -7,16 +7,13 @@ import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponRepository;
 import coupon.exception.CouponException;
 import coupon.exception.ExceptionType;
+import coupon.support.AcceptanceTestSupport;
 import coupon.support.data.CouponTestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-class CouponServiceTest {
+class CouponServiceTest extends AcceptanceTestSupport {
 
     @Autowired
     private CouponService couponService;
@@ -53,5 +50,15 @@ class CouponServiceTest {
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());
 
         assertThat(savedCoupon).isEqualTo(coupon);
+    }
+
+    @Test
+    void 복제지연테스트() {
+        Coupon coupon = CouponTestData.defaultCoupon().build();
+        couponService.create(coupon);
+
+        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+
+        assertThat(savedCoupon).isNotNull();
     }
 }
