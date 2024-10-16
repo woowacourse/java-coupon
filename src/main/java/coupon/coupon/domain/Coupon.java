@@ -23,6 +23,8 @@ public class Coupon extends BaseEntity {
     private static final int MIN_DISCOUNT_AMOUNT = 1000;
     private static final int MAX_DISCOUNT_AMOUNT = 10000;
     private static final int DISCOUNT_UNIT = 500;
+    private static final int MIN_ORDER_AMOUNT = 5000;
+    private static final int MAX_ORDER_AMOUNT = 100000;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coupon_id")
@@ -33,8 +35,6 @@ public class Coupon extends BaseEntity {
 
     private int discountAmount;
 
-    private int discountRate;
-
     private int minOrderAmount;
 
     @Enumerated(EnumType.STRING)
@@ -42,23 +42,23 @@ public class Coupon extends BaseEntity {
 
     public Coupon(
             Long id, String name,
-            int discountAmount, int discountRate,
-            int minOrderAmount, Category category,
+            int discountAmount, int minOrderAmount, Category category,
             LocalDateTime startDate, LocalDateTime endDate
-            ) {
+    ) {
         validateName(name);
         validateDiscountAmount(discountAmount);
+        validateMinOrderAmount(minOrderAmount);
+        validateEndDate(startDate, endDate);
         this.id = id;
         this.name = name;
         this.discountAmount = discountAmount;
-        this.discountRate = discountRate;
         this.minOrderAmount = minOrderAmount;
         this.category = category;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public void validateName(String name) {
+    private void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("쿠폰 이름은 반드시 존재해야 합니다.");
         }
@@ -67,12 +67,27 @@ public class Coupon extends BaseEntity {
         }
     }
 
-    public void validateDiscountAmount(int discountAmount) {
+    private void validateDiscountAmount(int discountAmount) {
         if (discountAmount < MIN_DISCOUNT_AMOUNT || discountAmount > MAX_DISCOUNT_AMOUNT) {
             throw new IllegalArgumentException("할인 금액은 1,000원 이상 10,000원 이하여야 합니다.");
         }
         if (discountAmount % DISCOUNT_UNIT != 0) {
             throw new IllegalArgumentException("할인 금액은 500원 단위여야 합니다.");
+        }
+    }
+
+    public void validateMinOrderAmount(int minOrderAmount) {
+        if (minOrderAmount < MIN_ORDER_AMOUNT) {
+            throw new IllegalArgumentException("최소 주문 금액은 5,000원 이상이어야 합니다.");
+        }
+        if (minOrderAmount > MAX_ORDER_AMOUNT) {
+            throw new IllegalArgumentException("최소 주문 금액은 100,000원 이하여야 합니다.");
+        }
+    }
+
+    public void validateEndDate(LocalDateTime startDate, LocalDateTime endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("종료일은 시작일 이후여야 합니다.");
         }
     }
 }
