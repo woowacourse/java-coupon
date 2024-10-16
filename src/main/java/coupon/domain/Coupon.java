@@ -46,6 +46,11 @@ public class Coupon {
         this.issuableTo = issuableTo;
     }
 
+    public Coupon(String name, Integer discount, Integer minOrderPrice, Category category,
+                  LocalDateTime issuableFrom, LocalDateTime issuableTo) {
+        this(name, discount, discount / minOrderPrice, minOrderPrice, category, issuableFrom, issuableTo);
+    }
+
     protected Coupon() {}
 
     public Long getId() {
