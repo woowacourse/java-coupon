@@ -19,8 +19,8 @@ class CouponTest {
         // when & then
         assertThatCode(
                 () -> new Coupon(
-                        null, name,
-                        10, 1,
+                        1L, name,
+                        1000, 1,
                         1000, Category.ELECTRONICS,
                         LocalDateTime.now(), LocalDateTime.now().plusDays(30)
                 )
@@ -35,8 +35,8 @@ class CouponTest {
         // when & then
         assertThatThrownBy(
                 () -> new Coupon(
-                        null, name,
-                        10, 1,
+                        1L, name,
+                        1000, 1,
                         1000, Category.ELECTRONICS,
                         LocalDateTime.now(), LocalDateTime.now().plusDays(30)
                 )
@@ -52,8 +52,67 @@ class CouponTest {
         // when & then
         assertThatThrownBy(
                 () -> new Coupon(
-                        null, tooLongName,
-                        10, 1,
+                        1L, tooLongName,
+                        1000, 1,
+                        1000, Category.ELECTRONICS,
+                        LocalDateTime.now(), LocalDateTime.now().plusDays(30)
+                )
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("적절한 할인금액으로 쿠폰을 생성한다.")
+    @ValueSource(ints = {500, 1000, 10000})
+    void couponWithValidDiscountAmount(int discountAmount) {
+        assertThatCode(() -> new Coupon(
+                1L, "name",
+                discountAmount, 1,
+                1000, Category.ELECTRONICS,
+                LocalDateTime.now(), LocalDateTime.now().plusDays(30)
+        )).doesNotThrowAnyException();
+    }
+
+    @DisplayName("할인금액이 최소단위가 아닐 시 예외가 발생한다.")
+    @ValueSource(ints = {501, 1001, 1001})
+    void exception_When_DiscountAmountIsNotMinUnit(int discountAmount) {
+        // when & then
+        assertThatThrownBy(
+                () -> new Coupon(
+                        1L, "test",
+                        discountAmount, 1,
+                        1000, Category.ELECTRONICS,
+                        LocalDateTime.now(), LocalDateTime.now().plusDays(30)
+                )
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("할인 금액이 최소 할인금액 미만일 경우 예외가 발생한다.")
+    @Test
+    void exception_When_DiscountAmountIsLessThanMin() {
+        // given
+        int discount = 999;
+
+        // when & then
+        assertThatThrownBy(
+                () -> new Coupon(
+                        1L, "test",
+                        discount, 1,
+                        1000, Category.ELECTRONICS,
+                        LocalDateTime.now(), LocalDateTime.now().plusDays(30)
+                )
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("할인 금액이 최대 할인금액 초과일 경우 예외가 발생한다.")
+    @Test
+    void exception_When_DiscountAmountIsBiggerThatnMax() {
+        // given
+        int discount = 10001;
+
+        // when & then
+        assertThatThrownBy(
+                () -> new Coupon(
+                        1L, "test",
+                        discount, 1,
                         1000, Category.ELECTRONICS,
                         LocalDateTime.now(), LocalDateTime.now().plusDays(30)
                 )

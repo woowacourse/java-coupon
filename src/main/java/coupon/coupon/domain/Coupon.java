@@ -20,6 +20,9 @@ import lombok.NonNull;
 public class Coupon extends BaseEntity {
 
     private static final int MAX_NAME_LENGTH = 30;
+    private static final int MIN_DISCOUNT_AMOUNT = 1000;
+    private static final int MAX_DISCOUNT_AMOUNT = 10000;
+    private static final int DISCOUNT_UNIT = 500;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coupon_id")
@@ -44,6 +47,7 @@ public class Coupon extends BaseEntity {
             LocalDateTime startDate, LocalDateTime endDate
             ) {
         validateName(name);
+        validateDiscountAmount(discountAmount);
         this.id = id;
         this.name = name;
         this.discountAmount = discountAmount;
@@ -60,6 +64,15 @@ public class Coupon extends BaseEntity {
         }
         if (name.length() > MAX_NAME_LENGTH) {
             throw new IllegalArgumentException("쿠폰 이름은 30자 이하여야 합니다.");
+        }
+    }
+
+    public void validateDiscountAmount(int discountAmount) {
+        if (discountAmount < MIN_DISCOUNT_AMOUNT || discountAmount > MAX_DISCOUNT_AMOUNT) {
+            throw new IllegalArgumentException("할인 금액은 1,000원 이상 10,000원 이하여야 합니다.");
+        }
+        if (discountAmount % DISCOUNT_UNIT != 0) {
+            throw new IllegalArgumentException("할인 금액은 500원 단위여야 합니다.");
         }
     }
 }
