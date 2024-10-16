@@ -11,7 +11,7 @@ services:
       coupon_dock_net:
         ipv4_address: 172.20.0.10
     volumes:
-      - ./data/writer:/var/lib/mysql
+      - mysql_writer_data:/var/lib/mysql
     container_name: mysql_writer
     restart: always
     environment:
@@ -29,7 +29,7 @@ services:
       coupon_dock_net:
         ipv4_address: 172.20.0.11
     volumes:
-      - ./data/reader:/var/lib/mysql
+      - mysql_reader_data:/var/lib/mysql
     container_name: mysql_reader
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -53,3 +53,7 @@ networks:
     ipam:
       config:
         - subnet: 172.20.0.0/16
+
+volumes:
+  mysql_writer_data:
+  mysql_reader_data:
