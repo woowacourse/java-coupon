@@ -1,4 +1,4 @@
-package coupon;
+package coupon.datasource;
 
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
