@@ -27,7 +27,7 @@ class CouponTest {
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(5_000);
             CouponCategory couponCategory = CouponCategory.FOOD;
             LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 0);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999999);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999_999_000);
 
             // when & then
             assertThatThrownBy(() ->
@@ -66,7 +66,7 @@ class CouponTest {
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(5_000);
             CouponCategory couponCategory = CouponCategory.FOOD;
             LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 0);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999999);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999_999_000);
 
             // when & then
             assertThatThrownBy(() ->
@@ -83,7 +83,7 @@ class CouponTest {
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(5_000);
             CouponCategory couponCategory = CouponCategory.FOOD;
             LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 0);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999999);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999_999_000);
 
             // when & then
             assertThatThrownBy(() ->
@@ -100,7 +100,7 @@ class CouponTest {
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(5_000);
             CouponCategory couponCategory = CouponCategory.FOOD;
             LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 0);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999999);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999_999_000);
 
             // when & then
             assertThatThrownBy(() ->
@@ -122,7 +122,7 @@ class CouponTest {
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(4_999);
             CouponCategory couponCategory = CouponCategory.FOOD;
             LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 0);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999999);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999_999_000);
 
             // when & then
             assertThatThrownBy(() ->
@@ -139,7 +139,7 @@ class CouponTest {
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(100_001);
             CouponCategory couponCategory = CouponCategory.FOOD;
             LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 0);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999999);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999_999_000);
 
             // when & then
             assertThatThrownBy(() ->
@@ -161,7 +161,7 @@ class CouponTest {
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(100_000);
             CouponCategory couponCategory = CouponCategory.FOOD;
             LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 0);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999999);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999_999_000);
 
             // when & then
             assertThatThrownBy(() ->
@@ -178,7 +178,7 @@ class CouponTest {
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(100_000);
             CouponCategory couponCategory = CouponCategory.FOOD;
             LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 0);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999999);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999_999_000);
 
             // when & then
             assertThatThrownBy(() ->
@@ -200,7 +200,7 @@ class CouponTest {
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(5_000);
             CouponCategory couponCategory = CouponCategory.FOOD;
             LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 0);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 6, 23, 59, 59, 999999);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 6, 23, 59, 59, 999_999_000);
 
             // when & then
             assertThatThrownBy(() ->
@@ -216,8 +216,8 @@ class CouponTest {
             BigDecimal discountAmount = BigDecimal.valueOf(1_000);
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(5_000);
             CouponCategory couponCategory = CouponCategory.FOOD;
-            LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 1);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999999);
+            LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 000_000_001);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999_999_000);
 
             // when & then
             assertThatThrownBy(() ->
@@ -234,7 +234,7 @@ class CouponTest {
             BigDecimal minimumOrderPrice = BigDecimal.valueOf(5_000);
             CouponCategory couponCategory = CouponCategory.FOOD;
             LocalDateTime issueStartedAt = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 0);
-            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999998);
+            LocalDateTime issueEndedAt = LocalDateTime.of(2024, 10, 26, 23, 59, 59, 999_998_000);
 
             // when & then
             assertThatThrownBy(() ->

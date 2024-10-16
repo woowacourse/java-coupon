@@ -31,7 +31,7 @@ public class Coupon {
     private static final int MIN_DISCOUNT_RATE = 3;
     private static final int MAX_DISCOUNT_RATE = 20;
     private static final LocalTime ISSUE_START_TIME = LocalTime.MIDNIGHT;
-    private static final LocalTime ISSUE_END_TIME = LocalTime.MAX;
+    private static final LocalTime ISSUE_END_TIME = LocalTime.of(23, 59, 59, 999_999_000);
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS");
 
     @Id
