@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 public class CouponValidator {
 
-
     public static void validate(Coupon coupon) {
         validateName(coupon.getName());
         validateDiscountAmount(coupon.getDiscountAmount());

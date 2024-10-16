@@ -2,18 +2,17 @@ package coupon.service;
 
 import coupon.domain.Coupon;
 import coupon.repository.CouponRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class CouponService {
 
     private final CouponRepository couponRepository;
 
-    public CouponService(CouponRepository couponRepository) {
-        this.couponRepository = couponRepository;
-    }
-
+    @Transactional
     public void create(Coupon coupon) {
         couponRepository.save(coupon);
     }

@@ -10,11 +10,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @Table(name = "coupon")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
 
     @Id
@@ -39,9 +44,6 @@ public class Coupon {
 
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
-
-    protected Coupon() {
-    }
 
     private Coupon(
             String name,
