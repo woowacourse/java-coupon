@@ -4,16 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class CouponPeriod {
-
-    private final LocalDate startDate;
-
-    private final LocalDate endDate;
-
-    public CouponPeriod(LocalDate startDate, LocalDate endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+public record CouponPeriod(LocalDate startDate, LocalDate endDate) {
 
     public boolean canAddToMember(LocalDateTime base) {
         LocalDateTime startDateTimeExclude = LocalDateTime.of(
