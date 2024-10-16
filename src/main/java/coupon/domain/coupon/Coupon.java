@@ -1,5 +1,6 @@
 package coupon.domain.coupon;
 
+import coupon.infra.db.CouponCache;
 import coupon.infra.db.CouponEntity;
 import java.time.LocalDate;
 import lombok.Getter;
@@ -25,6 +26,16 @@ public class Coupon {
                 new DefaultDiscountPolicy(couponEntity.getDiscountMoney(), couponEntity.getMinOrderMoney()),
                 CouponCategory.valueOf(couponEntity.getCategory()),
                 new CouponPeriod(couponEntity.getStartDate(), couponEntity.getEndDate())
+        );
+    }
+
+    public static Coupon fromCache(CouponCache couponCache) {
+        return new Coupon(
+                couponCache.getId(),
+                new Name(couponCache.getName()),
+                new DefaultDiscountPolicy(couponCache.getDiscountMoney(), couponCache.getMinOrderMoney()),
+                CouponCategory.valueOf(couponCache.getCategory()),
+                new CouponPeriod(couponCache.getStartDate(), couponCache.getEndDate())
         );
     }
 
