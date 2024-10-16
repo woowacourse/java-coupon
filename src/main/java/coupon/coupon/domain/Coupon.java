@@ -37,6 +37,8 @@ public class Coupon extends BaseEntity {
 
     private int minOrderAmount;
 
+    private int discountRate;
+
     @Enumerated(EnumType.STRING)
     private Category category;
 
@@ -46,13 +48,11 @@ public class Coupon extends BaseEntity {
             LocalDateTime startDate, LocalDateTime endDate
     ) {
         validateName(name);
-        validateDiscountAmount(discountAmount);
-        validateMinOrderAmount(minOrderAmount);
-        validateEndDate(startDate, endDate);
         this.id = id;
         this.name = name;
         this.discountAmount = discountAmount;
         this.minOrderAmount = minOrderAmount;
+        this.discountRate = calculateDiscountRate(discountAmount, minOrderAmount);
         this.category = category;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -67,27 +67,7 @@ public class Coupon extends BaseEntity {
         }
     }
 
-    private void validateDiscountAmount(int discountAmount) {
-        if (discountAmount < MIN_DISCOUNT_AMOUNT || discountAmount > MAX_DISCOUNT_AMOUNT) {
-            throw new IllegalArgumentException("할인 금액은 1,000원 이상 10,000원 이하여야 합니다.");
-        }
-        if (discountAmount % DISCOUNT_UNIT != 0) {
-            throw new IllegalArgumentException("할인 금액은 500원 단위여야 합니다.");
-        }
-    }
-
-    public void validateMinOrderAmount(int minOrderAmount) {
-        if (minOrderAmount < MIN_ORDER_AMOUNT) {
-            throw new IllegalArgumentException("최소 주문 금액은 5,000원 이상이어야 합니다.");
-        }
-        if (minOrderAmount > MAX_ORDER_AMOUNT) {
-            throw new IllegalArgumentException("최소 주문 금액은 100,000원 이하여야 합니다.");
-        }
-    }
-
-    public void validateEndDate(LocalDateTime startDate, LocalDateTime endDate) {
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("종료일은 시작일 이후여야 합니다.");
-        }
+    private int calculateDiscountRate(int discountAmount, int minOrderAmount) {
+        return (discountAmount * 100) / minOrderAmount;
     }
 }
