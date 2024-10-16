@@ -19,7 +19,7 @@ public class CouponServiceTest {
     @Test
     void 복제지연테스트() {
         Coupon coupon = new Coupon(Category.FASHION, 1000, 10000);
-        couponService.create(coupon);
+        coupon = couponService.create(coupon);
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());
         assertThat(savedCoupon).isNotNull();
     }
