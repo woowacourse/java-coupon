@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import coupon.CouponValidator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -42,7 +43,7 @@ public class Coupon {
     protected Coupon() {
     }
 
-    public Coupon(
+    private Coupon(
             String name,
             int discountAmount,
             int minimumOrderAmount,
@@ -50,28 +51,24 @@ public class Coupon {
             LocalDateTime startDate,
             LocalDateTime endDate
     ) {
-        if (name == null || name.isEmpty() || name.length() > 30) {
-            throw new IllegalArgumentException("이름은 반드시 존재해야 하며, 최대 30자 이하여야 합니다.");
-        }
-        if (discountAmount < 1000 || discountAmount > 10000 || discountAmount % 500 != 0) {
-            throw new IllegalArgumentException("할인 금액은 1,000원 이상, 10,000원 이하이며 500원 단위로 설정해야 합니다.");
-        }
-        if (minimumOrderAmount < 5000 || minimumOrderAmount > 100000) {
-            throw new IllegalArgumentException("최소 주문 금액은 5,000원 이상, 100,000원 이하여야 합니다.");
-        }
-        double discountRate = Math.floor((double) discountAmount / minimumOrderAmount * 100);
-        if (discountRate < 3 || discountRate > 20) {
-            throw new IllegalArgumentException("할인율은 3% 이상, 20% 이하여야 합니다.");
-        }
-        if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
-        }
-
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
         this.category = category;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public static Coupon createCoupon(
+            String name,
+            int discountAmount,
+            int minimumOrderAmount,
+            Category category,
+            LocalDateTime startDate,
+            LocalDateTime endDate
+    ) {
+        Coupon coupon = new Coupon(name, discountAmount, minimumOrderAmount, category, startDate, endDate);
+        CouponValidator.validate(coupon);
+        return coupon;
     }
 }
