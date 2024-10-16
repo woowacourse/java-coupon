@@ -6,7 +6,6 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
         default_batch_fetch_size: 128
         id.new_generator_mappings: true
         format_sql: true

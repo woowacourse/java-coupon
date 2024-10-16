@@ -13,9 +13,11 @@ services:
     volumes:
       - ./data/writer:/var/lib/mysql
     container_name: mysql_writer
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: coupon
+      LANG: C.UTF-8
       TZ: Asia/Seoul
 
   mysql_reader:
@@ -31,8 +33,11 @@ services:
     volumes:
       - ./data/reader:/var/lib/mysql
     container_name: mysql_reader
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: coupon
+      LANG: C.UTF-8
       TZ: Asia/Seoul
     depends_on:
       - mysql_writer
@@ -40,7 +45,7 @@ services:
   redis:
     image: redis:7.0.12
     container_name: redis
-    restart: always
+    restart: unless-stopped
     ports:
       - "36379:6379"
     networks:
