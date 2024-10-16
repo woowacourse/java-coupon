@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,5 +34,9 @@ public class MemberCoupon {
         this.memberId = memberId;
         this.used = used;
         this.issuedAt = issuedAt;
+    }
+
+    public LocalDateTime getExpiredAt() {
+        return issuedAt.plusDays(7).with(LocalTime.MAX).truncatedTo(ChronoUnit.MICROS);
     }
 }
