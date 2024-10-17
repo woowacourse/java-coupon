@@ -21,11 +21,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
 
+    private static final int MAX_NAME_LENGTH = 30;
+    private static final int MIN_DISCOUNT_AMOUNT = 1000;
+    private static final int MAX_DISCOUNT_AMOUNT = 10000;
+    private static final int DISCOUNT_AMOUNT_UNIT = 500;
+    private static final int MIN_MINIMUM_ORDER_AMOUNT = 5000;
+    private static final int MAX_MINIMUM_ORDER_AMOUNT = 100000;
+    private static final int MIN_DISCOUNT_RATE = 3;
+    private static final int MAX_DISCOUNT_RATE = 20;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 30)
+    @Column(name = "name", nullable = false, length = MAX_NAME_LENGTH)
     private String name;
 
     @Column(name = "discount_amount", nullable = false)
@@ -82,27 +91,45 @@ public class Coupon {
     }
 
     private static void validateName(String name) {
-        if (name == null || name.isEmpty() || name.length() > 30) {
-            throw new IllegalArgumentException("이름은 반드시 존재해야 하며, 최대 30자 이하여야 합니다");
+        if (name == null || name.isEmpty() || name.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException(String.format(
+                    "이름은 반드시 존재해야 하며, 최대 %d자 이하여야 합니다",
+                    MAX_NAME_LENGTH
+            ));
         }
     }
 
     private static void validateDiscountAmount(int discountAmount) {
-        if (discountAmount < 1000 || discountAmount > 10000 || discountAmount % 500 != 0) {
-            throw new IllegalArgumentException("할인 금액은 1,000원 이상, 10,000원 이하이며 500원 단위로 설정해야 합니다");
+        if (discountAmount < MIN_DISCOUNT_AMOUNT
+                || discountAmount > MAX_DISCOUNT_AMOUNT
+                || discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
+            throw new IllegalArgumentException(String.format(
+                    "할인 금액은 %d원 이상, %d원 이하이며 %d원 단위로 설정해야 합니다",
+                    MIN_DISCOUNT_AMOUNT,
+                    MAX_DISCOUNT_AMOUNT,
+                    DISCOUNT_AMOUNT_UNIT
+            ));
         }
     }
 
     private static void validateMinimumOrderAmount(int minimumOrderAmount) {
-        if (minimumOrderAmount < 5000 || minimumOrderAmount > 100000) {
-            throw new IllegalArgumentException("최소 주문 금액은 5,000원 이상, 100,000원 이하여야 합니다");
+        if (minimumOrderAmount < MIN_MINIMUM_ORDER_AMOUNT || minimumOrderAmount > MAX_MINIMUM_ORDER_AMOUNT) {
+            throw new IllegalArgumentException(String.format(
+                    "최소 주문 금액은 %d원 이상, %d원 이하여야 합니다",
+                    MIN_MINIMUM_ORDER_AMOUNT,
+                    MAX_MINIMUM_ORDER_AMOUNT
+            ));
         }
     }
 
     private static void validateDiscountRate(int discountAmount, int minimumOrderAmount) {
         double discountRate = Math.floor((double) discountAmount / minimumOrderAmount * 100);
-        if (discountRate < 3 || discountRate > 20) {
-            throw new IllegalArgumentException("할인율은 3% 이상, 20% 이하여야 합니다");
+        if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
+            throw new IllegalArgumentException(String.format(
+                    "할인율은 %d%% 이상, %d%% 이하여야 합니다",
+                    MIN_DISCOUNT_RATE,
+                    MAX_DISCOUNT_RATE
+            ));
         }
     }
 
