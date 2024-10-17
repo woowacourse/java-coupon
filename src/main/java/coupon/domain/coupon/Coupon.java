@@ -14,7 +14,7 @@ public class Coupon {
     private final List<DiscountPolicy> discountPolicies;
     private final long discountPrice;
     private final long minimumOrderPrice;
-    private final IssuablePeriod issuablePeriod;
+    private final DatePeriod issuablePeriod;
 
     public Coupon(String name, Category category, long discountPrice, long minimumOrderPrice,
                   List<DiscountPolicy> discountPolicies, LocalDate issuableDate, LocalDate expirationDate) {
@@ -23,7 +23,7 @@ public class Coupon {
         this.discountPrice = discountPrice;
         this.minimumOrderPrice = minimumOrderPrice;
         this.discountPolicies = discountPolicies;
-        this.issuablePeriod = new IssuablePeriod(issuableDate, expirationDate);
+        this.issuablePeriod = new DatePeriod(issuableDate, expirationDate);
 
         Objects.requireNonNull(discountPolicies, "할인 정책 목록은 필수입니다.");
         discountPolicies.forEach(policy -> policy.validatePolicy(discountPrice, minimumOrderPrice));
@@ -41,10 +41,10 @@ public class Coupon {
     }
 
     public LocalDate getIssuanceDate() {
-        return issuablePeriod.getIssuanceDate();
+        return issuablePeriod.getStartDate();
     }
 
     public LocalDate getExpirationDate() {
-        return issuablePeriod.getExpirationDate();
+        return issuablePeriod.getEndDate();
     }
 }

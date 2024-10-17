@@ -8,13 +8,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
-class IssuablePeriodTest {
+class DatePeriodTest {
 
     @Test
     void 시작일과_종료일을_통해_발급_가능_기간을_생성한다() {
         LocalDate startDate = LocalDate.of(2021, 1, 1);
         LocalDate endDate = LocalDate.of(2021, 1, 31);
-        assertThatCode(() -> new IssuablePeriod(startDate, endDate))
+        assertThatCode(() -> new DatePeriod(startDate, endDate))
                 .doesNotThrowAnyException();
     }
 
@@ -22,7 +22,7 @@ class IssuablePeriodTest {
     void 발급일이_만료일보다_이후인_경우_예외를_발생한다() {
         LocalDate startDate = LocalDate.of(2021, 1, 31);
         LocalDate endDate = LocalDate.of(2021, 1, 30);
-        assertThrows(IllegalArgumentException.class, () -> new IssuablePeriod(startDate, endDate));
+        assertThrows(IllegalArgumentException.class, () -> new DatePeriod(startDate, endDate));
     }
 
     @Test
@@ -30,10 +30,10 @@ class IssuablePeriodTest {
         LocalDate date = LocalDate.of(2021, 1, 31);
         LocalDate startDate = date;
         LocalDate endDate = date;
-        IssuablePeriod issuablePeriod = new IssuablePeriod(startDate, endDate);
+        DatePeriod datePeriod = new DatePeriod(startDate, endDate);
         assertAll(
-                () -> assertThat(issuablePeriod.isIssuable(date.atTime(0, 0))).isTrue(),
-                () -> assertThat(issuablePeriod.isIssuable(date.plusDays(1).atStartOfDay())).isFalse()
+                () -> assertThat(datePeriod.isBetweenPeriod(date.atTime(0, 0))).isTrue(),
+                () -> assertThat(datePeriod.isBetweenPeriod(date.plusDays(1).atStartOfDay())).isFalse()
         );
     }
 }
