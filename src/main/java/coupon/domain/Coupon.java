@@ -18,7 +18,8 @@ public class Coupon {
     @Embedded
     private CouponName name;
 
-    private BigDecimal discountAmount;
+    @Embedded
+    private DiscountAmount discountAmount;
 
     @Embedded
     private MinimumAmount minimumAmount;
@@ -40,7 +41,7 @@ public class Coupon {
         this(
                 null,
                 new CouponName(name),
-                discountAmount,
+                new DiscountAmount(discountAmount),
                 new MinimumAmount(minimumAmount),
                 category,
                 startDate,
@@ -51,7 +52,7 @@ public class Coupon {
     private Coupon(
             Long id,
             CouponName name,
-            BigDecimal discountAmount,
+            DiscountAmount discountAmount,
             MinimumAmount minimumAmount,
             String category,
             LocalDate startDate,
@@ -75,7 +76,7 @@ public class Coupon {
     }
 
     public BigDecimal getDiscountAmount() {
-        return discountAmount;
+        return discountAmount.getDiscountAmount();
     }
 
     public BigDecimal getMinimumAmount() {
