@@ -38,17 +38,22 @@ public class Coupon {
     private LocalDate untilDate;
 
     public Coupon(String name, long discountMoney, long minimumOrderMoney, LocalDate sinceDate, LocalDate untilDate) {
-        validateName(name);
-        validateDiscountMoney(discountMoney);
-        validateMinimumOrderMoney(minimumOrderMoney);
-        validateDiscountRate(discountMoney, minimumOrderMoney);
-        validatePeriod(sinceDate, untilDate);
+        validate(name, discountMoney, minimumOrderMoney, sinceDate, untilDate);
 
         this.name = name;
         this.discountMoney = discountMoney;
         this.minimumOrderMoney = minimumOrderMoney;
         this.sinceDate = sinceDate;
         this.untilDate = untilDate;
+    }
+
+    private void validate(String name, long discountMoney, long minimumOrderMoney,
+            LocalDate sinceDate, LocalDate untilDate) {
+        validateName(name);
+        validateDiscountMoney(discountMoney);
+        validateMinimumOrderMoney(minimumOrderMoney);
+        validateDiscountRate(discountMoney, minimumOrderMoney);
+        validatePeriod(sinceDate, untilDate);
     }
 
     private void validateName(String name) {
