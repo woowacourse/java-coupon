@@ -23,6 +23,9 @@ public class Coupon {
     private String name;
 
     @Column(nullable = false)
+    private CouponCategory category;
+
+    @Column(nullable = false)
     private Integer discountAmount;
 
     @Column(nullable = false)
@@ -40,6 +43,7 @@ public class Coupon {
     private Coupon(
             Long id,
             String name,
+            CouponCategory category,
             Integer discountAmount,
             Integer discountRate,
             Integer minOrderAmount,
@@ -49,6 +53,7 @@ public class Coupon {
         validate(name, discountAmount, discountRate, minOrderAmount, startedAt, endedAt);
         this.id = id;
         this.name = name;
+        this.category = category;
         this.discountAmount = discountAmount;
         this.discountRate = discountRate;
         this.minOrderAmount = minOrderAmount;
@@ -107,6 +112,7 @@ public class Coupon {
 
     public Coupon(
             String name,
+            CouponCategory category,
             Integer discountAmount,
             Integer minOrderAmount,
             LocalDateTime startedAt,
@@ -115,8 +121,9 @@ public class Coupon {
         this(
                 null,
                 name,
+                category,
                 discountAmount,
-                Math.round((float) discountAmount / minOrderAmount),
+                Math.round((float) discountAmount / minOrderAmount * 100),
                 minOrderAmount,
                 startedAt,
                 endedAt
