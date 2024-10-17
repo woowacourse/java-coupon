@@ -45,7 +45,9 @@ class CouponServiceTest {
     @Test
     @DisplayName("사용자 쿠폰을 발급한다.")
     void issue() {
-        couponService.issue(1L, 1L);
+        Coupon coupon = createCoupon();
+        couponService.create(coupon);
+        couponService.issue(1L, coupon.getId());
         entityManager.clear();
 
         List<MemberCoupon> result = memberCouponRepository.findAll();

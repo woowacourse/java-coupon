@@ -1,52 +1,34 @@
-#spring:
-#  jpa:
-#    hibernate:
-#      naming:
-#        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
-#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.MySQL8Dialect
-#        default_batch_fetch_size: 128
-#        id.new_generator_mappings: true
-#        format_sql: true
-#        show_sql: false
-#        use_sql_comments: true
-#        hbm2ddl.auto: validate
-#        check_nullability: true
-#        query.in_clause_parameter_padding: true
-#    open-in-view: false
-#
-#coupon.datasource:
-#  writer:
-#    type: com.zaxxer.hikari.HikariDataSource
-#    driverClassName: com.mysql.cj.jdbc.Driver
-#    jdbcUrl: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC
-#    username: root
-#    password: root
-#    maximumPoolSize: 10
-#  reader:
-#    type: com.zaxxer.hikari.HikariDataSource
-#    driverClassName: com.mysql.cj.jdbc.Driver
-#    jdbcUrl: jdbc:mysql://localhost:33307/coupon?characterEncoding=UTF-8&serverTimezone=UTC
-#    username: root
-#    password: root
-#    maximumPoolSize: 10
-
-# entity mapping 확인용
 spring:
-  datasource:
-    url: jdbc:h2:mem:test
-    driverClassName: org.h2.Driver
-    username: sa
-    password: 1234
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
-        auto_quote_keyword: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 128
+        id.new_generator_mappings: true
         format_sql: true
-    show-sql: true
-    defer-datasource-initialization: true
+        show_sql: false
+        use_sql_comments: true
+        hbm2ddl.auto: validate
+        check_nullability: true
+        query.in_clause_parameter_padding: true
+    open-in-view: false
+
+coupon.datasource:
+  writer:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+    maximumPoolSize: 10
+  reader:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:33307/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+    maximumPoolSize: 10
