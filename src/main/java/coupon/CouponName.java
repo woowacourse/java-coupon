@@ -1,6 +1,5 @@
 package coupon;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
