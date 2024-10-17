@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
@@ -15,11 +16,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Table(name = "coupon")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Getter
 public class Coupon {
 
     private static final int COUPON_NAME_MAX_LENGTH = 30;
@@ -36,25 +40,26 @@ public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "name", nullable = false, length = 30)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "discount_amount", nullable = false)
     private BigDecimal discountAmount;
 
-    @Column(nullable = false)
+    @Column(name = "minimum_order_price", nullable = false)
     private BigDecimal minimumOrderPrice;
 
-    @Column(nullable = false)
+    @Column(name = "coupon_category", columnDefinition = "VARCHAR(50)", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private CouponCategory couponCategory;
 
-    @Column(nullable = false)
+    @Column(name = "issue_started_at", nullable = false)
     private LocalDateTime issueStartedAt;
 
-    @Column(nullable = false)
+    @Column(name = "issue_ended_at", nullable = false)
     private LocalDateTime issueEndedAt;
 
     public Coupon(
