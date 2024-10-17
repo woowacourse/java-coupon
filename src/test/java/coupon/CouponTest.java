@@ -15,14 +15,15 @@ public class CouponTest {
     void couponCreateSuccess() {
         String name = "name";
         Integer discountAmount = 1000;
-        assertThatNoException().isThrownBy(() -> new Coupon(name, discountAmount));
+        Integer purchaseAmount = 10000;
+        assertThatNoException().isThrownBy(() -> new Coupon(name, discountAmount, purchaseAmount));
     }
 
     @ParameterizedTest
     @DisplayName("쿠폰 생성 실패: 쿠폰의 이름은 1자 이상, 30자 이하여야 한다.")
     @ValueSource(strings = {"", " ", "0123456789012345678901234567890"})
     void nameRange(String name) {
-        assertThatThrownBy(() -> new Coupon(name, 1000))
+        assertThatThrownBy(() -> new Coupon(name, 1000, 10000))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("쿠폰의 이름은 1자 이상 30자 이하여야 합니다.");
     }
@@ -31,17 +32,26 @@ public class CouponTest {
     @DisplayName("쿠폰 생성 실패: 할인 금액은 500원 단위로 설정할 수 있다.")
     void discountAmountUnit() {
         Integer discountAmount = 1234;
-        assertThatThrownBy(() -> new Coupon("coupon", discountAmount))
+        assertThatThrownBy(() -> new Coupon("coupon", discountAmount, 10000))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("할인 금액은 500원 단위로 설정할 수 있습니다.");
     }
 
     @ParameterizedTest
-    @DisplayName("쿠폰 생성 실패: 할인 금액은 1000원 이상, 10000원 이하여야 한다.")
+    @DisplayName("쿠폰 생성 실패: 할인 금액은 1_000원 이상, 10_000원 이하여야 한다.")
     @ValueSource(ints = {500, 10500})
     void discountAmountRange(Integer discountAmount) {
-        assertThatThrownBy(() -> new Coupon("coupon", discountAmount))
+        assertThatThrownBy(() -> new Coupon("coupon", discountAmount, 10000))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("할인 금액은 1_000원 이상, 10_000원 이하여야 합니다.");
+    }
+
+    @ParameterizedTest
+    @DisplayName("쿠폰 생성 실패: 최소 주문 금액은 5_000원 이상 100_000원 이하여야 한다.")
+    @ValueSource(ints = {4999, 100001})
+    void discountRateRange(Integer purchaseAmount) {
+        assertThatThrownBy(() -> new Coupon("coupon", 1000, purchaseAmount))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("최소 주문 금액은 5_000원 이상 100_000원 이하여야 합니다.");
     }
 }
