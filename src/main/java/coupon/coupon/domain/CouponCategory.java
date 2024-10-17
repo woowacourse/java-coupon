@@ -1,8 +1,10 @@
 package coupon.coupon.domain;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public enum CouponCategory {
     FASHION("패션"),
     ELECTRONICS("가전"),
@@ -10,9 +12,5 @@ public enum CouponCategory {
     FOOD("식품");
 
     private final String description;
-
-    CouponCategory(String description) {
-        this.description = description;
-    }
 }
 
