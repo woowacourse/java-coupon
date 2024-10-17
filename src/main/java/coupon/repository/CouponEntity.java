@@ -12,8 +12,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "coupon")
@@ -24,26 +26,26 @@ public class CouponEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "discount_money", nullable = false)
     private Long discountMoney;
 
-    @Column(nullable = false)
+    @Column(name = "discount_rate", nullable = false)
     private Long discountRate;
 
-    @Column(nullable = false)
+    @Column(name = "order_price", nullable = false)
     private Long orderPrice;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "category", nullable = false)
     private Category category;
 
-    @Column(nullable = false)
+    @Column(name = "start", nullable = false)
     private LocalDateTime start;
 
-    @Column(nullable = false)
+    @Column(name = "end", nullable = false)
     private LocalDateTime end;
 
     public CouponEntity(Coupon coupon) {
