@@ -9,7 +9,7 @@ services:
       - 33306:3306
     networks:
       coupon_dock_net:
-        ipv4_address: 172.20.0.10
+        ipv4_address: 172.21.0.10
     volumes:
       - ./data/writer:/var/lib/mysql
     container_name: mysql_writer
@@ -27,7 +27,7 @@ services:
       - 33307:3306
     networks:
       coupon_dock_net:
-        ipv4_address: 172.20.0.11
+        ipv4_address: 172.21.0.11
     volumes:
       - ./data/reader:/var/lib/mysql
     container_name: mysql_reader
@@ -45,11 +45,11 @@ services:
       - "36379:6379"
     networks:
       coupon_dock_net:
-        ipv4_address: 172.20.0.20
+        ipv4_address: 172.21.0.20
 
 networks:
   coupon_dock_net:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/16
+        - subnet: 172.21.0.0/16
