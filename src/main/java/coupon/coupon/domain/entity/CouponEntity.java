@@ -15,6 +15,7 @@ import coupon.base.BaseTimeEntity;
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 public class CouponEntity extends BaseTimeEntity {
@@ -61,19 +63,5 @@ public class CouponEntity extends BaseTimeEntity {
                 coupon.getCategory(),
                 coupon.getIssuedAt(),
                 coupon.getExpiresAt());
-    }
-
-    public CouponEntity(
-            Long id, String name, Integer discountPrice, Integer minimumOrderPrice, Integer discountPercent,
-            Category category, LocalDateTime issuedAt, LocalDateTime expiresAt
-    ) {
-        this.id = id;
-        this.name = name;
-        this.discountPrice = discountPrice;
-        this.minimumOrderPrice = minimumOrderPrice;
-        this.discountPercent = discountPercent;
-        this.category = category;
-        this.issuedAt = issuedAt;
-        this.expiresAt = expiresAt;
     }
 }

@@ -11,16 +11,18 @@ public class Coupon {
     private final Category category;
     private final IssuePeriod issuedPeriod;
 
-    public Coupon(CouponName name,
+    public Coupon(
+            CouponName name,
             DiscountPrice discountPrice,
             MinimumOrderPrice minimumOrderPrice,
+            DiscountPrice discountPercent,
             Category category,
             IssuePeriod issuedPeriod
     ) {
         this.name = name;
         this.discountPrice = discountPrice;
         this.minimumOrderPrice = minimumOrderPrice;
-        this.discountPercent = new DiscountPrice(discountPrice.price() / minimumOrderPrice.price());
+        this.discountPercent = discountPercent;
         this.category = category;
         this.issuedPeriod = issuedPeriod;
     }
