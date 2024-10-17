@@ -26,7 +26,8 @@ public class Coupon {
     @Embedded
     private Discount discount;
 
-    private int minOrderPrice;
+    @Embedded
+    private MinOrderPrice minOrderPrice;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -41,7 +42,7 @@ public class Coupon {
 
         this.name = new CouponName(name);
         this.discount = new Discount(discountPrice, discountPolicy);
-        this.minOrderPrice = minOrderPrice;
+        this.minOrderPrice = new MinOrderPrice(minOrderPrice);
         this.category = category;
         this.issueStartDate = issueStartDate;
         this.issueEndDate = issueEndDate;
