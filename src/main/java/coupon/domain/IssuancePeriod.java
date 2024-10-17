@@ -12,6 +12,7 @@ public record IssuancePeriod(LocalDate startDate, LocalDate endDate) {
         LocalDateTime issuedStartDateTime = startDate.atStartOfDay();
         LocalDateTime issuedEndDateTime = endDate.atStartOfDay().plusDays(1);
 
+        // TODO: 구리다.
         boolean isEqualOrAfterThanStartDateTime = dateTime.isEqual(issuedStartDateTime) || dateTime.isAfter(issuedStartDateTime);
         if (isEqualOrAfterThanStartDateTime && dateTime.isBefore(issuedEndDateTime)) {
             return true;

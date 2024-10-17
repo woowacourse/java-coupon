@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
-public class Coupon {
+public class Coupon extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,5 +39,4 @@ public class Coupon {
     @Column(name = "issuance_period", nullable = false)
     @Embedded
     private IssuancePeriod issuancePeriod;
-
 }
