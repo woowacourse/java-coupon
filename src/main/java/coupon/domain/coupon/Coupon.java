@@ -52,7 +52,7 @@ public class Coupon {
     }
 
     private DiscountPercent calcDiscountPercent(int discountAmount, int minimumAmount) {
-        float result = (float) discountAmount / minimumAmount;
+        float result = (float) discountAmount / minimumAmount * 100;
         return new DiscountPercent((int) Math.floor(result));
     }
 }
