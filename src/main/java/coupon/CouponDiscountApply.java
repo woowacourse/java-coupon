@@ -11,6 +11,10 @@ class CouponDiscountApply {
     private CouponDiscountAmount discountAmount;
     private CouponApplicableAmount applicableAmount;
 
+    public CouponDiscountApply(String discountAmount, String applicableAmount) {
+        this(new BigDecimal(discountAmount), new BigDecimal(applicableAmount));
+    }
+
     public CouponDiscountApply(BigDecimal discountAmount, BigDecimal applicableAmount) {
         validateDiscountPercent(discountAmount, applicableAmount);
 
@@ -20,6 +24,7 @@ class CouponDiscountApply {
 
     private void validateDiscountPercent(BigDecimal discountAmount, BigDecimal applicableAmount) {
         BigDecimal discountPercent = calculateDiscountPercent(discountAmount, applicableAmount);
+
         validateMinimumPercent(discountPercent);
         validateMaximumPercent(discountPercent);
     }
