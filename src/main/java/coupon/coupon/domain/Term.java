@@ -8,8 +8,11 @@ import coupon.coupon.CouponException;
 @Embeddable
 public class Term {
 
-    private final LocalDate startAt;
-    private final LocalDate endAt;
+    private LocalDate startAt;
+    private LocalDate endAt;
+
+    protected Term() {
+    }
 
     public Term(LocalDate startAt, LocalDate endAt) {
         validateTerm(startAt, endAt);
