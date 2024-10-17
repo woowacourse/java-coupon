@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -33,16 +34,21 @@ public class Coupon {
     private String name;
     private long discountMoney;
     private long minimumOrderMoney;
+    private LocalDate sinceDate;
+    private LocalDate untilDate;
 
-    public Coupon(String name, long discountMoney, long minimumOrderMoney) {
+    public Coupon(String name, long discountMoney, long minimumOrderMoney, LocalDate sinceDate, LocalDate untilDate) {
         validateName(name);
         validateDiscountMoney(discountMoney);
         validateMinimumOrderMoney(minimumOrderMoney);
         validateDiscountRate(discountMoney, minimumOrderMoney);
+        validatePeriod(sinceDate, untilDate);
 
         this.name = name;
         this.discountMoney = discountMoney;
         this.minimumOrderMoney = minimumOrderMoney;
+        this.sinceDate = sinceDate;
+        this.untilDate = untilDate;
     }
 
     private void validateName(String name) {
@@ -80,6 +86,16 @@ public class Coupon {
         if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
             throw new CouponException(String.format("할인율은 %d%% 이상 %d%% 이하여야 합니다. input=%d",
                     MIN_DISCOUNT_RATE, MAX_DISCOUNT_RATE, discountRate));
+        }
+    }
+
+    private void validatePeriod(LocalDate sinceDate, LocalDate untilDate) {
+        if (sinceDate == null || untilDate == null) {
+            throw new CouponException("시작일, 종료일은 null일 수 없습니다.");
+        }
+
+        if (sinceDate.isAfter(untilDate)) {
+            throw new CouponException("시작일은 종료일보다 이전이어야 합니다.");
         }
     }
 }
