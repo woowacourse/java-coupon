@@ -2,6 +2,9 @@ package coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import coupon.coupon.domain.Category;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.ExceptionMessage;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

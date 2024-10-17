@@ -1,5 +1,6 @@
-package coupon.domain;
+package coupon.coupon.domain;
 
+import coupon.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Coupon {
+public class Coupon extends BaseEntity {
 
     public static final int MAX_NAME_LENGTH = 30;
     public static final int MIN_DISCOUNT_AMOUNT = 1_000;
