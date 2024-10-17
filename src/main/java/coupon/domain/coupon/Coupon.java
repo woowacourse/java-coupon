@@ -32,9 +32,7 @@ public class Coupon {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private LocalDate issueStartDate;
-
-    private LocalDate issueEndDate;
+    private CouponIssueDate couponIssueDate;
 
     public Coupon(String name, DiscountPolicy discountPolicy, int discountPrice, int minOrderPrice, Category category,
                   LocalDate issueStartDate, LocalDate issueEndDate) {
@@ -44,7 +42,6 @@ public class Coupon {
         this.discount = new Discount(discountPrice, discountPolicy);
         this.minOrderPrice = new MinOrderPrice(minOrderPrice);
         this.category = category;
-        this.issueStartDate = issueStartDate;
-        this.issueEndDate = issueEndDate;
+        this.couponIssueDate = new CouponIssueDate(issueStartDate, issueEndDate);
     }
 }
