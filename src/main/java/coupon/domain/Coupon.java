@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 @Entity
@@ -63,6 +64,8 @@ public class Coupon {
             LocalDate startDate,
             LocalDate endDate
     ) {
+        validateDiscountRate(discountAmount.getDiscountAmount(), minimumAmount.getMinimumAmount());
+
         this.id = id;
         this.name = name;
         this.discountAmount = discountAmount;
@@ -70,6 +73,17 @@ public class Coupon {
         this.category = category;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    private void validateDiscountRate(BigDecimal discountAmount, BigDecimal minimumAmount) {
+        BigDecimal discountRate = discountAmount.multiply(BigDecimal.valueOf(100))
+                .divide(minimumAmount, RoundingMode.DOWN);
+        if (discountRate.compareTo(BigDecimal.valueOf(3)) < 0) {
+            throw new IllegalArgumentException("할인율은 3% 이상이어야 합니다.");
+        }
+        if (discountRate.compareTo(BigDecimal.valueOf(20)) > 0) {
+            throw new IllegalArgumentException("할인율은 20% 이하여야 합니다.");
+        }
     }
 
     public Long getId() {
