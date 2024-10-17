@@ -2,27 +2,54 @@ package coupon.coupon.domain;
 
 import java.time.LocalDateTime;
 
-import coupon.coupon.domain.Category;
-import lombok.Getter;
-
-@Getter
 public class Coupon {
 
-    private final String name;
-    private final Integer discountPrice;
-    private final Integer minimumOrderPrice;
-    private final Integer discountPercent;
+    private final CouponName name;
+    private final DiscountPrice discountPrice;
+    private final MinimumOrderPrice minimumOrderPrice;
+    private final DiscountPrice discountPercent;
     private final Category category;
-    private final LocalDateTime issuedAt;
-    private final LocalDateTime expiresAt;
+    private final IssuePeriod issuedPeriod;
 
-    public Coupon(String name, int discountPrice, int minimumOrderPrice, Category category) {
+    public Coupon(CouponName name,
+            DiscountPrice discountPrice,
+            MinimumOrderPrice minimumOrderPrice,
+            Category category,
+            IssuePeriod issuedPeriod
+    ) {
         this.name = name;
         this.discountPrice = discountPrice;
         this.minimumOrderPrice = minimumOrderPrice;
-        this.discountPercent = discountPrice / minimumOrderPrice;
+        this.discountPercent = new DiscountPrice(discountPrice.price() / minimumOrderPrice.price());
         this.category = category;
-        this.issuedAt = LocalDateTime.now();
-        this.expiresAt = LocalDateTime.now();
+        this.issuedPeriod = issuedPeriod;
+    }
+
+    public String getName() {
+        return name.name();
+    }
+
+    public int getDiscountPrice() {
+        return discountPrice.price();
+    }
+
+    public int getMinimumOrderPrice() {
+        return minimumOrderPrice.price();
+    }
+
+    public int getDiscountPercent() {
+        return discountPercent.price();
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public LocalDateTime getIssuedAt() {
+        return issuedPeriod.issuedAt();
+    }
+
+    public LocalDateTime getExpiresAt() {
+        return issuedPeriod.expiresAt();
     }
 }

@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 
 import coupon.base.BaseTimeEntity;
 import coupon.coupon.domain.Category;
+import coupon.coupon.domain.Coupon;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -51,15 +52,15 @@ public class CouponEntity extends BaseTimeEntity {
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
 
-    public CouponEntity(String name, int discountPrice, int minimumOrderPrice, Category category) {
+    public CouponEntity(Coupon coupon) {
         this(null,
-                name,
-                discountPrice,
-                minimumOrderPrice,
-                discountPrice / minimumOrderPrice,
-                category,
-                LocalDateTime.now(),
-                LocalDateTime.now());
+                coupon.getName(),
+                coupon.getDiscountPrice(),
+                coupon.getMinimumOrderPrice(),
+                coupon.getDiscountPercent(),
+                coupon.getCategory(),
+                coupon.getIssuedAt(),
+                coupon.getExpiresAt());
     }
 
     public CouponEntity(
