@@ -30,4 +30,19 @@ public class CouponName {
             throw new CouponException("쿠폰은 30자 이하의 이름을 설정해주세요.");
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        CouponName that = (CouponName) o;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }
