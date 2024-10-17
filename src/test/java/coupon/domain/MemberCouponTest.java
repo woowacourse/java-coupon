@@ -2,6 +2,7 @@ package coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -62,5 +63,25 @@ class MemberCouponTest {
                 .when(mockMemberCoupon).checkExpireDate();
 
         assertThat(memberCoupon.isUsable()).isTrue();
+    }
+
+    @DisplayName("생성 성공: 쿠폰 발급일 범위 내 발급")
+    @Test
+    void construct_ValidPeriod() {
+        Coupon coupon = new Coupon("coupon", 1000, 10000, LocalDate.now(), LocalDate.now(), Category.FOOD);
+        Member member = new Member("트레");
+
+        assertDoesNotThrow(() -> new MemberCoupon(coupon, member));
+    }
+
+    @DisplayName("생성 실패: 쿠폰 발급일 범위 외 발급")
+    @Test
+    void construct_InvalidPeriod() {
+        Coupon coupon = new Coupon("coupon", 1000, 10000,
+                LocalDate.now().minusDays(2), LocalDate.now().minusDays(1), Category.FOOD);
+        Member member = new Member("트레");
+
+        assertThatThrownBy(() -> new MemberCoupon(coupon, member))
+                .isInstanceOf(CouponException.class);
     }
 }
