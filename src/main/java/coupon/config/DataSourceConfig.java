@@ -15,32 +15,35 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 @Configuration
 public class DataSourceConfig {
 
+    public static final String WRITE_DATA_SOURCE_KEY = "write";
+    public static final String READ_DATA_SOURCE_KEY = "read";
+
     @Bean
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writeDataSource() {
-        return createHikariDataSource();
+        return createDataSource();
     }
 
     @Bean
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
     public DataSource readDataSource() {
-        return createHikariDataSource();
+        return createDataSource();
     }
 
-    private DataSource createHikariDataSource() {
+    private DataSource createDataSource() {
         return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .build();
     }
-
+    
     @Bean
-    public DataSource routeDataSource(
+    public DataSourceRouter dataSourceRouter(
             @Qualifier("writeDataSource") DataSource writeDataSource,
             @Qualifier("readDataSource") DataSource readDataSource
     ) {
         Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put("write", writeDataSource);
-        dataSourceMap.put("read", readDataSource);
+        dataSourceMap.put(WRITE_DATA_SOURCE_KEY, writeDataSource);
+        dataSourceMap.put(READ_DATA_SOURCE_KEY, readDataSource);
 
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
         dataSourceRouter.setTargetDataSources(dataSourceMap);
@@ -50,7 +53,7 @@ public class DataSourceConfig {
 
     @Bean
     @Primary
-    public DataSource dataSource(DataSource routeDataSource) {
-        return new LazyConnectionDataSourceProxy(routeDataSource);
+    public DataSource dataSource(DataSourceRouter dataSourceRouter) {
+        return new LazyConnectionDataSourceProxy(dataSourceRouter);
     }
 }
