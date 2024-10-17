@@ -49,9 +49,19 @@ public class CouponTest {
     @ParameterizedTest
     @DisplayName("쿠폰 생성 실패: 최소 주문 금액은 5_000원 이상 100_000원 이하여야 한다.")
     @ValueSource(ints = {4999, 100001})
-    void discountRateRange(Integer purchaseAmount) {
+    void purchaseAmountRange(Integer purchaseAmount) {
         assertThatThrownBy(() -> new Coupon("coupon", 1000, purchaseAmount))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("최소 주문 금액은 5_000원 이상 100_000원 이하여야 합니다.");
+    }
+
+    @ParameterizedTest
+    @DisplayName("쿠폰 생성 실패: 할인율은 3% 이상, 20% 이하여야 한다.")
+    @ValueSource(ints = {1_000, 10_000})
+    void discountRateRange(Integer discountAmount) {
+        Integer purchaseAmount = 40_000;
+        assertThatThrownBy(() -> new Coupon("coupon", discountAmount, purchaseAmount))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("할인율은 3% 이상, 20% 이하여야 합니다.");
     }
 }
