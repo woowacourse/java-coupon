@@ -5,17 +5,17 @@ import lombok.Getter;
 @Getter
 public class OrderPrice {
 
-    private static final int MINIMUM_ORDER_PRICE = 5_000;
-    private static final int MAXIMUM_ORDER_PRICE = 100_000;
-    
-    private final int price;
+    private static final Long MINIMUM_ORDER_PRICE = 5_000L;
+    private static final Long MAXIMUM_ORDER_PRICE = 100_000L;
 
-    public OrderPrice(int price) {
+    private final Long price;
+
+    public OrderPrice(Long price) {
         validateOrderPrice(price);
         this.price = price;
     }
 
-    private void validateOrderPrice(int price) {
+    private void validateOrderPrice(Long price) {
         if (price < MINIMUM_ORDER_PRICE) {
             throw new IllegalArgumentException(
                     "최소 주문 금액은 [%d] 보다 작을 수 없습니다.".formatted(MINIMUM_ORDER_PRICE));

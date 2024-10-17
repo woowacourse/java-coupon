@@ -12,9 +12,9 @@ class OrderPriceTest {
     @Test
     void validateOrderPrice() {
         assertAll(
-                () -> assertThatThrownBy(() -> new OrderPrice(4_500))
+                () -> assertThatThrownBy(() -> new OrderPrice(4_500L))
                         .isInstanceOf(IllegalArgumentException.class),
-                () -> assertThatThrownBy(() -> new OrderPrice(100_500))
+                () -> assertThatThrownBy(() -> new OrderPrice(100_500L))
                         .isInstanceOf(IllegalArgumentException.class)
         );
     }

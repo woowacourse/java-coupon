@@ -1,8 +1,10 @@
 package coupon.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
+
 
 public class Coupon {
 
@@ -23,7 +25,7 @@ public class Coupon {
         this.issuedPeriod = Objects.requireNonNull(issuedPeriod);
     }
 
-    public Coupon(int discountMoney, int orderPrice) {
+    public Coupon(Long discountMoney, Long orderPrice) {
         this(
                 new Name(UUID.randomUUID().toString()),
                 new DiscountMoney(discountMoney),
@@ -32,5 +34,34 @@ public class Coupon {
                 Category.FASHIONS,
                 new IssuedPeriod(LocalDate.now())
         );
+    }
+
+    public String getName() {
+        return name.getName();
+    }
+
+    public Long getDiscountMoney() {
+        return discountMoney.getDiscountAmount();
+    }
+
+    public Long getDiscountRate() {
+        return discountRate.getDiscountRate();
+    }
+
+    public Long getOrderPrice() {
+        return orderPrice.getPrice();
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public LocalDateTime getStart() {
+        return issuedPeriod.getStartDateTime();
+    }
+
+
+    public LocalDateTime getEnd() {
+        return issuedPeriod.getEndDateTime();
     }
 }

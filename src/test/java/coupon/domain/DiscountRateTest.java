@@ -12,13 +12,13 @@ class DiscountRateTest {
     @Test
     void createDiscountRatePolicy() {
         // given
-        int minimumOrderPrice = 30_000;
-        int discountMoney = 1_000;
-        int expected = 3;
+        Long minimumOrderPrice = 30_000L;
+        Long discountMoney = 1_000L;
+        Long expected = 3L;
 
         // when
         DiscountRate policy = new DiscountRate(discountMoney, minimumOrderPrice);
-        int actual = policy.getDiscountRate();
+        Long actual = policy.getDiscountRate();
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -28,7 +28,7 @@ class DiscountRateTest {
     @DisplayName("할인율을 검증한다.")
     @Test
     void validateMinimumDiscountRate() {
-        assertThatThrownBy(() -> new DiscountRate(1_000, 50_000))
+        assertThatThrownBy(() -> new DiscountRate(1_000L, 50_000L))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
