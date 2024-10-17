@@ -36,7 +36,7 @@ class CouponServiceTest {
         );
         Coupon save = couponRepository.save(coupon);
 
-        Coupon findCoupon = couponService.getCoupon(save.getId());
+        Coupon findCoupon = couponService.getCouponImmediately(save.getId());
 
         assertAll(
                 () -> assertThat(findCoupon.getId()).isNotNull(),

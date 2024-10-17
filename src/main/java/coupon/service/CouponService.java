@@ -1,5 +1,6 @@
 package coupon.service;
 
+import coupon.aspect.ImmediateRead;
 import coupon.domain.Coupon;
 import coupon.repository.CouponRepository;
 import java.util.NoSuchElementException;
@@ -19,6 +20,12 @@ public class CouponService {
     public Coupon getCoupon(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new NoSuchElementException("쿠폰이 존재하지 않습니다."));
+    }
+
+    @ImmediateRead
+    @Transactional(readOnly = true)
+    public Coupon getCouponImmediately(Long couponId) {
+        return getCoupon(couponId);
     }
 
     @Transactional

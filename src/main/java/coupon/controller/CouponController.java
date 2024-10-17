@@ -24,6 +24,11 @@ public class CouponController {
         return couponService.getCoupon(couponId);
     }
 
+    @GetMapping("/{couponId}/immediate")
+    public Coupon getCouponImmediately(@PathVariable Long couponId) {
+        return couponService.getCouponImmediately(couponId);
+    }
+
     @PostMapping
     public Coupon createCoupon(@RequestBody Coupon coupon) {
         return couponService.createCoupon(coupon);
