@@ -17,7 +17,7 @@ public class CouponWriteService {
 
     @CachePut(cacheNames = "coupon", key = "#coupon.id")
     @CacheEvict(cacheNames = "coupon", key = "'all'")
-    public Coupon createCoupon(Coupon coupon) {
+    public Coupon create(Coupon coupon) {
         return couponRepository.save(coupon);
     }
 }

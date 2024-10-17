@@ -15,7 +15,7 @@ public class MinimumOrderAmount {
     private static final BigDecimal MIN_MINIMUM_ORDER_AMOUNT = new BigDecimal(5_000);
     private static final BigDecimal MAX_MINIMUM_ORDER_AMOUNT = new BigDecimal(100_000);
 
-    @Column(nullable = false)
+    @Column(name = "minimum_order_amount", nullable = false)
     private BigDecimal value;
 
     public MinimumOrderAmount(BigDecimal value) {

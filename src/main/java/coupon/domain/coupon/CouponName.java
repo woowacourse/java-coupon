@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CouponName {
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "coupon_name", nullable = false, length = 30)
     private String value;
 
     public CouponName(String value) {

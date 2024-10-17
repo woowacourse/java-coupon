@@ -19,7 +19,7 @@ public class DiscountAmount {
     private static final BigDecimal MIN_RATE = new BigDecimal("0.03");
     private static final BigDecimal MAX_RATE = new BigDecimal("0.20");
 
-    @Column(nullable = false)
+    @Column(name = "discount_amount", nullable = false)
     private BigDecimal value;
 
     public DiscountAmount(BigDecimal value) {
