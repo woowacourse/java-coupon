@@ -2,14 +2,14 @@ CREATE DATABASE IF NOT EXISTS coupon;
 
 USE coupon;
 
-CREATE TABLE IF NOT EXISTS coupon
+create table if not exist coupon
 (
-    id             BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name           VARCHAR(255) NOT NULL,
-    discount_money BIGINT       NOT NULL,
-    discount_rate  BIGINT       NOT NULL,
-    order_price    BIGINT       NOT NULL,
-    category       VARCHAR(255) NOT NULL,
-    start          DATETIME     NOT NULL,
-    end            DATETIME     NOT NULL
+    id             bigint auto_increment primary key,
+    name           varchar(255)                                            not null,
+    discount_money bigint                                                  not null,
+    discount_rate  bigint                                                  not null,
+    order_price    bigint                                                  not null,
+    category       enum ('fashions', 'electronics', 'furnitures', 'foods') not null,
+    start          datetime                                                not null,
+    end            datetime                                                not null
 );
