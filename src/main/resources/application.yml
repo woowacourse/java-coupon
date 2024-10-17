@@ -3,7 +3,7 @@ spring:
     hibernate:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -15,6 +15,7 @@ spring:
         hbm2ddl.auto: validate
         check_nullability: true
         query.in_clause_parameter_padding: true
+        ddl-auto: update
     open-in-view: false
 
 coupon.datasource:
