@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CouponService {
 
@@ -24,12 +23,13 @@ public class CouponService {
     private final CouponRepository couponRepository;
 
     @Transactional
-    public void create(Coupon coupon) {
+    public long create(Coupon coupon) {
         validateDiscountAmount(coupon.getDiscountAmount());
         validateMinOrderAmount(coupon.getMinOrderAmount());
         validateEndDate(coupon.getStartDate(), coupon.getEndDate());
         validateDiscountRate(coupon.calculateDiscountRate());
-        couponRepository.save(coupon);
+        Coupon saveCoupon = couponRepository.save(coupon);
+        return saveCoupon.getId();
     }
 
     private void validateDiscountAmount(int discountAmount) {

@@ -1,11 +1,14 @@
 package coupon.coupon.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.CouponRepository;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,6 +23,13 @@ class CouponServiceTest {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private CouponRepository couponRepository;
+
+    @AfterEach
+    void tearDown() {
+        couponRepository.deleteAllInBatch();
+    }
 
     @DisplayName("적절한 할인금액으로 쿠폰을 생성한다.")
     @ParameterizedTest
@@ -168,5 +178,20 @@ class CouponServiceTest {
         assertThatThrownBy(() -> couponService.create(invalidCoupon))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("할인율은");
+    }
+
+    @DisplayName("복제 지연 테스트")
+    @Test
+    void replicationLagTest() {
+        // given
+        Coupon coupon = new Coupon("Invalid Coupon", 3000, 100000, Category.FASHION,
+                LocalDateTime.now(), LocalDateTime.now().plusDays(5));
+
+        // when
+        long savedId = couponService.create(coupon);
+        Coupon savedCoupon = couponService.findById(savedId);
+
+        // then
+        assertThat(savedCoupon).isNotNull();
     }
 }

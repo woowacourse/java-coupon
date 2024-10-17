@@ -57,6 +57,14 @@ public class Coupon {
         this.endDate = endDate;
     }
 
+    public Coupon(
+            String name, int discountAmount,
+            int minOrderAmount, Category category,
+            LocalDateTime startDate, LocalDateTime endDate
+    ) {
+        this(null, name, discountAmount, minOrderAmount, category, startDate, endDate);
+    }
+
     private void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("쿠폰 이름은 반드시 존재해야 합니다.");
