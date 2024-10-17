@@ -1,4 +1,4 @@
-package coupon.coupon.domain;
+package coupon.domain.coupon;
 
 import lombok.Getter;
 

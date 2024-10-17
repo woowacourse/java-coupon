@@ -1,5 +1,6 @@
-package coupon.coupon.domain;
+package coupon.domain.coupon;
 
+import coupon.exception.CouponException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -60,23 +61,46 @@ public class Coupon {
         this.issueEndDate = issueEndDate;
     }
 
+    public Coupon(
+            String name,
+            int discountAmount,
+            int minimumOrderPrice,
+            CouponCategory couponCategory,
+            LocalDateTime issueStartDate,
+            LocalDateTime issueEndDate
+    ) {
+        this(null, name, discountAmount, minimumOrderPrice, couponCategory, issueStartDate, issueEndDate);
+    }
+
+    public Coupon(
+            int discountAmount,
+            int minimumOrderPrice
+    ) {
+        this(null,
+                "test",
+                discountAmount,
+                minimumOrderPrice,
+                CouponCategory.ELECTRONICS,
+                LocalDateTime.now(),
+                LocalDateTime.now());
+    }
+
     public String validateName(String name) {
         if (!name.isBlank() && name.length() <= MIN_NAME_LENGTH) {
             return name;
         }
-        throw new RuntimeException("쿠폰 이름은 %s자 이하가 되어야 합니다.".formatted(MIN_NAME_LENGTH));
+        throw new CouponException("쿠폰 이름은 %s자 이하가 되어야 합니다.".formatted(MIN_NAME_LENGTH));
     }
 
     public int validateDiscountAmount(int discountAmount) {
         validateRange(discountAmount);
         validateUnit(discountAmount);
         return discountAmount;
-
     }
 
     private void validateRange(int discountAmount) {
         if (discountAmount < MIN_DISCOUNT_AMOUNT || discountAmount > MAX_DISCOUNT_AMOUNT) {
-            throw new RuntimeException(
+            throw new CouponException(
                     "할인 금액은 %s원 이상, %s원 이하입니다.".formatted(MIN_DISCOUNT_AMOUNT, MAX_DISCOUNT_AMOUNT)
             );
         }
@@ -84,13 +108,13 @@ public class Coupon {
 
     private void validateUnit(int discountAmount) {
         if (discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
-            throw new RuntimeException("할인 금액은 %s원 단위로 설정할 수 있습니다.".formatted(DISCOUNT_AMOUNT_UNIT));
+            throw new CouponException("할인 금액은 %s원 단위로 설정할 수 있습니다.".formatted(DISCOUNT_AMOUNT_UNIT));
         }
     }
 
     private int validateMinimumOrderPrice(int minimumOrderPrice) {
-        if (minimumOrderPrice < 5000 || minimumOrderPrice > 100000) {
-            throw new RuntimeException(
+        if (minimumOrderPrice < MIN_MINIMUM_ORDER_PRICE || minimumOrderPrice > MAX_MINIMUM_ORDER_PRICE) {
+            throw new CouponException(
                     "최소 주문 금액은 %s원 이상, %s원 이하입니다.".formatted(MIN_MINIMUM_ORDER_PRICE, MAX_MINIMUM_ORDER_PRICE)
             );
         }
@@ -99,7 +123,7 @@ public class Coupon {
 
     private void validateIssueDate(LocalDateTime issueStartDate, LocalDateTime issueEndDate) {
         if (issueStartDate.isAfter(issueEndDate)) {
-            throw new RuntimeException(
+            throw new CouponException(
                     "발급 시작일(%s)은 발급 종료일(%s)보다 이전이어야 합니다.".formatted(issueStartDate, issueEndDate)
             );
         }
