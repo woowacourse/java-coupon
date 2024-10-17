@@ -19,8 +19,8 @@ public class CouponTestData {
                 .withMinimumOrderAmount(new MinimumOrderAmount(BigDecimal.valueOf(5000)))
                 .withCategory(CouponCategory.FASHION)
                 .withPeriod(new CouponPeriod(
-                        LocalDateTime.of(2024, 10, 15, 0, 0),
-                        LocalDateTime.of(2024, 10, 16, 0, 0)
+                        LocalDateTime.now(),
+                        LocalDateTime.now().plusDays(1)
                 ));
     }
 

@@ -14,8 +14,8 @@ class CouponPeriodTest {
     @DisplayName("쿠폰 시작일과 종료일이 같을 수 있다.")
     @Test
     void createPeriodSameDateRange() {
-        LocalDateTime startDate = LocalDateTime.of(2024, 10, 16, 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(2024, 10, 16, 23, 59);
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDateTime.now();
 
         assertDoesNotThrow(() -> new CouponPeriod(startDate, endDate));
     }
@@ -23,8 +23,8 @@ class CouponPeriodTest {
     @DisplayName("쿠폰 시작일이 종료일보다 늦으면 예외가 발생한다.")
     @Test
     void createPeriodInvalidDateRange() {
-        LocalDateTime startDate = LocalDateTime.of(2024, 10, 16, 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(2024, 10, 15, 23, 59);
+        LocalDateTime startDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime endDate = LocalDateTime.now();
 
         assertThatThrownBy(() -> new CouponPeriod(startDate, endDate))
                 .isInstanceOf(CouponException.class)
