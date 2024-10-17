@@ -1,6 +1,5 @@
 package coupon.domain.membercoupon;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -15,10 +14,10 @@ public class UsagePeriod {
 
     private static final int VALID_DURATION = 7;
 
-    @Column(name = "issue_date")
+    @Column(name = "issue_date", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueDate;
 
-    @Column(name = "expire_date")
+    @Column(name = "expire_date", columnDefinition = "DATETIME(6)")
     private LocalDateTime expireDate;
 
     public UsagePeriod(LocalDateTime issueDate) {
