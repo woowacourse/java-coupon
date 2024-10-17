@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import coupon.coupon.domain.CouponCategory;
-
 public class CouponCategoryTest {
 
     @DisplayName("카테고리를 가져올 수 있다.")

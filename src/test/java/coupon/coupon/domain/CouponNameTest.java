@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import coupon.coupon.domain.CouponName;
-
 public class CouponNameTest {
     private static final int MAX_LENGTH = 30;
 
@@ -31,6 +29,6 @@ public class CouponNameTest {
         // when & then
         assertThatThrownBy(() -> new CouponName(name))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("쿠폰 이름의 길이는 최대 "+ MAX_LENGTH + "자 이하여야 합니다.");
+                .hasMessage("쿠폰 이름의 길이는 최대 " + MAX_LENGTH + "자 이하여야 합니다.");
     }
 }

@@ -8,8 +8,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import coupon.coupon.domain.CouponDiscountAmount;
-
 public class CouponDiscountAmountTest {
     private static final Long MIN_AMOUNT = 1000L;
     private static final Long MAX_AMOUNT = 10000L;
