@@ -18,7 +18,7 @@ public class CouponCategoryTest {
         assertDoesNotThrow(() -> CouponCategory.getCategory(category.name()));
     }
 
-    @DisplayName("")
+    @DisplayName("카테고리에 등록되지 않은 문자열이면, 예외를 발생한다.")
     @Test
     void getCategoryTest_WhenWrongCategory() {
         // given

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 public class CouponIssuancePeriodTest {
 
-    @DisplayName("시작일이 종료일보다 이후면 예외를 발생한다.")
+    @DisplayName("시작일이 종료일보다 이후면, 예외를 발생한다.")
     @Test
     void testValidateDuration() {
         LocalDateTime startDate = LocalDateTime.of(2024, Month.OCTOBER, 18, 0, 0, 0, 2000);
