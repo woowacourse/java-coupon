@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 public class CouponNameTest {
 
-    @DisplayName("쿠폰 이름이 공백이면, 예외를 발생한다.")
+    @DisplayName("쿠폰 이름이 없으면, 예외를 발생한다.")
     @Test
     void testValidateExist_WhenCouponNameIsNull() {
         // given
