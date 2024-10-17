@@ -113,4 +113,8 @@ public class Coupon {
             throw new CouponConditionException("Start issue date must be before or equal to end issue date.");
         }
     }
+
+    public boolean canIssue(LocalDateTime issueAt) {
+        return issueAt.isAfter(startIssueAt) && issueAt.isBefore(endIssueAt);
+    }
 }
