@@ -8,17 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CouponService {
+public class CouponCommandService {
 
     private final CouponRepository couponRepository;
-
-    @Transactional
-    public Coupon getCoupon(Long couponId) {
-        String message = "존재하지 않는 쿠폰입니다. id: %d".formatted(couponId);
-
-        return couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException(message));
-    }
 
     @Transactional
     public void create(Coupon coupon) {
