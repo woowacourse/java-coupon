@@ -3,7 +3,12 @@ package coupon.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDate;
 import java.util.List;
+import coupon.domain.Coupon;
+import coupon.domain.CouponCategory;
+import coupon.domain.CouponIssuableDuration;
+import coupon.domain.CouponName;
 import coupon.domain.MemberCoupon;
 import coupon.domain.MemberCouponRepository;
 import jakarta.persistence.EntityManager;
@@ -45,5 +50,29 @@ class CouponServiceTest {
 
         List<MemberCoupon> result = memberCouponRepository.findAll();
         assertThat(result).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("쿠폰을 생성할 수 있다.")
+    void create() {
+        Coupon coupon = createCoupon();
+
+        couponService.create(coupon);
+
+        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        assertThat(savedCoupon).isNotNull();
+    }
+
+    private Coupon createCoupon() {
+        LocalDate today = LocalDate.now();
+        LocalDate end = today.plusDays(1);
+
+        return new Coupon(
+                new CouponName("1,000원 할인"),
+                CouponCategory.FOOD,
+                new CouponIssuableDuration(today, end),
+                "1000",
+                "10000"
+        );
     }
 }

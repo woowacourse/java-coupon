@@ -3,17 +3,26 @@ package coupon.domain;
 import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Embeddable
-public record CouponIssuableDuration(
-        @Column(name = "issuable_start_date", nullable = false) LocalDate start,
-        @Column(name = "issuable_end_date", nullable = false) LocalDate end
-) {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class CouponIssuableDuration {
 
-    public CouponIssuableDuration {
+    @Column(name = "issuable_start_date", nullable = false)
+    private LocalDate start;
+
+    @Column(name = "issuable_end_date", nullable = false)
+    private LocalDate end;
+
+    public CouponIssuableDuration(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
         }
+
+        this.start = start;
+        this.end = end;
     }
 
     public boolean isIssuable() {

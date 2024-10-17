@@ -26,6 +26,11 @@ class CouponService {
         memberCouponRepository.save(memberCoupon);
     }
 
+    @Transactional
+    public void create(Coupon coupon) {
+        couponRepository.save(coupon);
+    }
+
     public Coupon getCoupon(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 쿠폰입니다."));
