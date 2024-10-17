@@ -13,7 +13,7 @@ public class DataSourceRouter extends AbstractRoutingDataSource {
     protected Object determineCurrentLookupKey() {
         boolean isReadOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
         boolean isTransactionActive = TransactionSynchronizationManager.isActualTransactionActive();
-        DataSourceType dataSourceType = DataSourceType.mapTo(isReadOnly, isTransactionActive);
+        DataSourceType dataSourceType = DataSourceType.mapTo(isTransactionActive, isReadOnly);
         logger.info("readOnly : {}, isTransactionActive : {}, dataSourceType : {}", isReadOnly, isTransactionActive, dataSourceType);
         return dataSourceType;
     }

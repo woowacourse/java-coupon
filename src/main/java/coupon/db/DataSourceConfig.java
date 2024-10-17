@@ -4,15 +4,15 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
+@Configuration
 public class DataSourceConfig {
 
     @Bean
@@ -32,11 +32,11 @@ public class DataSourceConfig {
     @Bean
     Map<Object, Object> dataSourceMap(
             @Qualifier("writeDataSource") DataSource writeDataSource,
-            @Qualifier("readDataSource") DataSource readeDataSource
+            @Qualifier("readDataSource") DataSource readDataSource
     ) {
         Map<Object, Object> dataSourceMap = new HashMap<>();
         dataSourceMap.put(DataSourceType.WRITER, writeDataSource);
-        dataSourceMap.put(DataSourceType.READER, readeDataSource);
+        dataSourceMap.put(DataSourceType.READER, readDataSource);
         return dataSourceMap;
     }
 
