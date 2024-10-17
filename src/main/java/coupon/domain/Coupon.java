@@ -1,12 +1,14 @@
 package coupon.domain;
 
 import coupon.exception.CouponException;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -14,6 +16,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Entity
+@Table(name = "coupon")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Coupon {
@@ -34,10 +37,20 @@ public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "discount_money")
     private long discountMoney;
+
+    @Column(name = "minimum_order_money")
     private long minimumOrderMoney;
+
+    @Column(name = "since_date")
     private LocalDate sinceDate;
+
+    @Column(name = "until_date")
     private LocalDate untilDate;
 
     @Enumerated(value = EnumType.STRING)
