@@ -1,8 +1,9 @@
 package coupon.repository;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
-import jakarta.persistence.Embedded;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -21,8 +22,28 @@ public class CouponEntity extends BaseTimeEntity {
     @GeneratedValue
     private Long id;
 
-    @Embedded
-    private Coupon coupon;
+    @Column(name = "NAME", nullable = false)
+    private String name;
+
+    @Column(name = "DISCOUNT_AMOUNT", nullable = false)
+    private Integer discountAmount;
+
+    @Column(name = "MIN_ORDER_AMOUNT", nullable = false)
+    private Integer minOrderAmount;
+
+    @Column(name = "ISSUED_START_DATE_TIME", nullable = false)
+    private LocalDateTime issuedStartDateTime;
+
+    @Column(name = "ISSUED_END_DATE_TIME", nullable = false)
+    private LocalDateTime issuedEndDateTime;
+
+    public CouponEntity(final Coupon coupon) {
+        this.name = coupon.getName().getValue();
+        this.discountAmount = coupon.getDiscountAmount().getValue();
+        this.minOrderAmount = coupon.getMinOrderAmount().getAmount();
+        this.issuedStartDateTime = coupon.getIssuancePeriod().getStartDateTime();
+        this.issuedEndDateTime = coupon.getIssuancePeriod().getEndDateTime();
+    }
 
     @Override
     public boolean equals(final Object o) {
