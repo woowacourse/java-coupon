@@ -3,12 +3,10 @@ package coupon.coupon.domain;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.Objects;
 import coupon.coupon.CouponException;
 
 public class Coupon {
 
-    private static final int MAX_LENGTH = 30;
     private static final BigDecimal UNIT = BigDecimal.valueOf(500);
     private static final BigDecimal MINIMUM_DISCOUNT_AMOUNT = BigDecimal.valueOf(1000);
     private static final BigDecimal MAXIMUM_DISCOUNT_AMOUNT = BigDecimal.valueOf(10000);
@@ -17,7 +15,7 @@ public class Coupon {
     private static final BigDecimal MINIMUM_DISCOUNT_RATE = BigDecimal.valueOf(3);
     private static final BigDecimal MAXIMUM_DISCOUNT_RATE = BigDecimal.valueOf(20);
 
-    private final String name;
+    private final CouponName name;
     private final BigDecimal discountAmount;
     private final BigDecimal minimumOrderAmount;
     private final Category category;
@@ -25,11 +23,10 @@ public class Coupon {
     private final LocalDate endAt;
 
     public Coupon(String name, long discountAmount, long minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
-        this(name, BigDecimal.valueOf(discountAmount), BigDecimal.valueOf(minimumOrderAmount), category, startAt, endAt);
+        this(new CouponName(name), BigDecimal.valueOf(discountAmount), BigDecimal.valueOf(minimumOrderAmount), category, startAt, endAt);
     }
 
-    public Coupon(String name, BigDecimal discountAmount, BigDecimal minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
-        validateName(name);
+    public Coupon(CouponName name, BigDecimal discountAmount, BigDecimal minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
         validateDiscountAmount(discountAmount);
         validateMinimumOrderAmount(minimumOrderAmount);
         validateDiscountRate(discountAmount, minimumOrderAmount);
@@ -42,22 +39,6 @@ public class Coupon {
         this.endAt = endAt;
     }
 
-    private void validateName(String name) {
-        validateNull(name);
-        validateNameLength(name);
-    }
-
-    private void validateNull(String name) {
-        if (Objects.isNull(name)) {
-            throw new CouponException("쿠폰 이름이 누락되었습니다.");
-        }
-    }
-
-    private void validateNameLength(String name) {
-        if (name.isEmpty() || name.length() > MAX_LENGTH) {
-            throw new CouponException("쿠폰은 30자 이하의 이름을 설정해주세요.");
-        }
-    }
 
     private void validateDiscountAmount(BigDecimal discountAmount) {
         validateUnit(discountAmount);
