@@ -19,7 +19,7 @@ public class CouponTest {
         Long minimumOrderAmount = 10000L;
 
         // when & then
-        assertThatThrownBy(() -> new Coupon(1L, "name", discountAmount, minimumOrderAmount, "category", LocalDateTime.now(), LocalDateTime.now()))
+        assertThatThrownBy(() -> new Coupon("name", discountAmount, minimumOrderAmount, "category", LocalDateTime.now(), LocalDateTime.now()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("할인율이 " + MIN_DISCOUNT_RATE + "% 이상, " + MAX_DISCOUNT_RATE + "% 이하여야 합니다.");
     }
@@ -32,7 +32,7 @@ public class CouponTest {
         Long minimumOrderAmount = 10000L;
 
         // when & then
-        assertThatThrownBy(() -> new Coupon(1L, "name", discountAmount, minimumOrderAmount, "category", LocalDateTime.now(), LocalDateTime.now()))
+        assertThatThrownBy(() -> new Coupon("name", discountAmount, minimumOrderAmount, "category", LocalDateTime.now(), LocalDateTime.now()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("할인율이 " + MIN_DISCOUNT_RATE + "% 이상, " + MAX_DISCOUNT_RATE + "% 이하여야 합니다.");
     }
