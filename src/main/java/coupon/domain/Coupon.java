@@ -13,7 +13,7 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "sale_price", nullable = false)
     private int salePrice;
 
     public Coupon(int salePrice) {
@@ -26,5 +26,9 @@ public class Coupon {
 
     public int getSalePrice() {
         return salePrice;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
