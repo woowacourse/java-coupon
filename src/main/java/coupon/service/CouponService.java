@@ -1,25 +1,23 @@
 package coupon.service;
 
 import coupon.domain.Coupon;
-import coupon.repository.CouponRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class CouponService {
 
-    private final CouponRepository couponRepository;
+    private final CouponWriterService couponWriterService;
+    private final CouponReaderService couponReaderService;
 
-    @Transactional
     public void create(Coupon coupon) {
-        couponRepository.save(coupon);
+        couponWriterService.create(coupon);
     }
 
-    @Transactional(readOnly = true)
-    public Coupon getCoupon(Long id) {
-        return couponRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id의 쿠폰이 존재하지 않습니다"));
+    public Coupon getCoupon(long couponId) {
+        Optional<Coupon> coupon = couponReaderService.getCoupon(couponId);
+        return coupon.orElseGet(() -> couponWriterService.getCoupon(couponId));
     }
 }
