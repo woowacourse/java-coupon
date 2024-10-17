@@ -1,6 +1,6 @@
 package coupon.domain;
 
-enum CouponCategory {
+public enum CouponCategory {
 
     FASHION,
     HOME_APPLIANCES,

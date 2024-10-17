@@ -4,11 +4,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-record CouponName(@Column(name = "coupon_name", nullable = false) String value) {
+public record CouponName(@Column(name = "coupon_name", nullable = false) String value) {
 
     private static final int COUPON_NAME_MAX_LENGTH = 30;
 
-    CouponName {
+    public CouponName {
         if (value.isBlank()) {
             throw new IllegalArgumentException("쿠폰 이름은 반드시 존재해야 합니다.");
         }
