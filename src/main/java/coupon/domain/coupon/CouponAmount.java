@@ -32,11 +32,11 @@ public class CouponAmount {
     }
 
     private void validateDiscountRate(Integer discountAmount, Integer minOrderAmount) {
-        int discountRate = discountAmount / minOrderAmount;
+        int discountRate = discountAmount * 100 / minOrderAmount;
         if (discountRate < 3) {
             throw new IllegalArgumentException("할인율은 3%% 이상이어야 합니다: %d".formatted(discountRate));
         }
-        if (discountAmount > 20) {
+        if (discountRate > 20) {
             throw new IllegalArgumentException("할인율은 20%% 이하이어야 합니다: %d".formatted(discountRate));
         }
     }
