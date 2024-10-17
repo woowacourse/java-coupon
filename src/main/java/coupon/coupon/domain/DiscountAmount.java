@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DiscountAmount {
 
-    public static final int MIN_DISCOUNT_AMOUNT = 1000;
-    public static final int MAX_DISCOUNT_AMOUNT = 10000;
+    public static final int MIN_DISCOUNT_AMOUNT = 1_000;
+    public static final int MAX_DISCOUNT_AMOUNT = 10_000;
     public static final int DISCOUNT_AMOUNT_UNIT = 500;
 
     @Column(nullable = false, name = "discount_amount")
