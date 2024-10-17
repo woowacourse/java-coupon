@@ -2,6 +2,8 @@ package coupon.domain;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +25,10 @@ public class Coupon {
 
     @Embedded
     private MinimumAmount minimumAmount;
-    private String category;
+
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -34,7 +39,7 @@ public class Coupon {
             String name,
             BigDecimal discountAmount,
             BigDecimal minimumAmount,
-            String category,
+            Category category,
             LocalDate startDate,
             LocalDate endDate
     ) {
@@ -54,7 +59,7 @@ public class Coupon {
             CouponName name,
             DiscountAmount discountAmount,
             MinimumAmount minimumAmount,
-            String category,
+            Category category,
             LocalDate startDate,
             LocalDate endDate
     ) {
@@ -83,7 +88,7 @@ public class Coupon {
         return minimumAmount.getMinimumAmount();
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 

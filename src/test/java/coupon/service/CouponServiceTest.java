@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.repository.CouponRepository;
 import java.math.BigDecimal;
@@ -29,7 +30,7 @@ class CouponServiceTest {
                 "coupon",
                 BigDecimal.valueOf(5000),
                 BigDecimal.valueOf(5000),
-                "Food",
+                Category.FOOD,
                 LocalDate.now(),
                 LocalDate.now()
         );
@@ -60,7 +61,7 @@ class CouponServiceTest {
                 "coupon",
                 BigDecimal.valueOf(5000),
                 BigDecimal.valueOf(5000),
-                "Food",
+                Category.FOOD,
                 LocalDate.now(),
                 LocalDate.now()
         );
