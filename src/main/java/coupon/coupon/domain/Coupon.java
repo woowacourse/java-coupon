@@ -14,35 +14,27 @@ public class Coupon {
     private final DiscountAmount discountAmount;
     private final MinimumOrderAmount minimumOrderAmount;
     private final Category category;
-    private final LocalDate startAt;
-    private final LocalDate endAt;
+    private final Term term;
 
     public Coupon(String name, long discountAmount, long minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
-        this(new CouponName(name), new DiscountAmount(discountAmount), new MinimumOrderAmount(minimumOrderAmount), category, startAt, endAt);
+        this(new CouponName(name), new DiscountAmount(discountAmount), new MinimumOrderAmount(minimumOrderAmount), category, new Term(startAt, endAt));
     }
 
-    public Coupon(CouponName name, DiscountAmount discountAmount, MinimumOrderAmount minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
+    public Coupon(CouponName name, DiscountAmount discountAmount, MinimumOrderAmount minimumOrderAmount, Category category, Term term) {
         validateDiscountRate(discountAmount, minimumOrderAmount);
-        validateTerm(startAt, endAt);
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
         this.category = category;
-        this.startAt = startAt;
-        this.endAt = endAt;
+        this.term = term;
     }
 
     private void validateDiscountRate(DiscountAmount discountAmount, MinimumOrderAmount minimumOrderAmount) {
-        BigDecimal discountRate = discountAmount.getDiscountAmount().multiply(BigDecimal.valueOf(100))
+        BigDecimal discountRate = discountAmount.getDiscountAmount()
+                .multiply(BigDecimal.valueOf(100))
                 .divide(minimumOrderAmount.getMinimumOrderAmount(), 0, RoundingMode.DOWN);
         if (discountRate.compareTo(MINIMUM_DISCOUNT_RATE) < 0 || discountRate.compareTo(MAXIMUM_DISCOUNT_RATE) > 0) {
             throw new CouponException("할인율은 3% 이상, 20% 이하이어야 합니다.");
-        }
-    }
-
-    private void validateTerm(LocalDate startAt, LocalDate endAt) {
-        if (endAt.isBefore(startAt)) {
-            throw new CouponException("종료일이 시작일보다 앞설 수 없습니다.");
         }
     }
 }
