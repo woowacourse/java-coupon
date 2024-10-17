@@ -56,6 +56,7 @@ public class Coupon extends BaseEntity {
     private LocalDateTime expiredAt;
 
     public Coupon(
+            final Long id,
             final String name,
             final BigDecimal discountAmount,
             final BigDecimal minimumOrderAmount,
@@ -63,13 +64,25 @@ public class Coupon extends BaseEntity {
             final LocalDateTime issuedAt,
             final LocalDateTime expiredAt
     ) {
-
+        validate(name, discountAmount, minimumOrderAmount, category, issuedAt, expiredAt);
+        this.id = id;
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
         this.category = category;
         this.issuedAt = issuedAt;
         this.expiredAt = expiredAt;
+    }
+
+    public Coupon(
+            final String name,
+            final BigDecimal discountAmount,
+            final BigDecimal minimumOrderAmount,
+            final Category category,
+            final LocalDateTime issuedAt,
+            final LocalDateTime expiredAt
+    ) {
+        this(null, name, discountAmount, minimumOrderAmount, category, issuedAt, expiredAt);
     }
 
     private void validate(
