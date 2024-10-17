@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
 import coupon.domain.Coupon;
 import coupon.domain.CouponCategory;
+import coupon.infra.datasource.DataSourceHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package coupon.application;
+package coupon.infra.datasource;
 
 import java.util.function.Supplier;
 import org.springframework.stereotype.Component;
