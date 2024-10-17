@@ -1,6 +1,7 @@
 package coupon.coupon.service;
 
 
+import aspect.WriterTransactional;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
 import java.time.LocalDateTime;
@@ -65,6 +66,7 @@ public class CouponService {
         }
     }
 
+    @WriterTransactional
     public Coupon findById(Long id) {
         return couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Coupon이 존재하지 않습니다."));
