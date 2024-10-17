@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -109,5 +110,10 @@ public class Coupon {
         if (sinceDate.isAfter(untilDate)) {
             throw new CouponException("시작일은 종료일보다 이전이어야 합니다.");
         }
+    }
+
+    public boolean isIssuableAt(LocalDateTime time) {
+        LocalDate date = time.toLocalDate();
+        return date.isAfter(sinceDate.minusDays(1)) && date.isBefore(untilDate.plusDays(1));
     }
 }

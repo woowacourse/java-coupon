@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,10 +38,18 @@ public class MemberCoupon {
     private LocalDate issueDate;
 
     public MemberCoupon(Coupon coupon, Member member) {
+        LocalDateTime now = LocalDateTime.now();
+        validate(now, coupon);
         this.coupon = coupon;
         this.member = member;
         this.isUsed = false;
-        this.issueDate = LocalDate.now();
+        this.issueDate = now.toLocalDate();
+    }
+
+    private void validate(LocalDateTime now, Coupon coupon) {
+        if (!coupon.isIssuableAt(now)) {
+            throw new CouponException("쿠폰 발급 기간이 아닙니다.");
+        }
     }
 
     public void use() {
