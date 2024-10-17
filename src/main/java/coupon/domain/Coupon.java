@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +14,10 @@ public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+
+    @Embedded
+    private CouponName name;
+
     private BigDecimal discountAmount;
     private BigDecimal discountRate;
     private BigDecimal minimumAmount;
@@ -33,12 +37,21 @@ public class Coupon {
             LocalDate startDate,
             LocalDate endDate
     ) {
-        this(null, name, discountAmount, discountRate, minimumAmount, category, startDate, endDate);
+        this(
+                null,
+                new CouponName(name),
+                discountAmount,
+                discountRate,
+                minimumAmount,
+                category,
+                startDate,
+                endDate
+        );
     }
 
     private Coupon(
             Long id,
-            String name,
+            CouponName name,
             BigDecimal discountAmount,
             BigDecimal discountRate,
             BigDecimal minimumAmount,
@@ -61,7 +74,7 @@ public class Coupon {
     }
 
     public String getName() {
-        return name;
+        return name.getName();
     }
 
     public BigDecimal getDiscountAmount() {
