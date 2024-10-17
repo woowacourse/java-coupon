@@ -1,5 +1,8 @@
 package coupon.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum Category {
 
     FASHION("패션"),
