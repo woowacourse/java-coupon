@@ -19,7 +19,6 @@ public class Coupon {
     private CouponName name;
 
     private BigDecimal discountAmount;
-    private BigDecimal discountRate;
     private BigDecimal minimumAmount;
     private String category;
     private LocalDate startDate;
@@ -31,7 +30,6 @@ public class Coupon {
     public Coupon(
             String name,
             BigDecimal discountAmount,
-            BigDecimal discountRate,
             BigDecimal minimumAmount,
             String category,
             LocalDate startDate,
@@ -41,7 +39,6 @@ public class Coupon {
                 null,
                 new CouponName(name),
                 discountAmount,
-                discountRate,
                 minimumAmount,
                 category,
                 startDate,
@@ -53,7 +50,6 @@ public class Coupon {
             Long id,
             CouponName name,
             BigDecimal discountAmount,
-            BigDecimal discountRate,
             BigDecimal minimumAmount,
             String category,
             LocalDate startDate,
@@ -62,7 +58,6 @@ public class Coupon {
         this.id = id;
         this.name = name;
         this.discountAmount = discountAmount;
-        this.discountRate = discountRate;
         this.minimumAmount = minimumAmount;
         this.category = category;
         this.startDate = startDate;
@@ -79,10 +74,6 @@ public class Coupon {
 
     public BigDecimal getDiscountAmount() {
         return discountAmount;
-    }
-
-    public BigDecimal getDiscountRate() {
-        return discountRate;
     }
 
     public BigDecimal getMinimumAmount() {

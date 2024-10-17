@@ -28,7 +28,6 @@ class CouponServiceTest {
         Coupon coupon = new Coupon(
                 "coupon",
                 BigDecimal.valueOf(1000),
-                BigDecimal.valueOf(0.1),
                 BigDecimal.valueOf(1000),
                 "Food",
                 LocalDate.now(),
@@ -60,7 +59,6 @@ class CouponServiceTest {
         Coupon coupon = new Coupon(
                 "coupon",
                 BigDecimal.valueOf(1000),
-                BigDecimal.valueOf(0.1),
                 BigDecimal.valueOf(1000),
                 "Food",
                 LocalDate.now(),
