@@ -6,11 +6,19 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,67 +29,75 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
 
-    private static final int DISCOUNT_AMOUNT_UNIT = 500;
-    private static final double MIN_DISCOUNT_RATE = 0.03;
-    private static final double MAX_DISCOUNT_RATE = 0.2;
+    private static final Validator validator;
+
+    static {
+        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+            validator = factory.getValidator();
+        }
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Length(min = 1, max = 30)
     @NotNull
+    @Length(min = 1, max = 30, message = "쿠폰명은 최소 1자 이상 최대 30자 이하여야 합니다.")
     private String name;
 
-    @Min(1000)
-    @Max(10000)
-    @NotNull
-    private Integer discountAmt;
+    @DecimalMin(value = "1000", message = "할인 금액은 1,000원 이상이어야 합니다.")
+    @DecimalMax(value = "10000", message = "할인 금액은 10,000원 이하여야 합니다.")
+    private BigDecimal discountAmount;
 
-    @Min(5000)
-    @Max(100000)
-    @NotNull
-    private Integer minOrderAmt;
+    @DecimalMin(value = "5000", message = "최소 주문 금액은 5,000원 이상이어야 합니다.")
+    @DecimalMax(value = "100000", message = "최소 주문 금액은 100,000원 이하여야 합니다.")
+    private BigDecimal minimumOrderAmount;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private CouponCategory category;
 
-    @NotNull
     private LocalDateTime issuedStartDate;
-    
-    @NotNull
+
     private LocalDateTime issuedEndDate;
 
     public Coupon(
             String name,
-            int discountAmt,
-            int minOrderAmt,
+            BigDecimal discountAmount,
+            BigDecimal minimumOrderAmount,
             CouponCategory category,
             LocalDateTime issuedStartDate,
             LocalDateTime issuedEndDate
     ) {
         this.name = name;
-        this.discountAmt = discountAmt;
-        this.minOrderAmt = minOrderAmt;
+        this.discountAmount = discountAmount;
+        this.minimumOrderAmount = minimumOrderAmount;
         this.category = category;
         this.issuedStartDate = issuedStartDate;
         this.issuedEndDate = issuedEndDate;
+
+        validate();
     }
 
-    @AssertTrue
-    public boolean validateDiscountAmtUnit() {
-        return discountAmt % DISCOUNT_AMOUNT_UNIT == 0;
+    @AssertTrue(message = "할인 금액은 500원 단위여야 합니다.")
+    public boolean isValidDiscountAmountUnit() {
+        return discountAmount.remainder(BigDecimal.valueOf(500)).compareTo(BigDecimal.ZERO) == 0;
     }
 
-    @AssertTrue
-    public boolean validateDiscountRate() {
-        double rate = discountAmt / (double) minOrderAmt;
-        return rate >= MIN_DISCOUNT_RATE && rate <= MAX_DISCOUNT_RATE;
+    @AssertTrue(message = "할인율은 3% 이상 20% 이하여야 합니다.")
+    public boolean isValidDiscountRate() {
+        BigDecimal ratio = discountAmount.divide(minimumOrderAmount, 2, RoundingMode.DOWN);
+        return ratio.compareTo(BigDecimal.valueOf(0.03)) >= 0 && ratio.compareTo(BigDecimal.valueOf(0.2)) <= 0;
     }
 
-    @AssertTrue
-    public boolean validateIssuedStartDate() {
+    @AssertTrue(message = "발급 기간 시작일은 종료일보다 이전이거나 같아야 합니다.")
+    public boolean isValidIssuedStartDate() {
         return !issuedStartDate.isAfter(issuedEndDate);
+    }
+
+    private void validate() {
+        Set<ConstraintViolation<Coupon>> violations = validator.validate(this);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
     }
 }

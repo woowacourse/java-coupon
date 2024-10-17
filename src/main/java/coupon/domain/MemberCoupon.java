@@ -12,14 +12,13 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserCoupon {
+public class MemberCoupon {
 
     private static final int DEFAULT_AVAILABLE_DAYS = 7;
 
@@ -33,25 +32,30 @@ public class UserCoupon {
 
     @NotNull
     @ManyToOne
-    private User user;
+    private Member member;
 
     @NotNull
     private boolean used;
 
     @NotNull
-    @CreatedDate
     private LocalDateTime issuedAt;
 
     @NotNull
     private LocalDateTime expiresAt;
 
-    public UserCoupon(Coupon coupon, User user) {
+    public MemberCoupon(Coupon coupon, Member member) {
         this.coupon = coupon;
-        this.user = user;
+        this.member = member;
         this.used = false;
-        this.expiresAt = issuedAt.toLocalDate()
+        this.issuedAt = LocalDateTime.now();
+        this.expiresAt = calculateExpiresAt(this.issuedAt);
+    }
+
+    private LocalDateTime calculateExpiresAt(LocalDateTime issuedAt) {
+        return issuedAt.toLocalDate()
                 .plusDays(DEFAULT_AVAILABLE_DAYS)
-                .atStartOfDay();
+                .atStartOfDay()
+                .minusNanos(1);
     }
 
     @AssertTrue
