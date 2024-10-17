@@ -2,11 +2,9 @@ package coupon.coupon.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDate;
-import coupon.coupon.application.CouponService;
-import coupon.coupon.domain.Coupon;
-import coupon.coupon.domain.CouponCategory;
 import coupon.common.infra.datasource.DataSourceHelper;
+import coupon.coupon.domain.Coupon;
+import coupon.support.data.CouponTestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +23,7 @@ class CouponServiceTest {
     @DisplayName("복제 지연 테스트")
     void replicationLazyTest() {
         // given
-        LocalDate now = LocalDate.now();
-        Coupon coupon = new Coupon("쿠폰", 1_000, 30_000, CouponCategory.FASHION, now, now);
+        Coupon coupon = CouponTestData.defaultCoupon().build();
 
         // when
         couponService.create(coupon);

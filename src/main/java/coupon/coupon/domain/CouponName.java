@@ -13,7 +13,7 @@ public class CouponName {
 
     private static final int MAX_NAME_LENGTH = 30;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = MAX_NAME_LENGTH)
     private String value;
 
     public CouponName(String name) {

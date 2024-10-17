@@ -2,6 +2,7 @@ package coupon.coupon.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import coupon.common.domain.Money;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -44,8 +45,8 @@ public class Coupon {
 
     public Coupon(
             String name,
-            int discountAmount,
-            int minOrderAmount,
+            Money discountAmount,
+            Money minOrderAmount,
             CouponCategory category,
             LocalDate issueStartDate,
             LocalDate issueEndDate
@@ -56,8 +57,8 @@ public class Coupon {
     public Coupon(
             Long id,
             String name,
-            int discountAmount,
-            int minOrderAmount,
+            Money discountAmount,
+            Money minOrderAmount,
             CouponCategory category,
             LocalDate issueStartDate,
             LocalDate issueEndDate

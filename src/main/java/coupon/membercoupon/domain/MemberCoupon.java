@@ -34,17 +34,24 @@ public class MemberCoupon {
     @Column(name = "used", nullable = false)
     private boolean used;
 
-    @Column(name = "issued_at", nullable = false)
+    @Column(name = "issued_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime issuedAt;
 
-    @Column(name = "expired_at", nullable = false)
+    @Column(name = "expired_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime expiredAt;
 
     public MemberCoupon(Long couponId, Long memberId, boolean used, LocalDateTime issuedAt, LocalDateTime expiredAt) {
         this(null, couponId, memberId, used, issuedAt, expiredAt);
     }
 
-    public MemberCoupon(Long id, Long couponId, Long memberId, boolean used, LocalDateTime issuedAt, LocalDateTime expiredAt) {
+    public MemberCoupon(
+            Long id,
+            Long couponId,
+            Long memberId,
+            boolean used,
+            LocalDateTime issuedAt,
+            LocalDateTime expiredAt
+    ) {
         this.id = id;
         this.couponId = couponId;
         this.memberId = memberId;

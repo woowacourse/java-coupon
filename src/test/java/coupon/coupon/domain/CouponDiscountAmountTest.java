@@ -3,8 +3,7 @@ package coupon.coupon.domain;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import coupon.coupon.domain.CouponDiscountAmount;
-import coupon.coupon.domain.CouponMinOrderAmount;
+import coupon.common.domain.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,8 +15,8 @@ class CouponDiscountAmountTest {
     @DisplayName("쿠폰 할인 금액이 정상 생성된다.")
     void createCouponDiscountAmount() {
         // given
-        int discountAmount = 5_000;
-        CouponMinOrderAmount minOrderAmount = new CouponMinOrderAmount(30_000);
+        Money discountAmount = Money.wons(5_000);
+        CouponMinOrderAmount minOrderAmount = new CouponMinOrderAmount(Money.wons(30_000));
 
         // when & then
         assertThatCode(() -> new CouponDiscountAmount(discountAmount, minOrderAmount))
@@ -29,10 +28,10 @@ class CouponDiscountAmountTest {
     @ValueSource(ints = {999, 10_001})
     void validateDiscountAmountSize(int discountAmount) {
         // given
-        CouponMinOrderAmount minOrderAmount = new CouponMinOrderAmount(30_000);
+        CouponMinOrderAmount minOrderAmount = new CouponMinOrderAmount(Money.wons(30_000));
 
         // when & then
-        assertThatThrownBy(() -> new CouponDiscountAmount(discountAmount, minOrderAmount))
+        assertThatThrownBy(() -> new CouponDiscountAmount(Money.wons(discountAmount), minOrderAmount))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("할인 금액은 1,000원 이상 10,000원 이하만 가능합니다.");
     }
@@ -42,10 +41,10 @@ class CouponDiscountAmountTest {
     @ValueSource(ints = {1_001, 1_499})
     void validateDiscountAmountUnit(int discountAmount) {
         // given
-        CouponMinOrderAmount minOrderAmount = new CouponMinOrderAmount(30_000);
+        CouponMinOrderAmount minOrderAmount = new CouponMinOrderAmount(Money.wons(30_000));
 
         // when & then
-        assertThatThrownBy(() -> new CouponDiscountAmount(discountAmount, minOrderAmount))
+        assertThatThrownBy(() -> new CouponDiscountAmount(Money.wons(discountAmount), minOrderAmount))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("할인 금액은 500원 단위로만 가능합니다.");
     }
@@ -55,10 +54,10 @@ class CouponDiscountAmountTest {
     @ValueSource(ints = {1_000, 10_000})
     void validateDiscountRate(int discountAmount) {
         // given
-        CouponMinOrderAmount minOrderAmount = new CouponMinOrderAmount(35_000);
+        CouponMinOrderAmount minOrderAmount = new CouponMinOrderAmount(Money.wons(35_000));
 
         // when & then
-        assertThatThrownBy(() -> new CouponDiscountAmount(discountAmount, minOrderAmount))
+        assertThatThrownBy(() -> new CouponDiscountAmount(Money.wons(discountAmount), minOrderAmount))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("할인율은 3% 이상 20% 이하만 가능합니다.");
     }
