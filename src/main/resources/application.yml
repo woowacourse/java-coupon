@@ -10,7 +10,7 @@ spring:
         default_batch_fetch_size: 128
         id.new_generator_mappings: true
         format_sql: true
-        show_sql: false
+        show_sql: true
         use_sql_comments: true
         hbm2ddl.auto: validate
         check_nullability: true
@@ -20,6 +20,8 @@ spring:
     type: redis
     cache-names:
       - coupons
+    redis:
+      time-to-live: 300s
   data:
     redis:
       host: localhost

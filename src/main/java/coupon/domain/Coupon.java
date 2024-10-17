@@ -1,6 +1,7 @@
 package coupon.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,6 +32,8 @@ public class Coupon {
     private int minAmount;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    @Enumerated
     private Category category;
 
     public Coupon(String name, int discount, int minAmount, LocalDate startDate, LocalDate endDate, Category category) {
