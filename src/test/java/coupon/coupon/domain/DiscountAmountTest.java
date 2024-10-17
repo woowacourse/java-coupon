@@ -1,6 +1,5 @@
 package coupon.coupon.domain;
 
-import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import coupon.coupon.CouponException;
@@ -13,15 +12,10 @@ class DiscountAmountTest {
     @Test
     void cannotCreateIfWrongDiscountAmountUnit() {
         // given
-        String name = "coupon";
         int discountAmount = 1100;
-        int minimumOrderAmount = 5000;
-        Category category = Category.FASHION;
-        LocalDate startAt = LocalDate.now();
-        LocalDate endAt = LocalDate.now().plusDays(1);
 
         // when & then
-        assertThatThrownBy(() -> new Coupon(name, discountAmount, minimumOrderAmount, category, startAt, endAt))
+        assertThatThrownBy(() -> new DiscountAmount(discountAmount))
                 .isInstanceOf(CouponException.class)
                 .hasMessage("할인 금액은 500원 단위로 설정할 수 있습니다.");
     }
@@ -30,15 +24,10 @@ class DiscountAmountTest {
     @Test
     void cannotCreateIfDiscountAmountUnder() {
         // given
-        String name = "coupon";
         int discountAmount = 500;
-        int minimumOrderAmount = 5000;
-        Category category = Category.FASHION;
-        LocalDate startAt = LocalDate.now();
-        LocalDate endAt = LocalDate.now().plusDays(1);
 
         // when & then
-        assertThatThrownBy(() -> new Coupon(name, discountAmount, minimumOrderAmount, category, startAt, endAt))
+        assertThatThrownBy(() -> new DiscountAmount(discountAmount))
                 .isInstanceOf(CouponException.class)
                 .hasMessage("할인 금액은 1000원 이상, 10000원 이하이어야 합니다.");
     }
@@ -47,15 +36,10 @@ class DiscountAmountTest {
     @Test
     void cannotCreateIfDiscountAmountOver() {
         // given
-        String name = "coupon";
         int discountAmount = 10500;
-        int minimumOrderAmount = 5000;
-        Category category = Category.FASHION;
-        LocalDate startAt = LocalDate.now();
-        LocalDate endAt = LocalDate.now().plusDays(1);
 
         // when & then
-        assertThatThrownBy(() -> new Coupon(name, discountAmount, minimumOrderAmount, category, startAt, endAt))
+        assertThatThrownBy(() -> new DiscountAmount(discountAmount))
                 .isInstanceOf(CouponException.class)
                 .hasMessage("할인 금액은 1000원 이상, 10000원 이하이어야 합니다.");
     }
