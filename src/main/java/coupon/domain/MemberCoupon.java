@@ -1,5 +1,9 @@
 package coupon.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,11 +11,14 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@Entity
 @Getter
 public class MemberCoupon {
 
     private static final Logger log = LoggerFactory.getLogger(MemberCoupon.class);
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private final Long id;
     private final Long couponId;
     private final Long memberId;

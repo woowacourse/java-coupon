@@ -163,7 +163,7 @@ class CouponTest {
         Coupon coupon = new Coupon(name, discountAmount, minOrderAmount, category, startDate, endDate);
 
         //when
-        boolean result = coupon.isGrantable(requestTime);
+        boolean result = coupon.canBeGranted(requestTime);
 
         //then
         assertThat(result).isEqualTo(expected);
