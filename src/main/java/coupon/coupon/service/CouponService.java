@@ -20,7 +20,7 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
-    public Coupon readById(Long couponId) {
+    public Coupon readByIdFromReader(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 ID의 쿠폰이 없습니다."));
     }

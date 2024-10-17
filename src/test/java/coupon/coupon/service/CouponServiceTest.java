@@ -23,7 +23,7 @@ public class CouponServiceTest {
         Coupon coupon = new Coupon("name", 1000L, 10000L, "FOOD", LocalDateTime.now(), LocalDateTime.now());
         couponService.create(coupon);
 
-        Coupon savedCoupon = couponService.readById(coupon.getId());
+        Coupon savedCoupon = couponService.readByIdFromReader(coupon.getId());
         assertThat(savedCoupon).isNotNull();
     }
 }
