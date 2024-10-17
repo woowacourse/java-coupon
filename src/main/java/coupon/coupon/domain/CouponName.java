@@ -1,13 +1,18 @@
 package coupon.coupon.domain;
 
 import java.util.Objects;
+import jakarta.persistence.Embeddable;
 import coupon.coupon.CouponException;
 
+@Embeddable
 public class CouponName {
 
     private static final int MAX_LENGTH = 30;
 
-    private final String name;
+    private String name;
+
+    protected CouponName() {
+    }
 
     public CouponName(String name) {
         validate(name);
@@ -44,5 +49,9 @@ public class CouponName {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    public String getCouponName() {
+        return name;
     }
 }

@@ -2,8 +2,10 @@
 package coupon.coupon.domain;
 
 import java.time.LocalDate;
+import jakarta.persistence.Embeddable;
 import coupon.coupon.CouponException;
 
+@Embeddable
 public class Term {
 
     private final LocalDate startAt;
@@ -19,5 +21,13 @@ public class Term {
         if (endAt.isBefore(startAt)) {
             throw new CouponException("종료일이 시작일보다 앞설 수 없습니다.");
         }
+    }
+
+    public LocalDate getStartAt() {
+        return startAt;
+    }
+
+    public LocalDate getEndAt() {
+        return endAt;
     }
 }

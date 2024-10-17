@@ -2,15 +2,20 @@ package coupon.coupon.domain;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import jakarta.persistence.Embeddable;
 import coupon.coupon.CouponException;
 
+@Embeddable
 public class DiscountAmount {
 
     private static final BigDecimal UNIT = BigDecimal.valueOf(500);
     private static final BigDecimal MINIMUM_DISCOUNT_AMOUNT = BigDecimal.valueOf(1000);
     private static final BigDecimal MAXIMUM_DISCOUNT_AMOUNT = BigDecimal.valueOf(10000);
 
-    private final BigDecimal discountAmount;
+    private BigDecimal discountAmount;
+
+    protected DiscountAmount() {
+    }
 
     public DiscountAmount(long discountAmount) {
         this(BigDecimal.valueOf(discountAmount));

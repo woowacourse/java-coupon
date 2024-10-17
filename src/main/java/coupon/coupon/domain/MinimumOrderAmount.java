@@ -2,14 +2,19 @@ package coupon.coupon.domain;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import jakarta.persistence.Embeddable;
 import coupon.coupon.CouponException;
 
+@Embeddable
 public class MinimumOrderAmount {
 
     private static final BigDecimal MIN_OF_MINIMUM_ORDER_AMOUNT = BigDecimal.valueOf(5000);
     private static final BigDecimal MAX_OF_MINIMUM_ORDER_AMOUNT = BigDecimal.valueOf(100000);
 
-    private final BigDecimal minimumOrderAmount;
+    private BigDecimal minimumOrderAmount;
+
+    protected MinimumOrderAmount() {
+    }
 
     public MinimumOrderAmount(long minimumOrderAmount) {
         this(BigDecimal.valueOf(minimumOrderAmount));
