@@ -36,7 +36,7 @@ public class Coupon {
     @Embedded
     private CouponMinOrderAmount minOrderAmount;
 
-    @Column(name = "category", nullable = false)
+    @Column(name = "category", nullable = false, columnDefinition = "VARCHAR(255)")
     @Enumerated(EnumType.STRING)
     private CouponCategory category;
 
