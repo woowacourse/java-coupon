@@ -13,8 +13,8 @@ public class CouponService {
     private final CouponRepository couponRepository;
 
     @Transactional
-    public void createCoupon(Coupon coupon) {
-        couponRepository.save(coupon);
+    public Coupon createCoupon(Coupon coupon) {
+        return couponRepository.save(coupon);
     }
 
     @Transactional(readOnly = true)
