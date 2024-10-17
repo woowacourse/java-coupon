@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 class CouponDiscountApply {
 
+    public static final BigDecimal PERCENT_MULTIPLIER = new BigDecimal(100);
     private static final BigDecimal MAXIMUM_DISCOUNT_PERCENT = new BigDecimal("20");
     private static final BigDecimal MINIMUM_DISCOUNT_PERCENT = new BigDecimal("3");
 
@@ -41,7 +42,7 @@ class CouponDiscountApply {
     private BigDecimal calculateDiscountPercent(BigDecimal discountAmount, BigDecimal applicableAmount) {
         return discountAmount
                 .divide(applicableAmount, 3, RoundingMode.FLOOR)
-                .multiply(new BigDecimal(100));
+                .multiply(PERCENT_MULTIPLIER);
     }
 
     private void validateMinimumPercent(BigDecimal amount) {
