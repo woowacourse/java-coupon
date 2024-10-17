@@ -1,25 +1,35 @@
 package coupon.coupon.service;
 
+import coupon.coupon.CouponNotFoundException;
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.service.services.CouponReaderService;
-import coupon.coupon.service.services.CouponWriterService;
-import java.util.Optional;
+import coupon.coupon.domain.repository.CouponRepository;
+import coupon.util.TransactionExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CouponService {
 
-    private final CouponWriterService couponWriterService;
-    private final CouponReaderService couponReaderService;
+    private final CouponRepository couponRepository;
+    private final TransactionExecutor transactionExecutor;
 
+    @Transactional
     public void create(Coupon coupon) {
-        couponWriterService.create(coupon);
+        couponRepository.save(coupon);
     }
 
     public Coupon getCoupon(long couponId) {
-        Optional<Coupon> coupon = couponReaderService.getCoupon(couponId);
-        return coupon.orElseGet(() -> couponWriterService.getCoupon(couponId));
+        return couponRepository.findById(couponId)
+                .orElseGet(() -> findCouponWithNewTransaction(couponId));
+    }
+
+    private Coupon findCouponWithNewTransaction(long couponId) {
+        return transactionExecutor.executeWithNewTransaction(
+                () -> couponRepository.findById(couponId)
+                        .orElseThrow(() -> new CouponNotFoundException(couponId))
+        );
     }
 }
