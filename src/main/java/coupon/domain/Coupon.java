@@ -44,14 +44,14 @@ public class Coupon extends BaseTime {
     @Column(name = "minimum_order_price", nullable = false)
     private int minimumOrderPrice;
 
-    @Column(name = "category", columnDefinition = "varchar(20)")
+    @Column(name = "category", nullable = false, columnDefinition = "varchar(20)")
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
-    @Column(name = "issue_started_at", columnDefinition = "DATETIME(6)")
+    @Column(name = "issue_started_at", nullable = false, columnDefinition = "datetime(6)")
     private LocalDateTime issueStartedAt;
 
-    @Column(name = "issue_ended_at", columnDefinition = "DATETIME(6)")
+    @Column(name = "issue_ended_at", nullable = false, columnDefinition = "datetime(6)")
     private LocalDateTime issueEndedAt;
 
     public Coupon(String name, int discountAmount, int minimumOrderPrice, Category category,
