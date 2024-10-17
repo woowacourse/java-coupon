@@ -1,4 +1,4 @@
-package coupon;
+package coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-class Coupon {
+public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
