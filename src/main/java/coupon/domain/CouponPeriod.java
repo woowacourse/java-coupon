@@ -25,4 +25,8 @@ public class CouponPeriod {
             throw new IllegalArgumentException("쿠폰의 발급 시작일은 종료일보다 이전이어야 합니다.");
         }
     }
+
+    public boolean isIssuable() {
+        return issueStartedAt.isAfter(LocalDateTime.now()) || issueEndedAt.isBefore(LocalDateTime.now());
+    }
 }
