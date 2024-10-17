@@ -31,21 +31,21 @@ public class Coupon {
     @Column(name = "id")
     private Long id;
     @Embedded
-    @AttributeOverride(name = "name", column = @Column(name = "name"))
+    @AttributeOverride(name = "name", column = @Column(name = "name", nullable = false))
     private CouponName name;
     @Embedded
-    @AttributeOverride(name = "discountAmount", column = @Column(name = "discount_amount"))
+    @AttributeOverride(name = "discountAmount", column = @Column(name = "discount_amount", nullable = false))
     private CouponDiscountAmount discountAmount;
     @Embedded
-    @AttributeOverride(name = "minimumOrderAmount", column = @Column(name = "minimum_order_amount"))
+    @AttributeOverride(name = "minimumOrderAmount", column = @Column(name = "minimum_order_amount", nullable = false))
     private CouponMinimumOrderAmount minimumOrderAmount;
     @Enumerated(EnumType.STRING)
-    @Column(name = "category")
+    @Column(name = "category", nullable = false)
     private CouponCategory category;
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "startDate", column = @Column(name = "start_date")),
-            @AttributeOverride(name = "endDate", column = @Column(name = "end_date"))
+            @AttributeOverride(name = "startDate", column = @Column(name = "start_date", nullable = false)),
+            @AttributeOverride(name = "endDate", column = @Column(name = "end_date", nullable = false))
     })
     private CouponIssuancePeriod issuancePeriod;
 
