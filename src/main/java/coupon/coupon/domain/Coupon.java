@@ -1,6 +1,5 @@
 package coupon.coupon.domain;
 
-import coupon.coupon.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,35 +11,36 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Coupon extends BaseEntity {
+public class Coupon {
 
     private static final int MAX_NAME_LENGTH = 30;
-    private static final int MIN_DISCOUNT_AMOUNT = 1000;
-    private static final int MAX_DISCOUNT_AMOUNT = 10000;
-    private static final int DISCOUNT_UNIT = 500;
-    private static final int MIN_ORDER_AMOUNT = 5000;
-    private static final int MAX_ORDER_AMOUNT = 100000;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coupon_id")
     private Long id;
 
-    @NonNull
+    @Column(name = "name", nullable = false, length = MAX_NAME_LENGTH)
     private String name;
 
+    @Column(name = "discountAmount")
     private int discountAmount;
 
+    @Column(name = "minOrderAmount")
     private int minOrderAmount;
-
-    private int discountRate;
 
     @Enumerated(EnumType.STRING)
     private Category category;
+
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime startDate;
+
+    @Column(name = "end_date", nullable = false)
+    private LocalDateTime endDate;
 
     public Coupon(
             Long id, String name,
@@ -52,7 +52,6 @@ public class Coupon extends BaseEntity {
         this.name = name;
         this.discountAmount = discountAmount;
         this.minOrderAmount = minOrderAmount;
-        this.discountRate = calculateDiscountRate(discountAmount, minOrderAmount);
         this.category = category;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -67,7 +66,7 @@ public class Coupon extends BaseEntity {
         }
     }
 
-    private int calculateDiscountRate(int discountAmount, int minOrderAmount) {
-        return (discountAmount * 100) / minOrderAmount;
+    public double calculateDiscountRate() {
+        return (double) (discountAmount * 100) / minOrderAmount;
     }
 }

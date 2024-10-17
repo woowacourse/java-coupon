@@ -18,6 +18,8 @@ public class CouponService {
     private static final int DISCOUNT_UNIT = 500;
     private static final int MIN_ORDER_AMOUNT = 5000;
     private static final int MAX_ORDER_AMOUNT = 100000;
+    private static final int MIN_DISCOUNT_RATE = 3;
+    private static final int MAX_DISCOUNT_RATE = 20;
 
     private final CouponRepository couponRepository;
 
@@ -26,33 +28,42 @@ public class CouponService {
         validateDiscountAmount(coupon.getDiscountAmount());
         validateMinOrderAmount(coupon.getMinOrderAmount());
         validateEndDate(coupon.getStartDate(), coupon.getEndDate());
+        validateDiscountRate(coupon.calculateDiscountRate());
         couponRepository.save(coupon);
     }
 
     private void validateDiscountAmount(int discountAmount) {
         if (discountAmount < MIN_DISCOUNT_AMOUNT || discountAmount > MAX_DISCOUNT_AMOUNT) {
-            throw new IllegalArgumentException("할인 금액은 1,000원 이상 10,000원 이하여야 합니다.");
+            throw new IllegalArgumentException(
+                    String.format("할인 금액은 %d원 이상 %d원 이하여야 합니다.", MIN_DISCOUNT_AMOUNT, MAX_DISCOUNT_AMOUNT)
+            );
         }
         if (discountAmount % DISCOUNT_UNIT != 0) {
-            throw new IllegalArgumentException("할인 금액은 500원 단위여야 합니다.");
+            throw new IllegalArgumentException(String.format("할인 금액은 %d원 단위여야 합니다.", DISCOUNT_UNIT));
         }
     }
 
-    public void validateMinOrderAmount(int minOrderAmount) {
+    private void validateMinOrderAmount(int minOrderAmount) {
         if (minOrderAmount < MIN_ORDER_AMOUNT) {
-            throw new IllegalArgumentException("최소 주문 금액은 5,000원 이상이어야 합니다.");
+            throw new IllegalArgumentException(String.format("최소 주문 금액은 %d원 이상이어야 합니다.", MAX_ORDER_AMOUNT));
         }
         if (minOrderAmount > MAX_ORDER_AMOUNT) {
-            throw new IllegalArgumentException("최소 주문 금액은 100,000원 이하여야 합니다.");
+            throw new IllegalArgumentException(String.format("최소 주문 금액은 %d원 이하여야 합니다.", MAX_ORDER_AMOUNT));
         }
     }
 
-    public void validateEndDate(LocalDateTime startDate, LocalDateTime endDate) {
+    private void validateEndDate(LocalDateTime startDate, LocalDateTime endDate) {
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("종료일은 시작일 이후여야 합니다.");
         }
     }
 
+    private void validateDiscountRate(double discountRate) {
+        if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
+            throw new IllegalArgumentException(
+                    String.format("할인율은 %d%% 이상 %d%% 이하여야 합니다.", MIN_DISCOUNT_RATE, MAX_DISCOUNT_RATE));
+        }
+    }
 
     public Coupon findById(Long id) {
         return couponRepository.findById(id)

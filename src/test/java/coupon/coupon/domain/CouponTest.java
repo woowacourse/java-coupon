@@ -1,5 +1,6 @@
 package coupon.coupon.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -56,5 +57,22 @@ class CouponTest {
                         LocalDateTime.now(), LocalDateTime.now().plusDays(30)
                 )
         ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("할인율을 계산한다.")
+    @Test
+    void calculateDiscountRate() {
+        // given
+        Coupon coupon = new Coupon(
+                1L, "test",
+                1000, 5000, Category.ELECTRONICS, // (1000*100 / 5000) = 20%
+                LocalDateTime.now(), LocalDateTime.now().plusDays(30)
+        );
+
+        // when
+        double discountRate = coupon.calculateDiscountRate();
+
+        // then
+        assertThat(discountRate).isEqualTo(20);
     }
 }
