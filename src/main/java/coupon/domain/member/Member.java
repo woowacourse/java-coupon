@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.domain.member;
 
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;

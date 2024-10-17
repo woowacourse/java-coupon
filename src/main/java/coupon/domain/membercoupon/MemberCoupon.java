@@ -1,7 +1,9 @@
-package coupon.domain;
+package coupon.domain.membercoupon;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import coupon.domain.coupon.Coupon;
+import coupon.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

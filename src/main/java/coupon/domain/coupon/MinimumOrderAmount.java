@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
 import java.math.BigDecimal;
 import jakarta.persistence.Column;
