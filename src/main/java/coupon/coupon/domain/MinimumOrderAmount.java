@@ -1,0 +1,31 @@
+package coupon.coupon.domain;
+
+import java.math.BigDecimal;
+import coupon.coupon.CouponException;
+
+public class MinimumOrderAmount {
+
+    private static final BigDecimal MIN_OF_MINIMUM_ORDER_AMOUNT = BigDecimal.valueOf(5000);
+    private static final BigDecimal MAX_OF_MINIMUM_ORDER_AMOUNT = BigDecimal.valueOf(100000);
+
+    private final BigDecimal minimumOrderAmount;
+
+    public MinimumOrderAmount(long minimumOrderAmount) {
+        this(BigDecimal.valueOf(minimumOrderAmount));
+    }
+
+    public MinimumOrderAmount(BigDecimal minimumOrderAmount) {
+        validateRangeOfMinimumOrderAmount(minimumOrderAmount);
+        this.minimumOrderAmount = minimumOrderAmount;
+    }
+
+    private void validateRangeOfMinimumOrderAmount(BigDecimal minimumOrderAmount) {
+        if (minimumOrderAmount.compareTo(MIN_OF_MINIMUM_ORDER_AMOUNT) < 0 || (minimumOrderAmount.compareTo(MAX_OF_MINIMUM_ORDER_AMOUNT) > 0)) {
+            throw new CouponException("최소 주문 금액은 5000원 이상, 100000원 이하이어야 합니다.");
+        }
+    }
+
+    public BigDecimal getMinimumOrderAmount() {
+        return minimumOrderAmount;
+    }
+}
