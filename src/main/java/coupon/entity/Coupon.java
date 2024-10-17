@@ -1,5 +1,9 @@
 package coupon.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import coupon.CouponException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,8 +46,12 @@ public class Coupon {
     @Column(columnDefinition = "varchar")
     private Category category;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate start;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate end;
 
     public Coupon(String name, int discount, int minimumOrder, Category category, LocalDate start, LocalDate end) {
