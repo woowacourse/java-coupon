@@ -16,7 +16,7 @@ public class CouponServiceTest {
     private CouponService couponService;
 
     @Test
-    void 복제지연테스트() {
+    void 복제지연테스트() throws InterruptedException {
         Coupon coupon = new Coupon(
                 "쿠폰",
                 1000,
@@ -25,8 +25,8 @@ public class CouponServiceTest {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(1L)
         );
-        couponService.create(coupon);
-        Coupon savedCoupon = couponService.findCoupon(coupon.getId());
-        assertThat(savedCoupon).isNotNull();
+        Coupon savedCoupon = couponService.create(coupon);
+        Coupon foundCoupon   = couponService.findCoupon(savedCoupon.getId());
+        assertThat(foundCoupon).isNotNull();
     }
 }
