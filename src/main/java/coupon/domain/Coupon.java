@@ -78,6 +78,13 @@ public class Coupon {
         validate();
     }
 
+    private void validate() {
+        Set<ConstraintViolation<Coupon>> violations = validator.validate(this);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+    }
+
     @AssertTrue(message = "할인 금액은 500원 단위여야 합니다.")
     public boolean isValidDiscountAmountUnit() {
         return discountAmount.remainder(BigDecimal.valueOf(500)).compareTo(BigDecimal.ZERO) == 0;
@@ -92,12 +99,5 @@ public class Coupon {
     @AssertTrue(message = "발급 기간 시작일은 종료일보다 이전이거나 같아야 합니다.")
     public boolean isValidIssuedStartDate() {
         return !issuedStartDate.isAfter(issuedEndDate);
-    }
-
-    private void validate() {
-        Set<ConstraintViolation<Coupon>> violations = validator.validate(this);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
-        }
     }
 }
