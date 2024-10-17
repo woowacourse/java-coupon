@@ -19,7 +19,7 @@ class CouponTest {
     private static final String NAME = "coupon";
     private static final LocalDate SINCE = LocalDate.parse("2020-01-01");
     private static final LocalDate UNTIL = LocalDate.parse("2020-01-05");
-    private static final Category CATEGORY = Category.FASHION;
+    private static final String CATEGORY = "FASHION";
 
     @DisplayName("쿠폰 생성 성공: 이름 경계값")
     @ParameterizedTest
@@ -99,7 +99,7 @@ class CouponTest {
     @Test
     void isIssuableAt_True_Start() {
         Coupon coupon = new Coupon(NAME, 1000, 10000,
-                LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-02"), Category.FOOD);
+                LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-02"), CATEGORY);
 
         assertThat(coupon.isIssuableAt(LocalDateTime.parse("2020-01-01T00:00:00.000000"))).isTrue();
     }
@@ -108,7 +108,7 @@ class CouponTest {
     @Test
     void isIssuableAt_False_Start() {
         Coupon coupon = new Coupon(NAME, 1000, 10000,
-                LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-02"), Category.FOOD);
+                LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-02"), CATEGORY);
 
         assertThat(coupon.isIssuableAt(LocalDateTime.parse("2019-12-31T23:59:59.999999"))).isFalse();
     }
@@ -117,7 +117,7 @@ class CouponTest {
     @Test
     void isIssuableAt_True_End() {
         Coupon coupon = new Coupon(NAME, 1000, 10000,
-                LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-02"), Category.FOOD);
+                LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-02"), CATEGORY);
 
         assertThat(coupon.isIssuableAt(LocalDateTime.parse("2020-01-02T23:59:59.999999"))).isTrue();
     }
@@ -126,7 +126,7 @@ class CouponTest {
     @Test
     void isIssuableAt_False_End() {
         Coupon coupon = new Coupon(NAME, 1000, 10000,
-                LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-02"), Category.FOOD);
+                LocalDate.parse("2020-01-01"), LocalDate.parse("2020-01-02"), CATEGORY);
 
         assertThat(coupon.isIssuableAt(LocalDateTime.parse("2020-01-03T00:00:00.000000"))).isFalse();
     }

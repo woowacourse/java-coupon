@@ -22,7 +22,7 @@ class MemberCouponTest {
 
         LocalDate since = LocalDate.now().minusDays(2);
         LocalDate until = LocalDate.now().plusDays(100);
-        Coupon coupon = new Coupon("5,000원 할인쿠폰", 5000, 50000, since, until, Category.FOOD);
+        Coupon coupon = new Coupon("5,000원 할인쿠폰", 5000, 50000, since, until, "FOOD");
 
         memberCoupon = new MemberCoupon(coupon, member);
     }
@@ -68,7 +68,7 @@ class MemberCouponTest {
     @DisplayName("생성 성공: 쿠폰 발급일 범위 내 발급")
     @Test
     void construct_ValidPeriod() {
-        Coupon coupon = new Coupon("coupon", 1000, 10000, LocalDate.now(), LocalDate.now(), Category.FOOD);
+        Coupon coupon = new Coupon("coupon", 1000, 10000, LocalDate.now(), LocalDate.now(), "FOOD");
         Member member = new Member("트레");
 
         assertDoesNotThrow(() -> new MemberCoupon(coupon, member));
@@ -78,7 +78,7 @@ class MemberCouponTest {
     @Test
     void construct_InvalidPeriod() {
         Coupon coupon = new Coupon("coupon", 1000, 10000,
-                LocalDate.now().minusDays(2), LocalDate.now().minusDays(1), Category.FOOD);
+                LocalDate.now().minusDays(2), LocalDate.now().minusDays(1), "FOOD");
         Member member = new Member("트레");
 
         assertThatThrownBy(() -> new MemberCoupon(coupon, member))

@@ -44,7 +44,7 @@ public class Coupon {
     private Category category;
 
     public Coupon(String name, long discountMoney, long minimumOrderMoney, LocalDate sinceDate, LocalDate untilDate,
-            Category category) {
+            String rawCategory) {
         validate(name, discountMoney, minimumOrderMoney, sinceDate, untilDate);
 
         this.name = name;
@@ -52,7 +52,7 @@ public class Coupon {
         this.minimumOrderMoney = minimumOrderMoney;
         this.sinceDate = sinceDate;
         this.untilDate = untilDate;
-        this.category = category;
+        this.category = Category.from(rawCategory);
     }
 
     private void validate(String name, long discountMoney, long minimumOrderMoney,
