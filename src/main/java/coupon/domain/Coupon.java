@@ -19,7 +19,9 @@ public class Coupon {
     private CouponName name;
 
     private BigDecimal discountAmount;
-    private BigDecimal minimumAmount;
+
+    @Embedded
+    private MinimumAmount minimumAmount;
     private String category;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -39,7 +41,7 @@ public class Coupon {
                 null,
                 new CouponName(name),
                 discountAmount,
-                minimumAmount,
+                new MinimumAmount(minimumAmount),
                 category,
                 startDate,
                 endDate
@@ -50,7 +52,7 @@ public class Coupon {
             Long id,
             CouponName name,
             BigDecimal discountAmount,
-            BigDecimal minimumAmount,
+            MinimumAmount minimumAmount,
             String category,
             LocalDate startDate,
             LocalDate endDate
@@ -77,7 +79,7 @@ public class Coupon {
     }
 
     public BigDecimal getMinimumAmount() {
-        return minimumAmount;
+        return minimumAmount.getMinimumAmount();
     }
 
     public String getCategory() {

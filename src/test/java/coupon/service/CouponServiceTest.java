@@ -27,8 +27,8 @@ class CouponServiceTest {
     void getCoupon() {
         Coupon coupon = new Coupon(
                 "coupon",
-                BigDecimal.valueOf(1000),
-                BigDecimal.valueOf(1000),
+                BigDecimal.valueOf(5000),
+                BigDecimal.valueOf(5000),
                 "Food",
                 LocalDate.now(),
                 LocalDate.now()
@@ -58,8 +58,8 @@ class CouponServiceTest {
     void createCoupon() {
         Coupon coupon = new Coupon(
                 "coupon",
-                BigDecimal.valueOf(1000),
-                BigDecimal.valueOf(1000),
+                BigDecimal.valueOf(5000),
+                BigDecimal.valueOf(5000),
                 "Food",
                 LocalDate.now(),
                 LocalDate.now()
