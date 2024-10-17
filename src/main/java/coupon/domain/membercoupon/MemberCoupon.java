@@ -10,11 +10,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "member_coupon")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberCoupon {
@@ -31,7 +33,7 @@ public class MemberCoupon {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(name = "is_active")
+    @Column(name = "is_active", columnDefinition = "BOOLEAN")
     private boolean isActive;
 
     @Embedded
