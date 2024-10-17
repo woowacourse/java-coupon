@@ -2,6 +2,7 @@ package coupon.domain.coupon;
 
 import coupon.domain.Category;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import lombok.Getter;
@@ -46,5 +47,9 @@ public class Coupon {
 
     public LocalDate getExpirationDate() {
         return issuablePeriod.getEndDate();
+    }
+
+    public boolean isIssuable(LocalDateTime issuedTime) {
+        return issuablePeriod.isBetweenPeriod(issuedTime);
     }
 }
