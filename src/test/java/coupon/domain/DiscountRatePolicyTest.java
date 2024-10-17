@@ -2,6 +2,7 @@ package coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import coupon.domain.discountpolicy.DiscountRatePolicy;
 import org.junit.jupiter.api.DisplayName;
@@ -25,14 +26,18 @@ class DiscountRatePolicyTest {
         assertThat(actual).isEqualTo(expected);
     }
 
-    @DisplayName("최소 주문 금액이 0이하의 정수가 나올 경우 예외가 발생한다.")
+    @DisplayName("최소 주문 금액을 검증한다.")
     @Test
     void validateMinimumOrderPrice() {
-        assertThatThrownBy(() -> new DiscountRatePolicy(1_000, 0))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertAll(
+                () -> assertThatThrownBy(() -> new DiscountRatePolicy(1_000, 4_500))
+                        .isInstanceOf(IllegalArgumentException.class),
+                () -> assertThatThrownBy(() -> new DiscountRatePolicy(1_000, 100_500))
+                        .isInstanceOf(IllegalArgumentException.class)
+        );
     }
 
-    @DisplayName("할인율은 3% 이상이어야 한다.")
+    @DisplayName("할인율을 검증한다.")
     @Test
     void validateMinimumDiscountRate() {
         assertThatThrownBy(() -> new DiscountRatePolicy(1_000, 50_000))

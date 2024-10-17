@@ -5,23 +5,29 @@ import coupon.domain.DiscountPolicy;
 
 public class DiscountRatePolicy implements DiscountPolicy {
 
-    private static final int MINIMUM_ORDER_PRICE_REQUIRED = 1;
+    private static final int MINIMUM_ORDER_PRICE = 5_000;
+    private static final int MAXIMUM_ORDER_PRICE = 100_000;
     private static final int MINIMUM_DISCOUNT_RATE = 3;
     private static final int MAXIMUM_DISCOUNT_RATE = 20;
 
     private final int discountRate;
 
     public DiscountRatePolicy(int discountMoney, int minimumOrderPrice) {
-        validateMinimumOrderRate(minimumOrderPrice);
+        validateMinimumOrderPrice(minimumOrderPrice);
         int discountRate = (discountMoney * 100) / minimumOrderPrice;
         validateDiscountRateRange(discountRate);
         this.discountRate = discountRate;
     }
 
-    private void validateMinimumOrderRate(int minimumOrderPrice) {
-        if (minimumOrderPrice < MINIMUM_ORDER_PRICE_REQUIRED) {
+    private void validateMinimumOrderPrice(int minimumOrderPrice) {
+        if (minimumOrderPrice < MINIMUM_ORDER_PRICE) {
             throw new IllegalArgumentException(
-                    "최소 주문 금액은 [%d] 보다 작은 정수가 될 수 없습니다.".formatted(MINIMUM_ORDER_PRICE_REQUIRED));
+                    "최소 주문 금액은 [%d] 보다 작을 수 없습니다.".formatted(MINIMUM_ORDER_PRICE));
+        }
+
+        if (minimumOrderPrice > MAXIMUM_ORDER_PRICE) {
+            throw new IllegalArgumentException(
+                    "최소 주문 금액은 [%d] 보다 클 수 없습니다.".formatted(MAXIMUM_ORDER_PRICE));
         }
     }
 
