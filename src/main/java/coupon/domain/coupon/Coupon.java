@@ -1,6 +1,7 @@
 package coupon.domain.coupon;
 
 import coupon.domain.coupon.discount.Discount;
+import coupon.domain.coupon.discount.DiscountPolicy;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,7 +20,8 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Embedded
+    private CouponName name;
 
     @Embedded
     private Discount discount;
@@ -33,12 +35,12 @@ public class Coupon {
 
     private LocalDate issueEndDate;
 
-    public Coupon(String name, Discount discount, int minOrderPrice, Category category,
+    public Coupon(String name, DiscountPolicy discountPolicy, int discountPrice, int minOrderPrice, Category category,
                   LocalDate issueStartDate, LocalDate issueEndDate) {
         discount.validateDiscountPolicy(minOrderPrice);
 
-        this.name = name;
-        this.discount = discount;
+        this.name = new CouponName(name);
+        this.discount = new Discount(discountPrice, discountPolicy);
         this.minOrderPrice = minOrderPrice;
         this.category = category;
         this.issueStartDate = issueStartDate;
