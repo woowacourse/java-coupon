@@ -1,6 +1,8 @@
 package coupon.domain;
 
+import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Coupon {
 
@@ -19,5 +21,16 @@ public class Coupon {
         this.orderPrice = Objects.requireNonNull(orderPrice);
         this.category = Objects.requireNonNull(category);
         this.issuedPeriod = Objects.requireNonNull(issuedPeriod);
+    }
+
+    public Coupon(int discountMoney, int orderPrice) {
+        this(
+                new Name(UUID.randomUUID().toString()),
+                new DiscountMoney(discountMoney),
+                new DiscountRate(discountMoney, orderPrice),
+                new OrderPrice(orderPrice),
+                Category.FASHIONS,
+                new IssuedPeriod(LocalDate.now())
+        );
     }
 }
