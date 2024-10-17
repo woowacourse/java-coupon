@@ -2,6 +2,9 @@ package coupon.coupon.domain;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,12 +12,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "coupon")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
@@ -23,16 +28,25 @@ public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     @Embedded
+    @AttributeOverride(name = "name", column = @Column(name = "name"))
     private CouponName name;
     @Embedded
+    @AttributeOverride(name = "discountAmount", column = @Column(name = "discount_amount"))
     private CouponDiscountAmount discountAmount;
     @Embedded
+    @AttributeOverride(name = "minimumOrderAmount", column = @Column(name = "minimum_order_amount"))
     private CouponMinimumOrderAmount minimumOrderAmount;
     @Enumerated(EnumType.STRING)
+    @Column(name = "category")
     private CouponCategory category;
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "startDate", column = @Column(name = "start_date")),
+            @AttributeOverride(name = "endDate", column = @Column(name = "end_date"))
+    })
     private CouponIssuancePeriod issuancePeriod;
 
     public Coupon(
@@ -41,8 +55,8 @@ public class Coupon {
             Long discountAmount,
             Long minimumOrderAmount,
             String category,
-            LocalDateTime startAt,
-            LocalDateTime endAt
+            LocalDateTime startDate,
+            LocalDateTime endDate
     ) {
         validateDiscountRate(discountAmount, minimumOrderAmount);
         this.id = id;
@@ -50,7 +64,7 @@ public class Coupon {
         this.discountAmount = new CouponDiscountAmount(discountAmount);
         this.minimumOrderAmount = new CouponMinimumOrderAmount(minimumOrderAmount);
         this.category = CouponCategory.getCategory(category);
-        this.issuancePeriod = new CouponIssuancePeriod(startAt, endAt);
+        this.issuancePeriod = new CouponIssuancePeriod(startDate, endDate);
     }
 
     private void validateDiscountRate(Long discountAmount, Long minimumOrderAmount) {
