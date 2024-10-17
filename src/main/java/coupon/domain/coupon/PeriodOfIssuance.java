@@ -1,11 +1,16 @@
 package coupon.domain.coupon;
 
+import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PeriodOfIssuance {
 
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public PeriodOfIssuance(LocalDate startDate, LocalDate endDate) {
         validate(startDate, endDate);
