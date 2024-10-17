@@ -1,12 +1,10 @@
 package coupon.config;
 
 import coupon.coupon.domain.Coupon;
-import java.lang.reflect.Method;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class CouponRoutingAspect {
 
-    @Around("@annotation(org.springframework.transaction.annotation.Transactional)")
-    public Object setCouponContext(ProceedingJoinPoint joinPoint) throws Throwable {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = signature.getMethod();
-        Transactional transactional = method.getAnnotation(Transactional.class);
+    @Around("execution(* coupon.coupon.service..*(..)) && @annotation(transactional)")
+    public Object setCouponContext(ProceedingJoinPoint joinPoint, Transactional transactional) throws Throwable {
         Coupon result = (Coupon) joinPoint.proceed();
         if (!transactional.readOnly()) {
             CouponRoutingContext.recordCouponCreatedAt(result.getId());
