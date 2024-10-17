@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -7,6 +7,8 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import coupon.coupon.domain.CouponMinimumOrderAmount;
 
 public class CouponMinimumOrderAmountTest {
     private static final Long MIN_AMOUNT = 5000L;

@@ -1,6 +1,4 @@
-package coupon.domain;
-
-import java.util.Objects;
+package coupon.coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
