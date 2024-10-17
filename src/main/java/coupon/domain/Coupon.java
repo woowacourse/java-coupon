@@ -14,6 +14,9 @@ import java.time.LocalDate;
 @Entity
 public class Coupon {
 
+    private static final BigDecimal LOWEST_ALLOWED_DISCOUNT_RATE = BigDecimal.valueOf(3);
+    private static final BigDecimal HIGHEST_ALLOWED_DISCOUNT_RATE = BigDecimal.valueOf(20);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -78,13 +81,22 @@ public class Coupon {
     private void validateDiscountRate(BigDecimal discountAmount, BigDecimal minimumAmount) {
         BigDecimal discountRate = discountAmount.multiply(BigDecimal.valueOf(100))
                 .divide(minimumAmount, RoundingMode.DOWN);
-        if (discountRate.compareTo(BigDecimal.valueOf(3)) < 0) {
+        if (isLowerThanLowestAllowedDiscountRate(discountRate)) {
             throw new IllegalArgumentException("할인율은 3% 이상이어야 합니다.");
         }
-        if (discountRate.compareTo(BigDecimal.valueOf(20)) > 0) {
+        if (isUpperThanHighestAllowedDiscountRate(discountRate)) {
             throw new IllegalArgumentException("할인율은 20% 이하여야 합니다.");
         }
     }
+
+    private boolean isLowerThanLowestAllowedDiscountRate(BigDecimal discountRate) {
+        return discountRate.compareTo(LOWEST_ALLOWED_DISCOUNT_RATE) < 0;
+    }
+
+    private boolean isUpperThanHighestAllowedDiscountRate(BigDecimal discountRate) {
+        return discountRate.compareTo(HIGHEST_ALLOWED_DISCOUNT_RATE) > 0;
+    }
+
 
     public Long getId() {
         return id;

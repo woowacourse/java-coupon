@@ -7,6 +7,9 @@ import java.util.Objects;
 @Embeddable
 public class MinimumAmount {
 
+    private static final BigDecimal LOWEST_ALLOWED_AMOUNT = BigDecimal.valueOf(5_000);
+    private static final BigDecimal HIGHEST_ALLOWED_AMOUNT = BigDecimal.valueOf(100_000);
+
     private BigDecimal minimumAmount;
 
     protected MinimumAmount() {
@@ -21,16 +24,20 @@ public class MinimumAmount {
         if (minimumAmount == null) {
             throw new IllegalArgumentException("최소 주문 금액은 필수입니다.");
         }
-        if (minimumAmount.compareTo(BigDecimal.valueOf(5_000)) < 0) {
+        if (isLowerThanLowestAllowedAmount(minimumAmount)) {
             throw new IllegalArgumentException("최소 주문 금액은 5,000원 이상이어야 합니다.");
         }
-        if (minimumAmount.compareTo(BigDecimal.valueOf(100_000)) > 0) {
+        if (isUpperThanHighestAllowedAmount(minimumAmount)) {
             throw new IllegalArgumentException("최소 주문 금액은 100,000원 이하여야 합니다.");
         }
     }
 
-    public BigDecimal getMinimumAmount() {
-        return minimumAmount;
+    private boolean isLowerThanLowestAllowedAmount(BigDecimal minimumAmount) {
+        return minimumAmount.compareTo(LOWEST_ALLOWED_AMOUNT) < 0;
+    }
+
+    private boolean isUpperThanHighestAllowedAmount(BigDecimal minimumAmount) {
+        return minimumAmount.compareTo(HIGHEST_ALLOWED_AMOUNT) > 0;
     }
 
     @Override
@@ -48,5 +55,9 @@ public class MinimumAmount {
     @Override
     public int hashCode() {
         return Objects.hash(minimumAmount);
+    }
+
+    public BigDecimal getMinimumAmount() {
+        return minimumAmount;
     }
 }

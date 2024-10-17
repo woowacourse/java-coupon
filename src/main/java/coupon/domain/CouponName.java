@@ -7,6 +7,8 @@ import java.util.Objects;
 @Embeddable
 public class CouponName {
 
+    private static final int MAXIMUM_VALID_LENGTH = 30;
+
     private String name;
 
     protected CouponName() {
@@ -21,7 +23,7 @@ public class CouponName {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("쿠폰 이름은 필수입니다.");
         }
-        if (name.length() > 30) {
+        if (name.length() > MAXIMUM_VALID_LENGTH) {
             throw new IllegalArgumentException("쿠폰 이름은 30자 이하여야 합니다.");
         }
     }
