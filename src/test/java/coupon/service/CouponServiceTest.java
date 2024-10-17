@@ -46,7 +46,6 @@ class CouponServiceTest {
 
         // when
         couponService.create(request);
-
         // then
         assertThat(couponRepository.findById(1L)).isPresent();
         Coupon coupon = couponRepository.findById(1L).get();
@@ -72,7 +71,6 @@ class CouponServiceTest {
                 LocalDate.of(2024, 10, 11),
                 LocalDate.of(2024, 10, 15)
         ));
-
         // when
         Coupon coupon = couponService.read(1L);
 

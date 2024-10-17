@@ -3,6 +3,8 @@ package coupon.entity;
 import coupon.CouponException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,6 +38,8 @@ public class Coupon {
     @Column(name = "minimum_order")
     private int minimumOrder;
 
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar")
     private Category category;
 
     private LocalDate start;
