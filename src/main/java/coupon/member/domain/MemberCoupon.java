@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import coupon.base.BaseTimeEntity;
-import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.entity.CouponEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -37,7 +37,7 @@ public class MemberCoupon extends BaseTimeEntity {
 
     @JoinColumn(name = "coupon")
     @ManyToOne(optional = false)
-    private Coupon coupon;
+    private CouponEntity couponEntity;
 
     @Column(name = "is_used", nullable = false)
     private boolean isUsed;
@@ -45,7 +45,7 @@ public class MemberCoupon extends BaseTimeEntity {
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
 
-    public MemberCoupon(Member member, Coupon coupon, LocalDateTime expiresAt) {
-        this(null, member, coupon, false, expiresAt);
+    public MemberCoupon(Member member, CouponEntity couponEntity, LocalDateTime expiresAt) {
+        this(null, member, couponEntity, false, expiresAt);
     }
 }
