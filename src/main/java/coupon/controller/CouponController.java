@@ -2,7 +2,6 @@ package coupon.controller;
 
 import coupon.domain.Coupon;
 import coupon.dto.CouponCreateRequest;
-import coupon.repository.CouponRepository;
 import coupon.service.CouponService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

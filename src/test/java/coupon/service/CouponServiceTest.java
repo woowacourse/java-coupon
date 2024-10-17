@@ -20,10 +20,9 @@ public class CouponServiceTest {
     private static final LocalDateTime ISSUABLE_TO = LocalDateTime.of(2024, 10, 30, 23, 59, 59);
 
     @Test
-    void 복제지연테스트() throws InterruptedException {
+    void 복제지연테스트() {
         Coupon coupon = new Coupon("쿠폰명",1000, 10000, Category.FASHION, ISSUABLE_FROM, ISSUABLE_TO);
         couponService.createCoupon(coupon);
-        Thread.sleep(5000L);
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());
         assertThat(savedCoupon).isNotNull();
     }
