@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +27,8 @@ public class Coupon extends BaseEntity {
     private static final BigDecimal MIN_DISCOUNT_AMOUNT = BigDecimal.valueOf(1000);
     private static final BigDecimal MAX_DISCOUNT_AMOUNT = BigDecimal.valueOf(10000);
     private static final BigDecimal DISCOUNT_UNIT = BigDecimal.valueOf(500);
-    private static final int MIN_DISCOUNT_RATIO = 3;
-    private static final int MAX_DISCOUNT_RATIO = 20;
+    private static final double MIN_DISCOUNT_RATIO = 0.03;
+    private static final double MAX_DISCOUNT_RATIO = 0.2;
     private static final BigDecimal MIN_ORDER_AMOUNT = BigDecimal.valueOf(5000);
     private static final BigDecimal MAX_ORDER_AMOUNT = BigDecimal.valueOf(100000);
 
@@ -76,13 +77,21 @@ public class Coupon extends BaseEntity {
 
     public Coupon(
             final String name,
-            final BigDecimal discountAmount,
-            final BigDecimal minimumOrderAmount,
+            final int discountAmount,
+            final int minimumOrderAmount,
             final Category category,
             final LocalDateTime issuedAt,
             final LocalDateTime expiredAt
     ) {
-        this(null, name, discountAmount, minimumOrderAmount, category, issuedAt, expiredAt);
+        this(
+                null,
+                name,
+                BigDecimal.valueOf(discountAmount),
+                BigDecimal.valueOf(minimumOrderAmount),
+                category,
+                issuedAt,
+                expiredAt
+        );
     }
 
     private void validate(
@@ -126,8 +135,8 @@ public class Coupon extends BaseEntity {
     }
 
     private void validateDiscountAmountRange(final BigDecimal discountAmount) {
-        final var isDiscountAmountLowerThanMinimumAmount = discountAmount.compareTo(MIN_DISCOUNT_AMOUNT) > 0;
-        final var isDiscountAmountGreaterThanMaximumAmount = discountAmount.compareTo(MAX_DISCOUNT_AMOUNT) < 0;
+        final var isDiscountAmountLowerThanMinimumAmount = discountAmount.compareTo(MIN_DISCOUNT_AMOUNT) < 0;
+        final var isDiscountAmountGreaterThanMaximumAmount = discountAmount.compareTo(MAX_DISCOUNT_AMOUNT) > 0;
         if (isDiscountAmountLowerThanMinimumAmount || isDiscountAmountGreaterThanMaximumAmount) {
             throw new CouponException("쿠폰 할인 금액은 " + MIN_DISCOUNT_AMOUNT + "이상, " + MAX_DISCOUNT_AMOUNT + "이하여야 합니다.");
         }
@@ -141,7 +150,7 @@ public class Coupon extends BaseEntity {
     }
 
     private void validateDiscountRatio(final BigDecimal discountAmount, final BigDecimal minimumOrderAmount) {
-        final var discountRatio = discountAmount.divide(minimumOrderAmount).intValue();
+        final var discountRatio = discountAmount.divide(minimumOrderAmount, 2, RoundingMode.HALF_UP).doubleValue();
         if (MIN_DISCOUNT_RATIO > discountRatio || discountRatio > MAX_DISCOUNT_RATIO) {
             throw new CouponException(
                     "쿠폰 할인율은 " + MIN_DISCOUNT_RATIO + " 이상, " + MAX_DISCOUNT_RATIO + "이하여야 합니다: " + discountRatio
