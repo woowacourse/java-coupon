@@ -5,11 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
+@Getter
+@EqualsAndHashCode
 public class Coupon {
 
     private static final int MAX_NAME_LENGTH = 30;
@@ -26,6 +31,7 @@ public class Coupon {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank
     @Size(max = MAX_NAME_LENGTH)
     private String name;
 
@@ -51,7 +57,7 @@ public class Coupon {
 
     public Coupon(String name, Long discountAmount, Long minimumOrderAmount, Category category,
                   LocalDateTime issueStartDate, LocalDateTime issueEndDate) {
-        validateDiscountAmount(discountAmount);
+        validateDiscountAmount(discountAmount, minimumOrderAmount);
         validateIssueDate(issueStartDate, issueEndDate);
         this.name = name;
         this.discountAmount = discountAmount;
@@ -61,11 +67,19 @@ public class Coupon {
         this.issueEndDate = handleSameDate(issueStartDate, issueEndDate);
     }
 
-    private void validateDiscountAmount(Long discountAmount) {
+    public Coupon(String name, Long discountAmount, Long minimumOrderAmount, Category category) {
+        this(name, discountAmount, minimumOrderAmount, category, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public Coupon(Long discountAmount, Long minimumOrderAmount) {
+        this("coupon", discountAmount, minimumOrderAmount, Category.FOOD);
+    }
+
+    private void validateDiscountAmount(Long discountAmount, Long minimumOrderAmount) {
         if (discountAmount % DISCOUNT_UNIT != 0) {
             throw new IllegalArgumentException("Discount amount must be a multiple of 500");
         }
-        double discountRate = Math.floor(discountAmount * 1.0 / minimumOrderAmount);
+        double discountRate = Math.floor(discountAmount * 1.0 / minimumOrderAmount * 100);
         if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
             throw new IllegalArgumentException("Discount rate must be between 3 and 20");
         }
@@ -79,6 +93,7 @@ public class Coupon {
             throw new IllegalArgumentException("Issue date cannot be after issue date");
         }
     }
+
     private LocalDateTime handleSameDate(LocalDateTime issueStartDate, LocalDateTime issueEndDate) {
         if (issueStartDate.isEqual(issueEndDate)) {
             return LocalDateTime.of(issueStartDate.getYear(),
