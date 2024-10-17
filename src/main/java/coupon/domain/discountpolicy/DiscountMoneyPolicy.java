@@ -1,4 +1,6 @@
-package coupon.domain;
+package coupon.domain.discountpolicy;
+
+import coupon.domain.DiscountPolicy;
 
 public class DiscountMoneyPolicy implements DiscountPolicy {
     private static final int MINIMUM_DISCOUNT_AMOUNT_MONEY = 1000;
