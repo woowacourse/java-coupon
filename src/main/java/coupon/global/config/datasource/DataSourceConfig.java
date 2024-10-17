@@ -1,6 +1,7 @@
-package global.config.datasource;
+package coupon.global.config.datasource;
 
 import java.util.HashMap;
+import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,41 +15,39 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 @Configuration
 public class DataSourceConfig {
 
-    public static final String WRITER = "writer";
-    public static final String READER = "reader";
-
+    @Bean
     @ConfigurationProperties("coupon.datasource.writer")
-    @Bean
     public DataSource writerDataSource() {
-        return DataSourceBuilder.create().build();
+        return DataSourceBuilder.create()
+                .build();
     }
 
+    @Bean
     @ConfigurationProperties("coupon.datasource.reader")
-    @Bean
     public DataSource readerDataSource() {
-        return DataSourceBuilder.create().build();
+        return DataSourceBuilder.create()
+                .build();
     }
 
-    @DependsOn({"writerDataSource", "readerDataSource"})
     @Bean
+    @DependsOn({"writerDataSource", "readerDataSource"})
     public DataSource routingDataSource(
-            @Qualifier("writerDataSource") final DataSource writer,
-            @Qualifier("readerDataSource") final DataSource reader
+            @Qualifier("writerDataSource") DataSource writer,
+            @Qualifier("readerDataSource") DataSource reader
     ) {
-        final var routingDataSource = new DynamicRoutingDataSource();
-        final var dataSourceMap = new HashMap<>();
+        Map<Object, Object> dataSourceMap = new HashMap<>();
+        dataSourceMap.put("writer", writer);
+        dataSourceMap.put("reader", reader);
 
-        dataSourceMap.put(WRITER, writer);
-        dataSourceMap.put(READER, reader);
+        DynamicRoutingDataSource routingDataSource = new DynamicRoutingDataSource();
         routingDataSource.setTargetDataSources(dataSourceMap);
         routingDataSource.setDefaultTargetDataSource(writer);
-
         return routingDataSource;
     }
 
-    @DependsOn({"routingDataSource"})
-    @Primary
     @Bean
+    @Primary
+    @DependsOn({"routingDataSource"})
     public DataSource dataSource(DataSource routingDataSource) {
         return new LazyConnectionDataSourceProxy(routingDataSource);
     }
