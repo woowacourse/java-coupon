@@ -11,7 +11,7 @@ public class CouponDiscountAmountTest {
     @DisplayName("할인 금액이 1000원 이상 10000원 이하가 아니면 예외를 발생한다.")
     @ValueSource(longs = {999, 10001})
     @ParameterizedTest
-    void testValidateLength(Long discountAmount) {
+    void testValidateRange(Long discountAmount) {
         // given & when & then
         assertThatThrownBy(() -> new CouponDiscountAmount(discountAmount))
                 .isInstanceOf(IllegalArgumentException.class)

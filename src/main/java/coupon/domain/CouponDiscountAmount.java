@@ -25,11 +25,11 @@ public class CouponDiscountAmount {
     }
 
     private void validate(Long discountAmount) {
-        validateLength(discountAmount);
+        validateRange(discountAmount);
         validateIncrement(discountAmount);
     }
 
-    private void validateLength(Long discountAmount) {
+    private void validateRange(Long discountAmount) {
         if (discountAmount < MIN_AMOUNT || discountAmount > MAX_AMOUNT) {
             throw new IllegalArgumentException("할인 금액은 " + MIN_AMOUNT + "원 이상, " + MAX_AMOUNT + "원 이하여야 합니다.");
         }
