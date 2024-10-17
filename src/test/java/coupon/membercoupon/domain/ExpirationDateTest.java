@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.membercoupon.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.coupon.domain;
 
 public enum Category {
     PASSION,

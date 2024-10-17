@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import coupon.common.audit.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

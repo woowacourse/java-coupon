@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
