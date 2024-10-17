@@ -10,9 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
@@ -24,7 +26,7 @@ public class Coupon {
     @Embedded
     private CouponName name;
 
-    @Column(name = "coupont_category", nullable = false)
+    @Column(name = "coupon_category", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private CouponCategory category;
 
@@ -42,5 +44,13 @@ public class Coupon {
             String applicableAmount
     ) {
         this(null, name, category, expiryDuration, new CouponDiscountApply(discountAmount, applicableAmount));
+    }
+
+    public MemberCoupon issue(Long memberId) {
+        if (!expiryDuration.isIssuable()) {
+            throw new IllegalStateException("쿠폰 발급 기간이 지났습니다.");
+        }
+
+        return MemberCoupon.issue(id, memberId);
     }
 }

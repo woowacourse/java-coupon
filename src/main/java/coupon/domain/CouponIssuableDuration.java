@@ -15,4 +15,10 @@ record CouponIssuableDuration(
             throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
         }
     }
+
+    public boolean isIssuable() {
+        LocalDate today = LocalDate.now();
+
+        return !today.isBefore(start) && !today.isAfter(end);
+    }
 }

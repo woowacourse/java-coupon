@@ -6,8 +6,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberCoupon {
 
     @Id
@@ -26,6 +33,10 @@ public class MemberCoupon {
     @Column(name = "issued_at", nullable = false)
     private LocalDateTime issuedAt;
 
-    @Column(name = "expires_at", nullable = false)
+    @Column(name = "expires_at", nullable = true)
     private LocalDateTime expiresAt;
+
+    public static MemberCoupon issue(Long couponId, Long memberId) {
+        return new MemberCoupon(null, couponId, memberId, false, LocalDateTime.now(), null);
+    }
 }
