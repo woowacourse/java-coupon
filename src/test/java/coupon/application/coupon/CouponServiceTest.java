@@ -53,7 +53,7 @@ class CouponServiceTest extends AcceptanceTestSupport {
     }
 
     @Test
-    void 복제지연테스트() {
+    void testReplicationLag() {
         Coupon coupon = CouponTestData.defaultCoupon().build();
         couponService.create(coupon);
 
