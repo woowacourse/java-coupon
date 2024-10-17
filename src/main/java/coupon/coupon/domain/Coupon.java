@@ -7,27 +7,23 @@ import coupon.coupon.CouponException;
 
 public class Coupon {
 
-    private static final BigDecimal UNIT = BigDecimal.valueOf(500);
-    private static final BigDecimal MINIMUM_DISCOUNT_AMOUNT = BigDecimal.valueOf(1000);
-    private static final BigDecimal MAXIMUM_DISCOUNT_AMOUNT = BigDecimal.valueOf(10000);
     private static final BigDecimal MIN_OF_MINIMUM_ORDER_AMOUNT = BigDecimal.valueOf(5000);
     private static final BigDecimal MAX_OF_MINIMUM_ORDER_AMOUNT = BigDecimal.valueOf(100000);
     private static final BigDecimal MINIMUM_DISCOUNT_RATE = BigDecimal.valueOf(3);
     private static final BigDecimal MAXIMUM_DISCOUNT_RATE = BigDecimal.valueOf(20);
 
     private final CouponName name;
-    private final BigDecimal discountAmount;
+    private final DiscountAmount discountAmount;
     private final BigDecimal minimumOrderAmount;
     private final Category category;
     private final LocalDate startAt;
     private final LocalDate endAt;
 
     public Coupon(String name, long discountAmount, long minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
-        this(new CouponName(name), BigDecimal.valueOf(discountAmount), BigDecimal.valueOf(minimumOrderAmount), category, startAt, endAt);
+        this(new CouponName(name), new DiscountAmount(discountAmount), BigDecimal.valueOf(minimumOrderAmount), category, startAt, endAt);
     }
 
-    public Coupon(CouponName name, BigDecimal discountAmount, BigDecimal minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
-        validateDiscountAmount(discountAmount);
+    public Coupon(CouponName name, DiscountAmount discountAmount, BigDecimal minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
         validateMinimumOrderAmount(minimumOrderAmount);
         validateDiscountRate(discountAmount, minimumOrderAmount);
         validateTerm(startAt, endAt);
@@ -40,23 +36,6 @@ public class Coupon {
     }
 
 
-    private void validateDiscountAmount(BigDecimal discountAmount) {
-        validateUnit(discountAmount);
-        validateRangeOfDiscountAmount(discountAmount);
-    }
-
-    private void validateUnit(BigDecimal discountAmount) {
-        if (!discountAmount.remainder(UNIT).equals(BigDecimal.ZERO)) {
-            throw new CouponException("할인 금액은 500원 단위로 설정할 수 있습니다.");
-        }
-    }
-
-    private void validateRangeOfDiscountAmount(BigDecimal discountAmount) {
-        if (discountAmount.compareTo(MINIMUM_DISCOUNT_AMOUNT) < 0 || discountAmount.compareTo(MAXIMUM_DISCOUNT_AMOUNT) > 0) {
-            throw new CouponException("할인 금액은 1000원 이상, 10000원 이하이어야 합니다.");
-        }
-    }
-
     private void validateMinimumOrderAmount(BigDecimal minimumOrderAmount) {
         validateRangeOfMinimumOrderAmount(minimumOrderAmount);
     }
@@ -67,8 +46,8 @@ public class Coupon {
         }
     }
 
-    private void validateDiscountRate(BigDecimal discountAmount, BigDecimal minimumOrderAmount) {
-        BigDecimal discountRate = discountAmount
+    private void validateDiscountRate(DiscountAmount discountAmount, BigDecimal minimumOrderAmount) {
+        BigDecimal discountRate = discountAmount.getDiscountAmount()
                 .multiply(BigDecimal.valueOf(100))
                 .divide(minimumOrderAmount, 0, RoundingMode.DOWN);
         if (discountRate.compareTo(MINIMUM_DISCOUNT_RATE) < 0 || discountRate.compareTo(MAXIMUM_DISCOUNT_RATE) > 0) {
