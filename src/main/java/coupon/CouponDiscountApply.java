@@ -2,13 +2,22 @@ package coupon;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 class CouponDiscountApply {
 
     private static final BigDecimal MAXIMUM_DISCOUNT_PERCENT = new BigDecimal("20");
     private static final BigDecimal MINIMUM_DISCOUNT_PERCENT = new BigDecimal("3");
 
+    @Embedded
     private CouponDiscountAmount discountAmount;
+
+    @Embedded
     private CouponApplicableAmount applicableAmount;
 
     public CouponDiscountApply(String discountAmount, String applicableAmount) {

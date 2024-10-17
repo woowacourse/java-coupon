@@ -1,8 +1,11 @@
 package coupon;
 
 import java.math.BigDecimal;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
-record CouponDiscountAmount(BigDecimal value) {
+@Embeddable
+record CouponDiscountAmount(@Column(name = "coupon_discount_amount", nullable = false) BigDecimal value) {
 
     private static final BigDecimal DISCOUNT_AMOUNT_UNIT = new BigDecimal(500);
     private static final BigDecimal MAXIMUM_DISCOUNT_MONEY = new BigDecimal("10000");

@@ -1,6 +1,11 @@
 package coupon;
 
-record CouponName(String value) {
+import jakarta.annotation.Nullable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+
+@Embeddable
+record CouponName(@Column(name = "coupon_name", nullable = false) String value) {
 
     private static final int COUPON_NAME_MAX_LENGTH = 30;
 
