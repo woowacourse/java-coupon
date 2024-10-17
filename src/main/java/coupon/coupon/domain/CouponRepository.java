@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.coupon.domain;
 
 import java.util.Optional;
 import org.springframework.data.repository.Repository;

@@ -1,9 +1,11 @@
-package coupon.domain;
+package coupon.membercoupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.CouponCategory;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

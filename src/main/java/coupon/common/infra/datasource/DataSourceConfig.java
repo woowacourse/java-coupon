@@ -1,4 +1,4 @@
-package coupon.infra.datasource;
+package coupon.common.infra.datasource;
 
 import javax.sql.DataSource;
 import java.util.Map;

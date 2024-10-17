@@ -1,7 +1,8 @@
-package coupon.domain;
+package coupon.coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
+import coupon.coupon.domain.CouponMinOrderAmount;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
