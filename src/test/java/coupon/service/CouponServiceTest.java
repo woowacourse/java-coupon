@@ -18,7 +18,7 @@ public class CouponServiceTest {
 
     @Test
     void 복제지연테스트() {
-        Coupon coupon = Coupon.createCoupon(
+        Coupon coupon = new Coupon(
                 "테스트 쿠폰",
                 1000,
                 10000,

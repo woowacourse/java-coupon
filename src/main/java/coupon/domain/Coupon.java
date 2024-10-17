@@ -53,7 +53,7 @@ public class Coupon {
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    private Coupon(
+    public Coupon(
             String name,
             int discountAmount,
             int minimumOrderAmount,
@@ -61,6 +61,7 @@ public class Coupon {
             LocalDateTime startDate,
             LocalDateTime endDate
     ) {
+        validate(name, discountAmount, minimumOrderAmount, startDate, endDate);
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
@@ -69,25 +70,18 @@ public class Coupon {
         this.endDate = endDate;
     }
 
-    public static Coupon createCoupon(
+    public static void validate(
             String name,
             int discountAmount,
             int minimumOrderAmount,
-            Category category,
             LocalDateTime startDate,
             LocalDateTime endDate
     ) {
-        Coupon coupon = new Coupon(name, discountAmount, minimumOrderAmount, category, startDate, endDate);
-        validate(coupon);
-        return coupon;
-    }
-
-    public static void validate(Coupon coupon) {
-        validateName(coupon.getName());
-        validateDiscountAmount(coupon.getDiscountAmount());
-        validateMinimumOrderAmount(coupon.getMinimumOrderAmount());
-        validateDiscountRate(coupon.getDiscountAmount(), coupon.getMinimumOrderAmount());
-        validateEndDate(coupon.getStartDate(), coupon.getEndDate());
+        validateName(name);
+        validateDiscountAmount(discountAmount);
+        validateMinimumOrderAmount(minimumOrderAmount);
+        validateDiscountRate(discountAmount, minimumOrderAmount);
+        validateEndDate(startDate, endDate);
     }
 
     private static void validateName(String name) {
