@@ -14,15 +14,13 @@ public class CouponService {
         this.couponRepository = couponRepository;
     }
 
-    public Coupon findCoupon(Long id) {
+    public Coupon getCoupon(Long id) {
         return couponRepository.findById(id)
                 .orElseThrow(() -> new CouponException("id(%s)에 해당하는 쿠폰이 존재하지 않습니다.".formatted(id)));
     }
 
-    public Coupon createCoupon(int discountAmount, int minimumOrderPrice) {
-        Coupon coupon = new Coupon(discountAmount, minimumOrderPrice);
-        couponRepository.save(coupon);
-        return coupon;
+    public Coupon create(Coupon coupon) {
+        return couponRepository.save(coupon);
     }
 
 }
