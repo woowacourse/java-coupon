@@ -19,6 +19,11 @@ spring:
           format_sql: true
           highlight_sql: true
     open-in-view: false
+  data:
+    redis:
+      host: localhost
+      port: 36379
+
 
 coupon.datasource:
   writer:
