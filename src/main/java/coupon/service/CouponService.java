@@ -26,4 +26,9 @@ public class CouponService {
         return couponRepository.findById(id)
                 .orElseThrow(NoSuchElementException::new);
     }
+
+    public CouponEntity getCouponImmediately(Long id) {
+        return couponRepository.findById(id)
+                .orElseThrow(NoSuchElementException::new);
+    }
 }
