@@ -1,6 +1,7 @@
 package coupon.domain.membercoupon;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -22,9 +23,10 @@ public class UsagePeriod {
 
     public UsagePeriod(LocalDateTime issueDate) {
         this.issueDate = issueDate;
+        this.expireDate = calculateExpireDate(issueDate);
     }
 
     private LocalDateTime calculateExpireDate(LocalDateTime issueDate) {
-        return issueDate.plusDays(VALID_DURATION).toLocalDate().atTime(23, 59, 59, 999999);
+        return issueDate.plusDays(VALID_DURATION).with(LocalTime.MAX);
     }
 }
