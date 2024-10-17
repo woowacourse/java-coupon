@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;

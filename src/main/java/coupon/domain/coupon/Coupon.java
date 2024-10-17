@@ -1,5 +1,6 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
+import coupon.domain.Category;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;

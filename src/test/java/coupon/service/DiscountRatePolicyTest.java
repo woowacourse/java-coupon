@@ -2,7 +2,7 @@ package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import coupon.domain.DiscountPolicyViolationException;
+import coupon.domain.coupon.DiscountPolicyViolationException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 

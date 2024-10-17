@@ -1,7 +1,8 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import coupon.domain.Category;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;

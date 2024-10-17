@@ -1,8 +1,10 @@
 package coupon.service;
 
-import coupon.domain.DiscountPolicy;
-import coupon.domain.DiscountPolicyViolationException;
+import coupon.domain.coupon.DiscountPolicy;
+import coupon.domain.coupon.DiscountPolicyViolationException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DiscountAmountPolicy implements DiscountPolicy {
 
     private static final int MIN_FIXED_AMOUNT = 5_000;
