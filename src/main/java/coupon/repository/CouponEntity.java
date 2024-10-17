@@ -1,7 +1,7 @@
-package coupon;
+package coupon.repository;
 
 import coupon.domain.Category;
-import coupon.domain.Coupon;
+import coupon.domain.coupon.Coupon;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +18,7 @@ import lombok.NoArgsConstructor;
 
 @Table(name = "coupon")
 @Entity
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class CouponEntity {
@@ -53,9 +52,9 @@ public class CouponEntity {
     @Column(name = "minimum_order_price", nullable = false)
     private long minimumOrderPrice;
 
-    @Column(name = "issuable_date", nullable = false)
-    private LocalDate issuableDate;
+    @Column(name = "issuable_start_date", nullable = false)
+    private LocalDate issuableStartDate;
 
-    @Column(name = "expiration_date", nullable = false)
-    private LocalDate expirationDate;
+    @Column(name = "issuable_end_date", nullable = false)
+    private LocalDate issuableEndDate;
 }
