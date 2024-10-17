@@ -13,6 +13,7 @@ public class Coupon {
 
     private static final Logger log = LoggerFactory.getLogger(Coupon.class);
 
+    private final Long id;
     private final String name;
     private final Integer discountAmount;
     private final Integer minOrderAmount;
@@ -20,14 +21,19 @@ public class Coupon {
     private final LocalDate startDate;
     private final LocalDate endDate;
 
-    public Coupon(String name, Integer discountAmount, Integer minOrderAmount, Category category, LocalDate startDate, LocalDate endDate) {
+    public Coupon(Long id, String name, Integer discountAmount, Integer minOrderAmount, Category category, LocalDate startDate, LocalDate endDate) {
         validate(name, discountAmount, minOrderAmount, category, startDate, endDate);
+        this.id = id;
         this.name = name;
         this.discountAmount = discountAmount;
         this.minOrderAmount = minOrderAmount;
         this.category = category;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public Coupon(String name, Integer discountAmount, Integer minOrderAmount, Category category, LocalDate startDate, LocalDate endDate) {
+        this(null, name, discountAmount, minOrderAmount, category, startDate, endDate);
     }
 
     public boolean isSameDate() {
