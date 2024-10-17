@@ -1,4 +1,4 @@
-package coupon.coupon.config;
+package coupon.config;
 
 import java.util.HashMap;
 import java.util.Map;
