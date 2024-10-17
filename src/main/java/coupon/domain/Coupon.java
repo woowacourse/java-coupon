@@ -34,4 +34,16 @@ public class Coupon {
         }
         return orderPrice - discountPrice;
     }
+
+    public String getName() {
+        return name.getName();
+    }
+
+    public LocalDate getIssuanceDate() {
+        return issuablePeriod.getIssuanceDate();
+    }
+
+    public LocalDate getExpirationDate() {
+        return issuablePeriod.getExpirationDate();
+    }
 }

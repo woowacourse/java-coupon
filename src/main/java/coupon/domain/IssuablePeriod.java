@@ -3,7 +3,9 @@ package coupon.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.Getter;
 
+@Getter
 public class IssuablePeriod {
 
     private static final LocalTime START_TIME = LocalTime.of(0, 0);
