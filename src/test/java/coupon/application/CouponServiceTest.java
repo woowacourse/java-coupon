@@ -16,16 +16,19 @@ class CouponServiceTest {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private DataSourceHelper dataSourceHelper;
+
     @Test
     @DisplayName("복제 지연 테스트")
     void replicationLazyTest() {
         // given
         LocalDate now = LocalDate.now();
         Coupon coupon = new Coupon("쿠폰", 1_000, 30_000, CouponCategory.FASHION, now, now);
-        couponService.create(coupon);
 
         // when
-        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        couponService.create(coupon);
+        Coupon savedCoupon = dataSourceHelper.executeInWriter(() -> couponService.getCoupon(coupon.getId()));
 
         // then
         assertThat(savedCoupon).isNotNull();
