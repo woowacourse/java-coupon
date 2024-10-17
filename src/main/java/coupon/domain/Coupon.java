@@ -27,7 +27,7 @@ public class Coupon {
 
     public Coupon(Long discountMoney, Long orderPrice) {
         this(
-                new Name(UUID.randomUUID().toString()),
+                new Name(UUID.randomUUID().toString().substring(0, 10)),
                 new DiscountMoney(discountMoney),
                 new DiscountRate(discountMoney, orderPrice),
                 new OrderPrice(orderPrice),
