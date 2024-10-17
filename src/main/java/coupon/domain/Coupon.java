@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,6 +25,7 @@ public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "coupon_id", nullable = false)
     private Long id;
 
     @Embedded
@@ -36,12 +38,15 @@ public class Coupon {
     private MinimumOrderAmount minimumOrderAmount;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "category", nullable = false)
     private CouponCategory couponCategory;
 
     private CouponPeriod couponPeriod;
 
+    @Column(name = "issue_limit", nullable = false)
     private long issueLimit;
 
+    @Column(name = "issue_count", nullable = false)
     private long issueCount;
 
     public Coupon(

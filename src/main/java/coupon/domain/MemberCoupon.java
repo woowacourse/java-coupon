@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class MemberCoupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_coupon_id", nullable = false)
     private Long id;
 
     @ManyToOne
@@ -32,10 +34,13 @@ public class MemberCoupon {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Column(name = "used", nullable = false)
     private boolean used;
 
+    @Column(name = "issued_at", nullable = false)
     private LocalDateTime issuedAt;
 
+    @Column(name = "use_ended_at", nullable = false)
     private LocalDateTime useEndedAt;
 
     public MemberCoupon(Coupon coupon, Member member, boolean used, LocalDateTime issuedAt, LocalDateTime useEndedAt) {

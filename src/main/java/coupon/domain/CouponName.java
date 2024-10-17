@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,6 +13,7 @@ public class CouponName {
 
     private static final int MAX_NAME_LENGTH = 30;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
     public CouponName(String name) {

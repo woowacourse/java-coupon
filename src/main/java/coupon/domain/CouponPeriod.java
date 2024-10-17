@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -11,7 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CouponPeriod {
 
+    @Column(name = "issue_started_at", nullable = false)
     private LocalDateTime issueStartedAt;
+
+    @Column(name = "issue_ended_at", nullable = false)
     private LocalDateTime issueEndedAt;
 
     public CouponPeriod(LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {

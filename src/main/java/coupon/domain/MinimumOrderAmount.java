@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,6 +14,7 @@ public class MinimumOrderAmount {
     private static final int MIN_ORDER_AMOUNT = 5000;
     private static final int MAX_ORDER_AMOUNT = 100000;
 
+    @Column(name = "minimum_order_amount", nullable = false)
     private int amount;
 
     public MinimumOrderAmount(int amount) {

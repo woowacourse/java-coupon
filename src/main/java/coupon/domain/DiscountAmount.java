@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class DiscountAmount {
     private static final int MAX_AMOUNT = 10000;
     private static final int DEFAULT_UNIT = 500;
 
+    @Column(name = "discount_amount", nullable = false)
     private int amount;
 
     public DiscountAmount(int amount) {
