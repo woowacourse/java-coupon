@@ -100,9 +100,9 @@ class CouponServiceTest {
     @DisplayName("최소 주문 금액이 최소치를 넘지 못하면 예외가 발생한다.")
     @ParameterizedTest
     @CsvSource({
-            "1000, 4999",   // 최소 주문 금액 미만
-            "5000, 3000",   // 최소 할인 금액이 5000원이면서 주문 금액이 3000원인 경우
-            "1500, 4500"    // 최소 주문 금액 미만의 유효한 할인 금액
+            "1000, 4999",
+            "5000, 3000",
+            "1500, 4500"
     })
     void exception_When_MinOrderAmountIsLessThanMin(int discountAmount, int minOrderAmount) {
         // given
