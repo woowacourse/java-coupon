@@ -122,6 +122,9 @@ public class Coupon {
     }
 
     private void validateIssueDate(LocalDateTime issueStartDate, LocalDateTime issueEndDate) {
+        if (issueStartDate == null || issueEndDate == null) {
+            throw new CouponException("발급 시작일과 발급 종료일은 빈 값이 될 수 없습니다.");
+        }
         if (issueStartDate.isAfter(issueEndDate)) {
             throw new CouponException(
                     "발급 시작일(%s)은 발급 종료일(%s)보다 이전이어야 합니다.".formatted(issueStartDate, issueEndDate)
