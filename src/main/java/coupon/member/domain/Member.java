@@ -10,7 +10,6 @@ import jakarta.persistence.Table;
 
 import coupon.base.BaseTimeEntity;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "member")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 public class Member extends BaseTimeEntity {
@@ -30,13 +28,20 @@ public class Member extends BaseTimeEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "password", nullable = false)
-    private String password;
+    public Member(String name) {
+        this(null, name);
+    }
 
-    @Column(name = "user_id", unique = true, nullable = false)
-    private String userId;
+    public Member(Long id, String name) {
+        validate(name);
 
-    public Member(String name, String password, String userId) {
-        this(null, name, password, userId);
+        this.id = id;
+        this.name = name;
+    }
+
+    private void validate(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("회원 이름은 필수입니다.");
+        }
     }
 }
