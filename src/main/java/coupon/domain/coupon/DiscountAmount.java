@@ -19,7 +19,7 @@ public class DiscountAmount {
     private static final BigDecimal MAX_AMOUNT = BigDecimal.valueOf(10000);
     private static final BigDecimal DISCOUNT_UNIT = BigDecimal.valueOf(500);
 
-    @Column(name = "discount_amount")
+    @Column(name = "discount_amount", nullable = false)
     private BigDecimal value;
 
     public DiscountAmount(BigDecimal value) {

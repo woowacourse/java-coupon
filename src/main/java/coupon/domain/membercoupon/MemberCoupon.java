@@ -26,14 +26,14 @@ public class MemberCoupon {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "coupon_id")
+    @JoinColumn(name = "coupon_id", nullable = false)
     private Coupon coupon;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(name = "is_active", columnDefinition = "BOOLEAN")
+    @Column(name = "is_active", columnDefinition = "BOOLEAN", nullable = false)
     private boolean isActive;
 
     @Embedded

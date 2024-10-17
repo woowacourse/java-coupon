@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class CouponPeriod {
 
-    @Column(name = "start_date", columnDefinition = "DATETIME(6)")
+    @Column(name = "start_date", columnDefinition = "DATETIME(6)", nullable = false)
     private LocalDateTime startDate;
 
-    @Column(name = "end_date", columnDefinition = "DATETIME(6)")
+    @Column(name = "end_date", columnDefinition = "DATETIME(6)", nullable = false)
     private LocalDateTime endDate;
 
     public CouponPeriod(LocalDateTime startDate, LocalDateTime endDate) {

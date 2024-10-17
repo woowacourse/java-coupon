@@ -15,10 +15,10 @@ public class UsagePeriod {
 
     private static final int VALID_DURATION = 7;
 
-    @Column(name = "issue_date", columnDefinition = "DATETIME(6)")
+    @Column(name = "issue_date", columnDefinition = "DATETIME(6)", nullable = false)
     private LocalDateTime issueDate;
 
-    @Column(name = "expire_date", columnDefinition = "DATETIME(6)")
+    @Column(name = "expire_date", columnDefinition = "DATETIME(6)", nullable = false)
     private LocalDateTime expireDate;
 
     public UsagePeriod(LocalDateTime issueDate) {
