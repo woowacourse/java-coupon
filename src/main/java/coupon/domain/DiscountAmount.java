@@ -2,24 +2,15 @@ package coupon.domain;
 
 import jakarta.persistence.Embeddable;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-@Getter
 @Embeddable
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DiscountAmount {
+public record DiscountAmount(Long amount) {
 
     private static final long MINIMUM_DISCOUNT_AMOUNT = 1_000;
     private static final long MAXIMUM_DISCOUNT_AMOUNT = 10_000;
     private static final long DISCOUNT_AMOUNT_UNIT = 500;
 
-    private Long amount;
-
-    public DiscountAmount(final Long amount) {
+    public DiscountAmount {
         validateDiscountable(amount);
-        this.amount = amount;
     }
 
     public void validateDiscountable(final Long price) {
