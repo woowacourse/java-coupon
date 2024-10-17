@@ -17,14 +17,14 @@ public class DataSourceConfig {
 
     @Bean
     @Qualifier("writeDataSource")
-    @ConfigurationProperties("coupon.datasource.writer")
+    @ConfigurationProperties(prefix = "coupon.datasource.writer")
     DataSource writeDataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
 
     @Bean
     @Qualifier("readDataSource")
-    @ConfigurationProperties("coupon.datasource.reader")
+    @ConfigurationProperties(prefix = "coupon.datasource.reader")
     DataSource readDataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
