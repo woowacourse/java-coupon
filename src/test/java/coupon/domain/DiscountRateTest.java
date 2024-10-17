@@ -3,11 +3,10 @@ package coupon.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import coupon.domain.discountpolicy.DiscountRatePolicy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class DiscountRatePolicyTest {
+class DiscountRateTest {
 
     @DisplayName("할인율은 할인금액 / 최소 주문 금액 식을 사용하여 계산하며, 소수점은 버림 한다.")
     @Test
@@ -18,7 +17,7 @@ class DiscountRatePolicyTest {
         int expected = 3;
 
         // when
-        DiscountRatePolicy policy = new DiscountRatePolicy(discountMoney, minimumOrderPrice);
+        DiscountRate policy = new DiscountRate(discountMoney, minimumOrderPrice);
         int actual = policy.getDiscountRate();
 
         // then
@@ -29,7 +28,7 @@ class DiscountRatePolicyTest {
     @DisplayName("할인율을 검증한다.")
     @Test
     void validateMinimumDiscountRate() {
-        assertThatThrownBy(() -> new DiscountRatePolicy(1_000, 50_000))
+        assertThatThrownBy(() -> new DiscountRate(1_000, 50_000))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

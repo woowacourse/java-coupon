@@ -1,15 +1,17 @@
-package coupon.domain.discountpolicy;
+package coupon.domain;
 
-import coupon.domain.DiscountPolicy;
+import lombok.Getter;
 
-public class DiscountMoneyPolicy implements DiscountPolicy {
+@Getter
+public class DiscountMoney {
+
     private static final int MINIMUM_DISCOUNT_AMOUNT_MONEY = 1000;
     private static final int MAXIMUM_DISCOUNT_AMOUNT_MONEY = 10000;
     private static final int DISCOUNT_AMOUNT_UNIT = 500;
 
     private final int discountAmount;
 
-    public DiscountMoneyPolicy(int discountAmount) {
+    public DiscountMoney(int discountAmount) {
         validateDiscountAmountValue(discountAmount);
         validateDiscountAmountUnit(discountAmount);
         this.discountAmount = discountAmount;
@@ -29,13 +31,5 @@ public class DiscountMoneyPolicy implements DiscountPolicy {
         if (discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
             throw new IllegalArgumentException("할인 금액의 단위는 [%d] 로 설정해야 합니다.".formatted(DISCOUNT_AMOUNT_UNIT));
         }
-    }
-
-    @Override
-    public int apply(int money) {
-        if (money - discountAmount < 0) {
-            return 0;
-        }
-        return money - discountAmount;
     }
 }

@@ -1,24 +1,24 @@
-package coupon.domain.discountpolicy;
+package coupon.domain;
 
 
-import coupon.domain.DiscountPolicy;
-import coupon.domain.OrderPrice;
+import lombok.Getter;
 
-public class DiscountRatePolicy implements DiscountPolicy {
+@Getter
+public class DiscountRate {
 
     private static final int MINIMUM_DISCOUNT_RATE = 3;
     private static final int MAXIMUM_DISCOUNT_RATE = 20;
 
     private final int discountRate;
 
-    public DiscountRatePolicy(int discountMoney, OrderPrice orderPrice) {
-        int discountRate = (discountMoney * 100) / orderPrice.getPrice();
+    public DiscountRate(DiscountMoney discountMoney, OrderPrice orderPrice) {
+        int discountRate = (discountMoney.getDiscountAmount() * 100) / orderPrice.getPrice();
         validateDiscountRateRange(discountRate);
         this.discountRate = discountRate;
     }
 
-    public DiscountRatePolicy(int discountMoney, int orderPrice) {
-        this(discountMoney, new OrderPrice(orderPrice));
+    public DiscountRate(int discountMoney, int orderPrice) {
+        this(new DiscountMoney(discountMoney), new OrderPrice(orderPrice));
     }
 
     private void validateDiscountRateRange(int discountRate) {
@@ -29,14 +29,5 @@ public class DiscountRatePolicy implements DiscountPolicy {
         if (discountRate > MAXIMUM_DISCOUNT_RATE) {
             throw new IllegalArgumentException("할인율은 [%d] 이하어야 합니다.".formatted(MAXIMUM_DISCOUNT_RATE));
         }
-    }
-
-    @Override
-    public int apply(int money) {
-        return money * (discountRate / 100);
-    }
-
-    public int getDiscountRate() {
-        return discountRate;
     }
 }
