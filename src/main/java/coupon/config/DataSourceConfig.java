@@ -28,11 +28,11 @@ public class DataSourceConfig {
         DataSource writerDataSource = writerDataSource();
         DataSource readerDataSource = readerDataSource();
 
-        Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put("write", writerDataSource);
-        dataSourceMap.put("read", readerDataSource);
-        dataSourceRouter.setTargetDataSources(dataSourceMap);
-        dataSourceRouter.setDefaultTargetDataSource(readerDataSource);
+        Map<Object, Object> dataSources = new HashMap<>();
+        dataSources.put(DataSourceLookupKey.WRITER, writerDataSource);
+        dataSources.put(DataSourceLookupKey.READER, readerDataSource);
+        dataSourceRouter.setTargetDataSources(dataSources);
+        dataSourceRouter.setDefaultTargetDataSource(writerDataSource);
 
         return dataSourceRouter;
     }
