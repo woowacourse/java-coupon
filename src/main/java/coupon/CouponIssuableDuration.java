@@ -10,7 +10,7 @@ record CouponIssuableDuration(
         @Column(name = "issuable_end_date", nullable = false) LocalDate end
 ) {
 
-    public CouponIssuableDuration {
+    CouponIssuableDuration {
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
         }

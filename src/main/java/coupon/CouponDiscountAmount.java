@@ -11,7 +11,7 @@ record CouponDiscountAmount(@Column(name = "coupon_discount_amount", nullable = 
     private static final BigDecimal MAXIMUM_DISCOUNT_MONEY = new BigDecimal("10000");
     private static final BigDecimal MINIMUM_DISCOUNT_MONEY = new BigDecimal("1000");
 
-    public CouponDiscountAmount {
+    CouponDiscountAmount {
         validateMinimumAmount(value);
         validateMaximumAmount(value);
         validateAmountUnit(value);
