@@ -2,6 +2,8 @@ package coupon.domain;
 
 import coupon.exception.CouponException;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,7 +39,11 @@ public class Coupon {
     private LocalDate sinceDate;
     private LocalDate untilDate;
 
-    public Coupon(String name, long discountMoney, long minimumOrderMoney, LocalDate sinceDate, LocalDate untilDate) {
+    @Enumerated(value = EnumType.STRING)
+    private Category category;
+
+    public Coupon(String name, long discountMoney, long minimumOrderMoney, LocalDate sinceDate, LocalDate untilDate,
+            Category category) {
         validate(name, discountMoney, minimumOrderMoney, sinceDate, untilDate);
 
         this.name = name;
@@ -45,6 +51,7 @@ public class Coupon {
         this.minimumOrderMoney = minimumOrderMoney;
         this.sinceDate = sinceDate;
         this.untilDate = untilDate;
+        this.category = category;
     }
 
     private void validate(String name, long discountMoney, long minimumOrderMoney,
