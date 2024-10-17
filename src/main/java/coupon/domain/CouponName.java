@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class CouponName {
     private static final int MAX_LENGTH = 30;
 
-    @Column(nullable = false, length = MAX_LENGTH)
+    @Column(nullable = false)
     private String name;
 
     public CouponName(String name) {
@@ -29,7 +29,7 @@ public class CouponName {
     }
 
     private void validateExist(String name) {
-        if (Objects.isNull(name) || name.isBlank()) {
+        if (name.isBlank()) {
             throw new IllegalArgumentException("쿠폰 이름은 공백일 수 없습니다.");
         }
     }
