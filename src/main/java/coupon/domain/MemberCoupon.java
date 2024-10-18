@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 public class MemberCoupon {
 
     private static final long COUPON_USABLE_DAYS = 7;
+    private static final LocalTime EXPIRATION_TIME = LocalTime.of(23, 59, 59, 999999000);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,30 +39,17 @@ public class MemberCoupon {
     @Column(name = "used", nullable = false)
     private boolean used;
 
-    @Column(name = "issued_at", nullable = false)
+    @Column(name = "issued_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime issuedAt;
 
-    @Column(name = "use_ended_at", nullable = false)
+    @Column(name = "use_ended_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime useEndedAt;
 
-    public MemberCoupon(Coupon coupon, Member member, boolean used, LocalDateTime issuedAt, LocalDateTime useEndedAt) {
-        this.coupon = coupon;
+    public MemberCoupon(Member member, Coupon coupon) {
         this.member = member;
-        this.used = used;
-        this.issuedAt = issuedAt;
-        this.useEndedAt = useEndedAt;
-    }
-
-    public static MemberCoupon issue(Member member, Coupon coupon) {
-        coupon.issue();
-
-        MemberCoupon memberCoupon = new MemberCoupon();
-        memberCoupon.member = member;
-        memberCoupon.coupon = coupon;
-        memberCoupon.issuedAt = LocalDateTime.now();
-        memberCoupon.useEndedAt = memberCoupon.issuedAt.plusDays(COUPON_USABLE_DAYS);
-        memberCoupon.used = false;
-
-        return memberCoupon;
+        this.coupon = coupon;
+        this.used = false;
+        this.issuedAt = LocalDateTime.now();
+        this.useEndedAt = issuedAt.plusDays(COUPON_USABLE_DAYS).with(EXPIRATION_TIME);
     }
 }

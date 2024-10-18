@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS member_coupon
     coupon_id           BIGINT,
     member_id           BIGINT,
     used                BOOLEAN,
-    issued_at           DATETIME,
-    use_ended_at        DATETIME,
+    issued_at           DATETIME(6),
+    use_ended_at        DATETIME(6),
     PRIMARY KEY (member_coupon_id),
     CONSTRAINT fk_coupon FOREIGN KEY (coupon_id) REFERENCES coupon(coupon_id),
     CONSTRAINT fk_member FOREIGN KEY (member_id) REFERENCES member(member_id)
