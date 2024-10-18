@@ -1,9 +1,6 @@
 package coupon.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -22,6 +19,8 @@ public class Coupon {
     private final String name;
     private final Integer discountAmount;
     private final Integer minOrderAmount;
+
+    @Enumerated(EnumType.STRING)
     private final Category category;
     private final LocalDate startDate;
     private final LocalDate endDate;

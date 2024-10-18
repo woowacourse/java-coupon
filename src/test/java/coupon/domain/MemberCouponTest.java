@@ -40,7 +40,7 @@ class MemberCouponTest {
         MemberCoupon memberCoupon = new MemberCoupon(coupon.getId(), member.getId(), isUsed, grantDateTime);
 
         //then
-        assertThat(memberCoupon.getExpireDateTime()).isEqualTo(expectedExpireTime);
+        assertThat(memberCoupon.getExpireAt()).isEqualTo(expectedExpireTime);
     }
 
     @CsvSource({"2024-05-07T12:30:30, false, true",

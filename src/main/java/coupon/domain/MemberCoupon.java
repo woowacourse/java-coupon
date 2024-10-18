@@ -22,25 +22,25 @@ public class MemberCoupon {
     private final Long id;
     private final Long couponId;
     private final Long memberId;
-    private final LocalDateTime grantDateTime;
-    private final LocalDateTime expireDateTime;
+    private final LocalDateTime grantedAt;
+    private final LocalDateTime expireAt;
     private boolean isUsed;
 
-    public MemberCoupon(Long id, Long couponId, Long memberId, boolean isUsed, LocalDateTime grantDateTime) {
+    public MemberCoupon(Long id, Long couponId, Long memberId, boolean isUsed, LocalDateTime grantedAt) {
         this.id = id;
         this.couponId = couponId;
         this.memberId = memberId;
         this.isUsed = isUsed;
-        this.grantDateTime = grantDateTime;
-        this.expireDateTime = calculateExpireDateTime();
+        this.grantedAt = grantedAt;
+        this.expireAt = calculateExpireDateTime();
     }
 
-    public MemberCoupon(Long couponId, Long memberId, boolean isUsed, LocalDateTime grantDateTime) {
-        this(null, couponId, memberId, isUsed, grantDateTime);
+    public MemberCoupon(Long couponId, Long memberId, boolean isUsed, LocalDateTime grantedAt) {
+        this(null, couponId, memberId, isUsed, grantedAt);
     }
 
     public boolean isUsable(LocalDateTime requestTime) {
-        return !requestTime.isAfter(expireDateTime) && isNotUsed();
+        return !requestTime.isAfter(expireAt) && isNotUsed();
     }
 
     private boolean isNotUsed() {
@@ -58,6 +58,6 @@ public class MemberCoupon {
 
     private LocalDateTime calculateExpireDateTime() {
         LocalTime expireTime = LocalTime.of(23, 59, 59, 999999000);
-        return grantDateTime.plusDays(6).with(expireTime);
+        return grantedAt.plusDays(6).with(expireTime);
     }
 }
