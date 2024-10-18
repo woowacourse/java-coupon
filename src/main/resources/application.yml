@@ -31,3 +31,9 @@ coupon.datasource:
     username: root
     password: root
     maximumPoolSize: 10
+
+logging:
+  level:
+    coupon:
+      config:
+        RoutingDataSource: DEBUG
