@@ -5,10 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @Getter
@@ -19,19 +19,22 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @Embedded
     private Name name;
 
-    @NonNull
     @Embedded
     private DiscountAmount discountAmount;
 
-    @NonNull
     @Embedded
     private MinimumOrderAmount minimumOrderAmount;
 
-    @NonNull
     @Embedded
     private IssuancePeriod issuancePeriod;
+
+    public Coupon(int discountAmount, int minimumOrderAmount) {
+        this.name = new Name("쿠폰 이름");
+        this.discountAmount = new DiscountAmount(discountAmount);
+        this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
+        this.issuancePeriod = new IssuancePeriod(LocalDateTime.now(), LocalDateTime.now());
+    }
 }

@@ -1,5 +1,6 @@
 package coupon.domain.membercoupon;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,10 +8,8 @@ import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Entity
 @Getter
@@ -27,7 +26,7 @@ public class MemberCoupon {
 
     private boolean used;
 
-    @NonNull
+    @Column(nullable = false)
     private LocalDateTime issuedAt;
 
     private LocalDateTime expiresAt;
