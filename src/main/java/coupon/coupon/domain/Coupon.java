@@ -1,5 +1,6 @@
 package coupon.coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,6 +35,7 @@ public class Coupon {
     @Embedded
     private OrderPrice orderPrice;
 
+    @Column(columnDefinition = "VARCHAR(255)")
     @Enumerated(value = EnumType.STRING)
     private CouponCategory category;
 
