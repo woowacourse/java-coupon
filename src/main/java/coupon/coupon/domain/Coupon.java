@@ -15,6 +15,7 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Embedded
     private Discount discount;
     private int minimumOrderAmount;
     @Enumerated(EnumType.STRING)
@@ -37,7 +38,7 @@ public class Coupon {
     }
 
     private void validateName(String name) {
-        if(name.length() <= MAX_NAME_LENGTH) {
+        if(name.length() > MAX_NAME_LENGTH) {
             throw new IllegalArgumentException("Name is too long");
         }
     }
