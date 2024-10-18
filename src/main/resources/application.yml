@@ -12,10 +12,14 @@ spring:
         format_sql: true
         show_sql: false
         use_sql_comments: true
-        hbm2ddl.auto: validate
+        hbm2ddl.auto: update
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000, expireAfterAccess=10m
 
 coupon.datasource:
   writer:
