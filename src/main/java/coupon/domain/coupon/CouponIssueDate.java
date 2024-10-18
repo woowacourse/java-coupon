@@ -17,6 +17,9 @@ public class CouponIssueDate {
     }
 
     public boolean isDateAvailable(LocalDate date) {
-        return !date.isBefore(issueStartDate) && !date.isBefore(issueEndDate);
+        if (date.isBefore(issueStartDate) || date.isAfter(issueEndDate)) {
+            return false;
+        }
+        return true;
     }
 }
