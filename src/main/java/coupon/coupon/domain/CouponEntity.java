@@ -56,16 +56,11 @@ public class CouponEntity {
     public static CouponEntity mapDomainToEntity(Coupon domain) {
         return new CouponEntity(
                 domain.getCouponName().getName(),
-                domain.getCouponDiscountAmount().getAmount(),
-                domain.getCouponMinOrderAmount().getAmount(),
+                domain.getCouponDiscountAmount(),
+                domain.getCouponMinOrderAmount(),
                 domain.getCouponCategory(),
                 domain.getCouponPeriod().getStartDate(),
                 domain.getCouponPeriod().getEndDate()
         );
-    }
-
-    public Coupon mapEntityToDomain() {
-        return new Coupon(couponName, couponDiscountAmount, couponMinOrderAmount, couponCategory,
-                startDate, endDate);
     }
 }

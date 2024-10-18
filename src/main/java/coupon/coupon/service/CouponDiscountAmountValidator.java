@@ -1,9 +1,9 @@
-package coupon.coupon.domain;
+package coupon.coupon.service;
 
-import lombok.Getter;
+import org.springframework.stereotype.Component;
 
-@Getter
-public class CouponDiscountAmount {
+@Component
+public class CouponDiscountAmountValidator {
 
     public static final int MIN_AMOUNT = 1000;
     public static final int MAX_AMOUNT = 10_000;
@@ -11,22 +11,19 @@ public class CouponDiscountAmount {
     private static final int MIN_RATE = 3;
     private static final int MAX_RATE = 20;
 
-    private int amount;
-
-    public CouponDiscountAmount(int amount, int minOrderAmount) {
-        discountAmountRange(amount);
-        discountAmountUnit(amount);
+    public void validate(int amount, int minOrderAmount) {
+        validateDiscountAmountRange(amount);
+        validateDiscountAmountUnit(amount);
         validateRateRange(amount, minOrderAmount);
-        this.amount = amount;
     }
 
-    private void discountAmountRange(int amount) {
+    private void validateDiscountAmountRange(int amount) {
         if (amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
             throw new IllegalArgumentException("쿠폰의 할인 금액은 %d원 이상 %d원 이하여야 해요.".formatted(MIN_AMOUNT, MAX_AMOUNT));
         }
     }
 
-    private void discountAmountUnit(int amount) {
+    private void validateDiscountAmountUnit(int amount) {
         if (amount % AMOUNT_UNIT != 0) {
             throw new IllegalArgumentException("쿠폰의 할인 금액은 %d원 단위어야 해요.".formatted(AMOUNT_UNIT));
         }
