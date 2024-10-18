@@ -12,17 +12,18 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CouponService {
+    private static final String CACHE_NAMES = "coupons";
 
     private final CouponRepository couponRepository;
 
     @Transactional
-    @CachePut(value = "coupons", key = "#result.id")
+    @CachePut(value = CACHE_NAMES, key = "#result.id")
     public Coupon createWithCache(Coupon coupon) {
         return couponRepository.save(coupon);
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "coupons", key = "#couponId")
+    @Cacheable(value = CACHE_NAMES, key = "#couponId")
     public Coupon readByIdFromReaderWithCache(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 ID의 쿠폰이 없습니다."));
