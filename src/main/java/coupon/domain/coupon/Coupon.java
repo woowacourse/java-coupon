@@ -32,18 +32,24 @@ public class Coupon {
     @Embedded
     private DiscountRate discountRate;
 
+    @Embedded
+    private IssuePeriod issuePeriod;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private LocalDateTime issuePeriod;
-
-    public Coupon(String name, int discountAmount, int minOrderAmount, Category category, LocalDateTime issuePeriod) {
+    public Coupon(String name,
+                  int discountAmount,
+                  int minOrderAmount,
+                  LocalDateTime issueStartedAt,
+                  LocalDateTime issueEndedAt,
+                  Category category) {
         this.name = new CouponName(name);
         this.discountAmount = new DiscountAmount(discountAmount);
         this.minOrderAmount = new MinOrderAmount(minOrderAmount);
         this.discountRate = DiscountRate.calculateDiscountRate(discountAmount, minOrderAmount);
+        this.issuePeriod = new IssuePeriod(issueStartedAt, issueEndedAt);
         this.category = category;
-        this.issuePeriod = issuePeriod;
     }
 }
