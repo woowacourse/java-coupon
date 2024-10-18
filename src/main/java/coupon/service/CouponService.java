@@ -33,7 +33,8 @@ public class CouponService {
         couponRepository.save(coupon);
         return coupon.getId();
     }
-    
+
+    @Transactional
     public CouponServiceResponse read(final long couponId) {
         final Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("찾을 수 없는 쿠폰 ID입니다."));
