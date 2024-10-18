@@ -46,7 +46,9 @@ public class CouponDiscount {
     }
 
     private void validateDiscountRate() {
-        int discountRate = discountAmount.divide(minimumOrderAmount, 0, RoundingMode.DOWN).intValue();
+        int discountRate = discountAmount.multiply(BigDecimal.valueOf(100))
+                .divide(minimumOrderAmount, 0, RoundingMode.DOWN)
+                .intValue();
         if (discountRate < 3 || discountRate > 20) {
             throw new CouponDiscountRateException(discountRate);
         }
