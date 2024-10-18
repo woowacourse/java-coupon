@@ -1,8 +1,11 @@
 package coupon.service;
 
 import coupon.entity.Coupon;
+import coupon.exception.CouponErrorMessage;
+import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import coupon.validator.CouponValidator;
+import java.util.concurrent.Callable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CouponService {
 
+    private final FallbackReadService fallbackReadService;
     private final CouponRepository couponRepository;
     private final CouponValidator couponValidator;
 
@@ -24,6 +28,11 @@ public class CouponService {
     @Transactional(readOnly = true)
     public Coupon getCoupon(long couponId) {
         return couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("coupon not found"));
+                .orElseGet(() -> {
+                    Callable<Coupon> callable = () -> couponRepository.findById(couponId)
+                            .orElseThrow(() -> new CouponException(CouponErrorMessage.COUPON_NOT_FOUND));
+
+                    return fallbackReadService.read(callable);
+                });
     }
 }
