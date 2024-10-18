@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,9 +27,9 @@ public class CouponController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/coupon")
-    public ResponseEntity<List<GetCouponResponse>>getCoupon() {
-        final List<GetCouponResponse> response = couponService.getAllCoupon();
+    @GetMapping("/coupon/{id}")
+    public ResponseEntity<GetCouponResponse> getCoupon(@PathVariable("id") final long id) {
+        final GetCouponResponse response = couponService.getCoupon(id);
         return ResponseEntity.ok(response);
     }
 }

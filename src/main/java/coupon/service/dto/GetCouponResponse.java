@@ -14,17 +14,14 @@ public record GetCouponResponse(
         LocalDateTime expirationDate
 ) {
 
-    public static List<GetCouponResponse> from(final List<Coupon> coupons) {
-        return coupons.stream()
-                .map(coupon -> new GetCouponResponse(
-                                coupon.getName().getValue(),
-                                coupon.getDiscountAmount().getValue(),
-                                coupon.getMinimumOrderAmount().getValue(),
-                                coupon.getDiscountRate().getValue(),
-                                coupon.getValidityPeriod().getStartDate(),
-                                coupon.getValidityPeriod().getExpirationDate()
-                        )
-                )
-                .toList();
+    public static GetCouponResponse from(final Coupon coupon) {
+        return new GetCouponResponse(
+                coupon.getName().getValue(),
+                coupon.getDiscountAmount().getValue(),
+                coupon.getMinimumOrderAmount().getValue(),
+                coupon.getDiscountRate().getValue(),
+                coupon.getValidityPeriod().getStartDate(),
+                coupon.getValidityPeriod().getExpirationDate()
+        );
     }
 }

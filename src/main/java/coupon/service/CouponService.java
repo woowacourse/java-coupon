@@ -1,10 +1,9 @@
 package coupon.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import coupon.domain.Coupon;
+import coupon.exception.NotFoundCouponException;
 import coupon.repository.CouponEntity;
 import coupon.service.dto.CreateCouponRequest;
 import coupon.service.dto.CreateCouponResponse;
@@ -33,11 +32,9 @@ public class CouponService {
         );
     }
 
-    public List<GetCouponResponse> getAllCoupon() {
-        final List<Coupon> coupons = couponRepository.findAll()
-                .stream()
-                .map(CouponEntity::toDomain)
-                .toList();
-        return GetCouponResponse.from(coupons);
+    public GetCouponResponse getCoupon(final long id) {
+        final CouponEntity couponEntity = couponRepository.findById(id)
+                .orElseThrow(() -> new NotFoundCouponException("존재하지 않는 쿠폰입니다."));
+        return GetCouponResponse.from(couponEntity.toDomain());
     }
 }
