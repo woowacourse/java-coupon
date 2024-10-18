@@ -1,5 +1,6 @@
 package coupon.domain.coupon;
 
+import coupon.domain.BaseEntity;
 import coupon.exception.CouponException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Coupon {
+public class Coupon extends BaseEntity {
 
     private static final int MIN_NAME_LENGTH = 30;
     private static final int MIN_DISCOUNT_AMOUNT = 1000;
@@ -38,10 +39,6 @@ public class Coupon {
     @Enumerated(EnumType.STRING)
     private CouponCategory couponCategory;
 
-    private LocalDateTime issueStartDate;
-
-    private LocalDateTime issueEndDate;
-
     public Coupon(
             Long id,
             String name,
@@ -57,8 +54,6 @@ public class Coupon {
         this.minimumOrderPrice = validateMinimumOrderPrice(minimumOrderPrice);
         this.couponCategory = couponCategory;
         validateIssueDate(issueStartDate, issueEndDate);
-        this.issueStartDate = issueStartDate;
-        this.issueEndDate = issueEndDate;
     }
 
     public Coupon(
