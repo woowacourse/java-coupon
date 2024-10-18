@@ -1,10 +1,12 @@
 package coupon.coupon.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@Embeddable
 public class IssuablePeriod {
 
     private static final LocalTime START_TIME = LocalTime.of(0, 0, 0, 0);

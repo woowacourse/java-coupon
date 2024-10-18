@@ -1,7 +1,9 @@
 package coupon.coupon.domain;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
+@Embeddable
 public class MinimumOrderAmount {
 
     private static final int MIN_AMOUNT = 5000;

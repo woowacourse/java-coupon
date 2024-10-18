@@ -1,8 +1,9 @@
 package coupon.coupon.domain;
 
 import jakarta.persistence.Column;
-import java.util.IllformedLocaleException;
+import jakarta.persistence.Embeddable;
 
+@Embeddable
 public class DiscountAmount {
 
     private static final int MIN_DISCOUNT_AMOUNT = 1000;
