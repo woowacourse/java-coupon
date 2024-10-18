@@ -11,4 +11,6 @@ done
 
 /usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "flush privileges"
 
+/usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "SORCE /docker-entrypoint-initdb.d/init.sql"
+
 /bin/bash
