@@ -5,8 +5,10 @@ import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.Getter;
 
 @Embeddable
+@Getter
 public class IssuablePeriod {
 
     private static final LocalTime START_TIME = LocalTime.of(0, 0, 0, 0);
@@ -39,13 +41,5 @@ public class IssuablePeriod {
 
     public boolean canIssue(LocalDateTime issueRequestTime) {
         return !issueRequestTime.isBefore(startAt) && !issueRequestTime.isAfter(endAt);
-    }
-
-    public LocalDateTime getStartAt() {
-        return startAt;
-    }
-
-    public LocalDateTime getEndAt() {
-        return endAt;
     }
 }

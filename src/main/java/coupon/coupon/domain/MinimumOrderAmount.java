@@ -2,8 +2,10 @@ package coupon.coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 @Embeddable
+@Getter
 public class MinimumOrderAmount {
 
     private static final int MIN_AMOUNT = 5000;
@@ -27,9 +29,5 @@ public class MinimumOrderAmount {
         if (value > MAX_AMOUNT) {
             throw new IllegalArgumentException("최소 주문 금액은 100,000원 이하여야 합니다.");
         }
-    }
-
-    public int getValue() {
-        return value;
     }
 }

@@ -9,8 +9,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.Objects;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Coupon {
 
     private static final int MIN_DISCOUNT_RATE = 3;

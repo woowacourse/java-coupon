@@ -2,8 +2,10 @@ package coupon.coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 @Embeddable
+@Getter
 public class DiscountAmount {
 
     private static final int MIN_DISCOUNT_AMOUNT = 1000;
@@ -36,9 +38,5 @@ public class DiscountAmount {
         if (value % DISCOUNT_UNIT != 0) {
             throw new IllegalArgumentException("할인 금액은 500원 단위로만 설정할 수 있습니다.");
         }
-    }
-
-    public int getValue() {
-        return value;
     }
 }

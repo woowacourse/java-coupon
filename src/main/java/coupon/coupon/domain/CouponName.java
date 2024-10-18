@@ -2,8 +2,10 @@ package coupon.coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 @Embeddable
+@Getter
 public class CouponName {
 
     private static final int MAX_COUPON_NAME_LENGTH = 30;
@@ -30,9 +32,5 @@ public class CouponName {
         if (value.length() > MAX_COUPON_NAME_LENGTH) {
             throw new IllegalArgumentException("쿠폰 이름의 길이가 30자를 초과합니다. 쿠폰 이름 : " + value);
         }
-    }
-
-    public String getValue() {
-        return value;
     }
 }
