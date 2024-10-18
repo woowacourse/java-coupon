@@ -1,4 +1,4 @@
-package coupon.base;
+package coupon.config;
 
 
 import java.time.LocalDateTime;

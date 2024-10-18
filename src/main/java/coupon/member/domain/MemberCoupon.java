@@ -11,7 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import coupon.base.BaseTimeEntity;
+import coupon.config.BaseTimeEntity;
 import coupon.coupon.domain.entity.CouponEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

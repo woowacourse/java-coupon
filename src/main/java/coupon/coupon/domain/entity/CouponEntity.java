@@ -11,7 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import coupon.base.BaseTimeEntity;
+import coupon.config.BaseTimeEntity;
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
 import lombok.AccessLevel;
