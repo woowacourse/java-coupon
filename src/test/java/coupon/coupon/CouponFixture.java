@@ -9,11 +9,11 @@ import lombok.Getter;
 @Getter
 public enum CouponFixture {
 
-    COUPON(
+    TOUROOT_COUPON(
             null,
             "투룻 쿠폰",
             BigDecimal.valueOf(1000),
-            BigDecimal.valueOf(100000),
+            BigDecimal.valueOf(10000),
             Category.FASHION,
             LocalDateTime.now(),
             LocalDateTime.now().plusDays(3)
