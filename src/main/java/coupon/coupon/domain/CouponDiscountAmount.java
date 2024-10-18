@@ -38,8 +38,9 @@ public class CouponDiscountAmount {
     }
 
     private void validateRateRange(int amount, int couponMinOrderAmount) {
-        int rate = amount / couponMinOrderAmount;
-        if (rate < MIN_RATE || rate > MAX_RATE) {
+        double rate = (double) amount / couponMinOrderAmount * 100;
+        int realRate = (int) Math.floor(rate);
+        if (realRate < MIN_RATE || realRate > MAX_RATE) {
             throw new IllegalArgumentException("쿠폰의 할인율은 %d%% 이상 %d%% 이하여야 해요.".formatted(MIN_RATE, MAX_RATE));
         }
     }
