@@ -5,12 +5,14 @@ public class Coupon {
     private final Name name;
     private final DiscountAmount discountAmount;
     private final PurchaseAmount purchaseAmount;
+    private final Category category;
 
-    public Coupon(String name, Integer discountAmount, Integer purchaseAmount) {
+    public Coupon(String name, Integer discountAmount, Integer purchaseAmount, Category category) {
         validateDiscountRate(discountAmount, purchaseAmount);
         this.name = new Name(name);
         this.discountAmount = new DiscountAmount(discountAmount);
         this.purchaseAmount = new PurchaseAmount(purchaseAmount);
+        this.category = category;
     }
 
     private static void validateDiscountRate(Integer discountAmount, Integer purchaseAmount) {
