@@ -1,15 +1,14 @@
 package coupon.repository.entity;
 
 import coupon.domain.coupon.CouponAmount;
+import coupon.domain.coupon.CouponName;
 import coupon.domain.coupon.IssuedDuration;
 import coupon.domain.coupon.ProductCategory;
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -26,9 +25,8 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(length = 30)
-    private String name; // todo: 30
+    @Embedded
+    private CouponName name;
 
     private ProductCategory productCategory;
 
@@ -38,10 +36,11 @@ public class Coupon {
     @Embedded
     private IssuedDuration issuedDuration;
 
-    public Coupon(String name, Integer discountAmount, Integer minOrderAmount,
+    public Coupon(String name,
+                  Integer discountAmount, Integer minOrderAmount,
                   ProductCategory productCategory,
                   LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
-        this.name = name;
+        this.name = new CouponName(name);
         this.productCategory = productCategory;
         this.couponAmount = new CouponAmount(discountAmount, minOrderAmount);
         this.issuedDuration = new IssuedDuration(issueStartedAt, issueEndedAt);
