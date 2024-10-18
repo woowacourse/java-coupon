@@ -26,9 +26,10 @@ public class MemberCoupon {
 
     private boolean used;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TIMESTAMP(6)")
     private LocalDateTime issuedAt;
 
+    @Column(columnDefinition = "TIMESTAMP(6)")
     private LocalDateTime expiresAt;
 
     public MemberCoupon(long couponId, long memberId) {
