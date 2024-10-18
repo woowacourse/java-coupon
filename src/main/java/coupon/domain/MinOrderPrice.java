@@ -1,11 +1,17 @@
 package coupon.domain;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class MinOrderPrice {
 
     private static final int MIN_VALUE = 5000;
     private static final int MAX_VALUE = 100000;
 
-    private final int price;
+    private int price;
+
+    protected MinOrderPrice() {
+    }
 
     public MinOrderPrice(int price) {
         validateRange(price);

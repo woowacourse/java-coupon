@@ -1,12 +1,18 @@
 package coupon.domain;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class DiscountRate {
 
     private static final int PERCENTAGE_MULTIPLIER = 100;
     private static final int MIN_RATE = 3;
     private static final int MAX_RATE = 20;
 
-    private final int discountRate;
+    private int discountRate;
+
+    protected DiscountRate() {
+    }
 
     public DiscountRate(int discountRate) {
         validateRange(discountRate);

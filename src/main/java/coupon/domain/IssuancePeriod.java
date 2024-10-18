@@ -2,10 +2,16 @@ package coupon.domain;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class IssuancePeriod {
 
-    private final LocalDate start;
-    private final LocalDate end;
+    private LocalDate start;
+    private LocalDate end;
+
+    protected IssuancePeriod() {
+    }
 
     public IssuancePeriod(LocalDate start, LocalDate end) {
         validateAfterOrEqual(start, end);

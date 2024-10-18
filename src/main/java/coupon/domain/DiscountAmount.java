@@ -1,12 +1,18 @@
 package coupon.domain;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class DiscountAmount {
 
     private static final int MIN_AMOUNT = 1000;
     private static final int MAX_AMOUNT = 10000;
     private static final int AMOUNT_UNIT = 500;
 
-    private final int amount;
+    private int amount;
+
+    protected DiscountAmount() {
+    }
 
     public DiscountAmount(int amount) {
         validateRange(amount);

@@ -1,16 +1,22 @@
 package coupon.domain;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class Name {
 
     private static final int MIN_LENGTH = 1;
     private static final int MAX_LENGTH = 30;
 
-    private final String name;
+    private String name;
 
     public Name(String name) {
         String trimName = name.trim();
         validateLength(trimName);
         this.name = trimName;
+    }
+
+    protected Name() {
     }
 
     private void validateLength(String trimName) {
