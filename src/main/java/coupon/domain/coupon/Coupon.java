@@ -26,7 +26,8 @@ public class Coupon {
     @Embedded
     private DiscountAmount discountAmount;
 
-    private int minOrderAmount;
+    @Embedded
+    private MinOrderAmount minOrderAmount;
 
     @Embedded
     private DiscountRate discountRate;
@@ -37,11 +38,10 @@ public class Coupon {
 
     private LocalDateTime issuePeriod;
 
-    public Coupon(String name, int discountAmount, int minOrderAmount, Category category,
-                  LocalDateTime issuePeriod) {
+    public Coupon(String name, int discountAmount, int minOrderAmount, Category category, LocalDateTime issuePeriod) {
         this.name = new CouponName(name);
         this.discountAmount = new DiscountAmount(discountAmount);
-        this.minOrderAmount = minOrderAmount;
+        this.minOrderAmount = new MinOrderAmount(minOrderAmount);
         this.discountRate = DiscountRate.calculateDiscountRate(discountAmount, minOrderAmount);
         this.category = category;
         this.issuePeriod = issuePeriod;
