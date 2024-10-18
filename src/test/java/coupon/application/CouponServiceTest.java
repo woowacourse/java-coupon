@@ -20,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-@Transactional
 class CouponServiceTest {
 
     @Autowired
@@ -33,6 +32,7 @@ class CouponServiceTest {
     private EntityManager entityManager;
 
     @Test
+    @Transactional
     @DisplayName("존재하지 않는 쿠폰은 발급할 수 없다.")
     void cantIssue() {
         long unknownCouponId = -1L;
@@ -43,6 +43,7 @@ class CouponServiceTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("사용자 쿠폰을 발급한다.")
     void issue() {
         Coupon coupon = createCoupon();
@@ -54,6 +55,9 @@ class CouponServiceTest {
         assertThat(result).hasSize(1);
     }
 
+    /**
+     * 복제 지연 테스트, Transactional이 없기 때문에 실제로 데이터가 저장된다.
+     */
     @Test
     @DisplayName("쿠폰을 생성할 수 있다.")
     void create() {
