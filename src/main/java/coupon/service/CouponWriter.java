@@ -1,6 +1,6 @@
 package coupon.service;
 
-import coupon.domain.Coupon;
+import coupon.domain.coupon.Coupon;
 import coupon.repository.CouponRepository;
 import java.util.NoSuchElementException;
 import org.springframework.stereotype.Component;

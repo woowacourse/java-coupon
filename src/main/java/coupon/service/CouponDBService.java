@@ -1,6 +1,6 @@
 package coupon.service;
 
-import coupon.domain.Coupon;
+import coupon.domain.coupon.Coupon;
 import org.springframework.stereotype.Service;
 
 @Service
