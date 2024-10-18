@@ -1,6 +1,7 @@
 package coupon.service;
 
 import coupon.entity.Coupon;
+import coupon.exception.CouponNotFoundException;
 import coupon.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,11 @@ public class CouponService {
     public Long create(Coupon coupon) {
         Coupon savedCoupon = couponRepository.save(coupon);
         return savedCoupon.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Coupon getCoupon(Long id) {
+        return couponRepository.findById(id)
+                .orElseThrow(() -> new CouponNotFoundException(id));
     }
 }
