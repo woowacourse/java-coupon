@@ -6,12 +6,13 @@ services:
       context: ./writer
       dockerfile: Dockerfile
     ports:
-      - 33306:3306
+      - "33306:3306"
     networks:
       coupon_dock_net:
         ipv4_address: 172.20.0.10
     volumes:
       - ./data/writer:/var/lib/mysql
+      - ./init/schema.sql:/docker-entrypoint-initdb.d/init.sql
     container_name: mysql_writer
     restart: always
     environment:
@@ -24,12 +25,13 @@ services:
       context: ./reader
       dockerfile: Dockerfile
     ports:
-      - 33307:3306
+      - "33307:3306"
     networks:
       coupon_dock_net:
         ipv4_address: 172.20.0.11
     volumes:
       - ./data/reader:/var/lib/mysql
+      - ./init/schema.sql:/docker-entrypoint-initdb.d/init.sql
     container_name: mysql_reader
     environment:
       MYSQL_ROOT_PASSWORD: root
