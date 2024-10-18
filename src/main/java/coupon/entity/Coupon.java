@@ -7,6 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,4 +35,18 @@ public class Coupon {
 
     @Embedded
     private CouponIssuancePeriod period;
+
+    public Coupon(String name,
+                  BigDecimal discountAmount,
+                  BigDecimal minimumOrderAmount,
+                  CouponCategory category,
+                  LocalDate issuanceStartDate,
+                  LocalDate issuanceEndDate) {
+        this(null,
+                new CouponName(name),
+                new CouponDiscount(discountAmount, minimumOrderAmount),
+                category,
+                new CouponIssuancePeriod(issuanceStartDate, issuanceEndDate)
+        );
+    }
 }
