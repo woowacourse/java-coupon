@@ -8,50 +8,44 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 @Configuration
 public class DataSourceConfig {
 
     @Bean(name = "writerDataSource")
-    @ConfigurationProperties("coupon.datasource.writer")
+    @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writerDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean(name = "readerDataSource")
-    @ConfigurationProperties("coupon.datasource.reader")
+    @ConfigurationProperties(prefix = "coupon.datasource.reader")
     public DataSource readerDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean(name = "routingDataSource")
-    @Primary
-    public DataSource routingDataSource(
+    public DataSource readOnlyDataSourceRouter(
         @Qualifier("writerDataSource") DataSource writerDataSource,
-        @Qualifier("readerDataSource") DataSource readerDataSource) {
+        @Qualifier("readerDataSource") DataSource readerDataSource
+    ) {
+        Map<Object, Object> dataSourceMap = new HashMap<>();
+        dataSourceMap.put(DataSourceType.WRITER, writerDataSource);
+        dataSourceMap.put(DataSourceType.READER, readerDataSource);
+
         ReadOnlyDataSourceRouter routingDataSource = new ReadOnlyDataSourceRouter();
-
-        Map<Object, Object> targetDataSources = new HashMap<>();
-        targetDataSources.put(DataSourceType.READER, readerDataSource);
-        targetDataSources.put(DataSourceType.WRITER, writerDataSource);
-
-        routingDataSource.setTargetDataSources(targetDataSources);
         routingDataSource.setDefaultTargetDataSource(writerDataSource);
+        routingDataSource.setTargetDataSources(dataSourceMap);
         return routingDataSource;
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.jpa.properties")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-        EntityManagerFactoryBuilder builder, @Qualifier("routingDataSource") DataSource dataSource
-    ) {
-        return builder.dataSource(dataSource)
-            .packages("coupon.domain")
-            .build();
+    @Primary
+    public DataSource dataSource(@Qualifier("routingDataSource") DataSource routingDataSource) {
+        return new LazyConnectionDataSourceProxy(routingDataSource);
     }
 }
