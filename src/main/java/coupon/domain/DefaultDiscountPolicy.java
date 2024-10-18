@@ -36,13 +36,14 @@ public class DefaultDiscountPolicy implements DiscountPolicy {
     }
 
     private void requireDiscountRateInBound(long discountAmount, long minimumOrderPrice) {
-        long discountRate = discountAmount / minimumOrderPrice;
+        long discountRate = 100 * discountAmount / minimumOrderPrice;
         boolean isRateValid = DISCOUNT_RATE_MIN <= discountRate && discountRate <= DISCOUNT_RATE_MAX;
         if (!isRateValid) {
             throw new IllegalArgumentException(String.format(
-                    "할인율은 %d%% 이상, %d%% 이하여야 합니다.",
+                    "할인율은 %d%% 이상, %d%% 이하여야 합니다. 현재 할인율: %d%%",
                     DISCOUNT_RATE_MIN,
-                    DISCOUNT_RATE_MAX));
+                    DISCOUNT_RATE_MAX,
+                    discountRate));
         }
     }
 }
