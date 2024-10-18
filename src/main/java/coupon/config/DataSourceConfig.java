@@ -46,9 +46,9 @@ public class DataSourceConfig {
         return dataSourceRouter;
     }
 
-    @DependsOn({"routeDataSource"})
-    @Primary
     @Bean
+    @Primary
+    @DependsOn({"routeDataSource"})
     public DataSource dataSource(DataSource routeDataSource) {
         return new LazyConnectionDataSourceProxy(routeDataSource);
     }
