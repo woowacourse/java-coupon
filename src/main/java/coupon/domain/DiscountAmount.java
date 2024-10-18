@@ -1,17 +1,23 @@
 package coupon.domain;
 
 import coupon.exception.CouponException;
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import static lombok.AccessLevel.PROTECTED;
+
+@Embeddable
 @Getter
+@NoArgsConstructor(access = PROTECTED)
 public class DiscountAmount {
 
-    private final int amount;
+    private int discountAmount;
 
-    public DiscountAmount(int amount, int minimumOrderAmount) {
-        validateDiscountAmount(amount);
-        validateDiscountRate(amount, minimumOrderAmount);
-        this.amount = amount;
+    public DiscountAmount(int discountAmount, int minimumOrderAmount) {
+        validateDiscountAmount(discountAmount);
+        validateDiscountRate(discountAmount, minimumOrderAmount);
+        this.discountAmount = discountAmount;
     }
 
     private void validateDiscountAmount(int amount) {

@@ -1,12 +1,19 @@
 package coupon.domain;
 
 import coupon.exception.CouponException;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import static lombok.AccessLevel.PROTECTED;
+
+@Embeddable
 @Getter
+@NoArgsConstructor(access = PROTECTED)
 public class CouponName {
 
-    private final String name;
+    private String name;
 
     public CouponName(String name) {
         validateName(name);
