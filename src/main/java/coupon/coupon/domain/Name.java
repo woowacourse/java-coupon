@@ -1,12 +1,18 @@
 package coupon.coupon.domain;
 
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.Objects;
 
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Name {
 
     private static final int MAX_LENGTH_OF_NAME = 30;
 
-    private final String name;
+    private String name;
 
     public Name(String name) {
         validateName(name);

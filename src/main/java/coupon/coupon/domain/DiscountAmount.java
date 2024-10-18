@@ -1,7 +1,13 @@
 package coupon.coupon.domain;
 
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.Objects;
 
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DiscountAmount {
 
     private static final int MIN_DISCOUNT_AMOUNT = 1_000;
@@ -13,7 +19,7 @@ public class DiscountAmount {
     private static final int MAX_DISCOUNT_RATE = 20;
     private static final int VALUE_TO_MAKE_DISCOUNT_RATE = 100;
 
-    private final int discountAmount;
+    private int discountAmount;
 
     public DiscountAmount(int discountAmount, int minOrderAmount) {
         validateDiscountAmount(discountAmount);

@@ -1,12 +1,19 @@
 package coupon.coupon.domain;
 
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.Objects;
 
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MinOrderAmount {
 
     private static final int MIN_ORDER_AMOUNT = 5_000;
     private static final int MAX_ORDER_AMOUNT = 100_000;
-    private final int minOrderAmount;
+
+    private int minOrderAmount;
 
     public MinOrderAmount(int minOrderAmount) {
         validateOrderAmount(minOrderAmount);
