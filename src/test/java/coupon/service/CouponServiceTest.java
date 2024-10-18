@@ -1,4 +1,4 @@
-package coupon;
+package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,6 +7,9 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import coupon.domain.Category;
+import coupon.domain.Coupon;
 
 @SpringBootTest
 class CouponServiceTest {

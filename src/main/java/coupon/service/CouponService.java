@@ -1,9 +1,12 @@
-package coupon;
+package coupon.service;
 
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import coupon.repository.CouponRepository;
+import coupon.utils.TransactionSupport;
+import coupon.domain.Coupon;
 import lombok.RequiredArgsConstructor;
 
 @Service

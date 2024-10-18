@@ -1,9 +1,9 @@
-package coupon;
+package coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 
-import static coupon.Category.FOOD;
+import static coupon.domain.Category.FOOD;
 
 import java.time.LocalDate;
 

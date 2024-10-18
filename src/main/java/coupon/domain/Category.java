@@ -1,4 +1,4 @@
-package coupon;
+package coupon.domain;
 
 public enum Category {
     FASHION,

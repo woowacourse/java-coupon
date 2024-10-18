@@ -1,4 +1,4 @@
-package coupon;
+package coupon.utils;
 
 import java.util.function.Supplier;
 
