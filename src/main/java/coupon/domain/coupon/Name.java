@@ -3,7 +3,6 @@ package coupon.domain.coupon;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,7 +34,7 @@ public class Name {
 
     private void validateLength(String value) {
         if (value.length() > MAX_LENGTH) {
-            throw new IllegalArgumentException("이름의 길이는 최대 30자 이하여야 합니다.");
+            throw new IllegalArgumentException("이름의 길이는 최대 " + MAX_LENGTH + "자 이하여야 합니다.");
         }
     }
 }

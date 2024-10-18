@@ -23,8 +23,8 @@ class NameTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @Nested
     @DisplayName("이름의 길이는 최대 30자 이하여야 한다.")
+    @Nested
     class validateLength {
 
         @ParameterizedTest
