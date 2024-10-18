@@ -33,7 +33,7 @@ public class CouponName {
     }
 
     private void validateNameLength(String name) {
-        if (name.isEmpty() || name.length() > MAX_LENGTH) {
+        if (name.isBlank() || name.length() > MAX_LENGTH) {
             throw new CouponException("쿠폰은 30자 이하의 이름을 설정해주세요.");
         }
     }
