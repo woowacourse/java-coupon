@@ -13,7 +13,7 @@ spring:
         show_sql: false
         use_sql_comments: true
 #        hbm2ddl.auto: validate
-        hbm2ddl.auto: create-drop
+        hbm2ddl.auto: update
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
