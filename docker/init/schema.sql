@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS coupon;
 USE coupon;
+
 CREATE TABLE IF NOT EXISTS coupon
 (
     id                  BIGINT PRIMARY KEY AUTO_INCREMENT,
