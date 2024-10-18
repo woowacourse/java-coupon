@@ -1,6 +1,4 @@
-package coupon.coupon;
-
-import static org.junit.jupiter.api.Assertions.*;
+package coupon.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

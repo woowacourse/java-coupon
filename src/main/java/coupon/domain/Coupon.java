@@ -1,9 +1,7 @@
-package coupon.coupon;
+package coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,13 +26,10 @@ public class Coupon {
 
     private int minimumOrderAmount;
 
-    @Column(nullable = false)
     private Category category;
 
-    @Column(nullable = false)
     private LocalDateTime issuanceStart;
 
-    @Column(nullable = false)
     private LocalDateTime issuanceEnd;
 
     public Coupon(String name, int discountAmount, int minimumOrderAmount, Category category,
@@ -74,7 +69,7 @@ public class Coupon {
     private void validateDiscountRate(int discountAmount, int minimumOrderAmount) {
         BigDecimal discountRate = new BigDecimal(discountAmount)
                 .divide(new BigDecimal(minimumOrderAmount), 2, RoundingMode.DOWN)
-                .multiply(new BigDecimal(100));  // 백분율 계산
+                .multiply(new BigDecimal(100));
 
         if (discountRate.compareTo(new BigDecimal(3)) < 0 || discountRate.compareTo(new BigDecimal(20)) > 0) {
             throw new IllegalArgumentException("할인율은 3% 이상 20% 이하이어야 합니다.");
