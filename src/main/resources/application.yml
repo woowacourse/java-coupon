@@ -32,3 +32,8 @@ coupon.datasource:
     username: root
     password: root
     maximumPoolSize: 10
+
+write-time-checker:
+  redis:
+    host: localhost
+    port: 36379
