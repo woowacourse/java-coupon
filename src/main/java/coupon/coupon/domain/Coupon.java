@@ -1,17 +1,30 @@
 package coupon.coupon.domain;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.time.LocalDate;
 
+@Entity
+@Getter
 public class Coupon {
 
     private  static final int MAX_NAME_LENGTH = 30;
 
-    private final String name;
-    private final Discount discount;
-    private final int minimumOrderAmount;
-    private final Category category;
-    private final LocalDate startAt;
-    private final LocalDate endAt;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private Discount discount;
+    private int minimumOrderAmount;
+    @Enumerated(EnumType.STRING)
+    private Category category;
+    private LocalDate startAt;
+    private LocalDate endAt;
+
+    protected Coupon() {
+
+    }
 
     public Coupon(String name, int price, int minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
         validateName(name);

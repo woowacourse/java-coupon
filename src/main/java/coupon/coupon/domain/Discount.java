@@ -1,9 +1,16 @@
 package coupon.coupon.domain;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class Discount {
 
-    private final int price;
-    private final int percent;
+    private int price;
+    private int percent;
+
+    protected Discount() {
+
+    }
 
     public Discount(int price, int minimumOrderAmount) {
         this.price = price;

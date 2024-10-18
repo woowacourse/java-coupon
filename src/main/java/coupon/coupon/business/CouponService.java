@@ -1,7 +1,6 @@
 package coupon.coupon.business;
 
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.entity.CouponEntity;
 import coupon.coupon.infrastructure.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,12 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
-    public CouponEntity create(Coupon coupon) {
-        return couponRepository.save(CouponEntity.from(coupon));
+    public void create(Coupon coupon) {
+        couponRepository.save(coupon);
     }
 
     public Coupon getCoupon(long id) {
-        CouponEntity couponEntity = couponRepository.findById(id)
+        return couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 쿠폰 조회 요청입니다. id = " + id));
-        return couponEntity.getCoupon();
     }
 }
