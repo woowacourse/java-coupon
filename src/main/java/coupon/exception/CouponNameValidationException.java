@@ -1,4 +1,4 @@
-package coupon.domain.exception;
+package coupon.exception;
 
 public class CouponNameValidationException extends CouponException {
     public CouponNameValidationException() {

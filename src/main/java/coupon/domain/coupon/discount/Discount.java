@@ -1,7 +1,7 @@
 package coupon.domain.coupon.discount;
 
-import coupon.domain.exception.DiscountPolicyValidationException;
-import coupon.domain.exception.DiscountPriceValidationException;
+import coupon.exception.DiscountPolicyValidationException;
+import coupon.exception.DiscountPriceValidationException;
 import jakarta.persistence.Embeddable;
 
 @Embeddable

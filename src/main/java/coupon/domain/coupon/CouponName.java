@@ -1,6 +1,6 @@
 package coupon.domain.coupon;
 
-import coupon.domain.exception.CouponNameValidationException;
+import coupon.exception.CouponNameValidationException;
 import jakarta.persistence.Embeddable;
 
 @Embeddable

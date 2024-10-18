@@ -1,4 +1,4 @@
-package coupon.domain.exception;
+package coupon.exception;
 
 public class MinOrderPriceValidationException extends CouponException {
     public MinOrderPriceValidationException() {

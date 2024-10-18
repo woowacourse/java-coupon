@@ -1,4 +1,4 @@
-package coupon.domain.exception;
+package coupon.exception;
 
 public class DiscountPolicyValidationException extends CouponException {
     private static final String MESSAGE = "할인 정책에 위반되는 설정값입니다. (minOrderPrice : %d | discountPrice : %d)";

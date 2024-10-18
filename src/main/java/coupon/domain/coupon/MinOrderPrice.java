@@ -1,7 +1,6 @@
 package coupon.domain.coupon;
 
-import coupon.domain.exception.CouponNameValidationException;
-import coupon.domain.exception.MinOrderPriceValidationException;
+import coupon.exception.MinOrderPriceValidationException;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
