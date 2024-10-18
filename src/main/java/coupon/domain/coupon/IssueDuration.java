@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class IssueDuration {
 
-    @Column(nullable = false)
+    @Column(name = "start_at", nullable = false)
     private LocalDateTime startAt;
 
-    @Column(nullable = false)
+    @Column(name = "end_at", nullable = false)
     private LocalDateTime endAt;
 
     public IssueDuration(LocalDateTime startAt, LocalDateTime endAt) {

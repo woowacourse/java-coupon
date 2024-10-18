@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import lombok.AccessLevel;
@@ -14,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "member_coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class MemberCoupon {
@@ -33,10 +35,10 @@ public class MemberCoupon {
     @Column(nullable = false)
     private boolean isUsed;
 
-    @Column(nullable = false)
+    @Column(name = "issued_at", nullable = false)
     private LocalDateTime issuedAt;
 
-    @Column(nullable = false)
+    @Column(name = "expired_at", nullable = false)
     private LocalDateTime expiredAt;
 
     public MemberCoupon(Coupon coupon, Member member, LocalDateTime issuedAt) {

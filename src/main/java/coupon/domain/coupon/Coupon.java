@@ -9,11 +9,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Coupon {
@@ -38,7 +40,7 @@ public class Coupon {
     @Column(nullable = false)
     private Category category;
 
-    @Column(nullable = false)
+    @Embedded
     private IssueDuration issueDuration;
 
     public Coupon(
