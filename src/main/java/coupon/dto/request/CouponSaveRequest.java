@@ -1,4 +1,4 @@
-package coupon.dto;
+package coupon.dto.request;
 
 import coupon.domain.Category;
 import coupon.domain.Coupon;
