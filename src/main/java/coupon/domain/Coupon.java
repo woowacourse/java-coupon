@@ -15,13 +15,13 @@ import java.time.LocalDate;
 @Entity
 public class Coupon {
     private static final int NAME_MAX_LENGTH = 30;
-    private static final int MIN_DISCOUNT_AMOUNT = 1_000;
-    private static final int MAX_DISCOUNT_AMOUNT = 10_000;
-    private static final int DISCOUNT_AMOUNT_UNIT = 500;
+    private static final Long MIN_DISCOUNT_AMOUNT = 1_000L;
+    private static final Long MAX_DISCOUNT_AMOUNT = 10_000L;
+    private static final Long DISCOUNT_AMOUNT_UNIT = 500L;
     private static final int MIN_DISCOUNT_RATE = 3;
     private static final int MAX_DISCOUNT_RATE = 20;
-    private static final int MIN_MINIMUM_AMOUNT = 5_000;
-    private static final int MAX_MINIMUM_AMOUNT = 100_000;
+    private static final Long MIN_MINIMUM_AMOUNT = 5_000L;
+    private static final Long MAX_MINIMUM_AMOUNT = 100_000L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,10 +56,10 @@ public class Coupon {
             LocalDate startIssueDate,
             LocalDate endIssueDate,
             Category category) {
-        validate(name, discountAmount, minimumAmount, startIssueDate, endIssueDate, category);
+        validate(name, minimumAmount, discountAmount, startIssueDate, endIssueDate, category);
         this.name = name;
-        this.discountAmount = discountAmount;
         this.minimumAmount = minimumAmount;
+        this.discountAmount = discountAmount;
         this.startIssueDate = startIssueDate;
         this.endIssueDate = endIssueDate;
         this.category = category;
@@ -145,5 +145,33 @@ public class Coupon {
         if (category == null) {
             throw new IllegalArgumentException("카테고리는 필수입니다.");
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getMinimumAmount() {
+        return minimumAmount;
+    }
+
+    public Long getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public LocalDate getStartIssueDate() {
+        return startIssueDate;
+    }
+
+    public LocalDate getEndIssueDate() {
+        return endIssueDate;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 }
