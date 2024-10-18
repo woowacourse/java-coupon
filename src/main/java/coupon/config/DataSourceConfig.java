@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-//@EnableTransactionManagement
 public class DataSourceConfig {
 
     @Bean
