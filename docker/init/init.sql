@@ -1,4 +1,8 @@
-CREATE TABLE coupon
+CREATE DATABASE IF NOT EXISTS coupon;
+
+USE coupon;
+
+CREATE TABLE IF NOT EXISTS coupon
 (
     id                     BIGINT AUTO_INCREMENT PRIMARY KEY,
     name                   VARCHAR(255) NOT NULL,
@@ -10,7 +14,7 @@ CREATE TABLE coupon
     updated_at             DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE member_coupon
+CREATE TABLE IF NOT EXISTS member_coupon
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     coupon_id  BIGINT   NOT NULL,
