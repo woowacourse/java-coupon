@@ -42,6 +42,8 @@ public class ReplicationDelayAspect {
         try {
             return joinPoint.proceed();
         } catch (IllegalArgumentException e) {
+            //read-only이고 IllegalArgumentException이 발생하는 경우
+            //reader가 아닌 writer DB에서 데이터를 읽어온다.
             transactionManager.getTransaction(transactionDefinition);
             return joinPoint.proceed();
         }
