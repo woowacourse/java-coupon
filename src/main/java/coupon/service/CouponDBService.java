@@ -1,29 +1,25 @@
 package coupon.service;
 
 import coupon.domain.Coupon;
-import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CouponDBService {
 
-    private final CouponWriteService couponWriteService;
-    private final CouponReadService couponReadService;
+    private final CouponWriter couponWriter;
+    private final CouponReader couponReader;
 
-    public CouponDBService(CouponWriteService couponWriteService, CouponReadService couponReadService) {
-        this.couponWriteService = couponWriteService;
-        this.couponReadService = couponReadService;
+    public CouponDBService(CouponWriter couponWriter, CouponReader couponReader) {
+        this.couponWriter = couponWriter;
+        this.couponReader = couponReader;
     }
 
     public Coupon create(Coupon coupon) {
-        return couponWriteService.save(coupon);
+        return couponWriter.save(coupon);
     }
 
     public Coupon findById(long id) {
-        try {
-            return couponReadService.findCoupon(id);
-        } catch (NoSuchElementException exception) {
-            return couponWriteService.findCoupon(id);
-        }
+        return couponReader.findCoupon(id)
+                .orElseGet(() -> couponWriter.findCoupon(id)); //reader에서 못찾으면 write db 조회
     }
 }

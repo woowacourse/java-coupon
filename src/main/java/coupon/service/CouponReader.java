@@ -2,22 +2,21 @@ package coupon.service;
 
 import coupon.domain.Coupon;
 import coupon.repository.CouponRepository;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional(readOnly = true)
-public class CouponReadService {
+public class CouponReader {
 
     private final CouponRepository couponRepository;
 
-    public CouponReadService(CouponRepository couponRepository) {
+    public CouponReader(CouponRepository couponRepository) {
         this.couponRepository = couponRepository;
     }
 
-    public Coupon findCoupon(long couponId) {
-        return couponRepository.findById(couponId)
-                .orElseThrow(() -> new NoSuchElementException("coupon with id " + couponId + " not found"));
+    public Optional<Coupon> findCoupon(long couponId) {
+        return couponRepository.findById(couponId);
     }
 }

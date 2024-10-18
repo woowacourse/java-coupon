@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional
-public class CouponWriteService {
+public class CouponWriter {
 
     private final CouponRepository couponRepository;
 
-    public CouponWriteService(CouponRepository couponRepository) {
+    public CouponWriter(CouponRepository couponRepository) {
         this.couponRepository = couponRepository;
     }
 
