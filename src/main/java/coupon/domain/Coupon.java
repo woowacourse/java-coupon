@@ -2,6 +2,8 @@ package coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,26 +28,28 @@ public class Coupon {
 
     private int minimumOrderAmount;
 
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR")
     private Category category;
 
-    private LocalDateTime issuanceStart;
+    private LocalDateTime startDate;
 
-    private LocalDateTime issuanceEnd;
+    private LocalDateTime endDate;
 
     public Coupon(String name, int discountAmount, int minimumOrderAmount, Category category,
-                  LocalDateTime issuanceStart, LocalDateTime issuanceEnd) {
+                  LocalDateTime startDate, LocalDateTime endDate) {
         validateName(name);
         validateDiscountAmount(discountAmount);
         validateMinimumOrderAmount(minimumOrderAmount);
         validateDiscountRate(discountAmount, minimumOrderAmount);
-        validateIssuancePeriod(issuanceStart, issuanceEnd);
+        validateIssuancePeriod(startDate, endDate);
 
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
         this.category = category;
-        this.issuanceStart = issuanceStart;
-        this.issuanceEnd = issuanceEnd;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     private void validateName(String name) {

@@ -20,8 +20,8 @@ public class CouponTest {
         assertThat(coupon.getDiscountAmount()).isEqualTo(1000);
         assertThat(coupon.getMinimumOrderAmount()).isEqualTo(5000);
         assertThat(coupon.getCategory()).isEqualTo(Category.FASHION);
-        assertThat(coupon.getIssuanceStart()).isEqualTo(start);
-        assertThat(coupon.getIssuanceEnd()).isEqualTo(end);
+        assertThat(coupon.getStartDate()).isEqualTo(start);
+        assertThat(coupon.getEndDate()).isEqualTo(end);
     }
 
     @Test
