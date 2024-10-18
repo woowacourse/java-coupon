@@ -56,7 +56,7 @@ public class Coupon {
     }
 
     private void validateName(String name) {
-        if (name == null || name.length() > 30) {
+        if (name == null || name.isEmpty() || name.length() > 30) {
             throw new IllegalArgumentException("Name cannot be null or more than 30");
         }
     }
@@ -84,7 +84,7 @@ public class Coupon {
 
     private void validateDiscountRate(int discountAmount, int minOrderAmount) {
         double discountRate = (double) 100 * discountAmount / minOrderAmount;
-        if (discountAmount < 3 || discountRate > 20) {
+        if (discountRate < 3 || discountRate > 20) {
             throw new IllegalArgumentException("Discount Rate cannot be less than 3% or more than 20%");
         }
     }
