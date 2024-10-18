@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class CouponWriterServiceTest {
+public class CouponServiceTest {
 
     @Autowired
-    private CouponWriterService couponWriterService;
+    private CouponService couponService;
 
     @Autowired
-    private CouponReaderService couponReaderService;
+    private ReaderService readerService;
 
     private Coupon coupon;
 
@@ -34,32 +34,34 @@ public class CouponWriterServiceTest {
     @Test
     void 방법1_읽기_시점_지연() throws InterruptedException {
         // when
-        Coupon saved = couponWriterService.saveCouponBefore(coupon);
+        Coupon saved = couponService.saveCouponBefore(coupon);
         Thread.sleep(2000);
 
         // then
-        Coupon coupon = couponReaderService.getCoupon(saved.getId());
+        Coupon coupon = readerService.read(() -> couponService.getCoupon(saved.getId()));
         assertThat(coupon).isEqualTo(saved);
 
         /* log
         1. 쿠폰 저장
-        2. reader DB 조회
+        2. Reader DB 접근
+        3. 쿠폰 조회 시도
          */
     }
 
     @Test
     void 방법2_예외_발생시_쓰기DB에서_읽기() {
         // when
-        Coupon saved = couponWriterService.saveCouponAfter(coupon);
+        Coupon saved = couponService.saveCouponAfter(coupon);
 
         // then
         assertThat(saved.getName()).isEqualTo(coupon.getName());
 
         /* log
-        1. 쿠폰 저장 후 조회
-        2. reader DB 조회
-        3. 저장 중 복제 지연 발생
-        4. writer DB 조회
+        1. 쿠폰 저장
+        2. 쿠폰 조회 시도
+        3. 쿠폰 조회 중 복제 지연 발생
+        4. Reader DB 접근
+        5. 쿠폰 조회
          */
     }
 }

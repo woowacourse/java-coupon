@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class CouponWriterService {
+public class CouponService {
 
     private final CouponRepository couponRepository;
-    private final CouponReaderService couponReaderService;
+    private final ReaderService readerService;
 
     @Transactional
     public Coupon saveCouponBefore(Coupon coupon) {
@@ -25,18 +25,18 @@ public class CouponWriterService {
     @Transactional
     public Coupon saveCouponAfter(Coupon coupon) {
         Coupon saved = couponRepository.save(coupon);
-        log.info("쿠폰 저장 후 조회: {}", saved.getId());
+        log.info("쿠폰 저장: {}", saved.getId());
         try {
-            return couponReaderService.getCoupon(saved.getId());
+            return readerService.read(() -> getCoupon(saved.getId()));
         } catch (IllegalArgumentException e) {
-            log.error("저장 중 복제 지연 발생: 쿠폰 {}", saved.getId());
+            log.error("쿠폰 조회 중 복제 지연 발생: {}", saved.getId());
             return getCoupon(saved.getId());
         }
     }
 
     @Transactional
     public Coupon getCoupon(Long couponId) {
-        log.info("writer DB에서 쿠폰 조회: {}", couponId);
+        log.info("쿠폰 조회: {}", couponId);
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다: %d".formatted(couponId)));
     }
