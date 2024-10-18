@@ -40,7 +40,7 @@ public class CouponEntity {
     @Column(name = "minimum_order_price", nullable = false)
     private Integer minimumOrderPrice;
 
-    @Column(name = "discout_percent", nullable = false)
+    @Column(name = "discount_percent", nullable = false)
     private Integer discountPercent;
 
     @Column(name = "category", nullable = false)
