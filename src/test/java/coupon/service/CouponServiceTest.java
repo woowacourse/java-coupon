@@ -35,21 +35,18 @@ class CouponServiceTest {
         Coupon savedCoupon = couponService.create(coupon);
 
         // when
-        Optional<Coupon> findResult = couponService.findById(savedCoupon.getId());
+        Coupon findResult = couponService.getById(savedCoupon.getId());
 
         // then
-        assertThat(findResult.get()).isEqualTo(savedCoupon);
+        assertThat(findResult).isEqualTo(savedCoupon);
     }
-
 
     @Test
     void 복제지연테스트() {
         Coupon coupon = new Coupon(1000L, 30000L);
-        Coupon coupon2 = couponService.create(coupon);
-        Optional<Coupon> savedCouponOp = couponService.findById(coupon2.getId());
-        Coupon saved = savedCouponOp.get();
-        System.out.println("saved = " + saved);
-        System.out.println("coupon2 = " + coupon2);
-        assertThat(saved).isNotNull();
+        Coupon saved = couponService.create(coupon);
+        Coupon find = couponService.getById(saved.getId());
+
+        assertThat(find).isNotNull();
     }
 }
