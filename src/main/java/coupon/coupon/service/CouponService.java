@@ -18,12 +18,12 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
-    public void create(CouponRequest couponRequest) {
+    public CouponEntity create(CouponRequest couponRequest) {
         Coupon coupon = new Coupon(
                 new CouponName(couponRequest.name()),
                 new DiscountPrice(couponRequest.discountPrice()),
                 new MinimumOrderPrice(couponRequest.minimumOrderPrice()),
-                new DiscountPrice(couponRequest.discountPrice() / couponRequest.minimumOrderPrice()),
+                new DiscountPercent(couponRequest.discountPrice() / couponRequest.minimumOrderPrice()),
                 couponRequest.category(),
                 new IssuePeriod(couponRequest.issuedAt(), couponRequest.expiresAt())
         );

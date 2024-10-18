@@ -7,7 +7,7 @@ public class Coupon {
     private final CouponName name;
     private final DiscountPrice discountPrice;
     private final MinimumOrderPrice minimumOrderPrice;
-    private final DiscountPrice discountPercent;
+    private final DiscountPercent discountPercent;
     private final Category category;
     private final IssuePeriod issuedPeriod;
 
@@ -15,7 +15,7 @@ public class Coupon {
             CouponName name,
             DiscountPrice discountPrice,
             MinimumOrderPrice minimumOrderPrice,
-            DiscountPrice discountPercent,
+            DiscountPercent discountPercent,
             Category category,
             IssuePeriod issuedPeriod
     ) {
@@ -40,7 +40,7 @@ public class Coupon {
     }
 
     public int getDiscountPercent() {
-        return discountPercent.price();
+        return discountPercent.percent();
     }
 
     public Category getCategory() {

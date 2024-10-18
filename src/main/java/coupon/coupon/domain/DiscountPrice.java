@@ -17,7 +17,7 @@ public record DiscountPrice(int price) {
         if (discountPrice > MAX_LENGTH) {
             throw new IllegalArgumentException("할인 금액은 " + MAX_LENGTH + "원 이하여야 한다.");
         }
-        if (discountPrice % UNIT == 0) {
+        if (discountPrice % UNIT != 0) {
             throw new IllegalArgumentException("할인 금액은 " + UNIT + "원 단위로 설정할 수 있다.");
         }
     }
