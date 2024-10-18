@@ -11,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import coupon.config.BaseTimeEntity;
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
 import lombok.AccessLevel;
@@ -26,7 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-public class CouponEntity extends BaseTimeEntity {
+public class CouponEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +40,7 @@ public class CouponEntity extends BaseTimeEntity {
     @Column(name = "minimum_order_price", nullable = false)
     private Integer minimumOrderPrice;
 
-    @Column(name = "discout_price", nullable = false)
+    @Column(name = "discout_percent", nullable = false)
     private Integer discountPercent;
 
     @Column(name = "category", nullable = false)

@@ -11,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import coupon.config.BaseTimeEntity;
 import coupon.coupon.domain.entity.CouponEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-public class MemberCoupon extends BaseTimeEntity {
+public class MemberCoupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
