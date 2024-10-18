@@ -9,8 +9,8 @@ final class DataSourceRouter extends AbstractRoutingDataSource {
     protected Object determineCurrentLookupKey() {
         boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
         if (readOnly) {
-            return "read";
+            return DataSourceConfig.READ;
         }
-        return "write";
+        return DataSourceConfig.WRITE;
     }
 }

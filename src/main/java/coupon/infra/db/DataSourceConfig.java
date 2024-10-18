@@ -17,6 +17,9 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 @EnableRedisRepositories(basePackages = "coupon.infra.db.redis")
 class DataSourceConfig {
 
+    static final String WRITE = "write";
+    static final String READ = "read";
+
     @Bean
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     DataSource writeDataSource() {
@@ -36,8 +39,8 @@ class DataSourceConfig {
         DataSource readDataSource = readDataSource();
 
         Map<Object, Object> dataSourceMap = Map.of(
-                "write", writeDataSource,
-                "read", readDataSource
+                WRITE, writeDataSource,
+                READ, readDataSource
         );
         dataSourceRouter.setTargetDataSources(dataSourceMap);
         dataSourceRouter.setDefaultTargetDataSource(writeDataSource);
