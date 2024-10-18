@@ -22,10 +22,17 @@ class CouponApplicationTests {
     }
 
     @Test
-    void a() {
+    void findCouponForPresident() {
+        Coupon coupon = couponService.createCoupon(new Coupon("쿠폰1"));
+        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        assertThat(savedCoupon).isNotNull();
+    }
+
+    @Test
+    void findCouponForCustomer() {
         Coupon coupon = couponService.createCoupon(new Coupon("쿠폰1"));
         Coupon savedCoupon = couponQueryService.getCoupon(coupon.getId());
-        assertThat(savedCoupon).isNotNull();
+        assertThat(savedCoupon).isNull(); // 지연되도 괜찮다고 판단.
     }
 
 }
