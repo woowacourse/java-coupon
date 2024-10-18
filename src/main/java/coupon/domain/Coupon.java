@@ -56,7 +56,7 @@ public class Coupon {
 
     public Coupon(String name, Integer discount, Integer minOrderPrice, Category category,
                   LocalDateTime issuableFrom, LocalDateTime issuableTo) {
-        this(name, discount, discount / minOrderPrice, minOrderPrice, category, issuableFrom, issuableTo);
+        this(name, discount, discount * 100 / minOrderPrice, minOrderPrice, category, issuableFrom, issuableTo);
     }
 
     protected Coupon() {}
