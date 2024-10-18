@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class CouponName {
-    private static final int MAX_LENGTH = 30;
+    protected static final int MAX_LENGTH = 30;
 
     @Column(nullable = false)
     private String name;

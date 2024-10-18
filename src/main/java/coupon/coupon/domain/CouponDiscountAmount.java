@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class CouponDiscountAmount {
-    private static final Long MIN_AMOUNT = 1000L;
-    private static final Long MAX_AMOUNT = 10000L;
-    private static final Long INCREMENT_UNIT = 500L;
+    protected static final Long MIN_DISCOUNT_AMOUNT = 1000L;
+    protected static final Long MAX_DISCOUNT_AMOUNT = 10000L;
+    protected static final Long INCREMENT_UNIT = 500L;
 
     @Column(nullable = false)
     private Long discountAmount;
@@ -30,8 +30,8 @@ public class CouponDiscountAmount {
     }
 
     private void validateRange(Long discountAmount) {
-        if (discountAmount < MIN_AMOUNT || discountAmount > MAX_AMOUNT) {
-            throw new IllegalArgumentException("할인 금액은 " + MIN_AMOUNT + "원 이상, " + MAX_AMOUNT + "원 이하여야 합니다.");
+        if (discountAmount < MIN_DISCOUNT_AMOUNT || discountAmount > MAX_DISCOUNT_AMOUNT) {
+            throw new IllegalArgumentException("할인 금액은 " + MIN_DISCOUNT_AMOUNT + "원 이상, " + MAX_DISCOUNT_AMOUNT + "원 이하여야 합니다.");
         }
     }
 

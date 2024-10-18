@@ -2,11 +2,12 @@ package coupon.coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import static coupon.coupon.domain.CouponName.MAX_LENGTH;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class CouponNameTest {
-    private static final int MAX_LENGTH = 30;
 
     @DisplayName("쿠폰 이름이 공백이면, 예외를 발생한다.")
     @Test
