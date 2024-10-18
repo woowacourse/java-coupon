@@ -11,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 import lombok.AccessLevel;
@@ -20,6 +21,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
@@ -33,13 +35,13 @@ public class Coupon {
     @Embedded
     private Name name;
 
-    @Column(nullable = false)
+    @Column(name = "discount_amount", nullable = false)
     private long discountAmount;
 
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @Column(nullable = false)
+    @Column(name = "minimum_order_price", nullable = false)
     private long minimumOrderPrice;
 
     @Embedded

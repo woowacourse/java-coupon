@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import lombok.Getter;
@@ -17,7 +18,10 @@ public class IssuePeriod {
     private static final LocalTime START_AT_TIME = LocalTime.of(0, 0, 0, 0);
     private static final LocalTime END_AT_TIME = LocalTime.of(23, 59, 59, 999999);
 
+    @Column(name = "issue_start_at", nullable = false)
     private LocalDateTime issueStartAt;
+
+    @Column(name = "issue_end_at", nullable = false)
     private LocalDateTime issueEndAt;
 
     public IssuePeriod(LocalDate issueStartAt, LocalDate issueEndAt) {
