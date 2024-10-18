@@ -1,0 +1,12 @@
+discount:
+  discount_min_price: 1000
+  discount_max_price: 10000
+  discount_unit: 500
+discount-rate:
+  min_rate: 3
+  max_rate: 20
+minimum-order-price:
+  lower_price: 5_000
+  upper_price: 100_000
+
+
