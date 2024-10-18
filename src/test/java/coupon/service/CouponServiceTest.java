@@ -35,4 +35,12 @@ public class CouponServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("존재하지 않는 쿠폰입니다.");
     }
+
+    @Test
+    void 복제지연테스트() {
+        Coupon coupon = new Coupon("쿠폰", 1000, 10000, Category.FOOD, LocalDateTime.now(), LocalDateTime.now().plusDays(2));
+        couponService.create(coupon);
+        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        assertThat(savedCoupon).isNotNull();
+    }
 }
