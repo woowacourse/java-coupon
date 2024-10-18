@@ -1,6 +1,7 @@
 package coupon.coupon.domain;
 
 import java.util.Objects;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import coupon.coupon.CouponException;
 
@@ -9,6 +10,7 @@ public class CouponName {
 
     private static final int MAX_LENGTH = 30;
 
+    @Column(nullable = false, length = 30)
     private String name;
 
     protected CouponName() {

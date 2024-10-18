@@ -2,6 +2,7 @@ package coupon.coupon.domain;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,10 +25,13 @@ public class MemberCoupon {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(nullable = false)
     private boolean used;
 
+    @Column(nullable = false)
     private LocalDateTime issuedAt;
 
+    @Column(nullable = false)
     private LocalDateTime expiredAt;
 
     protected MemberCoupon() {

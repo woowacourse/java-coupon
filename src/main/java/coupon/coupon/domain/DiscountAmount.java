@@ -2,6 +2,7 @@ package coupon.coupon.domain;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import coupon.coupon.CouponException;
 
@@ -12,6 +13,7 @@ public class DiscountAmount {
     private static final BigDecimal MINIMUM_DISCOUNT_AMOUNT = BigDecimal.valueOf(1000);
     private static final BigDecimal MAXIMUM_DISCOUNT_AMOUNT = BigDecimal.valueOf(10000);
 
+    @Column(nullable = false)
     private BigDecimal discountAmount;
 
     protected DiscountAmount() {

@@ -1,14 +1,17 @@
-
 package coupon.coupon.domain;
 
 import java.time.LocalDate;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import coupon.coupon.CouponException;
 
 @Embeddable
 public class Term {
 
+    @Column(nullable = false)
     private LocalDate startAt;
+
+    @Column(nullable = false)
     private LocalDate endAt;
 
     protected Term() {
