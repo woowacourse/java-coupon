@@ -25,7 +25,13 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
-    public Coupon findCoupon(Long couponId) {
+    public Coupon findCouponById(Long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
+    }
+
+    @Transactional
+    public Coupon findCouponByIdWithNoLag(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
     }

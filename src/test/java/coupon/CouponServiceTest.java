@@ -1,6 +1,7 @@
 package coupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.service.CouponService;
@@ -15,17 +16,20 @@ public class CouponServiceTest {
     @Autowired
     private CouponService couponService;
 
-    @DisplayName("복제 지연 테스트")
+    @DisplayName("reader DB에서 조회 시 복제 지연이 발생한다.")
     @Test
     void replicationLag() {
         Long couponId = couponService.createCoupon();
-        Coupon savedCoupon = couponService.findCoupon(couponId);
-        assertThat(savedCoupon).isNotNull();
+        assertThatThrownBy(() -> couponService.findCouponById(couponId))
+                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("쿠폰이 존재하지 않습니다.");
     }
 
+    @DisplayName("writer DB에서 바로 조회 시 복제 지연이 발생하지 않는다.")
     @Test
-    void findById() {
-        Coupon coupon = couponService.findCoupon(1L);
-        assertThat(coupon).isNotNull();
+    void noReplicationLag() {
+        Long couponId = couponService.createCoupon();
+        Coupon savedCoupon = couponService.findCouponByIdWithNoLag(couponId);
+        assertThat(savedCoupon).isNotNull();
     }
 }
