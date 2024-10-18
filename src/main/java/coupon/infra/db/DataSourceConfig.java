@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "coupon")
+@EnableJpaRepositories(basePackages = "coupon.infra.db.jpa")
+@EnableRedisRepositories(basePackages = "coupon.infra.db.redis")
 public class DataSourceConfig {
 
     @Bean

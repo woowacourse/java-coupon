@@ -10,10 +10,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
 
 @Getter
 @Entity
 @Table(name = "coupon")
+@RedisHash(value = "coupon", timeToLive = -1L)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CouponEntity {
