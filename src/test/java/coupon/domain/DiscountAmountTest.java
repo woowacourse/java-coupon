@@ -18,4 +18,13 @@ class DiscountAmountTest {
 
         assertThat(discountAmount).isEqualTo(new DiscountAmount(amount));
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = {999, 10001})
+    @DisplayName("할인 금액이 1,000원 이상 ~ 10,000원 이하가 아니라면 예외가 발생한다.")
+    void invalidDiscountAmount(int amount) {
+        assertThatThrownBy(() -> new DiscountAmount(amount))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("할인 금액은 1,000원 이상 ~ 10,000원 이하여야 합니다.");
+    }
 }
