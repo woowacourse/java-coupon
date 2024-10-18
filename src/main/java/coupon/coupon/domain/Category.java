@@ -26,4 +26,8 @@ public enum Category {
     private boolean isCategoryMatch(String category) {
         return this.category.equals(category);
     }
+
+    public String getValue() {
+        return category;
+    }
 }

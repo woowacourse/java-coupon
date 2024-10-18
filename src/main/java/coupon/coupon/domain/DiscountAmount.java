@@ -52,6 +52,10 @@ public class DiscountAmount {
         return (discountAmount * VALUE_TO_MAKE_DISCOUNT_RATE) / minOrderAmount;
     }
 
+    public int getValue() {
+        return discountAmount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

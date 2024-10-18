@@ -3,7 +3,6 @@ package coupon.coupon.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -11,7 +10,6 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Getter
 public class Coupon {
 
     @Id
@@ -39,5 +37,29 @@ public class Coupon {
         this.minOrderAmount = new MinOrderAmount(minOrderAmount);
         this.category = Category.from(category);
         this.period = new Period(startDate, endDate);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name.getValue();
+    }
+
+    public int getDiscountAmount() {
+        return discountAmount.getValue();
+    }
+
+    public int getMinOrderAmount() {
+        return minOrderAmount.getValue();
+    }
+
+    public String getCategory() {
+        return category.getValue();
+    }
+
+    public Period getPeriod() {
+        return period;
     }
 }

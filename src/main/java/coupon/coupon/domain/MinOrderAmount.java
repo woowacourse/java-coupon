@@ -26,6 +26,10 @@ public class MinOrderAmount {
         }
     }
 
+    public int getValue() {
+        return minOrderAmount;
+    }
+
     @Override
     public boolean equals(Object o) {
 
