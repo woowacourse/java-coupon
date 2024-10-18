@@ -15,6 +15,7 @@ services:
     container_name: mysql_writer
     restart: always
     environment:
+      MYSQL_DATABASE: coupon
       MYSQL_ROOT_PASSWORD: root
       TZ: Asia/Seoul
 
@@ -32,6 +33,7 @@ services:
       - ./data/reader:/var/lib/mysql
     container_name: mysql_reader
     environment:
+      MYSQL_DATABASE: coupon
       MYSQL_ROOT_PASSWORD: root
       TZ: Asia/Seoul
     depends_on:
