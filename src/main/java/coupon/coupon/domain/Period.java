@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.coupon.domain;
 
 import java.time.LocalDate;
 import java.util.Objects;

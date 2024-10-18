@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.coupon.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
