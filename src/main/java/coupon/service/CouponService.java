@@ -1,7 +1,5 @@
 package coupon.service;
 
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -15,18 +13,15 @@ import coupon.repository.CouponRepository;
 public class CouponService {
 
     private final CouponRepository couponRepository;
-    private final CacheManager cacheManager;
 
-    public CouponService(CouponRepository couponRepository, CacheManager cacheManager) {
+    public CouponService(CouponRepository couponRepository) {
         this.couponRepository = couponRepository;
-        this.cacheManager = cacheManager;
     }
 
     @Transactional
-    public void create(Coupon coupon) {
-        couponRepository.save(coupon);
-        Cache cache = cacheManager.getCache("coupon");
-        cache.put(coupon.getId(), coupon);
+    @CachePut(value = "coupon", key = "#result.id")
+    public Coupon create(Coupon coupon) {
+        return couponRepository.save(coupon);
     }
 
     @Cacheable(value = "coupon", key = "#id")
