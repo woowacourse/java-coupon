@@ -28,10 +28,10 @@ public class CouponServiceTest {
     }
 
     @Test
-    void test() {
+    void readWithoutLagTest() {
         Coupon coupon = new Coupon("coupon", 1000, 10000, Category.FOODS, LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1));
         couponService.create(coupon);
-        Coupon savedCoupon = couponService.getCouponWithWriter(coupon.getId());
+        Coupon savedCoupon = couponService.getCouponWithoutLag(coupon.getId());
         assertThat(savedCoupon.getId()).isEqualTo(coupon.getId());
     }
 }

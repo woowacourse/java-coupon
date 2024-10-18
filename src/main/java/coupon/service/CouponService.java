@@ -1,5 +1,6 @@
 package coupon.service;
 
+import coupon.config.ReadWithoutLag;
 import coupon.domain.Coupon;
 import coupon.repository.CouponRepository;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,9 @@ public class CouponService {
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Coupon with id %d does not exists", id)));
     }
 
-    @Transactional
-    public Coupon getCouponWithWriter(Long id) {
+    @ReadWithoutLag
+    @Transactional(readOnly = true)
+    public Coupon getCouponWithoutLag(Long id) {
         return couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Coupon with id %d does not exists", id)));
     }
