@@ -42,7 +42,6 @@ public class DiscountAmount {
 
     private void validateDiscountRate(int discountAmount, int minimumOrderAmount) {
         int discountRate = discountAmount * 100 / minimumOrderAmount;
-        System.out.println(discountRate);
         if (discountRate < MIN_DISCOUNT_RATE) {
             throw new IllegalArgumentException("할인율은 3% 이상이어야 합니다.");
         }
