@@ -15,6 +15,8 @@ spring:
         hbm2ddl.auto: validate
         check_nullability: true
         query.in_clause_parameter_padding: true
+        hbm2ddl:
+          auto: create
     open-in-view: false
 
 coupon.datasource:
