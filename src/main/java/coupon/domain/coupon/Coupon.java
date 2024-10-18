@@ -8,15 +8,19 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDateTime;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Table(name = "coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
+
+    private static final int MIN_RATE = 3;
+    private static final int MAX_RATE = 20;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +42,31 @@ public class Coupon {
     @Embedded
     private IssuancePeriod issuancePeriod;
 
-    public Coupon(int discountAmount, int minimumOrderAmount) {
-        this.name = new Name("쿠폰 이름");
-        this.discountAmount = new DiscountAmount(discountAmount);
-        this.minOrderAmount = new MinOrderAmount(minimumOrderAmount);
-        this.issuancePeriod = new IssuancePeriod(LocalDateTime.now(), LocalDateTime.now());
+    public Coupon(
+            Long id,
+            Name name,
+            DiscountAmount discountAmount,
+            MinOrderAmount minOrderAmount,
+            Category category,
+            IssuancePeriod issuancePeriod
+    ) {
+        validateDiscountRate(discountAmount, minOrderAmount);
+        this.id = id;
+        this.name = name;
+        this.discountAmount = discountAmount;
+        this.minOrderAmount = minOrderAmount;
+        this.category = category;
+        this.issuancePeriod = issuancePeriod;
+    }
+
+    private void validateDiscountRate(DiscountAmount discountAmount, MinOrderAmount minOrderAmount) {
+        int rate = calculateDiscountRate(discountAmount, minOrderAmount);
+        if (rate < MIN_RATE || rate > MAX_RATE) {
+            throw new IllegalArgumentException("할인율은 " + MIN_RATE + "% 이상, " + MAX_RATE + "% 이하여야 합니다.");
+        }
+    }
+
+    private int calculateDiscountRate(DiscountAmount discountAmount, MinOrderAmount minOrderAmount) {
+        return (int) ((double) discountAmount.getValue() / minOrderAmount.getValue() * 100);
     }
 }
