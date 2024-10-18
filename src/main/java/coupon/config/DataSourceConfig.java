@@ -4,6 +4,7 @@ import coupon.config.replication.ReplicationRoutingSource;
 import coupon.config.replication.ReplicationType;
 import java.util.Map;
 import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +28,8 @@ public class DataSourceConfig {
     }
 
     @Bean
-    public DataSource routingDataSource(DataSource writeDataSource, DataSource readDataSource) {
+    public DataSource routingDataSource(@Qualifier("writeDataSource") DataSource writeDataSource,
+                                        @Qualifier("readDataSource") DataSource readDataSource) {
         Map<Object, Object> dataSources = Map.of(
                 ReplicationType.SOURCE, writeDataSource,
                 ReplicationType.REPLICA, readDataSource
