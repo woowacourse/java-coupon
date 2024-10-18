@@ -1,4 +1,4 @@
-package config;
+package coupon.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import java.util.HashMap;

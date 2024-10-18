@@ -1,4 +1,4 @@
-package config;
+package coupon.config;
 
 public enum DataSourceType {
     WRITER, READER;
