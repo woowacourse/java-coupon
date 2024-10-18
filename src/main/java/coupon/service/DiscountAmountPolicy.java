@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DiscountAmountPolicy implements DiscountPolicy {
 
-    private static final int MIN_FIXED_AMOUNT = 5_000;
-    private static final int MAX_FIXED_AMOUNT = 100_000;
+    private static final int MIN_FIXED_AMOUNT = 1_000;
+    private static final int MAX_FIXED_AMOUNT = 10_000;
     private static final int FIXED_AMOUNT_UNIT = 500;
 
     @Override
