@@ -43,7 +43,7 @@ public class CouponEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "category", nullable = false)
+    @Column(name = "category", nullable = false, columnDefinition = "VARCHAR(255)")
     @Enumerated(EnumType.STRING)
     private Category category;
 
