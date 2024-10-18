@@ -26,4 +26,9 @@ public class CouponService {
 
         return couponRepository.save(coupon);
     }
+
+    @Transactional
+    public Coupon getById(long couponId) {
+        return couponRepository.getById(couponId);
+    }
 }
