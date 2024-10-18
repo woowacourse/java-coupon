@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final TransactionService transactionService;
 
     @Transactional
     public Coupon create(final Coupon coupon) {
@@ -20,6 +21,8 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(final long id) {
-        return couponRepository.findById(id).orElse(null);
+        return couponRepository.findById(id)
+                .orElseGet(() -> transactionService.run(() -> couponRepository.findById(id))
+                .orElseThrow(() -> new IllegalArgumentException("ID가 %d인 쿠폰이 없습니다.")));
     }
 }

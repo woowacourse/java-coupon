@@ -16,19 +16,24 @@ import coupon.service.CouponService;
 public class CouponServiceTest {
 
     @Autowired
-    private CouponService couponService;
+    private CouponService sut;
 
     @Test
     void 복제지연테스트() {
-        Coupon coupon = new Coupon(
+        // given
+        var coupon = new Coupon(
                 "쿠폰 이름",
                 1000L,
                 10000L,
                 Category.FASHION,
                 LocalDate.now(),
                 LocalDate.now().plusDays(1L));
-        coupon = couponService.create(coupon);
-        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        coupon = sut.create(coupon);
+
+        // when
+        var savedCoupon = sut.getCoupon(coupon.getId());
+
+        // then
         assertThat(savedCoupon).isNotNull();
     }
 }
