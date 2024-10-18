@@ -1,20 +1,26 @@
 package coupon.coupon.domain;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import coupon.common.audit.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "coupon")
 public class Coupon extends BaseTimeEntity {
 
     @Id
@@ -40,4 +46,19 @@ public class Coupon extends BaseTimeEntity {
     @Column(name = "issuance_period", nullable = false)
     @Embedded
     private IssuancePeriod issuancePeriod;
+
+    public Coupon(
+            final String name,
+            final Long discountAmount,
+            final Double discountRate,
+            final Integer minimumOrderAmount,
+            final LocalDate issueStartDate,
+            final LocalDate issueEndDate
+    ) {
+        this.name = new Name(name);
+        this.discountAmount = new DiscountAmount(discountAmount);
+        this.discountRate = new DiscountRate(discountRate);
+        this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
+        this.issuancePeriod = new IssuancePeriod(issueStartDate, issueEndDate);
+    }
 }
