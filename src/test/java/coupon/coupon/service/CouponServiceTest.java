@@ -1,6 +1,7 @@
 package coupon.coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import coupon.coupon.domain.CouponCategory;
 import coupon.coupon.domain.CouponEntity;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class CouponServiceTest {
@@ -21,7 +21,6 @@ class CouponServiceTest {
     @Autowired
     private CouponRepository couponRepository;
 
-    @Transactional
     @Test
     void 쿠폰을_생성한다() {
         // given
@@ -33,7 +32,26 @@ class CouponServiceTest {
                 couponStartAt, couponStartAt.plusDays(1));
 
         // then
-        CouponEntity actual = couponRepository.findById(couponId).get();
+        CouponEntity actual = couponService.getCoupon(couponId);
         assertThat(actual.getCouponName()).isEqualTo(couponName);
+    }
+
+    @Test
+    void 쿠폰을_조회한다() {
+        // given
+        String couponName = "couponName";
+        LocalDateTime couponStartAt = LocalDateTime.of(1, 1, 1, 1, 1);
+        CouponEntity coupon = couponRepository.save(
+                new CouponEntity("couponName", 5000, 50000, CouponCategory.FOOD,
+                        couponStartAt, couponStartAt.plusDays(1)));
+
+        // when
+        CouponEntity actual = couponService.getCoupon(coupon.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(actual.getId()).isEqualTo(coupon.getId()),
+                () -> assertThat(actual.getCouponName()).isEqualTo(couponName)
+        );
     }
 }

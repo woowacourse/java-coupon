@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final CouponBackupService couponBackupService;
 
     private final CouponDiscountAmountValidator couponDiscountAmountValidator;
     private final CouponMinOrderAmountValidator couponMinOrderAmountValidator;
@@ -31,5 +32,11 @@ public class CouponService {
 
         CouponEntity couponEntity = couponRepository.save(CouponEntity.mapDomainToEntity(coupon));
         return couponEntity.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public CouponEntity getCoupon(long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseGet(() -> couponBackupService.getCouponFromWriter(couponId));
     }
 }
