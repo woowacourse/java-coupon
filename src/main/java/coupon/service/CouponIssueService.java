@@ -2,12 +2,9 @@ package coupon.service;
 
 import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.IssuedCoupon;
-import coupon.domain.member.Member;
-import coupon.repository.CouponEntity;
 import coupon.repository.CouponRepository;
 import coupon.repository.IssuedCouponEntity;
 import coupon.repository.IssuedCouponRepository;
-import coupon.repository.MemberEntity;
 import coupon.repository.MemberRepository;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
