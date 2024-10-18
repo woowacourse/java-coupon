@@ -62,7 +62,7 @@ public class CouponServiceTest extends ServiceTest {
             String wrongName = savedCoupon.getName().getName();
             assertThat(wrongName).isNotEqualTo(rightName);
             log.info("EntityManager가 인지한 id 값: " + savedCoupon.getId());
-            log.info("복제지연 테스트 성공: 30초 전에 생성한 결과 남아있어서 조회는 되지만, 방금 저장한 값이 아님");
+            log.info("복제지연 테스트 성공: 전에 생성한 결과 readDB엔 남아있어서 조회는 되지만, 방금 저장한 값이 아님");
             log.info("readDB에 남아있어 잘못 조회된 값: " + wrongName + " 방금 저장한 값: " + rightName);
         } catch (InvalidDataAccessResourceUsageException e) {
             log.info("복제지연 테스트 성공: 최초 실행이라 테이블이 아예 없는 상태임");
