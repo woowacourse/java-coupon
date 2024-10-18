@@ -2,12 +2,14 @@ DROP DATABASE IF EXISTS coupon;
 CREATE DATABASE coupon;
 USE coupon;
 
-CREATE TABLE IF NOT EXISTS Member (
+DROP TABLE IF EXISTS Member;
+CREATE TABLE Member (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Coupon (
+DROP TABLE IF EXISTS Coupon;
+CREATE TABLE Coupon (
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         name VARCHAR(30) NOT NULL,
                         discount_amount INT NOT NULL,
@@ -17,7 +19,8 @@ CREATE TABLE IF NOT EXISTS Coupon (
                         end_date DATETIME NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS MemberCoupon (
+DROP TABLE IF EXISTS MemberCoupon;
+CREATE TABLE MemberCoupon (
                               id BIGINT AUTO_INCREMENT PRIMARY KEY,
                               coupon_id BIGINT NOT NULL,
                               member_id BIGINT NOT NULL,
