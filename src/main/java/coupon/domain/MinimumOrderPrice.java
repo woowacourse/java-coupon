@@ -17,4 +17,8 @@ public class MinimumOrderPrice {
             throw new IllegalArgumentException("유효하지 않은 최소 주문 금액입니다.");
         }
     }
+
+    public int getAmount() {
+        return amount;
+    }
 }

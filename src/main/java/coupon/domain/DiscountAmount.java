@@ -25,4 +25,8 @@ public class DiscountAmount {
             throw new IllegalArgumentException("유효하지 않은 할인 금액 단위입니다.");
         }
     }
+
+    public int getAmount() {
+        return amount;
+    }
 }

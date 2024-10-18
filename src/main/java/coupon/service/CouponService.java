@@ -16,8 +16,10 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final TransactionSupporter transactionSupporter;
 
-    public CouponEntity create(CouponEntity coupon) {
-        return couponRepository.save(coupon);
+    public Coupon create(Coupon coupon) {
+        CouponEntity couponEntity = CouponEntity.from(coupon.getDiscountAmount(), coupon.getMinimumOrderPrice());
+        CouponEntity savedCoupon = couponRepository.save(couponEntity);
+        return savedCoupon.toCoupon();
     }
 
     @Transactional(readOnly = true)

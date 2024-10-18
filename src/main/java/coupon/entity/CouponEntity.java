@@ -25,11 +25,11 @@ public class CouponEntity {
         this.minimumOrderPrice = minimumOrderPrice;
     }
 
-    public Coupon toCoupon() {
-        return new Coupon(discountAmount, minimumOrderPrice);
+    public static CouponEntity from(int discountAmount, int minimumOrderPrice) {
+        return new CouponEntity(discountAmount, minimumOrderPrice);
     }
 
-    public Long getId() {
-        return id;
+    public Coupon toCoupon() {
+        return new Coupon(id, discountAmount, minimumOrderPrice);
     }
 }
