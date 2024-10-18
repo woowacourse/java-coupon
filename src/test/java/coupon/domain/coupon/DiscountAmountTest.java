@@ -1,7 +1,9 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import coupon.domain.MinimumOrderAmount;
 import coupon.exception.CouponException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

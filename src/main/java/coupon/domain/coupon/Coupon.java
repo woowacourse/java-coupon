@@ -1,5 +1,6 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
+import coupon.domain.MinimumOrderAmount;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

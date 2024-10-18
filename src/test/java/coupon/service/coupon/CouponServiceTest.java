@@ -1,8 +1,8 @@
-package coupon.service;
+package coupon.service.coupon;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import coupon.domain.Coupon;
+import coupon.domain.coupon.Coupon;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
 import coupon.exception.CouponException;
 import jakarta.persistence.Column;

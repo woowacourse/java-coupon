@@ -1,7 +1,7 @@
-package coupon.service;
+package coupon.service.coupon;
 
-import coupon.domain.Coupon;
-import coupon.domain.CouponRepository;
+import coupon.domain.coupon.Coupon;
+import coupon.domain.coupon.CouponRepository;
 import coupon.exception.CouponException;
 import coupon.support.TransactionSupport;
 import lombok.AllArgsConstructor;
