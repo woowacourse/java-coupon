@@ -1,6 +1,5 @@
-package membercoupon.domain;
+package coupon.domain;
 
-import coupon.domain.Coupon;
 import coupon.exception.CouponException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +28,6 @@ public class MemberCoupon {
     private Long memberId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @Column(nullable = false)
     private Coupon coupon;
 
     @Column(nullable = false)

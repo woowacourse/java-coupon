@@ -1,10 +1,9 @@
-package membercoupon.domain;
+package coupon.domain;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import coupon.domain.Coupon;
 import coupon.exception.CouponException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
