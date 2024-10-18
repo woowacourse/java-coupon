@@ -38,6 +38,30 @@ public class CouponServiceTest extends ServiceTest {
     }
 
     @Test
+    void 생성후_시간이_흐르고서_쿠폰을_조회할_수_있다() throws InterruptedException {
+        // given
+        Thread.sleep(1000); // 테이블 초기화가 read db 에도 전파될 때까지 대기
+        LocalDateTime stamp = LocalDateTime.now();
+        String rightName = "조회용" + stamp;
+        Coupon coupon = new Coupon(
+                rightName,
+                BigDecimal.valueOf(1000),
+                BigDecimal.valueOf(10000),
+                CouponCategory.FOOD,
+                LocalDate.of(2000, 4, 7),
+                LocalDate.of(2000, 4, 12)
+        );
+        couponService.create(coupon);
+
+        // when
+        Thread.sleep(5000); // 복제지연 대기
+        Coupon findCoupon = couponService.getCoupon(coupon.getId());
+
+        // then
+        assertThat(findCoupon.getName().getName()).isEqualTo(rightName);
+    }
+
+    @Test
     void 생성하자마자_쿠폰을_조회할_때_복제_지연이_발생한다() {
         // given
         LocalDateTime stamp = LocalDateTime.now();
