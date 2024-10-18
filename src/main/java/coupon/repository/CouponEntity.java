@@ -10,8 +10,10 @@ import jakarta.persistence.Id;
 
 import coupon.domain.Coupon;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

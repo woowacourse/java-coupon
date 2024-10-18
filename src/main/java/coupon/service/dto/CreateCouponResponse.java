@@ -2,9 +2,10 @@ package coupon.service.dto;
 
 import java.time.LocalDateTime;
 
-import coupon.domain.Coupon;
+import coupon.repository.CouponEntity;
 
 public record CreateCouponResponse(
+        long id,
         String couponName,
         long discountAmount,
         long discountRate,
@@ -13,14 +14,15 @@ public record CreateCouponResponse(
         LocalDateTime expirationDate
 ) {
 
-    public static CreateCouponResponse from(final Coupon coupon) {
+    public static CreateCouponResponse from(final CouponEntity couponEntity) {
         return new CreateCouponResponse(
-                coupon.getName().getValue(),
-                coupon.getDiscountAmount().getValue(),
-                coupon.getDiscountRate().getValue(),
-                coupon.getMinimumOrderAmount().getValue(),
-                coupon.getValidityPeriod().getStartDate(),
-                coupon.getValidityPeriod().getExpirationDate()
+                couponEntity.getId(),
+                couponEntity.getName(),
+                couponEntity.getDiscountAmount(),
+                couponEntity.getDiscountRate(),
+                couponEntity.getMinimumOrderAmount(),
+                couponEntity.getStartDate(),
+                couponEntity.getExpirationDate()
         );
     }
 }

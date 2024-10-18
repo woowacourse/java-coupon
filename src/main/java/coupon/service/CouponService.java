@@ -20,7 +20,7 @@ public class CouponService {
     public CreateCouponResponse createCoupon(final CreateCouponRequest request) {
         Coupon coupon = newCoupon(request);
         final CouponEntity save = couponRepository.save(CouponEntity.toEntity(coupon));
-        return CreateCouponResponse.from(save.toDomain());
+        return CreateCouponResponse.from(save);
     }
 
     private static Coupon newCoupon(final CreateCouponRequest request) {
