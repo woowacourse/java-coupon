@@ -2,6 +2,7 @@ package coupon.service;
 
 import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponRepository;
+import coupon.executor.TransactionExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final TransactionExecutor transactionExecutor;
 
     public Coupon create(Coupon coupon) {
         return couponRepository.save(coupon);
@@ -18,7 +20,7 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) {
-        return couponRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
+        return transactionExecutor.execute(() -> couponRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다.")));
     }
 }
