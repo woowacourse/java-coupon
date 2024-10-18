@@ -3,6 +3,8 @@ package coupon.domain;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.time.LocalDateTime;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -21,4 +23,34 @@ class CouponTest {
         assertThatNoException()
                 .isThrownBy(() -> new Coupon(name, 1000L, 30000L, Category.FOOD));
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = {1000, 2020})
+    void 할인_금액은_1_000원_이상_10_000원_이하입니다(int discountAmount) {
+        assertThatNoException()
+                .isThrownBy(() -> new Coupon("coupon", discountAmount * 1L, 30000L, Category.FOOD));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {999, 10001})
+    void 할인_금액은_1_000원_이상_10_000원_이하가_아니면_예외가_발생한다(int discountAmount) {
+        assertThatThrownBy(() -> new Coupon("coupon", discountAmount * 1L, 30000L, Category.FOOD))
+                .isExactlyInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 시작일은_종료일보다_이전이어야_한다() {
+        LocalDateTime issueStart = LocalDateTime.now();
+        LocalDateTime issueEnd = issueStart.plusDays(1);
+        assertThatNoException()
+                .isThrownBy(() -> new Coupon("coupon", 1000L, 30000L, Category.FOOD, issueStart, issueEnd));
+    }
+//
+//    @Test
+//    void 시작일은_종료일보다_이전이_아니면_예외가_발생한다() {
+//        LocalDateTime issueStart = LocalDateTime.now();
+//        LocalDateTime issueEnd = issueStart.minusDays(1);
+//        assertThatThrownBy(() -> new Coupon("coupon", 1000L, 30000L, Category.FOOD, issueStart, issueEnd))
+//                .isExactlyInstanceOf(IllegalArgumentException.class);
+//    }
 }

@@ -44,9 +44,12 @@ class CouponServiceTest {
 
     @Test
     void 복제지연테스트() {
-        Coupon coupon = new Coupon(1000L, 10000L);
-        couponService.create(coupon);
-        Optional<Coupon> savedCoupon = couponService.findById(coupon.getId());
-        assertThat(savedCoupon).isNotNull();
+        Coupon coupon = new Coupon(1000L, 30000L);
+        Coupon coupon2 = couponService.create(coupon);
+        Optional<Coupon> savedCouponOp = couponService.findById(coupon2.getId());
+        Coupon saved = savedCouponOp.get();
+        System.out.println("saved = " + saved);
+        System.out.println("coupon2 = " + coupon2);
+        assertThat(saved).isNotNull();
     }
 }

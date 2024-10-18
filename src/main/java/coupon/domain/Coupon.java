@@ -5,18 +5,26 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
 @Getter
 @EqualsAndHashCode
+@ToString
 public class Coupon {
 
+    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
     private static final int MAX_NAME_LENGTH = 30;
     private static final int MIN_DISCOUNT_AMOUNT = 1000;
     private static final int MAX_DISCOUNT_AMOUNT = 10000;
@@ -57,14 +65,13 @@ public class Coupon {
 
     public Coupon(String name, Long discountAmount, Long minimumOrderAmount, Category category,
                   LocalDateTime issueStartDate, LocalDateTime issueEndDate) {
-        validateDiscountAmount(discountAmount, minimumOrderAmount);
-        validateIssueDate(issueStartDate, issueEndDate);
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
         this.category = category;
         this.issueStartDate = issueStartDate;
-        this.issueEndDate = handleSameDate(issueStartDate, issueEndDate);
+        this.issueEndDate = issueEndDate;
+        validate();
     }
 
     public Coupon(String name, Long discountAmount, Long minimumOrderAmount, Category category) {
@@ -75,36 +82,36 @@ public class Coupon {
         this("coupon", discountAmount, minimumOrderAmount, Category.FOOD);
     }
 
-    private void validateDiscountAmount(Long discountAmount, Long minimumOrderAmount) {
-        if (discountAmount % DISCOUNT_UNIT != 0) {
-            throw new IllegalArgumentException("Discount amount must be a multiple of 500");
+    private void validate() {
+        Set<ConstraintViolation<Coupon>> violations = validator.validate(this);
+
+        if (!violations.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (ConstraintViolation<Coupon> violation : violations) {
+                sb.append(violation.getMessage()).append("\n");
+            }
+            throw new IllegalArgumentException(sb.toString());
         }
+    }
+
+    @AssertTrue(message = "Discount amount must be a multiple of 500")
+    public boolean validateDiscountAmount() {
+        return discountAmount % DISCOUNT_UNIT == 0;
+    }
+
+    @AssertTrue(message = "Discount rate must be between 3 and 20")
+    public boolean validateDiscountRate() {
         double discountRate = Math.floor(discountAmount * 1.0 / minimumOrderAmount * 100);
-        if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
-            throw new IllegalArgumentException("Discount rate must be between 3 and 20");
-        }
+        return discountRate >= MIN_DISCOUNT_RATE && discountRate <= MAX_DISCOUNT_RATE;
     }
 
-    private void validateIssueDate(LocalDateTime issueStartDate, LocalDateTime issueEndDate) {
-        if (issueStartDate == null || issueEndDate == null) {
-            throw new IllegalArgumentException("Issue date cannot be null");
-        }
-        if (issueStartDate.isAfter(issueEndDate)) {
-            throw new IllegalArgumentException("Issue date cannot be after issue date");
-        }
+    @AssertTrue(message = "Issue date cannot be null")
+    public boolean validateIssDateNotNull() {
+        return issueStartDate != null && issueEndDate != null;
     }
 
-    private LocalDateTime handleSameDate(LocalDateTime issueStartDate, LocalDateTime issueEndDate) {
-        if (issueStartDate.isEqual(issueEndDate)) {
-            return LocalDateTime.of(issueStartDate.getYear(),
-                    issueStartDate.getMonth(),
-                    issueStartDate.getDayOfMonth(),
-                    23,
-                    59,
-                    59,
-                    999999
-            );
-        }
-        return issueEndDate;
+    @AssertTrue(message = "Issue date cannot be after issue date")
+    public boolean validateIssueBeforeDate() {
+        return !issueStartDate.isAfter(issueEndDate);
     }
 }

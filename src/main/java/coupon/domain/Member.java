@@ -19,6 +19,7 @@ public class Member {
     }
 
     public Member(String name) {
+        validateName(name);
         this.name = name;
     }
 
