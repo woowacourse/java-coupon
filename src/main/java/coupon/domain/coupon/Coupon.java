@@ -29,7 +29,7 @@ public class Coupon {
     private DiscountAmount discountAmount;
 
     @Embedded
-    private MinimumOrderAmount minimumOrderAmount;
+    private MinOrderAmount minOrderAmount;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -41,7 +41,7 @@ public class Coupon {
     public Coupon(int discountAmount, int minimumOrderAmount) {
         this.name = new Name("쿠폰 이름");
         this.discountAmount = new DiscountAmount(discountAmount);
-        this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
+        this.minOrderAmount = new MinOrderAmount(minimumOrderAmount);
         this.issuancePeriod = new IssuancePeriod(LocalDateTime.now(), LocalDateTime.now());
     }
 }
