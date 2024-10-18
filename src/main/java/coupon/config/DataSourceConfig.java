@@ -24,25 +24,26 @@ public class DataSourceConfig {
     @Bean
     @DependsOn({"writerDataSource", "readerDataSource"})
     public DataSource routerDataSource() {
-        ReadOnlyDataSourceRouter dataSourceRouter = new ReadOnlyDataSourceRouter();
-        DataSource writeDataSource = writerDataSource();
-        DataSource readDataSource = readerDataSource();
+        DataSource writerDataSource = writerDataSource();
+        DataSource readerDataSource = readerDataSource();
 
         Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put("write", writeDataSource);
-        dataSourceMap.put("read", readDataSource);
+        dataSourceMap.put(DataSourceType.WRITER, writerDataSource);
+        dataSourceMap.put(DataSourceType.READER, readerDataSource);
+
+        ReadOnlyDataSourceRouter dataSourceRouter = new ReadOnlyDataSourceRouter();
         dataSourceRouter.setTargetDataSources(dataSourceMap);
-        dataSourceRouter.setDefaultTargetDataSource(readDataSource);
+        dataSourceRouter.setDefaultTargetDataSource(readerDataSource);
         return dataSourceRouter;
     }
 
-    @Bean(name = "writerDataSource")
+    @Bean
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writerDataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "readerDataSource")
+    @Bean
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
     public DataSource readerDataSource() {
         return DataSourceBuilder.create().build();
