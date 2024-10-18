@@ -2,25 +2,22 @@ package coupon.service;
 
 import coupon.domain.coupon.Coupon;
 import coupon.repository.CouponRepository;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CouponService {
+public class ReadCouponService {
 
+    private final WriteCouponService writeCouponService;
     private final CouponRepository couponRepository;
 
-    @Transactional
-    public void save(Coupon coupon) {
-        couponRepository.save(coupon);
-    }
-
-    @Transactional(readOnly = true)
     public Coupon findById(long id) {
         return couponRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 쿠폰입니다."));
+                .orElseGet(() -> writeCouponService.findById(id));
     }
 }
