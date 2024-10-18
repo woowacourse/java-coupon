@@ -21,6 +21,9 @@ public class Discount {
         this.discountPolicy = discountPolicy;
     }
 
+    public Discount() {
+    }
+
     private void validateDiscountPriceRange(int price) {
         if (price < MIN_DISCOUNT_PRICE || price > MAX_DISCOUNT_PRICE) {
             throw new DiscountPriceValidationException(
@@ -35,9 +38,6 @@ public class Discount {
                     "할인 가격은 %d원 단위여야 합니다.".formatted(DISCOUNT_PRICE_UNIT)
             );
         }
-    }
-
-    public Discount() {
     }
 
     public void validateDiscountPolicy(int minOrderPrice) {

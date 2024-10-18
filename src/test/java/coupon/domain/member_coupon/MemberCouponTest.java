@@ -14,12 +14,15 @@ class MemberCouponTest {
     @Test
     void 쿠폰_발급기간이_아니라면_쿠폰을_발급받을_수_없다() {
         Member member = new Member();
+        int minDiscountRange = 3;
+        int maxDiscountRange = 20;
         LocalDate today = LocalDate.now();
         LocalDate issueStartDate = today.minusDays(1);
         LocalDate issueEndDate = today.minusDays(1);
+
         Coupon coupon = new Coupon(
                 "testCoupon",
-                DiscountType.PERCENT.getDiscountPolicy(),
+                DiscountType.PERCENT.createDiscountPolicy(minDiscountRange, maxDiscountRange),
                 1000,
                 5000,
                 Category.FASHION,
