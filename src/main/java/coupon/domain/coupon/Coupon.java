@@ -56,17 +56,6 @@ public class Coupon extends BaseEntity {
         validateIssueDate(issueStartDate, issueEndDate);
     }
 
-    public Coupon(
-            String name,
-            int discountAmount,
-            int minimumOrderPrice,
-            CouponCategory couponCategory,
-            LocalDateTime issueStartDate,
-            LocalDateTime issueEndDate
-    ) {
-        this(null, name, discountAmount, minimumOrderPrice, couponCategory, issueStartDate, issueEndDate);
-    }
-
     public String validateName(String name) {
         if (!name.isBlank() && name.length() <= MIN_NAME_LENGTH) {
             return name;
