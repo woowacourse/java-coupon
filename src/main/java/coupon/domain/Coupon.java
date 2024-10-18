@@ -2,6 +2,8 @@ package coupon.domain;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,9 +18,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Table(name = "coupon")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(name = "coupon")
+@JsonIgnoreProperties({"discountRate"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
 
     @Id
