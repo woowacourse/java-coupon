@@ -25,7 +25,7 @@ public class CouponName {
             throw new IllegalArgumentException("이름이 null입니다.");
         }
 
-        if (rawValue.isBlank() || rawValue.length() >= NAME_MAX_LENGTH) {
+        if (rawValue.isBlank() || rawValue.length() > NAME_MAX_LENGTH) {
             throw new IllegalArgumentException("이름은 0자 이상 " + NAME_MAX_LENGTH + "자 미만이어야 합니다.");
         }
     }
