@@ -10,9 +10,9 @@ spring:
         default_batch_fetch_size: 128
         id.new_generator_mappings: true
         format_sql: true
-        show_sql: false
+        show_sql: true
         use_sql_comments: true
-        hbm2ddl.auto: validate
+        hbm2ddl.auto: update
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
