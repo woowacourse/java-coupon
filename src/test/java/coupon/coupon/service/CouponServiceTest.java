@@ -1,7 +1,6 @@
 package coupon.coupon.service;
 
 import java.time.LocalDate;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ public class CouponServiceTest {
     @Autowired
     private CouponRepository couponRepository;
 
-    @Disabled
     @DisplayName("요청한 쿠폰을 조회한다.")
     @Test
     void getCoupon() {
