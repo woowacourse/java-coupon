@@ -1,5 +1,6 @@
-package coupon.config;
+package coupon.datasource.config;
 
+import coupon.datasource.DataSourceRoutingContext;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -7,6 +8,10 @@ public class DynamicRoutingDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
+        if (DataSourceRoutingContext.isWrite()) {
+            return "writer";
+        }
+
         if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
             return "reader";
         }
