@@ -23,8 +23,8 @@ public class Coupon {
     @Embedded
     private CouponName name;
 
-    @Column(nullable = false)
-    private int discountAmount;
+    @Embedded
+    private DiscountAmount discountAmount;
 
     private int discountRate;
 
@@ -39,7 +39,7 @@ public class Coupon {
     public Coupon(String name, int discountAmount, int discountRate, int minOrderAmount, Category category,
                   LocalDateTime issuePeriod) {
         this.name = new CouponName(name);
-        this.discountAmount = discountAmount;
+        this.discountAmount = new DiscountAmount(discountAmount);
         this.discountRate = discountRate;
         this.minOrderAmount = minOrderAmount;
         this.category = category;
