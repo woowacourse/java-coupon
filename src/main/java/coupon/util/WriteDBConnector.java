@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class ReadDBConnector {
+public class WriteDBConnector {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public <T, R> R apply(Function<T, R> function, T t) {
