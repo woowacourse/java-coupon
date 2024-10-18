@@ -121,6 +121,15 @@ class CouponTest {
         }
 
         @Test
+        void minimumOrderPriceInBound() {
+            discountAmount = 4_500L;
+            minimumOrderPrice = 100_500L;
+            assertThatThrownBy(newCoupon)
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("최소 주문 금액은 5000원 이상, 100000원 이하여야 합니다.");
+        }
+
+        @Test
         void discountRateInBound() {
             discountAmount = 5_000L;
             minimumOrderPrice = 10_000L;
