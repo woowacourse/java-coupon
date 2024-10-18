@@ -13,6 +13,7 @@ import coupon.domain.Period;
 import coupon.domain.repository.CouponRepository;
 import coupon.domain.repository.OrderRepository;
 import coupon.service.dto.request.CouponPublishServiceRequest;
+import coupon.service.dto.response.CouponServiceResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -31,6 +32,15 @@ public class CouponService {
         orderRepository.save(order);
         couponRepository.save(coupon);
         return coupon.getId();
+    }
+    
+    public CouponServiceResponse read(final long couponId) {
+        final Coupon coupon = couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("찾을 수 없는 쿠폰 ID입니다."));
+        return new CouponServiceResponse(coupon.getCouponName(),
+                coupon.getDiscountAmount(),
+                coupon.getStartAt(),
+                coupon.getEndAt());
     }
 
     private void validateDiscountRate(final CouponPublishServiceRequest request) {

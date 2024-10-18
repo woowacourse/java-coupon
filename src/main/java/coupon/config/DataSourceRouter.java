@@ -10,6 +10,11 @@ public class DataSourceRouter extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        return TransactionSynchronizationManager.isCurrentTransactionReadOnly() ? SourceType.READ : SourceType.WRITE;
+        if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
+            log.info("READ");
+            return SourceType.READ;
+        }
+        log.info("WRITE");
+        return SourceType.WRITE;
     }
 }

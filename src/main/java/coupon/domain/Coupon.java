@@ -1,5 +1,7 @@
 package coupon.domain;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -43,5 +45,21 @@ public class Coupon {
         this.discount = discount;
         this.period = period;
         this.order = order;
+    }
+
+    public String getCouponName() {
+        return name.getName();
+    }
+
+    public long getDiscountAmount() {
+        return discount.getAmount();
+    }
+
+    public LocalDateTime getStartAt() {
+        return period.getStartAt();
+    }
+
+    public LocalDateTime getEndAt() {
+        return period.getEndAt();
     }
 }
