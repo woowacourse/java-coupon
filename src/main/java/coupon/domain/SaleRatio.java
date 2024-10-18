@@ -12,8 +12,7 @@ public class SaleRatio {
     @Column(name = "sale_ratio", nullable = false)
     private double ratio;
 
-    public SaleRatio(int salePrice, int saleOrderPrice) {
-        double ratio = 100.0 * salePrice / saleOrderPrice;
+    public SaleRatio(double ratio) {
         validatePrice(ratio);
         this.ratio = ratio;
     }

@@ -7,7 +7,6 @@ import jakarta.persistence.Embeddable;
 public class SaleOrderPrice {
     private static final int MIN_SALE_PRICE = 5000;
     private static final int MAX_SALE_PRICE = 10000;
-    private static final int UNIT_SALE_PRICE = 500;
 
     @Column(name = "sale_order_price", nullable = false)
     private int price;

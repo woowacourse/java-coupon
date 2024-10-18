@@ -49,7 +49,7 @@ public class Coupon {
         this.salePrice = new SalePrice(salePrice);
         this.category = category;
         this.saleOrderPrice = new SaleOrderPrice(orderPrice);
-        this.saleRatio = new SaleRatio(salePrice, orderPrice);
+        this.saleRatio = new SaleRatio(100.0 * salePrice / orderPrice);
         this.duration = new IssueDuration(startTime, endTime);
     }
 
