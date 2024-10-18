@@ -22,7 +22,7 @@ class CouponCommandServiceTest {
 
     @DisplayName("쿠폰을 저장한다.")
     @Test
-    void save() {
+    void save() throws InterruptedException {
         long savedCouponId = couponCommandService.save(new SaveCouponRequest(
                 "천원 할인 쿠폰",
                 1000,
@@ -30,6 +30,9 @@ class CouponCommandServiceTest {
                 LocalDate.now().minusDays(10),
                 LocalDate.now().plusDays(10),
                 "FOOD"));
+
+        // TODO: 복제 지연을 해결한다.
+        Thread.sleep(2000);
 
         Coupon foundCoupon = couponRepository.findById(savedCouponId).get();
 
