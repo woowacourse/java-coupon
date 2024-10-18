@@ -59,6 +59,10 @@ public class Coupon {
         }
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getName() {
         return name.getCouponName();
     }
