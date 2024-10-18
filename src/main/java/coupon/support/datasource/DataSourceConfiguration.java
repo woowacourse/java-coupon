@@ -18,22 +18,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DataSourceConfiguration {
 
+    private static final String WRITE_DATASOURCE_PREFIX = "coupon.datasource.writer";
+    private static final String READ_DATASOURCE_PREFIX = "coupon.datasource.reader";
+    private static final String WRITE_DATASOURCE = "writeDataSource";
+    private static final String READ_DATASOURCE = "readDataSource";
+    private static final String ROUTING_DATASOURCE = "routingDataSource";
+
     @Bean
-    @ConfigurationProperties(prefix = "coupon.datasource.writer")
+    @ConfigurationProperties(prefix = WRITE_DATASOURCE_PREFIX)
     public DataSource writeDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "coupon.datasource.reader")
+    @ConfigurationProperties(prefix = READ_DATASOURCE_PREFIX)
     public DataSource readDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean
-    @DependsOn({"writeDataSource", "readDataSource"})
+    @DependsOn({WRITE_DATASOURCE, READ_DATASOURCE})
     public DataSource routingDataSource() {
-
         final ReadOnlyDataSourceRouter routingDataSource = new ReadOnlyDataSourceRouter();
         final Map<Object, Object> dataSourceMap = Map.of(
                 DataSourceType.READER, readDataSource(),
@@ -47,7 +52,7 @@ public class DataSourceConfiguration {
 
     @Bean
     @Primary
-    @DependsOn({"routingDataSource"})
+    @DependsOn({ROUTING_DATASOURCE})
     public DataSource dataSource() {
         return new LazyConnectionDataSourceProxy(routingDataSource());
     }
