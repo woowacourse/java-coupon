@@ -1,14 +1,6 @@
 package coupon.util;
 
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+public interface TransactionExecutor<T> {
 
-@Component
-public class TransactionExecutor<T> {
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public T exec(final TransactionExecLogic<T> logic) {
-        return logic.execute();
-    }
+    T exec(final TransactionExecLogic<T> logic);
 }
