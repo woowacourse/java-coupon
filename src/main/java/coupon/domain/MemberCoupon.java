@@ -5,9 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.ToString;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@ToString
 public class MemberCoupon {
 
     @Id
