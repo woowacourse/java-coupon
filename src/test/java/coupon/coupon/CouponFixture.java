@@ -2,6 +2,7 @@ package coupon.coupon;
 
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
+import coupon.coupon.dto.CouponCreateRequest;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -47,5 +48,9 @@ public enum CouponFixture {
 
     public Coupon getCoupon() {
         return new Coupon(id, name, discountAmount, minimumOrderAmount, category, issuedAt, expiredAt);
+    }
+
+    public CouponCreateRequest getCouponCreateRequest() {
+        return new CouponCreateRequest(name, discountAmount, minimumOrderAmount, category.name(), issuedAt, expiredAt);
     }
 }

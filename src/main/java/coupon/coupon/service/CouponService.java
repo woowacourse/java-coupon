@@ -2,6 +2,7 @@ package coupon.coupon.service;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
+import coupon.coupon.dto.CouponCreateRequest;
 import coupon.coupon.exception.CouponException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class CouponService {
     }
 
     @Transactional
-    public Coupon createCoupon(Coupon coupon) {
-        return couponRepository.save(coupon);
+    public Coupon createCoupon(CouponCreateRequest couponRequest) {
+        return couponRepository.save(couponRequest.toCouponEntity());
     }
 }

@@ -21,8 +21,8 @@ class CouponServiceTest {
     @DisplayName("쿠폰을 생성하고 저장할 수 있다")
     @Test
     void createCoupon() {
-        final var tourootCoupon = CouponFixture.TOUROOT_COUPON.getCoupon();
-        final var savedCoupon = couponService.createCoupon(tourootCoupon);
+        final var couponCreateRequest = CouponFixture.TOUROOT_COUPON.getCouponCreateRequest();
+        final var savedCoupon = couponService.createCoupon(couponCreateRequest);
 
         final var found = couponService.getCoupon(savedCoupon.getId());
 
@@ -32,8 +32,8 @@ class CouponServiceTest {
     @DisplayName("쿠폰을 조회할 수 있다")
     @Test
     void findCoupon() {
-        final var tourootCoupon = CouponFixture.TOUROOT_COUPON.getCoupon();
-        final var savedCoupon = couponService.createCoupon(tourootCoupon);
+        final var couponCreateRequest = CouponFixture.TOUROOT_COUPON.getCouponCreateRequest();
+        final var savedCoupon = couponService.createCoupon(couponCreateRequest);
 
         final var found = couponService.getCoupon(savedCoupon.getId());
 
