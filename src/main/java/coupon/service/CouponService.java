@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import coupon.domain.Coupon;
+import coupon.exception.CouponException;
 import coupon.repository.CouponEntity;
-import coupon.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -13,16 +13,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CouponService {
 
-    private final CouponRepository couponRepository;
+    private final CouponReaderService couponReaderService;
+    private final CouponWriterService couponWriterService;
 
     public CouponEntity create(final Coupon coupon) {
-        final CouponEntity couponEntity = new CouponEntity(coupon);
-
-        return couponRepository.save(couponEntity);
+        return couponWriterService.create(coupon);
     }
 
-    @Transactional(readOnly = true)
     public CouponEntity getCoupon(final long id) {
-        return couponRepository.fetchById(id);
+        try {
+            return couponReaderService.getCoupon(id);
+        } catch (final CouponException e) {
+            return couponWriterService.getCoupon(id);
+        }
     }
 }
