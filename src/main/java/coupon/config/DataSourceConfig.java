@@ -24,7 +24,7 @@ public class DataSourceConfig {
     @Bean
     @DependsOn({"writerDataSource", "readerDataSource"})
     public DataSource routerDataSource() {
-        DataSourceRouter dataSourceRouter = new DataSourceRouter();
+        ReadOnlyDataSourceRouter dataSourceRouter = new ReadOnlyDataSourceRouter();
         DataSource writeDataSource = writerDataSource();
         DataSource readDataSource = readerDataSource();
 
@@ -33,7 +33,6 @@ public class DataSourceConfig {
         dataSourceMap.put("read", readDataSource);
         dataSourceRouter.setTargetDataSources(dataSourceMap);
         dataSourceRouter.setDefaultTargetDataSource(readDataSource);
-
         return dataSourceRouter;
     }
 
