@@ -14,7 +14,7 @@ public class MinOrderAmount {
     private static final int MIN_AMOUNT = 5_000;
     private static final int MAX_AMOUNT = 100_000;
 
-    @Column(name = "minimumOrderAmount", nullable = false)
+    @Column(name = "min_order_amount", nullable = false)
     private int value;
 
     public MinOrderAmount(int value) {

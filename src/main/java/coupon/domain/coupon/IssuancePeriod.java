@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class IssuancePeriod {
 
-    @Column(name = "startAt", nullable = false, columnDefinition = "TIMESTAMP(6)")
+    @Column(name = "issuance_start_at", nullable = false, columnDefinition = "TIMESTAMP(6)")
     private LocalDateTime startAt;
 
-    @Column(name = "endAt", nullable = false, columnDefinition = "TIMESTAMP(6)")
+    @Column(name = "issuance_end_at", nullable = false, columnDefinition = "TIMESTAMP(6)")
     private LocalDateTime endAt;
 
     public IssuancePeriod(LocalDateTime startAt, LocalDateTime endAt) {

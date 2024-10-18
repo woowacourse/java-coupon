@@ -15,7 +15,7 @@ public class DiscountAmount {
     private static final int MAX_AMOUNT = 10_000;
     private static final int UNIT = 500;
 
-    @Column(name = "discountAmount", nullable = false)
+    @Column(name = "discount_amount", nullable = false)
     private int value;
 
     public DiscountAmount(int value) {
