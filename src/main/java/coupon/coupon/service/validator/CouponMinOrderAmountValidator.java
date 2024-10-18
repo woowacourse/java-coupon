@@ -1,4 +1,4 @@
-package coupon.coupon.service;
+package coupon.coupon.service.validator;
 
 import org.springframework.stereotype.Component;
 

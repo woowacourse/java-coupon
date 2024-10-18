@@ -14,13 +14,13 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 class DatasourceConfigTest {
 
     @Mock
-    DataSource writeDataSource;
+    private DataSource writeDataSource;
 
     @Mock
-    DataSource readDataSource;
+    private DataSource readDataSource;
 
     @InjectMocks
-    DatasourceConfig datasourceConfig = new DatasourceConfig();
+    private DatasourceConfig datasourceConfig = new DatasourceConfig();
 
     @Test
     void routingDataSource_default() {

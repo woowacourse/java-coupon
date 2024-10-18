@@ -1,4 +1,4 @@
-package coupon.coupon.service;
+package coupon.coupon.service.validator;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 class CouponMinOrderAmountValidatorTest {
 
     @Autowired
-    CouponMinOrderAmountValidator validator;
+    private CouponMinOrderAmountValidator validator;
 
     @ParameterizedTest
     @ValueSource(ints = {4999, 100_001})

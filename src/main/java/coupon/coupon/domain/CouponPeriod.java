@@ -6,18 +6,18 @@ import lombok.Getter;
 @Getter
 public class CouponPeriod {
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private final LocalDateTime startAt;
+    private final LocalDateTime endAt;
 
-    public CouponPeriod(LocalDateTime startDate, LocalDateTime endDate) {
-        validateEndOverStartRange(startDate, endDate);
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public CouponPeriod(LocalDateTime startAt, LocalDateTime endAt) {
+        validateEndDateOverStartRange(startAt, endAt);
+        this.startAt = startAt;
+        this.endAt = endAt;
     }
 
-    private void validateEndOverStartRange(LocalDateTime startDate, LocalDateTime endDate) {
-        if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("쿠폰의 시작일은 종료일 이전이어야 해요.");
+    private void validateEndDateOverStartRange(LocalDateTime startAt, LocalDateTime endAt) {
+        if (endAt.isBefore(startAt)) {
+            throw new IllegalArgumentException("쿠폰의 종료일은 시작일 이후이어야 해요.");
         }
     }
 }

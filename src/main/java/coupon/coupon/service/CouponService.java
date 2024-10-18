@@ -4,6 +4,8 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponCategory;
 import coupon.coupon.domain.CouponEntity;
 import coupon.coupon.repository.CouponRepository;
+import coupon.coupon.service.validator.CouponDiscountAmountValidator;
+import coupon.coupon.service.validator.CouponMinOrderAmountValidator;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,21 +24,21 @@ public class CouponService {
     @Transactional
     public long createCoupon(String couponName, int couponDiscountAmount, int couponMinOrderAmount,
                              CouponCategory couponCategory,
-                             LocalDateTime couponStartDate, LocalDateTime couponEndDate) {
+                             LocalDateTime couponStartAt, LocalDateTime couponEndAt) {
         couponDiscountAmountValidator.validate(couponDiscountAmount, couponMinOrderAmount);
         couponMinOrderAmountValidator.validate(couponDiscountAmount);
 
         Coupon coupon = new Coupon(
-                couponName, couponDiscountAmount, couponMinOrderAmount, couponCategory, couponStartDate, couponEndDate
+                couponName, couponDiscountAmount, couponMinOrderAmount, couponCategory, couponStartAt, couponEndAt
         );
 
-        CouponEntity couponEntity = couponRepository.save(CouponEntity.mapDomainToEntity(coupon));
+        CouponEntity couponEntity = couponRepository.save(CouponEntity.mapToEntity(coupon));
         return couponEntity.getId();
     }
 
     @Transactional(readOnly = true)
     public CouponEntity getCoupon(long couponId) {
         return couponRepository.findById(couponId)
-                .orElseGet(() -> couponBackupService.getCouponFromWriter(couponId));
+                .orElseGet(() -> couponBackupService.getCoupon(couponId));
     }
 }

@@ -1,21 +1,21 @@
 package coupon.coupon.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mockStatic;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 class ReadOnlyDataSourceRouterTest {
 
-    MockedStatic<TransactionSynchronizationManager> mockedTransactionSynchronizationManager;
+    private MockedStatic<TransactionSynchronizationManager> mockedTransactionSynchronizationManager;
 
     @BeforeEach
     void setUpMockTransactionSynchronizationManager() {
-        mockedTransactionSynchronizationManager = Mockito.mockStatic(TransactionSynchronizationManager.class);
+        mockedTransactionSynchronizationManager = mockStatic(TransactionSynchronizationManager.class);
     }
 
     @AfterEach

@@ -7,7 +7,7 @@ public class CouponName {
 
     private static final int MAX_NAME_LENGTH = 30;
 
-    private String name;
+    private final String name;
 
     public CouponName(String name) {
         validateNotEmpty(name);

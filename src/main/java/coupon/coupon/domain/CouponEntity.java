@@ -36,31 +36,31 @@ public class CouponEntity {
     @Enumerated(EnumType.STRING)
     private CouponCategory couponCategory;
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    @Column(name = "start_at", nullable = false)
+    private LocalDateTime startAt;
 
-    @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDate;
+    @Column(name = "end_at", nullable = false)
+    private LocalDateTime endAt;
 
     public CouponEntity(String couponName, int couponDiscountAmount, int couponMinOrderAmount,
                         CouponCategory couponCategory,
-                        LocalDateTime couponStartDate, LocalDateTime couponEndDate) {
+                        LocalDateTime couponStartAt, LocalDateTime couponEndAt) {
         this.couponName = couponName;
         this.couponDiscountAmount = couponDiscountAmount;
         this.couponMinOrderAmount = couponMinOrderAmount;
         this.couponCategory = couponCategory;
-        this.startDate = couponStartDate;
-        this.endDate = couponEndDate;
+        this.startAt = couponStartAt;
+        this.endAt = couponEndAt;
     }
 
-    public static CouponEntity mapDomainToEntity(Coupon domain) {
+    public static CouponEntity mapToEntity(Coupon domain) {
         return new CouponEntity(
                 domain.getCouponName().getName(),
                 domain.getCouponDiscountAmount(),
                 domain.getCouponMinOrderAmount(),
                 domain.getCouponCategory(),
-                domain.getCouponPeriod().getStartDate(),
-                domain.getCouponPeriod().getEndDate()
+                domain.getCouponPeriod().getStartAt(),
+                domain.getCouponPeriod().getEndAt()
         );
     }
 }
