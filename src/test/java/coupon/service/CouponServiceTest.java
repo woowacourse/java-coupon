@@ -1,7 +1,6 @@
 package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import coupon.domain.coupon.Category;
 import coupon.domain.coupon.Coupon;

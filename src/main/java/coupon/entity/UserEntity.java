@@ -1,6 +1,6 @@
 package coupon.entity;
 
-import static jakarta.persistence.GenerationType.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
