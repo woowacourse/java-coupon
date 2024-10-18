@@ -1,6 +1,6 @@
 package coupon.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 import coupon.domain.Category;
 import coupon.repository.CouponEntity;
@@ -31,7 +31,7 @@ class CouponServiceTest {
         CouponEntity created = couponService.create(request);
 
         // then
-        assertThat(couponRepository.findById(created.getId())).isPresent();
+        assertThatCode(() -> couponRepository.findByIdOrThrow(created.getId()))
+                .doesNotThrowAnyException();
     }
-
 }

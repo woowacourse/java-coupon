@@ -5,7 +5,6 @@ import coupon.domain.coupon.DiscountPolicy;
 import coupon.repository.CouponEntity;
 import coupon.repository.CouponRepository;
 import java.util.List;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,6 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public CouponEntity getCoupon(long id) {
-        return couponRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 쿠폰입니다."));
+        return couponRepository.findByIdOrThrow(id);
     }
 }
