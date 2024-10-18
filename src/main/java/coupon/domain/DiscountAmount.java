@@ -9,10 +9,15 @@ public class DiscountAmount {
     private static final int DISCOUNT_AMOUNT_UNIT = 500;
     private static final int VALID_REMAINING_DISCOUNT_AMOUNT = 0;
 
+    private static final int MIN_DISCOUNT_RATE = 3;
+    private static final int MAX_DISCOUNT_RATE = 20;
+    private static final int VALUE_TO_MAKE_DISCOUNT_RATE = 100;
+
     private final int discountAmount;
 
-    public DiscountAmount(int discountAmount) {
+    public DiscountAmount(int discountAmount, int minOrderAmount) {
         validateDiscountAmount(discountAmount);
+        validateDiscountRate(discountAmount, minOrderAmount);
         this.discountAmount = discountAmount;
     }
 
@@ -27,6 +32,18 @@ public class DiscountAmount {
 
     private boolean hasInvalidDiscountAmountUnit(int discountAmount) {
         return discountAmount % DISCOUNT_AMOUNT_UNIT != VALID_REMAINING_DISCOUNT_AMOUNT;
+    }
+
+    private void validateDiscountRate(int discountAmount, int minOrderAmount) {
+        int discountRate = calculateDiscountRate(discountAmount, minOrderAmount);
+
+        if (discountRate < MIN_DISCOUNT_RATE || MAX_DISCOUNT_RATE < discountRate) {
+            throw new IllegalArgumentException("할인율은 %d%% 이상 ~ %d%% 이하여야 합니다.".formatted(MIN_DISCOUNT_RATE, MAX_DISCOUNT_RATE));
+        }
+    }
+
+    private int calculateDiscountRate(int discountAmount, int minOrderAmount) {
+        return (discountAmount * VALUE_TO_MAKE_DISCOUNT_RATE) / minOrderAmount;
     }
 
     @Override
