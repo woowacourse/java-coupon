@@ -18,7 +18,7 @@ public record IssuePeriod(LocalDateTime issuedAt, LocalDateTime expiresAt) {
         }
         validateTime(issuedAt);
         validateTime(expiresAt);
-        if (issuedAt.isBefore(expiresAt)) {
+        if (!issuedAt.isBefore(expiresAt)) {
             throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 한다.");
         }
     }

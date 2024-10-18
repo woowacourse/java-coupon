@@ -1,5 +1,9 @@
 package coupon.coupon.service;
 
+import jakarta.transaction.Transactional;
+
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import coupon.coupon.domain.Coupon;
@@ -19,6 +23,8 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
+    @Transactional
+    @CachePut(value = "couponCache", key = "#result.id")
     public CouponEntity create(CouponRequest couponRequest) {
         Coupon coupon = new Coupon(
                 new CouponName(couponRequest.name()),
@@ -32,6 +38,7 @@ public class CouponService {
         return couponRepository.save(new CouponEntity(coupon));
     }
 
+    @Cacheable(value = "couponCache", key = "#root.args[0]", unless = "#root.args[0] == null")
     public CouponEntity getCoupon(Long id) {
         return couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID가 " + id + "인 쿠폰은 존재하지 않습니다."));
