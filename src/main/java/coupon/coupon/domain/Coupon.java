@@ -77,6 +77,17 @@ public class Coupon extends BaseEntity {
 
     public Coupon(
             final String name,
+            final BigDecimal discountAmount,
+            final BigDecimal minimumOrderAmount,
+            final Category category,
+            final LocalDateTime issuedAt,
+            final LocalDateTime expiredAt
+    ) {
+        this(null, name, discountAmount, minimumOrderAmount, category, issuedAt, expiredAt);
+    }
+
+    public Coupon(
+            final String name,
             final int discountAmount,
             final int minimumOrderAmount,
             final Category category,
