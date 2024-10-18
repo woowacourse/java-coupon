@@ -10,12 +10,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "MEMBER_COUPON")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class MemberCouponEntity extends BaseTimeEntity {
@@ -25,7 +27,7 @@ public class MemberCouponEntity extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "COUPON", nullable = false)
+    @JoinColumn(name = "COUPON_ID", nullable = false)
     private CouponEntity coupon;
 
     @Column(name = "MEMBER_ID", nullable = false)

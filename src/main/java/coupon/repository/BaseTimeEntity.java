@@ -21,12 +21,12 @@ public abstract class BaseTimeEntity {
 
     @CreatedDate
     @DateTimeFormat(iso = ISO.DATE_TIME)
-    @Column(columnDefinition = "TIMESTAMP", nullable = false)
+    @Column(name = "CREATED_AT", columnDefinition = "TIMESTAMP", nullable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     @DateTimeFormat(iso = ISO.DATE_TIME)
-    @Column(columnDefinition = "TIMESTAMP")
+    @Column(name = "UPDATED_AT", columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
 
 }
