@@ -1,5 +1,7 @@
 package coupon.config;
 
+import coupon.config.datasource.DataSourceType;
+import coupon.config.datasource.RoutingDataSource;
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
