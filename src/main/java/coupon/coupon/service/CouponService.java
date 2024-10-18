@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponName;
+import coupon.coupon.domain.DiscountPercent;
 import coupon.coupon.domain.DiscountPrice;
 import coupon.coupon.domain.IssuePeriod;
 import coupon.coupon.domain.MinimumOrderPrice;
@@ -23,7 +24,7 @@ public class CouponService {
                 new CouponName(couponRequest.name()),
                 new DiscountPrice(couponRequest.discountPrice()),
                 new MinimumOrderPrice(couponRequest.minimumOrderPrice()),
-                new DiscountPercent(couponRequest.discountPrice() / couponRequest.minimumOrderPrice()),
+                new DiscountPercent(couponRequest.discountPrice(), couponRequest.minimumOrderPrice()),
                 couponRequest.category(),
                 new IssuePeriod(couponRequest.issuedAt(), couponRequest.expiresAt())
         );

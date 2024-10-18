@@ -39,8 +39,8 @@ public class Coupon {
         return minimumOrderPrice.price();
     }
 
-    public int getDiscountPercent() {
-        return discountPercent.percent();
+    public double getDiscountPercent() {
+        return discountPercent.getPercent();
     }
 
     public Category getCategory() {

@@ -41,7 +41,7 @@ public class CouponEntity {
     private Integer minimumOrderPrice;
 
     @Column(name = "discount_percent", nullable = false)
-    private Integer discountPercent;
+    private Double discountPercent;
 
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)

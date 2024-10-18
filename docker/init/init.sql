@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS coupon
     name                VARCHAR(255) NOT NULL,
     discount_price      INT          NOT NULL,
     minimum_order_price INT          NOT NULL,
-    discount_percent    INT          NOT NULL,
+    discount_percent    DOUBLE       NOT NULL,
     category            VARCHAR(255) NOT NULL,
     issued_at           DATETIME     NOT NULL,
     expires_at          DATETIME     NOT NULL
