@@ -20,4 +20,9 @@ public class CouponService {
 
         return couponRepository.save(couponEntity);
     }
+
+    @Transactional(readOnly = true)
+    public CouponEntity getCoupon(final long id) {
+        return couponRepository.fetchById(id);
+    }
 }
