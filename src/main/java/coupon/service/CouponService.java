@@ -7,9 +7,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true)
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class CouponService {
 
     private final CouponRepository couponRepository;
@@ -20,8 +20,11 @@ public class CouponService {
         return couponRepository.save(coupon);
     }
 
+    @Transactional(readOnly = true)
     public Coupon get(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 쿠폰이 존재하지 않습니다."));
     }
 }
+
+

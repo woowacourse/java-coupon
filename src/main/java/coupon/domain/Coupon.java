@@ -2,6 +2,7 @@ package coupon.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,20 +11,21 @@ import java.time.LocalTime;
 import static coupon.domain.utils.CouponValidator.validate;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class Coupon {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private final Long id;
-    private final String name;
-    private final Integer discountAmount;
-    private final Integer minOrderAmount;
+    private Long id;
+    private String name;
+    private Integer discountAmount;
+    private Integer minOrderAmount;
 
     @Enumerated(EnumType.STRING)
-    private final Category category;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private Category category;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public Coupon(Long id, String name, Integer discountAmount, Integer minOrderAmount, Category category, LocalDate startDate, LocalDate endDate) {
         validate(name, discountAmount, minOrderAmount, category, startDate, endDate);
