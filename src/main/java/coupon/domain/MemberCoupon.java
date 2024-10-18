@@ -35,4 +35,11 @@ public class MemberCoupon {
     }
 
     protected MemberCoupon() {}
+
+    public static MemberCoupon issue(Member member, Coupon coupon) {
+        if (!coupon.issuable()) {
+            throw new IllegalStateException("쿠폰을 발급할 수 없는 상태입니다: " + coupon);
+        }
+        return new MemberCoupon(coupon, member, false, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
+    }
 }

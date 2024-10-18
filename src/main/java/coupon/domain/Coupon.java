@@ -8,10 +8,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.ToString;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@ToString
 public class Coupon {
 
     @Id
@@ -90,5 +93,13 @@ public class Coupon {
         if (issuableFrom.isEqual(issuableTo) || issuableFrom.isAfter(issuableTo)) {
             throw new IllegalArgumentException("발급 가능 날짜 오류입니다: " + issuableFrom + " ~ " + issuableTo);
         }
+    }
+
+    public boolean issuable() {
+        LocalDate today = LocalDate.now();
+        LocalDate issuableDateFrom = issuableFrom.toLocalDate();
+        LocalDate issuableDateTO = issuableTo.toLocalDate();
+
+        return !today.isBefore(issuableDateFrom) && !today.isAfter(issuableDateTO);
     }
 }
