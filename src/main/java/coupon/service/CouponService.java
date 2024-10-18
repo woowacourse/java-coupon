@@ -15,8 +15,13 @@ public class CouponService {
     private final CouponRepository couponRepository;
 
     @Transactional
-    public void createCoupon(CouponCreateRequest request) {
+    public Coupon create(CouponCreateRequest request) {
         Coupon coupon = request.toEntity();
-        couponRepository.save(coupon);
+        return couponRepository.save(coupon);
+    }
+
+    public Coupon get(Long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 쿠폰이 존재하지 않습니다."));
     }
 }
