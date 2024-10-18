@@ -36,12 +36,16 @@ public class Coupon {
 
     public Coupon(String name, DiscountPolicy discountPolicy, int discountPrice, int minOrderPrice, Category category,
                   LocalDate issueStartDate, LocalDate issueEndDate) {
-        discount.validateDiscountPolicy(minOrderPrice);
-
         this.name = new CouponName(name);
         this.discount = new Discount(discountPrice, discountPolicy);
+        discount.validateDiscountPolicy(minOrderPrice);
+
         this.minOrderPrice = new MinOrderPrice(minOrderPrice);
         this.category = category;
         this.couponIssueDate = new CouponIssueDate(issueStartDate, issueEndDate);
+    }
+
+    public boolean issueAvailable(LocalDate date) {
+        return couponIssueDate.isDateAvailable(date);
     }
 }

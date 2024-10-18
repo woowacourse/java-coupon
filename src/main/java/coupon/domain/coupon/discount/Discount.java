@@ -14,14 +14,14 @@ public class Discount {
     private DiscountPolicy discountPolicy;
 
     public Discount(int discountPrice, DiscountPolicy discountPolicy) {
-        validateDiscountRange(discountPrice);
+        validateDiscountPriceRange(discountPrice);
         validateDiscountPriceUnit(discountPrice);
 
         this.discountPrice = discountPrice;
         this.discountPolicy = discountPolicy;
     }
 
-    private void validateDiscountRange(int price) {
+    private void validateDiscountPriceRange(int price) {
         if (price < MIN_DISCOUNT_PRICE || price > MAX_DISCOUNT_PRICE) {
             throw new DiscountPriceValidationException(
                     "할인 가격은 %d원 이상 %d원 이하여야 합니다.".formatted(MIN_DISCOUNT_PRICE, MAX_DISCOUNT_PRICE)

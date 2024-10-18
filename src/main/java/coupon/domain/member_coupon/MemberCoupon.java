@@ -2,6 +2,7 @@ package coupon.domain.member_coupon;
 
 import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
+import coupon.exception.CouponIssueDateException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -10,12 +11,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 public class MemberCoupon {
+    private static final int DEFAULT_USING_PERIOD = 6;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,9 +36,13 @@ public class MemberCoupon {
 
     private LocalDate expiredAt;
 
-    public static MemberCoupon issue(Member member, Coupon coupon, int useDate) {
+    public static MemberCoupon issue(Member member, Coupon coupon) {
         LocalDate issuedAt = LocalDate.now();
-        LocalDate expiredAt = issuedAt.plusDays(useDate);
+        if(!coupon.issueAvailable(issuedAt)) {
+            throw new CouponIssueDateException();
+        }
+
+        LocalDate expiredAt = issuedAt.plusDays(DEFAULT_USING_PERIOD);
         return new MemberCoupon(member, coupon, false, issuedAt, expiredAt);
     }
 
