@@ -40,4 +40,14 @@ public class CouponService {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다: %d".formatted(couponId)));
     }
+
+    @Transactional
+    public Coupon getCouponWithLoop(Long couponId) {
+        while (true) {
+            try {
+                return readerService.read(() -> getCoupon(couponId));
+            } catch (RuntimeException ignore) {
+            }
+        }
+    }
 }

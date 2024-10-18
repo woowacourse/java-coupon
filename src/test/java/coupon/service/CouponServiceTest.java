@@ -35,7 +35,7 @@ public class CouponServiceTest {
     void 방법1_읽기_시점_지연() throws InterruptedException {
         // when
         Coupon saved = couponService.saveCouponBefore(coupon);
-        Thread.sleep(2000);
+        Thread.sleep(3000);
 
         // then
         Coupon coupon = readerService.read(() -> couponService.getCoupon(saved.getId()));
@@ -63,5 +63,11 @@ public class CouponServiceTest {
         4. Reader DB 접근
         5. 쿠폰 조회
          */
+    }
+
+    @Test
+    void 방법3_읽기DB_무한호출() {
+        Coupon saved = couponService.saveCouponBefore(coupon);
+        couponService.getCouponWithLoop(saved.getId());
     }
 }
