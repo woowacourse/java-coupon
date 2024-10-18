@@ -27,6 +27,15 @@ public class CouponService {
         return couponRepository.save(coupon);
     }
 
+    /**
+     * 해당 메서드는 복제지연(Replication Lag) 해소가 필요한 메서드입니다.
+     *
+     * 복제지연 해소를 위해 Transactional을 readOnly=false로 설정합니다.
+     * readOnly=false 는 WriterDB의 DataSource를 사용하며
+     * readOnly=true 는 ReaderDB의 DataSource를 사용합니다.
+     *
+     * 자세한 설정은 DataSourceConfig.java 참조
+     */
     @Transactional
     public Coupon getById(long couponId) {
         return couponRepository.getById(couponId);
