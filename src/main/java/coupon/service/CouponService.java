@@ -24,4 +24,10 @@ public class CouponService {
         return couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Coupon with id %d does not exists", id)));
     }
+
+    @Transactional
+    public Coupon getCouponWithWriter(Long id) {
+        return couponRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Coupon with id %d does not exists", id)));
+    }
 }

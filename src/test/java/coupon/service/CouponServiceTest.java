@@ -26,4 +26,12 @@ public class CouponServiceTest {
         assertThatThrownBy(() -> couponService.getCoupon(coupon.getId()))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    void test() {
+        Coupon coupon = new Coupon("coupon", 1000, 10000, Category.FOODS, LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1));
+        couponService.create(coupon);
+        Coupon savedCoupon = couponService.getCouponWithWriter(coupon.getId());
+        assertThat(savedCoupon.getId()).isEqualTo(coupon.getId());
+    }
 }
