@@ -20,7 +20,7 @@ public class IssuablePeriod {
     @Column(name = "end_at")
     private LocalDateTime endAt;
 
-    public IssuablePeriod(){
+    public IssuablePeriod() {
     }
 
     public IssuablePeriod(LocalDateTime startAt, LocalDateTime endAt) {

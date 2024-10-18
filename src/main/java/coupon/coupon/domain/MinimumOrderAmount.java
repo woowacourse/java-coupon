@@ -14,7 +14,7 @@ public class MinimumOrderAmount {
     @Column(name = "minimum_order_amount")
     private int value;
 
-    public MinimumOrderAmount(){
+    public MinimumOrderAmount() {
     }
 
     public MinimumOrderAmount(int value) {

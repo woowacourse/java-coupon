@@ -16,7 +16,7 @@ public class DiscountAmount {
     @Column(name = "discount_amount")
     private int value;
 
-    public DiscountAmount(){
+    public DiscountAmount() {
     }
 
     public DiscountAmount(int discountAmount) {
