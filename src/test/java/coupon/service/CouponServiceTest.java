@@ -26,11 +26,6 @@ class CouponServiceTest {
 
         // when
         couponService.create(coupon);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());
 
         // then
