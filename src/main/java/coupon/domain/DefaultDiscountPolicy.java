@@ -1,4 +1,4 @@
-package coupon.domain.coupon;
+package coupon.domain;
 
 public class DefaultDiscountPolicy implements DiscountPolicy {
 

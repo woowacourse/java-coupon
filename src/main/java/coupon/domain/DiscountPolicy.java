@@ -1,4 +1,4 @@
-package coupon.domain.coupon;
+package coupon.domain;
 
 public interface DiscountPolicy {
     void validate(long discountAmount, long minimumOrderPrice);

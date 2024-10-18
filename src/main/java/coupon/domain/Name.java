@@ -1,4 +1,4 @@
-package coupon.domain.coupon;
+package coupon.domain;
 
 import java.util.Objects;
 
