@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import coupon.domain.Coupon;
 import coupon.exception.NotFoundCouponException;
 import coupon.repository.CouponEntity;
+import coupon.repository.CouponRepository;
 import coupon.service.dto.CreateCouponRequest;
 import coupon.service.dto.CreateCouponResponse;
 import coupon.service.dto.GetCouponResponse;
