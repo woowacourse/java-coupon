@@ -8,7 +8,7 @@ public class CouponFixture {
 
     private static final String NAME = "50% 빅세일 쿠폰";
     private static final Long DISCOUNT_AMOUNT = 10000L;
-    private static final Double DISCOUNT_RATE = 10.0;
+    private static final Integer DISCOUNT_RATE = 10;
     private static final Integer MINIMUM_ORDER_AMOUNT = 5000;
 
     public static Coupon createCoupon() {
