@@ -13,6 +13,7 @@ services:
     volumes:
       - ./data/writer:/var/lib/mysql
       - ./init:/docker-entrypoint-initdb.d
+      - ./writer:/docker-entrypoint
     container_name: mysql_writer
     restart: always
     environment:
@@ -33,6 +34,7 @@ services:
     volumes:
       - ./data/reader:/var/lib/mysql
       - ./init:/docker-entrypoint-initdb.d
+      - ./reader:/docker-entrypoint
     container_name: mysql_reader
     environment:
       MYSQL_ROOT_PASSWORD: root

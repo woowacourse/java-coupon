@@ -22,7 +22,6 @@ public class DataSourceConfig {
     private static final String READER_DATA_SOURCE_PREFIX = "coupon.datasource.reader";
     private static final String ROUTING_DATA_SOURCE = "routingDataSource";
 
-    @Primary
     @Bean(name = WRITER_DATA_SOURCE_BEAN_NAME)
     @ConfigurationProperties(prefix = WRITER_DATA_SOURCE_PREFIX)
     public DataSource writerDataSource() {
@@ -58,6 +57,7 @@ public class DataSourceConfig {
         return routingDataSource;
     }
 
+    @Primary
     @Bean(name = "dataSource")
     public DataSource dataSource(@Qualifier(ROUTING_DATA_SOURCE) DataSource routingDataSourceType) {
         return new LazyConnectionDataSourceProxy(routingDataSourceType);
