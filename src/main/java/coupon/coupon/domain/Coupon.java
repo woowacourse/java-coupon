@@ -53,7 +53,7 @@ public class Coupon extends BaseEntity {
     @Column(name = "issue_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issuedAt;
 
-    @Column(name = "issue_at", columnDefinition = "DATETIME(6)")
+    @Column(name = "expired_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime expiredAt;
 
     public Coupon(
