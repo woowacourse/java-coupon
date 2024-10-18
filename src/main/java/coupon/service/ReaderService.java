@@ -14,7 +14,6 @@ public class ReaderService {
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public <T> T read(Supplier<T> execution) {
-        log.info("Reader DB 접근");
         return execution.get();
     }
 }
