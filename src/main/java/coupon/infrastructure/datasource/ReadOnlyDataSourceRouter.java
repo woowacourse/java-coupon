@@ -1,4 +1,4 @@
-package coupon.support.datasource;
+package coupon.infrastructure.datasource;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 

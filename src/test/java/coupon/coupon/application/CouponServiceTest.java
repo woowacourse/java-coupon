@@ -1,4 +1,4 @@
-package coupon.coupon.service;
+package coupon.coupon.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

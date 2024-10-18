@@ -1,4 +1,4 @@
-package coupon.support.datasource;
+package coupon.infrastructure.datasource;
 
 public enum DataSourceType {
     READER,

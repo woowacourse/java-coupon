@@ -1,4 +1,4 @@
-package coupon.common.audit;
+package coupon.infrastructure.audit;
 
 import java.time.LocalDateTime;
 
