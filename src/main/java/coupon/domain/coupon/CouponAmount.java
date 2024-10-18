@@ -26,14 +26,14 @@ public class CouponAmount {
     }
 
     private void validate(Integer discountAmount, Integer minOrderAmount) {
-        validateIsNullable(discountAmount, minOrderAmount);
+        validateIsNull(discountAmount, minOrderAmount);
         validateDiscountAmountRange(discountAmount);
         validateMinOrderAmountRange(minOrderAmount);
         validateDiscountAmountUnit(discountAmount);
         validateDiscountRate(discountAmount, minOrderAmount);
     }
 
-    private void validateIsNullable(Integer discountAmount, Integer minOrderAmount) {
+    private void validateIsNull(Integer discountAmount, Integer minOrderAmount) {
         if (discountAmount == null) {
             throw new IllegalArgumentException("할인 금액은 null일 수 없습니다.");
         }
