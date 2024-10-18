@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CouponService {
 
+    private final CouponReader couponReader;
     private final CouponRepository couponRepository;
 
     @Transactional
@@ -23,6 +24,6 @@ public class CouponService {
 
     public Coupon getCoupon(long couponId) {
         return couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("일치하는 쿠폰을 찾을 수 없습니다."));
+                .orElseGet(() -> couponReader.getCouponFromWriteDb(couponId));
     }
 }
