@@ -23,7 +23,7 @@ class CouponServiceTest {
                 LocalDateTime.now());
 
         couponService.create(coupon);
-        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        Coupon savedCoupon = couponService.getCouponInReplicationLag(coupon.getId());
 
         assertThat(savedCoupon).isNotNull();
     }

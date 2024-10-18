@@ -23,6 +23,11 @@ public class CouponService {
 
     public Coupon getCoupon(Long id) {
         return couponRepository.findById(id)
+                .orElseThrow(() -> new GlobalCustomException(ErrorMessage.COUPON_NOT_FOUND));
+    }
+
+    public Coupon getCouponInReplicationLag(Long id) {
+        return couponRepository.findById(id)
                 .orElseGet(() -> getCouponWithWriterDb(id));
     }
 
