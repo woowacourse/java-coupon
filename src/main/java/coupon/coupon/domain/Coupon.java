@@ -50,14 +50,13 @@ public class Coupon extends BaseTimeEntity {
     public Coupon(
             final String name,
             final Long discountAmount,
-            final Integer discountRate,
             final Integer minimumOrderAmount,
             final LocalDate issueStartDate,
             final LocalDate issueEndDate
     ) {
         this.name = new Name(name);
         this.discountAmount = new DiscountAmount(discountAmount);
-        this.discountRate = new DiscountRate(discountRate);
+        this.discountRate = DiscountRate.from(discountAmount, minimumOrderAmount);
         this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
         this.issuancePeriod = new IssuancePeriod(issueStartDate, issueEndDate);
     }

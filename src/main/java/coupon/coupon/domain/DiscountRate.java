@@ -12,6 +12,10 @@ public record DiscountRate(Integer discountRate) {
         validateRateRange(discountRate);
     }
 
+    public static DiscountRate from(Long discountAmount, Integer minimumOrderAmount) {
+        return new DiscountRate((int) ((double) discountAmount / minimumOrderAmount * 100));
+    }
+
     public void validateRateRange(final Integer discountRate) {
         if (discountRate < MINIMUM_DISCOUNT_RATE || discountRate > MAXIMUM_DISCOUNT_RATE) {
             throw new IllegalArgumentException("할인율은 3% 이상 20% 이하의 값이어야 합니다.");

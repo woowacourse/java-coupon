@@ -7,9 +7,8 @@ import coupon.coupon.domain.Coupon;
 public class CouponFixture {
 
     private static final String NAME = "50% 빅세일 쿠폰";
-    private static final Long DISCOUNT_AMOUNT = 10000L;
-    private static final Integer DISCOUNT_RATE = 10;
-    private static final Integer MINIMUM_ORDER_AMOUNT = 5000;
+    private static final Long DISCOUNT_AMOUNT = 1_000L;
+    private static final Integer MINIMUM_ORDER_AMOUNT = 30_000;
 
     public static Coupon createCoupon() {
         LocalDate startDate = LocalDate.from(LocalDate.now());
@@ -17,7 +16,6 @@ public class CouponFixture {
         return new Coupon(
                 NAME,
                 DISCOUNT_AMOUNT,
-                DISCOUNT_RATE,
                 MINIMUM_ORDER_AMOUNT,
                 startDate,
                 endDate);
