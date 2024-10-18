@@ -1,16 +1,32 @@
 package coupon.domain.coupon;
 
 import coupon.domain.Category;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
 
-    private final CouponName couponName;
-    private final DiscountMount discountMount;
-    private final MinimumMount minimumMount;
-    private final Category category;
-    private final Period period;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Embedded
+    private CouponName couponName;
+    @Embedded
+    private DiscountMount discountMount;
+    @Embedded
+    private MinimumMount minimumMount;
+    private Category category;
+    @Embedded
+    private Period period;
 
     public Coupon(CouponName couponName, DiscountMount discountMount, MinimumMount minimumMount, Category category,
                   Period period) {
