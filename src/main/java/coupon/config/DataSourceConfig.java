@@ -1,9 +1,13 @@
 package coupon.config;
 
+import static coupon.config.DataSourceType.READER;
+import static coupon.config.DataSourceType.WRITER;
+
 import com.zaxxer.hikari.HikariDataSource;
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -32,10 +36,12 @@ public class DataSourceConfig {
     }
 
     @Bean(name = ROUTE_DATASOURCE)
-    public DataSourceRouter routeDataSource(DataSource readDataSource, DataSource writeDataSource) {
+    public DataSourceRouter routeDataSource(
+            @Qualifier(READ_DATASOURCE) DataSource readDataSource,
+            @Qualifier(WRITE_DATASOURCE) DataSource writeDataSource) {
         Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put(DataSourceType.READER, readDataSource);
-        dataSourceMap.put(DataSourceType.WRITER, writeDataSource);
+        dataSourceMap.put(READER, readDataSource);
+        dataSourceMap.put(WRITER, writeDataSource);
 
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
         dataSourceRouter.setTargetDataSources(dataSourceMap);
