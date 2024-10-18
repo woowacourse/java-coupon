@@ -1,19 +1,12 @@
 package coupon.coupon.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
 import java.time.LocalDateTime;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Embeddable
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class CouponPeriod {
 
-    @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
-
-    @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
     public CouponPeriod(LocalDateTime startDate, LocalDateTime endDate) {
