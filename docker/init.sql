@@ -1,6 +1,3 @@
-CREATE DATABASE coupon;
-USE coupon;
-
 -- 쿠폰 테이블 생성
 create table coupon IF NOT EXISTS(
                         discount_price_amount decimal(38,2),
