@@ -6,6 +6,7 @@ import coupon.domain.Coupon;
 import coupon.dto.SaveCouponRequest;
 import coupon.repository.CouponRepository;
 import java.time.LocalDate;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ class CouponCommandServiceTest {
 
     @Autowired
     private CouponRepository couponRepository;
+
+    @AfterEach
+    void tearDown() {
+        couponRepository.deleteAll();
+    }
 
     @DisplayName("쿠폰을 저장한다.")
     @Test
