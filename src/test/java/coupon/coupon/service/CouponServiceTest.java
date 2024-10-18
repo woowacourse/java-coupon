@@ -3,6 +3,7 @@ package coupon.coupon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import coupon.coupon.CouponFixture;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,11 @@ class CouponServiceTest {
 
     @Autowired
     private CouponService couponService;
+
+    @AfterEach
+    void tearDown() {
+        couponService.deleteAll();
+    }
 
     @DisplayName("쿠폰을 생성하고 저장할 수 있다")
     @Test

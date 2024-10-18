@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
-    
+
     @Transactional
     public Coupon getCoupon(final Long couponId) {
         return couponRepository.findById(couponId)
@@ -23,5 +23,10 @@ public class CouponService {
     @Transactional
     public Coupon createCoupon(final CouponCreateRequest couponRequest) {
         return couponRepository.save(couponRequest.toCouponEntity());
+    }
+
+    @Transactional
+    void deleteAll() {
+        couponRepository.deleteAll();
     }
 }
