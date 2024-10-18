@@ -16,16 +16,16 @@ public class CouponName {
 
     @NotNull
     @Column(length = 30)
-    private String name;
+    private String value;
 
-    public CouponName(String name) {
-        validate(name);
-        this.name = name;
+    public CouponName(String value) {
+        validate(value);
+        this.value = value;
     }
 
-    private void validate(String name) {
-        if (name.length() > MAX_LENGTH) {
-            throw new IllegalArgumentException("coupon name은 30자 이하여야 합니다.");
+    private void validate(String value) {
+        if (value.length() > MAX_LENGTH) {
+            throw new IllegalArgumentException("쿠폰 이름은 30자 이하여야 합니다.");
         }
     }
 }

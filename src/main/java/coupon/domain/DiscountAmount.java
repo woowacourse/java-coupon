@@ -1,9 +1,9 @@
 package coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,19 +15,19 @@ public class DiscountAmount {
 
     @Min(1000)
     @Max(10000)
-    @NotNull
-    private long discountAmount;
+    @Column(nullable = false, name = "discount_amount")
+    private long amount;
 
-    public DiscountAmount(long discountAmount) {
-        validate(discountAmount);
-        this.discountAmount = discountAmount;
+    public DiscountAmount(long amount) {
+        validate(amount);
+        this.amount = amount;
     }
 
-    private void validate(long discountAmount) {
-        if (discountAmount < 1000 || discountAmount > 10000) {
+    private void validate(long amount) {
+        if (amount < 1000 || amount > 10000) {
             throw new IllegalArgumentException("할인 금액은 1000원 이상 10000원 이하여야 합니다.");
         }
-        if (discountAmount % 500 != 0) {
+        if (amount % 500 != 0) {
             throw new IllegalArgumentException("할인 금액은 500원 단위로만 입력 가능합니다.");
         }
     }

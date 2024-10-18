@@ -1,9 +1,9 @@
 package coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,16 +15,16 @@ public class MinOrderAmount {
 
     @Min(5000)
     @Max(100000)
-    @NotNull
-    private long minOrderAmount;
+    @Column(nullable = false, name = "min_order_amount")
+    private long amount;
 
-    public MinOrderAmount(long minOrderAmount) {
-        validate(minOrderAmount);
-        this.minOrderAmount = minOrderAmount;
+    public MinOrderAmount(long amount) {
+        validate(amount);
+        this.amount = amount;
     }
 
-    private void validate(long minOderAmount) {
-        if (minOderAmount < 5000 || minOderAmount > 100000) {
+    private void validate(long amount) {
+        if (amount < 5000 || amount > 100000) {
             throw new IllegalArgumentException("최소 주문 금액은 5000원 이상 100000원 이하여야 합니다.");
         }
     }
