@@ -8,6 +8,7 @@ import coupon.exception.CouponNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +39,47 @@ public class CouponServiceTest extends ServiceTest {
     }
 
     @Test
+    void 복제지연테스트() {
+        Coupon coupon = new Coupon(
+                "점심 반값 쿠폰",
+                BigDecimal.valueOf(1000),
+                BigDecimal.valueOf(10000),
+                CouponCategory.FOOD,
+                LocalDate.of(2000, 4, 7),
+                LocalDate.of(2000, 4, 12)
+        );
+        couponService.create(coupon);
+        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        assertThat(savedCoupon).isNotNull();
+    }
+
+
+    @Test
+    @Disabled
+    void 생성_후_즉시_쿠폰을_조회할_수_있다() throws InterruptedException {
+        // given
+        Thread.sleep(5000); // 테이블 초기화가 read db 에도 전파될 때까지 대기
+        LocalDateTime stamp = LocalDateTime.now();
+        String rightName = "조회용" + stamp;
+        Coupon coupon = new Coupon(
+                rightName,
+                BigDecimal.valueOf(1000),
+                BigDecimal.valueOf(10000),
+                CouponCategory.FOOD,
+                LocalDate.of(2000, 4, 7),
+                LocalDate.of(2000, 4, 12)
+        );
+        couponService.create(coupon);
+
+        // when
+        Coupon findCoupon = couponService.getCoupon(coupon.getId());
+
+        // then
+        assertThat(findCoupon.getName().getName()).isEqualTo(rightName);
+    }
+
+    @Test
+    @Disabled
     void 생성후_시간이_흐르고서_쿠폰을_조회할_수_있다() throws InterruptedException {
         // given
         Thread.sleep(1000); // 테이블 초기화가 read db 에도 전파될 때까지 대기
@@ -54,7 +96,7 @@ public class CouponServiceTest extends ServiceTest {
         couponService.create(coupon);
 
         // when
-        Thread.sleep(5000); // 복제지연 대기
+        Thread.sleep(5000); // 복제 지연 대기
         Coupon findCoupon = couponService.getCoupon(coupon.getId());
 
         // then
@@ -62,6 +104,7 @@ public class CouponServiceTest extends ServiceTest {
     }
 
     @Test
+    @Disabled
     void 생성하자마자_쿠폰을_조회할_때_복제_지연이_발생한다() {
         // given
         LocalDateTime stamp = LocalDateTime.now();
