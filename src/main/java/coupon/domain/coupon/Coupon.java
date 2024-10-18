@@ -67,19 +67,6 @@ public class Coupon extends BaseEntity {
         this(null, name, discountAmount, minimumOrderPrice, couponCategory, issueStartDate, issueEndDate);
     }
 
-    public Coupon(
-            int discountAmount,
-            int minimumOrderPrice
-    ) {
-        this(null,
-                "test",
-                discountAmount,
-                minimumOrderPrice,
-                CouponCategory.ELECTRONICS,
-                LocalDateTime.now(),
-                LocalDateTime.now());
-    }
-
     public String validateName(String name) {
         if (!name.isBlank() && name.length() <= MIN_NAME_LENGTH) {
             return name;

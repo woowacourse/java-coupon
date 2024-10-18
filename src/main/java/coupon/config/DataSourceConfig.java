@@ -1,8 +1,5 @@
 package coupon.config;
 
-import static coupon.config.DataSourceType.READER;
-import static coupon.config.DataSourceType.WRITER;
-
 import com.zaxxer.hikari.HikariDataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +9,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
@@ -40,8 +36,8 @@ public class DataSourceConfig {
             @Qualifier(READ_DATASOURCE) DataSource readDataSource,
             @Qualifier(WRITE_DATASOURCE) DataSource writeDataSource) {
         Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put(READER, readDataSource);
-        dataSourceMap.put(WRITER, writeDataSource);
+        dataSourceMap.put(READ_DATASOURCE, readDataSource);
+        dataSourceMap.put(WRITE_DATASOURCE, writeDataSource);
 
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
         dataSourceRouter.setTargetDataSources(dataSourceMap);
@@ -51,7 +47,6 @@ public class DataSourceConfig {
 
     @Bean
     @Primary
-    @DependsOn(ROUTE_DATASOURCE)
     public DataSource dataSource(DataSource routeDataSource) {
         return new LazyConnectionDataSourceProxy(routeDataSource);
     }
