@@ -2,6 +2,8 @@ package coupon.domain.coupon;
 
 import coupon.domain.coupon.discount.Discount;
 import coupon.domain.coupon.discount.DiscountPolicy;
+import coupon.domain.coupon.discount.DiscountType;
+import coupon.domain.coupon.discount.PercentDiscountPolicy;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,15 +36,26 @@ public class Coupon {
 
     private CouponIssueDate couponIssueDate;
 
+
     public Coupon(String name, DiscountPolicy discountPolicy, int discountPrice, int minOrderPrice, Category category,
                   LocalDate issueStartDate, LocalDate issueEndDate) {
-        this.name = new CouponName(name);
-        this.discount = new Discount(discountPrice, discountPolicy);
-        discount.validateDiscountPolicy(minOrderPrice);
+        this(
+                new CouponName(name),
+                new Discount(discountPrice, discountPolicy),
+                new MinOrderPrice(minOrderPrice),
+                category,
+                new CouponIssueDate(issueStartDate, issueEndDate)
+        );
+    }
 
-        this.minOrderPrice = new MinOrderPrice(minOrderPrice);
+    public Coupon(CouponName name, Discount discount, MinOrderPrice minOrderPrice, Category category,
+                  CouponIssueDate couponIssueDate) {
+        discount.validateDiscountPolicy(minOrderPrice.getMinOrderPrice());
+        this.name = name;
+        this.discount = discount;
+        this.minOrderPrice = minOrderPrice;
         this.category = category;
-        this.couponIssueDate = new CouponIssueDate(issueStartDate, issueEndDate);
+        this.couponIssueDate = couponIssueDate;
     }
 
     public boolean issueAvailable(LocalDate date) {

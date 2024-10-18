@@ -2,8 +2,10 @@ package coupon.domain.coupon;
 
 import coupon.exception.MinOrderPriceValidationException;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 @Embeddable
+@Getter
 public class MinOrderPrice {
     private static final int MIN_MIN_ORDER_PRICE = 5_000;
     private static final int MAX_MIN_ORDER_PRICE = 10_000;

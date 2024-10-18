@@ -2,7 +2,7 @@ package coupon.domain.member_coupon;
 
 import coupon.domain.coupon.Category;
 import coupon.domain.coupon.Coupon;
-import coupon.domain.coupon.discount.PercentDiscountPolicy;
+import coupon.domain.coupon.discount.DiscountType;
 import coupon.domain.member.Member;
 import coupon.exception.CouponIssueDateException;
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ class MemberCouponTest {
         LocalDate issueEndDate = today.minusDays(1);
         Coupon coupon = new Coupon(
                 "testCoupon",
-                new PercentDiscountPolicy(3, 20),
+                DiscountType.PERCENT.getDiscountPolicy(),
                 1000,
                 5000,
                 Category.FASHION,
