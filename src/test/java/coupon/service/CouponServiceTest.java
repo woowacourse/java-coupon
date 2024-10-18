@@ -16,9 +16,6 @@ public class CouponServiceTest {
     @Autowired
     private CouponService couponService;
 
-    @Autowired
-    private ReaderService readerService;
-
     private Coupon coupon;
 
     @BeforeEach
@@ -32,26 +29,9 @@ public class CouponServiceTest {
     }
 
     @Test
-    void 방법1_읽기_시점_지연() throws InterruptedException {
+    void 읽기DB_예외_발생시_쓰기DB에서_조회() {
         // when
-        Coupon saved = couponService.saveCouponBefore(coupon);
-        Thread.sleep(3000);
-
-        // then
-        Coupon coupon = readerService.read(() -> couponService.getCoupon(saved.getId()));
-        assertThat(coupon).isEqualTo(saved);
-
-        /* log
-        1. 쿠폰 저장
-        2. Reader DB 접근
-        3. 쿠폰 조회 시도
-         */
-    }
-
-    @Test
-    void 방법2_예외_발생시_쓰기DB에서_읽기() {
-        // when
-        Coupon saved = couponService.saveCouponAfter(coupon);
+        Coupon saved = couponService.saveCoupon(coupon);
 
         // then
         assertThat(saved.getName()).isEqualTo(coupon.getName());
@@ -63,11 +43,5 @@ public class CouponServiceTest {
         4. Reader DB 접근
         5. 쿠폰 조회
          */
-    }
-
-    @Test
-    void 방법3_읽기DB_무한호출() {
-        Coupon saved = couponService.saveCouponBefore(coupon);
-        couponService.getCouponWithLoop(saved.getId());
     }
 }

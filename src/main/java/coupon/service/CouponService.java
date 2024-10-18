@@ -16,14 +16,7 @@ public class CouponService {
     private final ReaderService readerService;
 
     @Transactional
-    public Coupon saveCouponBefore(Coupon coupon) {
-        Coupon saved = couponRepository.save(coupon);
-        log.info("쿠폰 저장: {}", saved.getId());
-        return saved;
-    }
-
-    @Transactional
-    public Coupon saveCouponAfter(Coupon coupon) {
+    public Coupon saveCoupon(Coupon coupon) {
         Coupon saved = couponRepository.save(coupon);
         log.info("쿠폰 저장: {}", saved.getId());
         try {
@@ -39,15 +32,5 @@ public class CouponService {
         log.info("쿠폰 조회: {}", couponId);
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다: %d".formatted(couponId)));
-    }
-
-    @Transactional
-    public Coupon getCouponWithLoop(Long couponId) {
-        while (true) {
-            try {
-                return readerService.read(() -> getCoupon(couponId));
-            } catch (RuntimeException ignore) {
-            }
-        }
     }
 }
