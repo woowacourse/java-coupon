@@ -2,8 +2,8 @@ package coupon.service;
 
 import coupon.domain.Coupon;
 import coupon.dto.request.CouponSaveRequest;
-import coupon.dto.response.CouponResponse;
 import coupon.repository.CouponRepository;
+import coupon.util.ReadDBConnector;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final ReadDBConnector readDBConnector;
 
     @Transactional
     public Coupon save(CouponSaveRequest couponSaveRequest) {
@@ -21,9 +22,13 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
-    public CouponResponse findById(long couponId) {
-        Coupon coupon = couponRepository.findById(couponId)
+    public Coupon findById(long couponId) {
+        return couponRepository.findById(couponId)
+                .orElse(findByIdWithReadDB(couponId));
+    }
+
+    private Coupon findByIdWithReadDB(long couponId) {
+        return readDBConnector.apply(countId -> couponRepository.findById(couponId), couponId)
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
-        return CouponResponse.from(coupon);
     }
 }

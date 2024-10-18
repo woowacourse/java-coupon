@@ -1,6 +1,6 @@
 package coupon.controller;
 
-import coupon.dto.CouponSaveRequest;
+import coupon.dto.request.CouponSaveRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import java.time.LocalDateTime;
@@ -23,15 +23,37 @@ class CouponControllerTest {
 
     @Test
     void 쿠폰_생성_성공() {
-        CouponSaveRequest request = new CouponSaveRequest("행운쿠폰", 1000, 30000, "패션", LocalDateTime.now(),
+        CouponSaveRequest request = new CouponSaveRequest("행운쿠폰", 1000L, 30000L, "패션", LocalDateTime.now(),
                 LocalDateTime.now().plusDays(1));
 
-        RestAssured.given()
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .post("/coupons")
+                .then().log().all()
+                .statusCode(201);
+    }
+
+    @Test
+    void 쿠폰_조회_성공() {
+        CouponSaveRequest request = new CouponSaveRequest("행운쿠폰", 1000L, 30000L, "패션", LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1));
+
+        Long couponId = RestAssured.given()
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when()
                 .post("/coupons")
                 .then()
-                .statusCode(201);
+                .statusCode(201)
+                .extract()
+                .as(Long.class);
+
+        RestAssured.given().log().all()
+                .when()
+                .get("/coupons/" + couponId)
+                .then().log().all()
+                .statusCode(200);
     }
 }

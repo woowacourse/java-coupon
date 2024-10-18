@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 public class IssuancePeriod {
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, name = "start_date")
     private LocalDateTime startDate;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, name = "end_date")
     private LocalDateTime endDate;
 
     public IssuancePeriod(LocalDateTime startDate, LocalDateTime endDate) {

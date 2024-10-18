@@ -4,10 +4,10 @@ import coupon.domain.Coupon;
 import java.time.LocalDateTime;
 
 public record CouponResponse(
-        long couponId,
+        Long couponId,
         String name,
-        long discountAmount,
-        long minOrderAmount,
+        Long discountAmount,
+        Long minOrderAmount,
         String category,
         LocalDateTime issuanceStartDate,
         LocalDateTime issuanceEndDate

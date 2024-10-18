@@ -16,7 +16,7 @@ public class DiscountAmount {
     @Min(1000)
     @Max(10000)
     @Column(nullable = false, name = "discount_amount")
-    private long amount;
+    private Long amount;
 
     public DiscountAmount(long amount) {
         validate(amount);

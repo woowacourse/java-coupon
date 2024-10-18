@@ -14,10 +14,10 @@ public record CouponSaveRequest(
         String name,
 
         @NotNull
-        long discountAmount,
+        Long discountAmount,
 
         @NotNull
-        long minOrderAmount,
+        Long minOrderAmount,
 
         @NotNull
         String category,

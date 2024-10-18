@@ -29,7 +29,7 @@ public class CouponController {
 
     @GetMapping("/coupons/{couponId}")
     public ResponseEntity<CouponResponse> findById(@PathVariable Long couponId) {
-        CouponResponse response = couponService.findById(couponId);
+        CouponResponse response = CouponResponse.from(couponService.findById(couponId));
         return ResponseEntity.ok(response);
     }
 }
