@@ -27,7 +27,7 @@ public class Name {
     }
 
     private void validateExist(String value) {
-        if (value == null || value.trim().isEmpty()) {
+        if (value == null || value.isBlank()) {
             throw new IllegalArgumentException("이름은 반드시 존재해야 합니다.");
         }
     }
