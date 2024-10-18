@@ -26,9 +26,10 @@ public class Coupon {
     @Embedded
     private DiscountAmount discountAmount;
 
-    private int discountRate;
-
     private int minOrderAmount;
+
+    @Embedded
+    private DiscountRate discountRate;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -36,12 +37,12 @@ public class Coupon {
 
     private LocalDateTime issuePeriod;
 
-    public Coupon(String name, int discountAmount, int discountRate, int minOrderAmount, Category category,
+    public Coupon(String name, int discountAmount, int minOrderAmount, Category category,
                   LocalDateTime issuePeriod) {
         this.name = new CouponName(name);
         this.discountAmount = new DiscountAmount(discountAmount);
-        this.discountRate = discountRate;
         this.minOrderAmount = minOrderAmount;
+        this.discountRate = DiscountRate.calculateDiscountRate(discountAmount, minOrderAmount);
         this.category = category;
         this.issuePeriod = issuePeriod;
     }
