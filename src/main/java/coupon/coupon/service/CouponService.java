@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
-
-    @Transactional(readOnly = true)
+    
+    @Transactional
     public Coupon getCoupon(final Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new CouponException("쿠폰이 존재하지 않습니다."));
