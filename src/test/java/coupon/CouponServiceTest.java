@@ -2,6 +2,8 @@ package coupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +20,13 @@ public class CouponServiceTest {
 
     @Test
     void 복제지연테스트() {
-        Coupon coupon = new Coupon(Category.FASHION, 1000, 10000);
+        Coupon coupon = new Coupon(
+                "쿠폰 이름",
+                1000L,
+                10000L,
+                Category.FASHION,
+                LocalDate.now(),
+                LocalDate.now().plusDays(1L));
         coupon = couponService.create(coupon);
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());
         assertThat(savedCoupon).isNotNull();
