@@ -10,6 +10,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import coupon.domain.coupon.Category;
+import coupon.domain.coupon.Coupon;
+
 class CouponTest {
 
     private String name = "쿠폰이름";
