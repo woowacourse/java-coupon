@@ -40,4 +40,12 @@ public class IssuablePeriod {
     public boolean canIssue(LocalDateTime issueRequestTime) {
         return !issueRequestTime.isBefore(startAt) && !issueRequestTime.isAfter(endAt);
     }
+
+    public LocalDateTime getStartAt() {
+        return startAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
+    }
 }
