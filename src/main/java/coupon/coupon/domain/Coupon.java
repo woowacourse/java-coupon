@@ -71,8 +71,8 @@ public class Coupon {
     ) {
         validateName(name);
         validateDiscountAmount(discountAmount);
-        validateDiscountRate(discountRate);
         validateMinOrderAmount(minOrderAmount);
+        validateDiscountRate(discountRate);
         validateIssuedPeriod(startedAt, endedAt);
     }
 
@@ -92,15 +92,15 @@ public class Coupon {
         }
     }
 
-    private void validateDiscountRate(Integer discountRate) {
-        if (discountRate < 3 || 20 < discountRate) {
-            throw new IllegalArgumentException("쿠폰의 할인율은 3% 이상 20% 이하여야 합니다.");
-        }
-    }
-
     private void validateMinOrderAmount(Integer minOrderAmount) {
         if (minOrderAmount < 5000 || 100000 < minOrderAmount) {
             throw new IllegalArgumentException("쿠폰의 최소 주문 금액은 5000원 이상 100000원 이하여야 합니다.");
+        }
+    }
+
+    private void validateDiscountRate(Integer discountRate) {
+        if (discountRate < 3 || 20 < discountRate) {
+            throw new IllegalArgumentException("쿠폰의 할인율은 3% 이상 20% 이하여야 합니다.");
         }
     }
 
