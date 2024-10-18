@@ -14,12 +14,11 @@ public class DiscountRateCalculator {
     }
 
     public long calculate() {
-        final long discountRate = Math.floorDiv(orderPrice, discountAmount);
-        validateRate(discountRate);
-        return discountRate;
+        return Math.floorDiv(orderPrice, discountAmount);
     }
 
-    private void validateRate(final long discountRate) {
+    public void validateRate() {
+        final long discountRate = calculate();
         validateMinRate(discountRate);
         validateMaxRate(discountRate);
     }

@@ -31,7 +31,7 @@ class DiscountRateCalculatorTest {
         final DiscountRateCalculator calculator = new DiscountRateCalculator(orderPrice, discountAmount);
 
         // when & then
-        assertThatThrownBy(calculator::calculate)
+        assertThatThrownBy(calculator::validateRate)
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -44,7 +44,7 @@ class DiscountRateCalculatorTest {
         final DiscountRateCalculator calculator = new DiscountRateCalculator(orderPrice, discountAmount);
 
         // when & then
-        assertThatThrownBy(calculator::calculate)
+        assertThatThrownBy(calculator::validateRate)
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

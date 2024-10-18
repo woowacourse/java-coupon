@@ -6,11 +6,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
+@Table(name = "COUPON")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
 
@@ -27,4 +33,15 @@ public class Coupon {
 
     @Embedded
     private Period period;
+
+    @OneToOne
+    @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
+    private Order order;
+
+    public Coupon(final CouponName name, final Discount discount, final Period period, final Order order) {
+        this.name = name;
+        this.discount = discount;
+        this.period = period;
+        this.order = order;
+    }
 }
