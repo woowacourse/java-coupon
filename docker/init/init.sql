@@ -1,13 +1,14 @@
 create database if not exists coupon;
 use coupon;
 
+drop table coupon;
 create table if not exists coupon
 (
     id                  BIGINT AUTO_INCREMENT PRIMARY KEY,
     name                VARCHAR(255) NOT NULL,
     discount_money      BIGINT       NOT NULL,
     minimum_order_money BIGINT       NOT NULL,
-    coupon_category     VARCHAR(50)  NOT NULL,
+    category            VARCHAR(50)  NOT NULL,
     since_date          DATE         NOT NULL,
     until_date          DATE         NOT NULL
 ) engine = InnoDB;
