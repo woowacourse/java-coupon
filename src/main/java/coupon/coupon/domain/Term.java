@@ -28,12 +28,4 @@ public class Term {
             throw new CouponException("종료일이 시작일보다 앞설 수 없습니다.");
         }
     }
-
-    public LocalDate getStartAt() {
-        return startAt;
-    }
-
-    public LocalDate getEndAt() {
-        return endAt;
-    }
 }

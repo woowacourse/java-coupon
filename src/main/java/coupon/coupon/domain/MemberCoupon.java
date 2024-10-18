@@ -54,20 +54,8 @@ public class MemberCoupon {
         return issuedAt.plusDays(7).with(LocalTime.of(23, 59, 59, 999_999_000));
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public Coupon getCoupon() {
         return coupon;
-    }
-
-    public Member getMember() {
-        return member;
-    }
-
-    public boolean isUsed() {
-        return used;
     }
 
     public LocalDateTime getIssuedAt() {

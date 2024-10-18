@@ -62,28 +62,4 @@ public class Coupon {
     public long getId() {
         return id;
     }
-
-    public String getName() {
-        return name.getCouponName();
-    }
-
-    public DiscountAmount getDiscountAmount() {
-        return discountAmount;
-    }
-
-    public MinimumOrderAmount getMinimumOrderAmount() {
-        return minimumOrderAmount;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public LocalDate getStartAt() {
-        return term.getStartAt();
-    }
-
-    public LocalDate getEndAt() {
-        return term.getEndAt();
-    }
 }
