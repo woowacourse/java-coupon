@@ -12,8 +12,8 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
-    public void create(Coupon coupon) {
-        couponRepository.save(coupon);
+    public Coupon create(Coupon coupon) {
+        return couponRepository.save(coupon);
     }
 
     @Transactional(readOnly = true)
