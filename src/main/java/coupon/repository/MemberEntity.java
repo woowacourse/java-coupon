@@ -29,4 +29,8 @@ public class MemberEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    public Member toDomain() {
+        return new Member(name);
+    }
 }

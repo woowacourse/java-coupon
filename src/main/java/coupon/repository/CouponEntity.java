@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,4 +58,10 @@ public class CouponEntity {
 
     @Column(name = "issuable_end_date", nullable = false)
     private LocalDate issuableEndDate;
+
+    public Coupon toDomain() {
+        return new Coupon(
+                name, category, discountPrice, minimumOrderPrice, List.of(), issuableStartDate, issuableEndDate
+        );
+    }
 }
