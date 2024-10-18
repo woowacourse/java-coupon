@@ -29,6 +29,7 @@ public class Coupon {
     private Integer minOrderPrice;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR")
     private Category category;
 
     private LocalDateTime issuableFrom;
