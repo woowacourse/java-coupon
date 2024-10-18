@@ -29,6 +29,11 @@ public class CouponService {
                 new IssuePeriod(couponRequest.issuedAt(), couponRequest.expiresAt())
         );
 
-        couponRepository.save(new CouponEntity(coupon));
+        return couponRepository.save(new CouponEntity(coupon));
+    }
+
+    public CouponEntity getCoupon(Long id) {
+        return couponRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID가 " + id + "인 쿠폰은 존재하지 않습니다."));
     }
 }
