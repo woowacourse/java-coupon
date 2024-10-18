@@ -11,7 +11,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class CouponWriteEventListener {
 
-    private static final Duration TIMEOUT = Duration.ofMinutes(2);
+    private static final Duration TIMEOUT = Duration.ofSeconds(2);
 
     private final WriteTimeChecker writeTimeChecker;
 

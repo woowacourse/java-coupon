@@ -15,7 +15,8 @@ public class WriteTimeChecker {
     }
 
     public boolean isAvailableToRead(String key) {
-        return Boolean.TRUE.equals(template.hasKey(key));
+        // 키가 존재하면 Read DB로 가면 안 된다.
+        return Boolean.FALSE.equals(template.hasKey(key));
     }
 
     public void renewKey(String key, Duration timeout) {
