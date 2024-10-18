@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.ToString;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -45,5 +46,16 @@ public class MemberCoupon {
             throw new IllegalStateException("쿠폰을 발급할 수 없는 상태입니다: " + coupon);
         }
         return new MemberCoupon(coupon, member, false, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
+    }
+
+    public void use() {
+        LocalDate today = LocalDate.now();
+        LocalDate expiredDate = expiredAt.toLocalDate();
+
+        if (today.isAfter(expiredDate)) {
+            throw new IllegalStateException("쿠폰이 만료되었습니다: " + this);
+        }
+
+        used = true;
     }
 }
