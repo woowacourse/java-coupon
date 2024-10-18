@@ -1,5 +1,8 @@
-package coupon;
+package coupon.service;
 
+import coupon.domain.Coupon;
+import coupon.repository.CouponReader;
+import coupon.repository.CouponWriter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

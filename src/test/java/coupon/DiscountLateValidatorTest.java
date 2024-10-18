@@ -1,6 +1,7 @@
 package coupon;
 
 import coupon.config.DiscountLateValidationConfig;
+import coupon.domain.DiscountLateValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

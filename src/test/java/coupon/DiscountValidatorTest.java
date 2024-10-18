@@ -1,6 +1,8 @@
 package coupon;
 
 import coupon.config.DiscountValidationConfig;
+import coupon.domain.DiscountValidator;
+import coupon.domain.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

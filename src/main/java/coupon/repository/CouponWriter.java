@@ -1,5 +1,9 @@
-package coupon;
+package coupon.repository;
 
+import coupon.domain.Coupon;
+import coupon.domain.DiscountLateValidator;
+import coupon.domain.DiscountValidator;
+import coupon.domain.MinimumOrderPriceValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

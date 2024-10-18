@@ -1,4 +1,4 @@
-package coupon;
+package coupon.domain;
 
 import coupon.config.DiscountLateValidationConfig;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

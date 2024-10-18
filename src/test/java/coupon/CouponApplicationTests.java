@@ -1,5 +1,9 @@
 package coupon;
 
+import coupon.domain.Category;
+import coupon.domain.Coupon;
+import coupon.domain.Money;
+import coupon.service.CouponService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

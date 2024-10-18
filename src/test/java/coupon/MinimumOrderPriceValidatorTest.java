@@ -1,6 +1,8 @@
 package coupon;
 
 import coupon.config.MinimumOrderPriceConfig;
+import coupon.domain.MinimumOrderPriceValidator;
+import coupon.domain.Money;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
