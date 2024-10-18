@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
@@ -16,23 +15,22 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 @Configuration
 @EnableJpaRepositories(basePackages = "coupon.infra.db.jpa")
 @EnableRedisRepositories(basePackages = "coupon.infra.db.redis")
-public class DataSourceConfig {
+class DataSourceConfig {
 
     @Bean
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
-    public DataSource writeDataSource() {
+    DataSource writeDataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
 
     @Bean
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
-    public DataSource readDataSource() {
+    DataSource readDataSource() {
         return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
 
     @Bean
-    @DependsOn({"writeDataSource", "readDataSource"})
-    public DataSource routeDataSource() {
+    DataSource routeDataSource() {
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
         DataSource writeDataSource = writeDataSource();
         DataSource readDataSource = readDataSource();
@@ -49,8 +47,7 @@ public class DataSourceConfig {
 
     @Bean
     @Primary
-    @DependsOn("routeDataSource")
-    public DataSource dataSource() {
+    DataSource dataSource() {
         return new LazyConnectionDataSourceProxy(routeDataSource());
     }
 }
