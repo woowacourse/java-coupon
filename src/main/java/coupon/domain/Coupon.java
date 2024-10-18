@@ -95,23 +95,23 @@ public class Coupon {
     }
 
     @AssertTrue(message = "Discount amount must be a multiple of 500")
-    public boolean validateDiscountAmount() {
+    public boolean isDiscountAmount() {
         return discountAmount % DISCOUNT_UNIT == 0;
     }
 
     @AssertTrue(message = "Discount rate must be between 3 and 20")
-    public boolean validateDiscountRate() {
+    public boolean isDiscountRate() {
         double discountRate = Math.floor(discountAmount * 1.0 / minimumOrderAmount * 100);
         return discountRate >= MIN_DISCOUNT_RATE && discountRate <= MAX_DISCOUNT_RATE;
     }
 
     @AssertTrue(message = "Issue date cannot be null")
-    public boolean validateIssDateNotNull() {
+    public boolean isIssDateNotNull() {
         return issueStartDate != null && issueEndDate != null;
     }
 
     @AssertTrue(message = "Issue date cannot be after issue date")
-    public boolean validateIssueBeforeDate() {
+    public boolean isIssueBeforeDate() {
         return !issueStartDate.isAfter(issueEndDate);
     }
 }
