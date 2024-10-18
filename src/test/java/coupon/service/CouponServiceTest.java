@@ -3,6 +3,7 @@ package coupon.service;
 import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.dto.CouponRequest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,7 @@ public class CouponServiceTest {
     @Autowired
     private CouponService couponService;
 
+    @DisplayName("쿠폰 조회 시 복제 지연 발생을 방지")
     @Test
     void coupon_replica_delay() {
         //given
