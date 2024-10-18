@@ -22,7 +22,9 @@ class MemberCouponTest {
 
         Coupon coupon = new Coupon(
                 "testCoupon",
-                DiscountType.PERCENT.createDiscountPolicy(minDiscountRange, maxDiscountRange),
+                DiscountType.PERCENT,
+                minDiscountRange,
+                maxDiscountRange,
                 1000,
                 5000,
                 Category.FASHION,

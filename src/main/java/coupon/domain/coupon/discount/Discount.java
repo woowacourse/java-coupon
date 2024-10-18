@@ -11,14 +11,18 @@ public class Discount {
     private static final int DISCOUNT_PRICE_UNIT = 500;
 
     private int discountPrice;
-    private DiscountPolicy discountPolicy;
+    private DiscountType discountType;
+    private int minDiscountPercent;
+    private int maxDiscountPercent;
 
-    public Discount(int discountPrice, DiscountPolicy discountPolicy) {
+    public Discount(DiscountType discountType, int discountPrice, int minDiscountPercent, int maxDiscountPercent) {
         validateDiscountPriceRange(discountPrice);
         validateDiscountPriceUnit(discountPrice);
 
+        this.discountType = discountType;
         this.discountPrice = discountPrice;
-        this.discountPolicy = discountPolicy;
+        this.minDiscountPercent = minDiscountPercent;
+        this.maxDiscountPercent = maxDiscountPercent;
     }
 
     public Discount() {
@@ -41,8 +45,9 @@ public class Discount {
     }
 
     public void validateDiscountPolicy(int minOrderPrice) {
+        DiscountPolicy discountPolicy = discountType.createDiscountPolicy(minDiscountPercent, maxDiscountPercent);
         boolean isApprove = discountPolicy.validate(minOrderPrice, discountPrice);
-        if(!isApprove) {
+        if (!isApprove) {
             throw new DiscountPolicyValidationException(minOrderPrice, discountPrice);
         }
     }
@@ -50,5 +55,4 @@ public class Discount {
     public int getDiscountPrice() {
         return discountPrice;
     }
-
 }

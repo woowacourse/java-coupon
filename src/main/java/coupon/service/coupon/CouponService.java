@@ -20,8 +20,7 @@ public class CouponService {
     public Coupon createCoupon(String name, int discountPrice, int minOrderPrice,
                                DiscountType discountType, int minDiscountRange, int maxDiscountRange,
                                Category category, LocalDate issueStartDate, LocalDate issueEndDate) {
-        DiscountPolicy discountPolicy = discountType.createDiscountPolicy(minDiscountRange, maxDiscountRange);
-        Coupon coupon = new Coupon(name, discountPolicy, discountPrice, minOrderPrice, category, issueStartDate,
+        Coupon coupon = new Coupon(name, discountType, minDiscountRange, maxDiscountRange, discountPrice, minOrderPrice, category, issueStartDate,
                 issueEndDate);
 
         return couponRepository.save(coupon);

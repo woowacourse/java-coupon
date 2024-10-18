@@ -39,11 +39,11 @@ public class Coupon {
     private CouponIssueDate couponIssueDate;
 
 
-    public Coupon(String name, DiscountPolicy discountPolicy, int discountPrice, int minOrderPrice, Category category,
+    public Coupon(String name, DiscountType discountType, int minDiscountRange, int maxDiscountRange, int discountPrice, int minOrderPrice, Category category,
                   LocalDate issueStartDate, LocalDate issueEndDate) {
         this(
                 new CouponName(name),
-                new Discount(discountPrice, discountPolicy),
+                new Discount(discountType, discountPrice, minDiscountRange, maxDiscountRange),
                 new MinOrderPrice(minOrderPrice),
                 category,
                 new CouponIssueDate(issueStartDate, issueEndDate)
