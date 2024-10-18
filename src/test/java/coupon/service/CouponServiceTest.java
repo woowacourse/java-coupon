@@ -1,5 +1,7 @@
 package coupon.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import coupon.domain.Category;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponName;
@@ -18,14 +20,15 @@ class CouponServiceTest {
     private CouponService couponService;
 
     @Test
-    void create() {
-        Coupon coupon = new Coupon(
+    void 복제지연테스트() {
+        Coupon coupon = couponService.create(new Coupon(
                 new CouponName("쿠폰"),
                 new DiscountMount(1000),
                 new MinimumMount(5000),
                 Category.FASHION,
                 new Period(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1))
-        );
-        couponService.create(coupon);
+        ));
+        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        assertThat(savedCoupon).isNotNull();
     }
 }
