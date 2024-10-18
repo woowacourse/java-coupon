@@ -2,6 +2,7 @@ package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -29,19 +30,17 @@ class CouponDBServiceTest {
     @MockBean
     CouponReader couponReader;
 
-    @DisplayName("reader에서 조회하지 못할 경우 writer에서 조회한다")
+    @DisplayName("reader에서 조회하지 못할 경우 write DB에서 조회한다")
     @Test
     void queryToWriter_When_Reader_CannotRead() {
         Coupon dummy = mock(Coupon.class);
-        when(couponReader.findCoupon(anyLong())).thenReturn(Optional.empty());
-        when(couponWriter.findCoupon(anyLong())).thenReturn(dummy);
+        when(couponReader.findCoupon(anyLong())).thenReturn(Optional.empty(), Optional.of(dummy));
 
         Coupon actual = couponDBService.findById(1L);
 
         assertAll(
                 () -> assertThat(actual).isEqualTo(dummy),
-                () -> verify(couponReader, times(1)).findCoupon(1L),
-                () -> verify(couponWriter, times(1)).findCoupon(1L)
+                () -> verify(couponReader, times(2)).findCoupon(1L)
         );
     }
 
@@ -49,13 +48,13 @@ class CouponDBServiceTest {
     @Test
     void save_Through_Writer() {
         Coupon dummy = mock(Coupon.class);
-        when(couponWriter.findCoupon(anyLong())).thenReturn(dummy);
+        when(couponWriter.save(any(Coupon.class))).thenReturn(dummy);
 
-        Coupon actual = couponDBService.findById(1L);
+        Coupon actual = couponDBService.create(dummy);
 
         assertAll(
                 () -> assertThat(actual).isEqualTo(dummy),
-                () -> verify(couponWriter, times(1)).findCoupon(1L)
+                () -> verify(couponWriter, times(1)).save(dummy)
         );
     }
 }
