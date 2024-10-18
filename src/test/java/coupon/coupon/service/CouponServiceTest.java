@@ -17,13 +17,17 @@ public class CouponServiceTest {
     @Autowired
     private CouponService couponService;
 
-    @DisplayName("복제지연테스트")
+    @DisplayName("캐시를 사용해 복제 지연을 해결할 수 있다.")
     @Test
     void testReplicationDelay() {
+        // given
         Coupon coupon = new Coupon("name", 1000L, 10000L, "FOOD", LocalDateTime.now(), LocalDateTime.now());
-        couponService.createWithCache(coupon);
 
+        // when
+        couponService.createWithCache(coupon);
         Coupon savedCoupon = couponService.readByIdFromReaderWithCache(coupon.getId());
+
+        // then
         assertThat(savedCoupon).isNotNull();
     }
 }
