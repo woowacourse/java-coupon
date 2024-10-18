@@ -2,6 +2,7 @@ package coupon.coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import coupon.coupon.business.CouponService;
 import coupon.coupon.common.Fixture;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.IssuePeriod;
@@ -9,8 +10,9 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public class CouponServiceTest {
 
     @Autowired
