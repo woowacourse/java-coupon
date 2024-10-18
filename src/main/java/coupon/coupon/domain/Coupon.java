@@ -1,5 +1,6 @@
 package coupon.coupon.domain;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -9,7 +10,6 @@ import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
-// TODO: 값 객체 포장, 도메인 로직 추가
 @Entity
 @Getter
 public class Coupon {
@@ -18,7 +18,8 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Embedded
+    private Name name;
 
     private int discountPrice;
 
@@ -36,7 +37,7 @@ public class Coupon {
 
     public Coupon(String name, int discountPrice, int minimumOrderPrice,
                   Category category, LocalDateTime startTime, LocalDateTime endTime) {
-        this.name = name;
+        this.name = new Name(name);
         this.discountPrice = discountPrice;
         this.minimumOrderPrice = minimumOrderPrice;
         this.category = category;
