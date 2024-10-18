@@ -4,22 +4,22 @@ import coupon.domain.Coupon;
 import coupon.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
 public class CouponService {
 
-    private final CouponRepository couponRepository;
+    private final CouponWriteService couponWriteService;
+    private final CouponReadService couponReadService;
 
-    @Transactional
     public long create(Coupon coupon) {
-        Coupon savedCoupon = couponRepository.save(coupon);
-        return savedCoupon.getId();
+        return couponWriteService.create(coupon);
     }
 
-    @Transactional(readOnly = true)
     public Coupon read(Long id) {
-        return couponRepository.getById(id);
+        return couponReadService.readById(id).
+                orElse(couponWriteService.readById(id));
     }
 }

@@ -30,7 +30,7 @@ public class DataSourceConfig {
     @Bean
     @DependsOn({"writeDataSource", "readDataSource"})
     public DataSource routeDataSource() {
-        ReadOnlyDataSourceRouter dataSourceRouter = new ReadOnlyDataSourceRouter();
+        DataSourceRouter dataSourceRouter = new DataSourceRouter();
         DataSource writeDataSource = writeDataSource();
         DataSource readDataSource = readDataSource();
 
