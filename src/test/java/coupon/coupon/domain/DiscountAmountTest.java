@@ -42,32 +42,4 @@ class DiscountAmountTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("할인 금액은 500원 단위로만 설정할 수 있습니다.");
     }
-
-    /*
-    @Test
-    @DisplayName("할인율이 3% 미만이면 예외가 발생한다.")
-    void should_throw_exception_when_discount_rate_less_than_3_percent() {
-        // given
-        int discountAmount = 2500;
-        int minimumOrderAmount = 100000;
-
-        // when & then
-        assertThatThrownBy(() -> new DiscountAmount(discountAmount, minimumOrderAmount))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("할인율은 3% 이상이어야 합니다.");
-    }
-
-    @Test
-    @DisplayName("할인율이 20%를 초과하면 예외가 발생한다.")
-    void should_throw_exception_when_discount_rate_more_than_20_percent() {
-        // given
-        int discountAmount = 10000;
-        int minimumOrderAmount = 47619;
-
-        // when & then
-        assertThatThrownBy(() -> new DiscountAmount(discountAmount, minimumOrderAmount))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("할인율은 20% 이하여야 합니다.");
-    }
-    */
 }
