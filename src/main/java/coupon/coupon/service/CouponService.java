@@ -15,13 +15,13 @@ public class CouponService {
     private final CouponRepository couponRepository;
 
     @Transactional(readOnly = true)
-    public Coupon getCoupon(Long couponId) {
+    public Coupon getCoupon(final Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new CouponException("쿠폰이 존재하지 않습니다."));
     }
 
     @Transactional
-    public Coupon createCoupon(CouponCreateRequest couponRequest) {
+    public Coupon createCoupon(final CouponCreateRequest couponRequest) {
         return couponRepository.save(couponRequest.toCouponEntity());
     }
 }
