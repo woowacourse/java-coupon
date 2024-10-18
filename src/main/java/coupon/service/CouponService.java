@@ -1,31 +1,29 @@
 package coupon.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import coupon.domain.Coupon;
-import coupon.repository.CouponRepository;
+import coupon.repository.CouponReaderRepository;
+import coupon.repository.CouponWriterRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class CouponService {
 
-    private final CouponRepository couponRepository;
+    private final CouponWriterRepository couponWriterRepository;
+    private final CouponReaderRepository couponReaderRepository;
 
-//    @Transactional
     public Coupon create(Coupon coupon) {
-        return couponRepository.save(coupon);
+        return couponWriterRepository.save(coupon);
     }
 
-    @Transactional(readOnly = true)
     public Coupon getCoupon(long id) {
-        return couponRepository.findById(id)
+        return couponReaderRepository.findById(id)
+                .orElseGet(() -> getCouponByWriter(id));
+    }
+
+    public Coupon getCouponByWriter(long id) {
+        return couponWriterRepository.findById(id)
                 .orElseThrow();
     }
-    /*
-    1. 쿠폰 생성, 조회 기능 구현
-쿠폰의 제약조건은 DB 복제와 캐시 페이지의 미션 설명을 참고한다.
-조회 기능은 부하 분산을 위해 reader DB의 데이터를 조회해야 한다.
-     */
 }
