@@ -1,4 +1,14 @@
-version: '3'
+volumes:
+  writer:
+  reader:
+
+networks:
+  coupon_dock_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
 services:
   mysql_writer:
     user: root
@@ -11,11 +21,13 @@ services:
       coupon_dock_net:
         ipv4_address: 172.20.0.10
     volumes:
-      - ./data/writer:/var/lib/mysql
+      - writer:/var/lib/mysql
     container_name: mysql_writer
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: coupon
+      LANG: C.UTF-8
       TZ: Asia/Seoul
 
   mysql_reader:
@@ -29,10 +41,13 @@ services:
       coupon_dock_net:
         ipv4_address: 172.20.0.11
     volumes:
-      - ./data/reader:/var/lib/mysql
+      - reader:/var/lib/mysql
     container_name: mysql_reader
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: coupon
+      LANG: C.UTF-8
       TZ: Asia/Seoul
     depends_on:
       - mysql_writer
@@ -40,16 +55,9 @@ services:
   redis:
     image: redis:7.0.12
     container_name: redis
-    restart: always
+    restart: unless-stopped
     ports:
       - "36379:6379"
     networks:
       coupon_dock_net:
         ipv4_address: 172.20.0.20
-
-networks:
-  coupon_dock_net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
