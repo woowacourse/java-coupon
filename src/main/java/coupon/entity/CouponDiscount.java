@@ -34,14 +34,14 @@ public class CouponDiscount {
         if (discountAmount.compareTo(BigDecimal.valueOf(1000)) < 0 ||
                 discountAmount.compareTo(BigDecimal.valueOf(10000)) > 0 ||
                 discountAmount.remainder(BigDecimal.valueOf(500)).compareTo(BigDecimal.ZERO) != 0) {
-            throw new CouponDiscountAmountException();
+            throw new CouponDiscountAmountException(discountAmount);
         }
     }
 
     private void validateMinimumOrderAmount() {
         if (minimumOrderAmount.compareTo(BigDecimal.valueOf(5000)) < 0 ||
                 minimumOrderAmount.compareTo(BigDecimal.valueOf(100000)) > 0) {
-            throw new CouponMinimumOrderAmountException();
+            throw new CouponMinimumOrderAmountException(minimumOrderAmount);
         }
     }
 

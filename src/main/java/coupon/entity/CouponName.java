@@ -20,7 +20,7 @@ public class CouponName {
 
     private void validate() {
         if (name == null || name.isEmpty() || name.length() > 30) {
-            throw new CouponNameException();
+            throw new CouponNameException(name);
         }
     }
 }
