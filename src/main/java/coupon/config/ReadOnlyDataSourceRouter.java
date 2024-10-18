@@ -7,7 +7,8 @@ public class ReadOnlyDataSourceRouter extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
+        if (TransactionSynchronizationManager.isCurrentTransactionReadOnly() &&
+            RoutingContext.isRoutableToReadSource()) {
             return DataSourceType.READER;
         }
         return DataSourceType.WRITER;
