@@ -2,18 +2,50 @@ package coupon.domain;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@Table(name = "coupon")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Coupon {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "discount_amount")
     private int discountAmount;
+
+    @Column(name = "minimum_order_amount")
     private int minimumOrderAmount;
+
+    @Transient
     private DiscountRate discountRate;
+
+    @Column(name = "start_date")
     private LocalDateTime startDate;
+
+    @Column(name = "end_date")
     private LocalDateTime endDate;
+
+    @Column(name = "category")
+    @Enumerated(value = EnumType.STRING)
     private Category category;
 
     public Coupon(String name, int discountAmount, int minimumOrderAmount, LocalDateTime startDate, LocalDateTime endDate, Category category) {
@@ -75,6 +107,10 @@ public class Coupon {
     }
 
     public int getDiscountRate() {
+        if (discountRate != null) {
+            return discountRate.intValue();
+        }
+        discountRate = new DiscountRate(discountAmount, minimumOrderAmount);
         return discountRate.intValue();
     }
 }
