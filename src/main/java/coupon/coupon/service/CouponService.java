@@ -1,5 +1,7 @@
 package coupon.coupon.service;
 
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +16,14 @@ public class CouponService {
     private final CouponRepository couponRepository;
 
     @Transactional
-    public Long create(Coupon coupon) {
-        Coupon savedCoupon = couponRepository.save(coupon);
-        return savedCoupon.getId();
+    @CachePut(value = "coupons", key = "#result.id")
+    public Coupon createWithCache(Coupon coupon) {
+        return couponRepository.save(coupon);
     }
 
     @Transactional(readOnly = true)
-    public Coupon readByIdFromReader(Long couponId) {
+    @Cacheable(value = "coupons", key = "#couponId")
+    public Coupon readByIdFromReaderWithCache(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 ID의 쿠폰이 없습니다."));
     }

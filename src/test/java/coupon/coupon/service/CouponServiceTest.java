@@ -19,11 +19,11 @@ public class CouponServiceTest {
 
     @DisplayName("복제지연테스트")
     @Test
-    void testReplicationDelay() throws InterruptedException {
+    void testReplicationDelay() {
         Coupon coupon = new Coupon("name", 1000L, 10000L, "FOOD", LocalDateTime.now(), LocalDateTime.now());
-        couponService.create(coupon);
+        couponService.createWithCache(coupon);
 
-        Coupon savedCoupon = couponService.readByIdFromReader(coupon.getId());
+        Coupon savedCoupon = couponService.readByIdFromReaderWithCache(coupon.getId());
         assertThat(savedCoupon).isNotNull();
     }
 }
