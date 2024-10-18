@@ -1,17 +1,19 @@
 package coupon.domain.coupon;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class CouponName {
 
     private static final int MAX_LENGTH = 30;
 
-    private final String name;
+    private String couponName;
 
-    public CouponName(String name) {
-        validate(name);
-        this.name = name;
+    public CouponName(String couponName) {
+        validate(couponName);
+        this.couponName = couponName;
     }
 
     private void validate(String name) {

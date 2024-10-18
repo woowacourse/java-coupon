@@ -2,12 +2,14 @@ package coupon.domain.coupon;
 
 import java.time.LocalDate;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class Period {
 
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public Period(LocalDate startDate, LocalDate endDate) {
         validate(startDate, endDate);

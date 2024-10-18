@@ -1,19 +1,21 @@
 package coupon.domain.coupon;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class DiscountMount {
 
     private static final int MINIMUM_MOUNT = 1_000;
     private static final int MAXIMUM_MOUNT = 10_000;
     private static final int UNIT = 500;
 
-    private final int mount;
+    private int discountMount;
 
-    public DiscountMount(int mount) {
-        validate(mount);
-        this.mount = mount;
+    public DiscountMount(int discountMount) {
+        validate(discountMount);
+        this.discountMount = discountMount;
     }
 
     private void validate(int mount) {
