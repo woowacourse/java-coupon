@@ -1,12 +1,14 @@
 package coupon.domain.coupon;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -18,8 +20,8 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 30)
-    private String name;
+    @Embedded
+    private CouponName name;
 
     @Column(nullable = false)
     private int discountAmount;
@@ -28,12 +30,15 @@ public class Coupon {
 
     private int minOrderAmount;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     private LocalDateTime issuePeriod;
 
-    public Coupon(String name, int discountAmount, int discountRate, int minOrderAmount, Category category, LocalDateTime issuePeriod) {
-        this.name = name;
+    public Coupon(String name, int discountAmount, int discountRate, int minOrderAmount, Category category,
+                  LocalDateTime issuePeriod) {
+        this.name = new CouponName(name);
         this.discountAmount = discountAmount;
         this.discountRate = discountRate;
         this.minOrderAmount = minOrderAmount;
