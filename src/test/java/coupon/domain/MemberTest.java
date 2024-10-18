@@ -13,5 +13,4 @@ class MemberTest {
         assertThatThrownBy(() -> new Member(name))
                 .isExactlyInstanceOf(IllegalArgumentException.class);
     }
-
 }
