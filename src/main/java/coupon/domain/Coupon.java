@@ -1,10 +1,13 @@
 package coupon.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "coupon")
+@Getter
 public class Coupon {
 
     @Id
@@ -13,18 +16,22 @@ public class Coupon {
 
     private String name;
 
+    @Column(name = "discount_amount")
     private int discountAmount;
 
+    @Column(name = "min_order_amount")
     private int minOrderAmount;
 
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
+    @Column(name = "issuance_start_date")
     private LocalDateTime issuanceStartDate;
 
+    @Column(name = "issuance_end_date")
     private LocalDateTime issuanceEndDate;
 
-    public Coupon() {
+    protected Coupon() {
     }
 
     public Coupon(Long id, String name, int discountAmount, int minOrderAmount, Category category, LocalDateTime issuanceStartDate, LocalDateTime issuanceEndDate) {
