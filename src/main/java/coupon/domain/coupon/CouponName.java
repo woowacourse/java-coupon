@@ -25,7 +25,7 @@ public class CouponName {
 
     private void validateValueLength(final String value) {
         if (value.length() > MAXIMUM_COUPON_NAME_LENGTH_LIMIT) {
-            throw new IllegalArgumentException("쿠폰 이름의 길이는 최대 + " + MAXIMUM_COUPON_NAME_LENGTH_LIMIT + "자 이하여야 합니다. - " + value);
+            throw new IllegalArgumentException("쿠폰 이름의 길이는 최대 " + MAXIMUM_COUPON_NAME_LENGTH_LIMIT + "자 이하여야 합니다. - " + value.length());
         }
     }
 
