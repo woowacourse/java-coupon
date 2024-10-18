@@ -27,12 +27,9 @@ class CouponQueryServiceTest {
 
     @DisplayName("성공: 존재하는 ID로 조회")
     @Test
-    void findById() throws InterruptedException {
+    void findById() {
         Coupon saved = couponRepository.save(new Coupon("천원 할인 쿠폰", 1000, 10000,
                 LocalDate.now().minusDays(5), LocalDate.now().plusDays(5), "FOOD"));
-
-        // TODO: 복제 지연을 해결한다.
-        Thread.sleep(2000);
 
         Coupon found = couponQueryService.findById(saved.getId());
 

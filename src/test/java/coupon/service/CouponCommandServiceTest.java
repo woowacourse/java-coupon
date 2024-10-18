@@ -19,6 +19,9 @@ class CouponCommandServiceTest {
     private CouponCommandService couponCommandService;
 
     @Autowired
+    private CouponQueryService couponQueryService;
+
+    @Autowired
     private CouponRepository couponRepository;
 
     @AfterEach
@@ -28,7 +31,7 @@ class CouponCommandServiceTest {
 
     @DisplayName("쿠폰을 저장한다.")
     @Test
-    void save() throws InterruptedException {
+    void save() {
         long savedCouponId = couponCommandService.save(new SaveCouponRequest(
                 "천원 할인 쿠폰",
                 1000,
@@ -37,10 +40,7 @@ class CouponCommandServiceTest {
                 LocalDate.now().plusDays(10),
                 "FOOD"));
 
-        // TODO: 복제 지연을 해결한다.
-        Thread.sleep(2000);
-
-        Coupon foundCoupon = couponRepository.findById(savedCouponId).get();
+        Coupon foundCoupon = couponQueryService.findById(savedCouponId);
 
         assertThat(foundCoupon.getName()).isEqualTo("천원 할인 쿠폰");
     }
