@@ -1,6 +1,8 @@
-package coupon;
+package coupon.controller;
 
 
+import coupon.service.CouponService;
+import coupon.data.Coupon;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
