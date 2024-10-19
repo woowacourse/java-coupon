@@ -1,5 +1,6 @@
 package coupon.entity;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.CouponException;
@@ -17,11 +18,18 @@ class CouponTest {
     private final LocalDate validStart = LocalDate.of(2020, 1, 1);
     private final LocalDate validEnd = LocalDate.of(2020, 12, 31);
 
+    @DisplayName("쿠폰 정상 생성")
+    @Test
+    void valid() {
+        assertThatCode(() -> new Coupon(validName, validAmount, validMinimumOrder, Category.FOOD, validStart, validEnd))
+                .doesNotThrowAnyException();
+    }
+
     @DisplayName("쿠폰의 이름은 30자 이하여야한다.")
     @Test
     void validateName() {
         // given
-        String invalidName = "thisStringHasLengthWhichIs31abc";
+        String invalidName = "a".repeat(31);
 
         // when & then
         assertThatThrownBy(() ->
