@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
@@ -27,13 +28,15 @@ public class DataSourceConfig {
         return DataSourceBuilder.create().build();
     }
 
-    @Primary
     @Bean
+    @Primary
+    @DependsOn({"routingDataSource"})
     public DataSource dataSource() {
         return new LazyConnectionDataSourceProxy(routingDataSource());  // 커넥션을 지연시킴
     }
 
     @Bean
+    @DependsOn({"writerDataSource", "readerDataSource"})
     public DataSource routingDataSource() {
         ReadOnlyDataSourceRouter router = new ReadOnlyDataSourceRouter();
         Map<Object, Object> dataSources = new HashMap<>();
