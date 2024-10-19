@@ -85,8 +85,8 @@ public class Coupon {
     }
 
     private void validateNameLength(String name) {
-        if (name.length() > MAX_NAME_LENGTH) {
-            throw new IllegalArgumentException(String.format("이름의 길이는 최대 %d자 이하여야 합니다.", MAX_NAME_LENGTH));
+        if (name.isBlank() || MAX_NAME_LENGTH < name.length()) {
+            throw new IllegalArgumentException(String.format("이름의 길이는 최소 1자 이상, 최대 %d자 이하여야 합니다.", MAX_NAME_LENGTH));
         }
     }
 
