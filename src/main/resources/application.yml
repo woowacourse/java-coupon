@@ -3,7 +3,7 @@ spring:
     hibernate:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -16,6 +16,13 @@ spring:
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
+  cache:
+    type: redis
+
+  data:
+    redis:
+      port: 36379
+      host: localhost
 
 coupon.datasource:
   writer:
