@@ -38,12 +38,12 @@ public class DataSourceConfig {
             @Qualifier("readerDataSource") DataSource reader) {
         ReadOnlyDataSourceRouter routingDataSource = new ReadOnlyDataSourceRouter();
 
-        Map<Object, Object> dataSourceMap = new HashMap<>();
+        Map<Object, Object> dataSources = new HashMap<>();
 
-        dataSourceMap.put(DataSourceType.WRITER, writer);
-        dataSourceMap.put(DataSourceType.READER, reader);
+        dataSources.put(DataSourceType.WRITER, writer);
+        dataSources.put(DataSourceType.READER, reader);
 
-        routingDataSource.setTargetDataSources(dataSourceMap);
+        routingDataSource.setTargetDataSources(dataSources);
         routingDataSource.setDefaultTargetDataSource(writer);
 
         return routingDataSource;
