@@ -32,4 +32,8 @@ public class CouponService {
         couponRepository.save(coupon);
         cache.put(coupon.getId(), coupon);
     }
+
+    public Map<Long, Coupon> getCache() {
+        return cache;
+    }
 }
