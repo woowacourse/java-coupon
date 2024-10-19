@@ -6,6 +6,8 @@ import lombok.Getter;
 @Getter
 public class DiscountRate {
 
+    public static final int MIN_VALUE = 3;
+    public static final int MAX_VALUE = 20;
     private final long value;
 
     public DiscountRate(final DiscountAmount discountAmount, final MinimumOrderAmount minimumOrderAmount) {
@@ -24,7 +26,7 @@ public class DiscountRate {
     }
 
     private void validateRate(final long value) {
-        if (value < 3 || value > 20) {
+        if (value < MIN_VALUE || value > MAX_VALUE) {
             throw new InvalidCouponDiscountRate("할인 비율이 올바르지 않습니다.");
         }
     }
