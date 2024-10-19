@@ -28,6 +28,7 @@ public class Coupon {
     private static final int MAX_MINIMUM_ORDER = 100000;
     private static final int MIN_DISCOUNT = 1000;
     private static final int MAX_DISCOUNT = 10000;
+    private static final int DISCOUNT_UNIT = 500;
     private static final int MIN_DISCOUNT_RATE = 3;
     private static final int MAX_DISCOUNT_RATE = 20;
     private static final int PERCENT_MULTIPLIER = 100;
@@ -87,6 +88,9 @@ public class Coupon {
     private void validateDiscount(int discount, int minimumOrder) {
         if (discount < MIN_DISCOUNT || discount > MAX_DISCOUNT) {
             throw new CouponException("discount is out of range");
+        }
+        if (discount % DISCOUNT_UNIT != 0) {
+            throw new CouponException("discount does not fit unit");
         }
         int rate = (discount * PERCENT_MULTIPLIER) / minimumOrder;
         if (rate < MIN_DISCOUNT_RATE || rate > MAX_DISCOUNT_RATE) {
