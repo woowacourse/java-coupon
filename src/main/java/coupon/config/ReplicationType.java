@@ -5,8 +5,8 @@ import java.util.function.Predicate;
 
 public enum ReplicationType {
 
-    READ((readOnly) -> true),
-    WRITE((readOnly) -> false);
+    READ((readOnly) -> readOnly),
+    WRITE((readOnly) -> !readOnly);
 
     private final Predicate<Boolean> condition;
 
