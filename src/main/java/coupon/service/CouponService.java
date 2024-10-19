@@ -2,7 +2,7 @@ package coupon.service;
 
 import coupon.domain.coupon.Coupon;
 import coupon.repository.CouponRepository;
-import org.springframework.context.ApplicationContext;
+import coupon.service.support.DataSourceSupport;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final DataSourceSupport dataSourceSupport;
 
-    public CouponService(CouponRepository couponRepository, ApplicationContext context) {
+    public CouponService(CouponRepository couponRepository, DataSourceSupport dataSourceSupport) {
         this.couponRepository = couponRepository;
+        this.dataSourceSupport = dataSourceSupport;
     }
 
     @Transactional
@@ -20,9 +22,14 @@ public class CouponService {
         return couponRepository.save(coupon);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Coupon getCoupon(Long couponId) {
         return couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 쿠폰 id입니다."));
+                .orElse(getCouponFromWriter(couponId));
+    }
+
+    private Coupon getCouponFromWriter(Long couponId) {
+        return dataSourceSupport.executeOnWriter(() -> couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 쿠폰 id입니다.")));
     }
 }
