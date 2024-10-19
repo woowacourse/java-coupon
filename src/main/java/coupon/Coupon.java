@@ -33,7 +33,7 @@ public class Coupon {
     private static final int EXPIRATION_HOUR = 23;
     private static final int EXPIRATION_MINUTE = 59;
     private static final int EXPIRATION_SECOND = 59;
-    private static final int EXPIRATION_NANO_SECOND = 999_999;
+    private static final int EXPIRATION_NANO_SECOND = 999_999_999;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,7 +68,7 @@ public class Coupon {
         validateDiscountAmountRange(discountAmount);
         validateDiscountAmountUnit(discountAmount);
         int discountPercent = (discountAmount * 100) / minimumOrderPrice;
-        validateDiscountPercent(discountAmount, discountPercent);
+        validateDiscountPercent(discountPercent);
         validateMinimumOrderPriceRange(minimumOrderPrice);
         validateIssueDateTime(issueDate, expirationDate);
         this.name = name;
@@ -81,7 +81,7 @@ public class Coupon {
     }
 
     public Coupon(Integer discountAmount, Integer minimumOrderPrice) {
-        this("쿠폰", discountAmount, Category.FASHION, minimumOrderPrice, LocalDate.now(), LocalDate.now().plusDays(7));
+        this("쿠폰", discountAmount, Category.FASHION, minimumOrderPrice, LocalDate.now(), LocalDate.now().plusDays(6));
     }
 
     private void validateNameLength(String name) {
@@ -96,9 +96,8 @@ public class Coupon {
         }
     }
 
-    private void validateDiscountPercent(Integer discountAmount, int discountPercent) {
+    private void validateDiscountPercent(Integer discountPercent) {
         if (discountPercent < MIN_DISCOUNT_PERCENT || MAX_DISCOUNT_PERCENT < discountPercent) {
-            System.out.println("discountPercent = " + discountPercent);
             throw new IllegalArgumentException(
                     String.format("할인율은 %d%% 이상 %d%% 이하여야 합니다.", MIN_DISCOUNT_PERCENT, MAX_DISCOUNT_PERCENT));
         }

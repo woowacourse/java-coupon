@@ -19,7 +19,7 @@ public class MemberCoupon {
     private static final int HOUR = 23;
     private static final int MINUTE = 59;
     private static final int SECOND = 59;
-    private static final int NANO_OF_SECOND = 999999;
+    private static final int NANO_OF_SECOND = 999_999_999;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
