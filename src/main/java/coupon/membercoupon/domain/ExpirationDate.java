@@ -2,6 +2,7 @@ package coupon.membercoupon.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import jakarta.persistence.Embeddable;
 
@@ -9,12 +10,11 @@ import jakarta.persistence.Embeddable;
 public record ExpirationDate(LocalDate date) {
 
     public boolean isNotExpiate(final LocalDateTime dateTime) {
-        // TODO: 구리다.
-        final LocalDateTime nextDay = date.plusDays(1).atStartOfDay();
-        if (dateTime.isBefore(nextDay)) {
-            return true;
-        }
+        final LocalDateTime expirationDateTime = getEndDateTime();
+        return dateTime.isBefore(expirationDateTime);
+    }
 
-        return false;
+    public LocalDateTime getEndDateTime() {
+        return date.atTime(LocalTime.MAX);
     }
 }
