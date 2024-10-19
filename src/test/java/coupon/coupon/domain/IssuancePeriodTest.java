@@ -5,11 +5,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class IssuancePeriodTest {
 
     @Test
+    @DisplayName("쿠폰 발급 가능 기간 확인 성공")
     void canIssue() {
         IssuancePeriod issuancePeriod = new IssuancePeriod(LocalDate.parse("2024-01-01"), LocalDate.parse("2025-01-01"));
 

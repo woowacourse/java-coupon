@@ -2,6 +2,7 @@ package coupon.coupon.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import jakarta.persistence.Embeddable;
 
@@ -9,8 +10,9 @@ import jakarta.persistence.Embeddable;
 public record IssuancePeriod(LocalDate startDate, LocalDate endDate) {
 
     public boolean canIssue(final LocalDateTime dateTime) {
-        LocalDate date = dateTime.toLocalDate();
-        return !date.isBefore(startDate) && !date.isAfter(endDate);
+        LocalDateTime startDateTime = getStartDateTime();
+        LocalDateTime endDateTime = getEndDateTime();
+        return !dateTime.isBefore(startDateTime) && !dateTime.isAfter(endDateTime);
     }
 
     public LocalDateTime getStartDateTime() {
@@ -18,6 +20,6 @@ public record IssuancePeriod(LocalDate startDate, LocalDate endDate) {
     }
 
     public LocalDateTime getEndDateTime() {
-        return endDate.atTime(23, 59, 59, 999999999);
+        return endDate.atTime(LocalTime.MAX);
     }
 }
