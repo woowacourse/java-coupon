@@ -31,7 +31,7 @@ public class ReplicationDatasourceConfig {
     }
 
     @Bean
-    public DataSource dynamicDataSource(
+    public DataSource routingDataSource(
             @Qualifier(read) DataSource writerDataSource,
             @Qualifier(write) DataSource readerDataSource
     ) {
@@ -49,7 +49,7 @@ public class ReplicationDatasourceConfig {
     @Bean
     @Primary
     public DataSource dataSource() {
-        DataSource dataSource = dynamicDataSource(writeDataSource(), readDataSource());
+        DataSource dataSource = routingDataSource(writeDataSource(), readDataSource());
         return new LazyConnectionDataSourceProxy(dataSource);
     }
 }
