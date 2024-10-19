@@ -80,8 +80,8 @@ public class Coupon {
         this.expirationDateTime = expirationDate.atTime(EXPIRATION_HOUR, EXPIRATION_MINUTE, EXPIRATION_SECOND, EXPIRATION_NANO_SECOND);
     }
 
-    public Coupon(Integer discountAmount, Integer minimumOrderPrice) {
-        this("쿠폰", discountAmount, Category.FASHION, minimumOrderPrice, LocalDate.now(), LocalDate.now().plusDays(6));
+    public Coupon(String name, Integer discountAmount, Category category, Integer minimumOrderPrice) {
+        this(name, discountAmount, category, minimumOrderPrice, LocalDate.now(), LocalDate.now().plusDays(6));
     }
 
     private void validateNameLength(String name) {

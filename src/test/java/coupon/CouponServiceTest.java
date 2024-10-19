@@ -17,7 +17,7 @@ public class CouponServiceTest extends ServiceTestSupports {
     @DisplayName("쿠폰을 생성해서 저장소에 저장한다.")
     @Test
     void create() {
-        Coupon coupon = new Coupon(1000, 10000);
+        Coupon coupon = new Coupon("coupon", 1000, Category.APPLIANCES, 10000);
         couponService.create(coupon);
 
         Coupon findCoupon = couponService.getCoupon(coupon.getId());
@@ -28,7 +28,7 @@ public class CouponServiceTest extends ServiceTestSupports {
     @DisplayName("쿠폰을 생성해서 저장하면 캐시에도 저장된다.")
     @Test
     void create2() {
-        Coupon coupon = new Coupon(1000, 10000);
+        Coupon coupon = new Coupon("coupon", 1000, Category.APPLIANCES, 10000);
         couponService.create(coupon);
 
         Map<Long, Coupon> cache = couponService.getCache();
@@ -48,7 +48,7 @@ public class CouponServiceTest extends ServiceTestSupports {
     @Test
     void getCoupon2() {
         Map<Long, Coupon> cache = couponService.getCache();
-        cache.put(100L, new Coupon(1000, 10000));
+        cache.put(100L, new Coupon("coupon", 1000, Category.APPLIANCES, 10000));
 
         assertThatCode(() -> couponService.getCoupon(100L))
                 .doesNotThrowAnyException();
@@ -56,7 +56,7 @@ public class CouponServiceTest extends ServiceTestSupports {
 
     @Test
     void 복제지연테스트() {
-        Coupon coupon = new Coupon(1000, 10000);
+        Coupon coupon = new Coupon("coupon", 1000, Category.APPLIANCES, 10000);
         couponService.create(coupon);
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());
         assertThat(savedCoupon).isNotNull();
