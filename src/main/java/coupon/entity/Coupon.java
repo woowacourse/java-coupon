@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -72,7 +73,7 @@ public class Coupon {
     }
 
     private void validateName(String name) {
-        if (name.length() > MAX_NAME_LENGTH) {
+        if (Objects.isNull(name) || name.length() > MAX_NAME_LENGTH) {
             throw new CouponException("name is too long");
         }
     }
