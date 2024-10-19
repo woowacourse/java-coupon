@@ -4,13 +4,13 @@ import coupon.CouponException;
 import coupon.dto.CouponCreateRequest;
 import coupon.entity.Coupon;
 import coupon.repository.CouponRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CouponService {
 
     private final CouponRepository couponRepository;
