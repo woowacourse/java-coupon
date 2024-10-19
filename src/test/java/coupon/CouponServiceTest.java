@@ -3,7 +3,6 @@ package coupon;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.DisplayName;
@@ -15,20 +14,15 @@ public class CouponServiceTest extends ServiceTestSupports {
     @Autowired
     private CouponService couponService;
 
-    @Autowired
-    private CouponRepository couponRepository;
-
     @DisplayName("쿠폰을 생성해서 저장소에 저장한다.")
     @Test
-    void create() throws InterruptedException {
+    void create() {
         Coupon coupon = new Coupon(1000, 10000);
         couponService.create(coupon);
 
-        Thread.sleep(2000); // 복제 지연 무시.
+        Coupon findCoupon = couponService.getCoupon(coupon.getId());
 
-        List<Coupon> coupons = couponRepository.findAll();
-
-        assertThat(coupons.size()).isOne();
+        assertThat(findCoupon.getId()).isEqualTo(coupon.getId());
     }
 
     @DisplayName("쿠폰을 생성해서 저장하면 캐시에도 저장된다.")
