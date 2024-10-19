@@ -31,6 +31,7 @@ class CouponTest {
 
             @ParameterizedTest
             @NullAndEmptySource
+            @ValueSource(strings = {"\n", "\t", "\n\t"})
             void whenNameIsEmpty_throwException(String name) {
                 assertThatThrownBy(() -> new Coupon(name, DISCOUNT_AMOUNT, MIN_ORDER_AMOUNT, CATEGORY, START_ISSUE_DATE,
                         END_ISSUE_DATE))
