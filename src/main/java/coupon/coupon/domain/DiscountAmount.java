@@ -16,12 +16,12 @@ public class DiscountAmount {
     public static final int DISCOUNT_AMOUNT_UNIT = 500;
 
     @Column(nullable = false, name = "discount_amount")
-    private int amount;
+    private int value;
 
     public DiscountAmount(int value) {
         validateDiscountAmount(value);
         validateDiscountAmountUnit(value);
-        this.amount = value;
+        this.value = value;
     }
 
     private void validateDiscountAmount(int value) {

@@ -14,7 +14,7 @@ public class Fixture {
     public static final DiscountAmount DISCOUNT_AMOUNT_2000 = new DiscountAmount(2000);
     public static final OrderPrice ORDER_PRICE_10000 = new OrderPrice(10000);
     public static final DiscountRate DISCOUNT_RATE_20 = new DiscountRate(
-            DISCOUNT_AMOUNT_2000.getAmount(),
+            DISCOUNT_AMOUNT_2000.getValue(),
             ORDER_PRICE_10000.getValue()
     );
 
