@@ -9,16 +9,15 @@ import jakarta.persistence.Embeddable;
 public record IssuancePeriod(LocalDate startDate, LocalDate endDate) {
 
     public boolean canIssue(final LocalDateTime dateTime) {
-        LocalDateTime issuedStartDateTime = startDate.atStartOfDay();
-        LocalDateTime issuedEndDateTime = endDate.atStartOfDay().plusDays(1);
+        LocalDate date = dateTime.toLocalDate();
+        return !date.isBefore(startDate) && !date.isAfter(endDate);
+    }
 
-        // TODO: 구리다.
-        boolean isEqualOrAfterThanStartDateTime = dateTime.isEqual(issuedStartDateTime) || dateTime.isAfter(issuedStartDateTime);
-        if (isEqualOrAfterThanStartDateTime && dateTime.isBefore(issuedEndDateTime)) {
-            return true;
-        }
+    public LocalDateTime getStartDateTime() {
+        return startDate.atStartOfDay();
+    }
 
-        return false;
+    public LocalDateTime getEndDateTime() {
+        return endDate.atTime(23, 59, 59, 999999999);
     }
 }
-
