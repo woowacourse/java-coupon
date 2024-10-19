@@ -96,16 +96,16 @@ public class Coupon {
         }
     }
 
+    private void validateDiscountAmountUnit(Integer discountAmount) {
+        if (discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
+            throw new IllegalArgumentException(String.format("할인 금액은 %d원 단위로 입력 가능합니다.", DISCOUNT_AMOUNT_UNIT));
+        }
+    }
+
     private void validateDiscountPercent(Integer discountPercent) {
         if (discountPercent < MIN_DISCOUNT_PERCENT || MAX_DISCOUNT_PERCENT < discountPercent) {
             throw new IllegalArgumentException(
                     String.format("할인율은 %d%% 이상 %d%% 이하여야 합니다.", MIN_DISCOUNT_PERCENT, MAX_DISCOUNT_PERCENT));
-        }
-    }
-
-    private void validateDiscountAmountUnit(Integer discountAmount) {
-        if (discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
-            throw new IllegalArgumentException(String.format("할인 금액은 %d원 단위로 입력 가능합니다.", DISCOUNT_AMOUNT_UNIT));
         }
     }
 
