@@ -26,5 +26,3 @@ public class CouponService {
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 쿠폰이 존재하지 않습니다."));
     }
 }
-
-
