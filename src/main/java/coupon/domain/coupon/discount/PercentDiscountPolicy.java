@@ -12,7 +12,7 @@ public class PercentDiscountPolicy implements DiscountPolicy {
 
     @Override
     public boolean validate(int minOrderPrice, int discountPrice) {
-        int discountPercent = discountPrice / minOrderPrice;
+        int discountPercent = (discountPrice / minOrderPrice) * 100;
 
         return (discountPercent < minDiscountPercent) || (discountPercent > maxDiscountPercent);
     }
