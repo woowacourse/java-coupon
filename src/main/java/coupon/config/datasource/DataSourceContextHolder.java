@@ -11,8 +11,4 @@ public class DataSourceContextHolder {
     public static DataSourceType getDataSourceType() {
         return contextHolder.get();
     }
-
-    public static void clear() {
-        contextHolder.remove();
-    }
 }
