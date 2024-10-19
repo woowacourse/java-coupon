@@ -4,8 +4,10 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.persistence.CouponReader;
 import coupon.coupon.persistence.CouponWriter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CouponService {
@@ -22,6 +24,7 @@ public class CouponService {
         try {
             return couponReader.getCoupon(couponId);
         } catch (IllegalArgumentException exception) {
+            log.error("(읽기 DB 복제 지연 오류 발생 : {}) 쓰기 DB 조회", exception.getMessage());
             return transactionRouter.route(() -> couponReader.getCoupon(couponId));
         }
     }
