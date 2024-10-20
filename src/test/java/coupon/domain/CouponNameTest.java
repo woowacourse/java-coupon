@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class CouponNameTest {
 
@@ -19,8 +20,9 @@ class CouponNameTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    @DisplayName("쿠폰 이름은 빈칸과 널일 수 없다")
+    @DisplayName("쿠폰 이름은 빈칸과 널, 공백일 수 없다")
     @NullAndEmptySource
+    @ValueSource(strings = "   ")
     @ParameterizedTest
     void throwIllegalArgumentException_When_NullOrEmpty(String invalidName) {
         assertThatThrownBy(() -> new CouponName(invalidName))
