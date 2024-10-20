@@ -1,10 +1,9 @@
 package coupon.coupon.service;
 
-import jakarta.transaction.Transactional;
-
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponName;
@@ -38,6 +37,7 @@ public class CouponService {
         return couponRepository.save(new CouponEntity(coupon));
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = "couponCache", key = "#root.args[0]", unless = "#root.args[0] == null")
     public CouponEntity getCoupon(Long id) {
         return couponRepository.findById(id)
