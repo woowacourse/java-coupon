@@ -13,12 +13,21 @@ public class CouponRoutingAspect {
 
     @Around("execution(* coupon.coupon.service..*(..)) && @annotation(transactional)")
     public Object setCouponContext(ProceedingJoinPoint joinPoint, Transactional transactional) throws Throwable {
-        Coupon result = (Coupon) joinPoint.proceed();
-        CouponRoutingContext.setCurrentCouponId(result.getId());
-        if (transactional.readOnly()) {
-            return result;
+        Object result = joinPoint.proceed();
+        if (result instanceof Coupon coupon) {
+            CouponRoutingContext.setCurrentCouponId(coupon.getId());
+            recordCouponCreatedAt(transactional, coupon.getId());
         }
-        CouponRoutingContext.recordCouponCreatedAt(result.getId());
         return result;
+    }
+
+    private void recordCouponCreatedAt(Transactional transactional, long couponId) {
+        if (isNotReadOnlyTransaction(transactional)) {
+            CouponRoutingContext.recordCouponCreatedAt(couponId);
+        }
+    }
+
+    private boolean isNotReadOnlyTransaction(Transactional transactional) {
+        return !transactional.readOnly();
     }
 }
