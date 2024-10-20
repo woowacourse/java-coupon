@@ -1,4 +1,4 @@
-create database coupon if not exists coupon;
+create database if not exists coupon
 use coupon;
 
 create table if not exists coupon
