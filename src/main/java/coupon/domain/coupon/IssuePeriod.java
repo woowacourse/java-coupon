@@ -26,6 +26,10 @@ public class IssuePeriod {
     }
 
     private void validateIssuePeriod(LocalDate issueStartedDate, LocalDate issueEndedDate) {
+        if (issueStartedDate == null || issueEndedDate == null) {
+            throw new IllegalArgumentException("발급 시작일과 종료일은 필수입니다.");
+        }
+
         if (issueStartedDate.isAfter(issueEndedDate)) {
             throw new IllegalArgumentException("발급 시작일은 종료일보다 빠를 수 없습니다.");
         }
