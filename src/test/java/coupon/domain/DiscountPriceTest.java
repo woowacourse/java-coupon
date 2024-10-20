@@ -3,19 +3,19 @@ package coupon.domain;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import coupon.domain.coupon.SalePrice;
+import coupon.domain.coupon.DiscountPrice;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class SalePriceTest {
+class DiscountPriceTest {
 
     @DisplayName("최대 할인 가격을 초과할 수 없다")
     @Test
     void throwIllegalArgumentException_When_ExceededThanMaxPrice() {
         int exceededPrice = 10001;
-        assertThatThrownBy(() -> new SalePrice(exceededPrice))
+        assertThatThrownBy(() -> new DiscountPrice(exceededPrice))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -23,7 +23,7 @@ class SalePriceTest {
     @Test
     void throwIllegalArgumentException_When_ShorterThanMinPrice() {
         int shortagePrice = 499;
-        assertThatThrownBy(() -> new SalePrice(shortagePrice))
+        assertThatThrownBy(() -> new DiscountPrice(shortagePrice))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -31,7 +31,7 @@ class SalePriceTest {
     @ValueSource(ints = {501, 999, 1501})
     @ParameterizedTest
     void throwIllegalArgumentException_When_NullOrEmpty(int invalidSalePrice) {
-        assertThatThrownBy(() -> new SalePrice(invalidSalePrice))
+        assertThatThrownBy(() -> new DiscountPrice(invalidSalePrice))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -39,7 +39,7 @@ class SalePriceTest {
     @ValueSource(ints = {1000, 1500, 2000})
     @ParameterizedTest
     void createSalePrice(int validSalePrice) {
-        assertThatCode(() -> new SalePrice(validSalePrice))
+        assertThatCode(() -> new DiscountPrice(validSalePrice))
                 .doesNotThrowAnyException();
     }
 }

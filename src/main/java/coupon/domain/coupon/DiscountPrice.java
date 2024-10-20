@@ -4,20 +4,20 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public class SalePrice {
+public class DiscountPrice {
     private static final int MIN_SALE_PRICE = 1000;
     private static final int MAX_SALE_PRICE = 10000;
     private static final int UNIT_SALE_PRICE = 500;
 
-    @Column(name = "sale_price", nullable = false)
+    @Column(name = "discount_price", nullable = false)
     private int price;
 
-    public SalePrice(int price) {
+    public DiscountPrice(int price) {
         validatePrice(price);
         this.price = price;
     }
 
-    protected SalePrice() {
+    protected DiscountPrice() {
     }
 
     void validatePrice(int price) {
