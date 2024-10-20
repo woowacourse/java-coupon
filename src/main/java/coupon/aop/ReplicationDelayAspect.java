@@ -27,7 +27,8 @@ public class ReplicationDelayAspect {
         return transactionDefinition;
     }
 
-    @Pointcut("@annotation(org.springframework.transaction.annotation.Transactional)")
+    @Pointcut("@annotation(org.springframework.transaction.annotation.Transactional) || " +
+            "@within(org.springframework.transaction.annotation.Transactional)")
     private void transactionalPointCut() {
     }
 

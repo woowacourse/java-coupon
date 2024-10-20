@@ -20,7 +20,6 @@ public class CouponService {
         return couponRepository.save(coupon);
     }
 
-    @Transactional(readOnly = true)
     public Coupon get(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 쿠폰이 존재하지 않습니다."));
