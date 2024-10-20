@@ -2,7 +2,6 @@ package coupon.service;
 
 import coupon.domain.Coupon;
 import coupon.repository.CouponEntity;
-import coupon.repository.CouponRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CouponService {
 
-    private final CouponRepository couponRepository;
     private final CouponWriter couponWriter;
     private final CouponReader couponReader;
 
