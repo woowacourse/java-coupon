@@ -17,8 +17,10 @@ public class CouponQueryFallbackService {
     private final CouponRepository couponRepository;
 
     public Coupon findById(long id) {
-        DataSourceRouter.forceUseWriterDatabase();
-        return couponRepository.findById(id)
+        DataSourceRouter.enableWriterDatabase();
+        Coupon coupon = couponRepository.findById(id)
                 .orElseThrow(() -> new CouponException("쿠폰이 존재하지 않습니다."));
+        DataSourceRouter.disableWriterDatabase();
+        return coupon;
     }
 }

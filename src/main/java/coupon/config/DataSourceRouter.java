@@ -11,8 +11,12 @@ public class DataSourceRouter extends AbstractRoutingDataSource {
         isWriterForced.set(false);
     }
 
-    public static void forceUseWriterDatabase() {
+    public static void enableWriterDatabase() {
         isWriterForced.set(true);
+    }
+
+    public static void disableWriterDatabase() {
+        isWriterForced.set(false);
     }
 
     @Override
