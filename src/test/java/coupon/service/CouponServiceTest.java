@@ -18,7 +18,7 @@ class CouponServiceTest {
     void 복제지연테스트() {
         Coupon coupon = new Coupon(1000L, 10000L);
         Long id = couponService.create(coupon);
-        CouponEntity savedCoupon = couponService.getCouponImmediately(id);
+        CouponEntity savedCoupon = couponService.getCoupon(id);
         assertThat(savedCoupon).isNotNull();
     }
 }
