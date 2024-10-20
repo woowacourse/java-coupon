@@ -18,23 +18,15 @@ public class CouponReader {
 
     @Transactional(readOnly = true)
     public CouponEntity findById(Long id) {
-        CouponEntity couponEntity = findByIdWithCache(id);
-        updateCache(couponEntity);
-        return couponEntity;
-    }
-
-    private CouponEntity findByIdWithCache(Long id) {
         return couponCache.findById(id)
                 .orElseGet(() -> findByIdInRepository(id));
     }
 
     private CouponEntity findByIdInRepository(Long id) {
-        return couponRepository.findById(id)
+        CouponEntity couponEntity = couponRepository.findById(id)
                 .orElseGet(() -> dataAccessSupporter.executeWriteDataBase(() -> couponRepository.findById(id))
                         .orElseThrow(NoSuchElementException::new));
-    }
-
-    private void updateCache(CouponEntity couponEntity) {
         couponCache.save(couponEntity);
+        return couponEntity;
     }
 }
