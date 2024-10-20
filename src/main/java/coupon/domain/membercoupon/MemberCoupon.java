@@ -1,31 +1,26 @@
 package coupon.domain.membercoupon;
 
+import coupon.domain.coupon.Coupon;
+import coupon.domain.member.Member;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class MemberCoupon {
 
     private final Long id;
 
-    private final Long couponId;
+    private final Coupon coupon;
 
-    private final Long memberId;
+    private final Member member;
 
     private final boolean use;
 
     private final LocalDate startDate;
 
     private final LocalDate endDate;
-
-    public MemberCoupon(Long id, Long couponId, Long memberId, boolean use, LocalDate startDate, LocalDate endDate) {
-        this.id = id;
-        this.couponId = couponId;
-        this.memberId = memberId;
-        this.use = use;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
 
     public boolean isUsable(LocalDateTime base) {
         LocalDateTime startDateTimeExclude = LocalDateTime.of(
