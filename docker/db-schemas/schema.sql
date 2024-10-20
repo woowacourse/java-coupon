@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS coupon (
 CREATE TABLE IF NOT EXISTS member_coupon (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     coupon_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
     is_used BOOLEAN NOT NULL,
     issued_date_time DATETIME NOT NULL,
     expiration_date_time DATETIME NOT NULL,

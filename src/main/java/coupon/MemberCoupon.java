@@ -28,6 +28,9 @@ public class MemberCoupon {
     @Column(name = "coupon_id")
     private Long couponId;
 
+    @Column(name = "member_id")
+    private Long memberId;
+
     @Column(name = "is_used")
     private boolean isUsed;
 
@@ -37,8 +40,9 @@ public class MemberCoupon {
     @Column(name = "expiration_date_time")
     private LocalDateTime expirationDateTime;
 
-    public MemberCoupon(Long couponId, boolean isUsed, LocalDateTime issuedDateTime) {
+    public MemberCoupon(Long couponId, Long memberId, boolean isUsed, LocalDateTime issuedDateTime) {
         this.couponId = couponId;
+        this.memberId = memberId;
         this.isUsed = isUsed;
         this.issuedDateTime = issuedDateTime;
         this.expirationDateTime = issuedDateTime.toLocalDate().plusDays(OFFSET_DAYS).atTime(HOUR, MINUTE, SECOND, NANO_OF_SECOND);
