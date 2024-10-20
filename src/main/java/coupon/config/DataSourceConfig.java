@@ -19,7 +19,7 @@ public class DataSourceConfig {
     private static final String WRITE_DATASOURCE = "writeDataSource";
     private static final String ROUTE_DATASOURCE = "routeDataSource";
 
-    @Bean(name = READ_DATASOURCE)
+    @Bean(name = WRITE_DATASOURCE)
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writerDataSource() {
         return DataSourceBuilder.create()
@@ -27,7 +27,7 @@ public class DataSourceConfig {
                 .build();
     }
 
-    @Bean(name = WRITE_DATASOURCE)
+    @Bean(name = READ_DATASOURCE)
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
     public DataSource readerDataSource() {
         return DataSourceBuilder.create()
