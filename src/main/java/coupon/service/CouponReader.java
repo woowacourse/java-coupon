@@ -13,12 +13,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponReader {
 
     private final CouponRepository couponRepository;
+    private final CouponCache couponCache;
     private final DataAccessSupporter dataAccessSupporter;
 
     @Transactional(readOnly = true)
     public CouponEntity findById(Long id) {
-        return couponRepository.findById(id)
+        CouponEntity couponEntity = findByIdWithCache(id);
+        updateCache(couponEntity);
+        return couponEntity;
+    }
+
+    private CouponEntity findByIdWithCache(Long id) {
+        return couponCache.findById(id)
+                .orElseGet(() -> findByIdInRepository(id));
+    }
+
+    private CouponEntity findByIdInRepository(Long id) {
+        CouponEntity couponEntity = couponRepository.findById(id)
                 .orElseGet(() -> dataAccessSupporter.executeWriteDataBase(() -> couponRepository.findById(id))
                         .orElseThrow(NoSuchElementException::new));
+        return couponEntity;
+    }
+
+    private void updateCache(CouponEntity couponEntity) {
+        couponCache.save(couponEntity);
     }
 }
