@@ -13,18 +13,21 @@ public class DiscountPrice {
     private int price;
 
     public DiscountPrice(int price) {
-        validatePrice(price);
+        validatePriceRange(price);
+        validatePriceUnit(price);
         this.price = price;
     }
 
     protected DiscountPrice() {
     }
 
-    void validatePrice(int price) {
+    private void validatePriceRange(int price) {
         if (price < MIN_SALE_PRICE || price > MAX_SALE_PRICE) {
             throw new IllegalArgumentException("price는 " + MIN_SALE_PRICE + "이상 " + MAX_SALE_PRICE + "이하여야 합니다");
         }
+    }
 
+    private void validatePriceUnit(int price) {
         if (price % UNIT_SALE_PRICE != 0) {
             throw new IllegalArgumentException("price는 " + UNIT_SALE_PRICE + "단위로 설정할 수 있습니다.");
         }

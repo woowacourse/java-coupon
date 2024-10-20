@@ -9,6 +9,6 @@ CREATE TABLE IF NOT EXISTS coupon
     discount_price       INT          NOT NULL,
     category         varchar(256) NOT NULL,
     sale_order_price INT          NOT NULL,
-    start_time       datetime     NOT NULL,
-    end_time         datetime     NOT NULL
+    start_at       datetime     NOT NULL,
+    end_at         datetime     NOT NULL
 );
