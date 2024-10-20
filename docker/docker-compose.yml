@@ -12,9 +12,17 @@ services:
         ipv4_address: 172.20.0.10
     volumes:
       - ./data/writer:/var/lib/mysql
+      - .
+      - ./data/writer:/var/lib/mysql
+      - .init.sql:/docker-entrypoint-initdb.d/init.sql
+      - container_name: mysql_writer
+      - restart: always
+      - environment:
+      - MYSQL_DATABASE: couponinit.sql:/docker-entrypoint-initdb.d/init.sql
     container_name: mysql_writer
     restart: always
     environment:
+      MYSQL_DATABASE: coupon
       MYSQL_ROOT_PASSWORD: root
       TZ: Asia/Seoul
 
@@ -30,8 +38,10 @@ services:
         ipv4_address: 172.20.0.11
     volumes:
       - ./data/reader:/var/lib/mysql
+      - .init.sql:/docker-entrypoint-initdb.d/init.sql
     container_name: mysql_reader
     environment:
+      MYSQL_DATABASE: coupon
       MYSQL_ROOT_PASSWORD: root
       TZ: Asia/Seoul
     depends_on:
