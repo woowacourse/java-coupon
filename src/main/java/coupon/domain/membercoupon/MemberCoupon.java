@@ -10,17 +10,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberCoupon {
 
-    private static final int COUPON_EXPIRATION_DAYS = 7;
+    private static final int COUPON_EXPIRATION_DAYS = 6;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,12 +48,14 @@ public class MemberCoupon {
         this.coupon = coupon;
         this.used = false;
         this.issuedAt = issuedAt;
-        this.expiredAt = getExpiredAt(issuedAt);
+        this.expiredAt = toExpiredAt(issuedAt);
     }
 
-    private LocalDateTime getExpiredAt(LocalDateTime issuedAt) {
-        LocalDate expirationDate = issuedAt.plusDays(COUPON_EXPIRATION_DAYS).toLocalDate();
-        LocalTime expirationTime = LocalTime.MAX;
-        return LocalDateTime.of(expirationDate, expirationTime);
+    private LocalDateTime toExpiredAt(LocalDateTime issuedAt) {
+        return issuedAt.plusDays(COUPON_EXPIRATION_DAYS)
+                .withHour(23)
+                .withMinute(59)
+                .withSecond(59)
+                .withNano(999_999_000);
     }
 }
