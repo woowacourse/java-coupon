@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 @Embeddable
 public class IssueDuration {
-    private static int DEFAULT_DURATION_DAYS = 7;
 
     @Column(name = "start_at")
     private LocalDateTime startAt;
@@ -20,8 +19,7 @@ public class IssueDuration {
         this.endAt = endAt;
     }
 
-    public IssueDuration() {
-        this(LocalDateTime.now(), LocalDateTime.now().plusDays(DEFAULT_DURATION_DAYS));
+    protected IssueDuration() {
     }
 
     private void validate(LocalDateTime startAt, LocalDateTime endAt) {
