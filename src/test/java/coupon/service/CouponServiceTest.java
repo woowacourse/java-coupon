@@ -71,6 +71,21 @@ class CouponServiceTest {
         assertThat(foundCoupon).isNotNull();
     }
 
+    @DisplayName("조회한 쿠폰이 캐시에 없는 경우 캐시를 업데이트한다")
+    @Test
+    void getCouponAndCache() throws InterruptedException {
+        LocalDate now = LocalDate.now();
+        Coupon coupon = new Coupon("coupon", 1000, 10000, now, now, Category.FASHION);
+        couponService.create(coupon);
+        cacheManager.getCache("coupons").evict(coupon.getId());
+        Thread.sleep(2000);
+
+        Coupon foundCoupon = couponService.getCoupon(coupon.getId());
+
+        assertThat(foundCoupon).isNotNull();
+        assertThat(cacheManager.getCache("coupons").get(coupon.getId())).isNotNull();
+    }
+
     @DisplayName("캐시가 없는 경우 복제 지연으로 인해 쿠폰을 조회하지 못한다.")
     @Test
     void replicationDelayWithoutCache() {

@@ -19,17 +19,26 @@ public class CouponService {
     @Transactional
     public void create(Coupon coupon) {
         couponRepository.save(coupon);
-        getCouponCache().put(coupon.getId(), coupon);
+        cacheCoupon(coupon);
     }
 
     public Coupon getCoupon(Long id) {
-        Coupon coupon = getCouponCache().get(id, Coupon.class);
-        if (coupon != null) {
-            return coupon;
+        Coupon cachedCoupon = getCachedCoupon(id);
+        if (cachedCoupon != null) {
+            return cachedCoupon;
         }
 
-        return couponRepository.findById(id)
+        Coupon coupon = couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
+        cacheCoupon(coupon);
+        return coupon;
+    }
+
+    private void cacheCoupon(Coupon coupon) {
+        getCouponCache().put(coupon.getId(), coupon);
+    }
+
+    private Coupon getCachedCoupon(Long id) {
     }
 
     private Cache getCouponCache() {
