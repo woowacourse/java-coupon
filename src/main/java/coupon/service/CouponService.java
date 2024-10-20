@@ -21,7 +21,7 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(long id) {
-        return couponRepository.findById(id).orElseThrow(CouponNotFound::new);
+        return couponRepository.findById(id).orElseThrow(() -> new CouponNotFound(id));
     }
 
     @Transactional(readOnly = true)
