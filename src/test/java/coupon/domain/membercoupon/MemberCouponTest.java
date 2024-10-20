@@ -28,7 +28,7 @@ class MemberCouponTest {
         LocalDate startDate = LocalDate.of(2024, 11, 1);
         LocalDate endDate = LocalDate.of(2024, 11, 3);
 
-        MemberCoupon memberCoupon = new MemberCoupon(1L, 1L, 1L, false, startDate, endDate);
+        MemberCoupon memberCoupon = new MemberCoupon(1L, null, null, false, startDate, endDate);
 
         boolean actual = memberCoupon.isUsable(base);
 
@@ -42,7 +42,7 @@ class MemberCouponTest {
         LocalDate startDate = LocalDate.of(2024, 11, 1);
         LocalDate endDate = LocalDate.of(2024, 11, 3);
 
-        MemberCoupon memberCoupon = new MemberCoupon(1L, 1L, 1L, true, startDate, endDate);
+        MemberCoupon memberCoupon = new MemberCoupon(1L, null, null, true, startDate, endDate);
 
         boolean actual = memberCoupon.isUsable(base);
 
