@@ -22,19 +22,19 @@ public class MemberCoupon {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Long couponId;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Long memberId;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private boolean used;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private LocalDate issueDate;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private LocalDate expirationDate;
 
     public MemberCoupon(Long couponId, Long memberId, LocalDate issueDate) {

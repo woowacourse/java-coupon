@@ -31,23 +31,23 @@ public class Coupon {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private int discountAmount;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private int minOrderAmount;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     @Enumerated(value = STRING)
     private CouponCategory category;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private LocalDate startDate;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private LocalDate endDate;
 
     public Coupon(
