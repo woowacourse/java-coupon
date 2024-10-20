@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 @Entity
 public class Coupon {
 
+    private static final double MIN_DISCOUNT_RATIO = 3.0;
+    private static final double MAX_DISCOUNT_RATIO = 20.0;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,10 +24,7 @@ public class Coupon {
     private CouponName name;
 
     @Embedded
-    private SalePrice salePrice;
-
-    @Embedded
-    private SaleRatio saleRatio;
+    private DiscountPrice discountPrice;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -46,11 +46,11 @@ public class Coupon {
     ) {
         this.id = null;
         this.name = new CouponName(name);
-        this.salePrice = new SalePrice(salePrice);
+        this.discountPrice = new DiscountPrice(salePrice);
         this.category = category;
         this.saleOrderPrice = new SaleOrderPrice(orderPrice);
-        this.saleRatio = new SaleRatio(100.0 * salePrice / orderPrice);
         this.duration = new IssueDuration(startTime, endTime);
+        DiscountRatio.validateDiscountRatio(100 * salePrice / orderPrice);
     }
 
     protected Coupon() {
@@ -58,5 +58,9 @@ public class Coupon {
 
     public Long getId() {
         return id;
+    }
+
+    public DiscountRatio getDiscountRatio() {
+        return new DiscountRatio(100 * discountPrice.getPrice() / saleOrderPrice.getPrice());
     }
 }

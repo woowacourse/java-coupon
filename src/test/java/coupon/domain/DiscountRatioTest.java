@@ -3,33 +3,33 @@ package coupon.domain;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import coupon.domain.coupon.SaleRatio;
+import coupon.domain.coupon.DiscountRatio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class SaleRatioTest {
+class DiscountRatioTest {
 
     @DisplayName("최대 할인 비율을 초과할 수 없다")
     @Test
     void throwIllegalArgumentException_When_ExceededThanMaxRatio() {
-        assertThatThrownBy(() -> new SaleRatio(0.21))
+        assertThatThrownBy(() -> new DiscountRatio(21))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @DisplayName("최소 할인 비율 미만일 수 없다")
     @Test
     void throwIllegalArgumentException_When_ShorterThanMinRatio() {
-        assertThatThrownBy(() -> new SaleRatio(0.09))
+        assertThatThrownBy(() -> new DiscountRatio(2))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @DisplayName("성공: 할인 비율을 생성할 수 있다")
-    @ValueSource(doubles = {20.0, 3.0, 19.9, 3.1})
+    @ValueSource(ints = {20, 3, 19, 4})
     @ParameterizedTest
-    void createSalePrice(double validSaleRatio) {
-        assertThatCode(() -> new SaleRatio(validSaleRatio))
+    void createSalePrice(int validSaleRatio) {
+        assertThatCode(() -> new DiscountRatio(validSaleRatio))
                 .doesNotThrowAnyException();
     }
 }
