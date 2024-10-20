@@ -1,6 +1,5 @@
 package coupon.config;
 
-import com.zaxxer.hikari.HikariDataSource;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -34,7 +33,6 @@ public class DataSourceConfig {
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writerDataSource() {
         return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
                 .build();
     }
 
@@ -42,7 +40,6 @@ public class DataSourceConfig {
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
     public DataSource readerDataSource() {
         return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
                 .build();
     }
 }
