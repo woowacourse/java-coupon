@@ -10,12 +10,10 @@ class MemberCouponTest {
 
     @Test
     void getExpirationDate() {
-        Coupon coupon = new Coupon("couponName", 2_000, 15_000, "가구", LocalDate.now(), LocalDate.now());
-        Member member = new Member();
-        MemberCoupon memberCoupon = new MemberCoupon(coupon, member, LocalDate.now());
+        MemberCoupon memberCoupon = new MemberCoupon(1L, 1L, LocalDate.now());
 
         assertAll(
-                () -> assertThat(memberCoupon.getExpirationDateTime()).isEqualTo(LocalDate.now().plusDays(6)),
+                () -> assertThat(memberCoupon.getExpirationDate()).isEqualTo(LocalDate.now().plusDays(6)),
                 () -> assertThat(memberCoupon.isUsed()).isEqualTo(false)
         );
     }

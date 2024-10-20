@@ -40,6 +40,7 @@ public class Coupon {
     @Column(nullable = true)
     private int minOrderAmount;
 
+    @Column(nullable = true)
     @Enumerated(value = STRING)
     private CouponCategory category;
 

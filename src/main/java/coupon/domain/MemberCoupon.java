@@ -1,13 +1,11 @@
 package coupon.domain;
 
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,25 +22,26 @@ public class MemberCoupon {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY, optional = false)
-    private Coupon coupon;
+    @Column(nullable = true)
+    private Long couponId;
 
-    @ManyToOne(fetch = LAZY, optional = false)
-    private Member member;
+    @Column(nullable = true)
+    private Long memberId;
 
+    @Column(nullable = true)
     private boolean used;
 
     @Column(nullable = true)
-    private LocalDate issueDateTime;
+    private LocalDate issueDate;
 
     @Column(nullable = true)
-    private LocalDate expirationDateTime;
+    private LocalDate expirationDate;
 
-    public MemberCoupon(Coupon coupon, Member member, LocalDate issueDateTime) {
-        this.coupon = coupon;
-        this.member = member;
+    public MemberCoupon(Long couponId, Long memberId, LocalDate issueDate) {
+        this.couponId = couponId;
+        this.memberId = memberId;
         this.used = false;
-        this.issueDateTime = issueDateTime;
-        this.expirationDateTime = issueDateTime.plusDays(EXPIRATION_DURATION);
+        this.issueDate = issueDate;
+        this.expirationDate = issueDate.plusDays(EXPIRATION_DURATION);
     }
 }
