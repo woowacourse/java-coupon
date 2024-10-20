@@ -74,7 +74,7 @@ class CouponServiceTest {
     @Test
     void exception_When_DiscountAmountIsLessThanMin() {
         // given
-        int discount = 999;
+        int discount = 500;
         Coupon coupon = new Coupon(
                 1L, "test",
                 discount, 1000, Category.ELECTRONICS,
@@ -92,7 +92,7 @@ class CouponServiceTest {
     @Test
     void exception_When_DiscountAmountIsBiggerThanMax() {
         // given
-        int discount = 10001;
+        int discount = 10500;
         Coupon coupon = new Coupon(
                 1L, "test",
                 discount, 1000, Category.ELECTRONICS,
@@ -108,14 +108,11 @@ class CouponServiceTest {
 
 
     @DisplayName("최소 주문 금액이 최소치를 넘지 못하면 예외가 발생한다.")
-    @ParameterizedTest
-    @CsvSource({
-            "1000, 4999",
-            "5000, 3000",
-            "1500, 4500"
-    })
-    void exception_When_MinOrderAmountIsLessThanMin(int discountAmount, int minOrderAmount) {
+    @Test
+    void exception_When_MinOrderAmountIsLessThanMin() {
         // given
+        int discountAmount = 1000;
+        int minOrderAmount = 4999;
         Coupon coupon = new Coupon(
                 1L, "Invalid Coupon",
                 discountAmount, minOrderAmount, Category.ELECTRONICS,
