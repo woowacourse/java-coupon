@@ -6,7 +6,7 @@ services:
       context: ./writer
       dockerfile: Dockerfile
     ports:
-      - 33306:3306
+      - "33306:3306"
     networks:
       coupon_dock_net:
         ipv4_address: 172.20.0.10
@@ -24,7 +24,7 @@ services:
       context: ./reader
       dockerfile: Dockerfile
     ports:
-      - 33307:3306
+      - "33307:3306"
     networks:
       coupon_dock_net:
         ipv4_address: 172.20.0.11
