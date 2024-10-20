@@ -30,6 +30,6 @@ class MemberCouponTest {
         assertThat(expiredAt.getHour()).isEqualTo(23);
         assertThat(expiredAt.getMinute()).isEqualTo(59);
         assertThat(expiredAt.getSecond()).isEqualTo(59);
-        assertThat(expiredAt.getNano()).isEqualTo(999999);
+        assertThat(expiredAt.getNano()).isEqualTo(999999000);
     }
 }
