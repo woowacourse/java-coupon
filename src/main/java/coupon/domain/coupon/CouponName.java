@@ -16,7 +16,7 @@ public class CouponName {
     @Column(nullable = false, length = MAX_NAME_LENGTH)
     private String name;
 
-    public CouponName(String name) {
+    protected CouponName(String name) {
         validateName(name);
         this.name = name;
     }

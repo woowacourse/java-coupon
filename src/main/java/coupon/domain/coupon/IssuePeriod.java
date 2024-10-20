@@ -19,7 +19,7 @@ public class IssuePeriod {
     @Column(nullable = false)
     private LocalDateTime issueEndedAt;
 
-    public IssuePeriod(LocalDate issueStartedDate, LocalDate issueEndedDate) {
+    protected IssuePeriod(LocalDate issueStartedDate, LocalDate issueEndedDate) {
         validateIssuePeriod(issueStartedDate, issueEndedDate);
         this.issueStartedAt = issueStartedDate.atTime(0, 0, 0, 0);
         this.issueEndedAt = issueEndedDate.atTime(23, 59, 59, 999_999_000);

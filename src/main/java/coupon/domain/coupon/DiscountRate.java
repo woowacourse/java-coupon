@@ -21,7 +21,7 @@ public class DiscountRate {
         this.discountRate = discountRate;
     }
 
-    public static DiscountRate calculateDiscountRate(int discountAmount, int baseAmount) {
+    protected static DiscountRate calculateDiscountRate(int discountAmount, int baseAmount) {
         ValidateBaseAmount(baseAmount);
         int discountRate = (int) Math.floor((double) discountAmount / baseAmount * 100);
         validateDiscountRate(discountRate);

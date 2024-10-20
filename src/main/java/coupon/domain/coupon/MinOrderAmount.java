@@ -17,7 +17,7 @@ public class MinOrderAmount {
     @Column(nullable = false)
     private int minOrderAmount;
 
-    public MinOrderAmount(int minOrderAmount) {
+    protected MinOrderAmount(int minOrderAmount) {
         validateMinOrderAmount(minOrderAmount);
         this.minOrderAmount = minOrderAmount;
     }

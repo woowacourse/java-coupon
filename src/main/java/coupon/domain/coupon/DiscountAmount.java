@@ -18,7 +18,7 @@ public class DiscountAmount {
     @Column(nullable = false)
     private int discountAmount;
 
-    public DiscountAmount(int discountAmount) {
+    protected DiscountAmount(int discountAmount) {
         validateDiscountAmount(discountAmount);
         this.discountAmount = discountAmount;
     }
