@@ -35,15 +35,16 @@ public class DataSourceConfig {
                 .type(HikariDataSource.class)
                 .build();
     }
-    
+
     @Bean
     public DataSourceRouter dataSourceRouter(
             @Qualifier("writeDataSource") DataSource writeDataSource,
             @Qualifier("readDataSource") DataSource readDataSource
     ) {
-        Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put(WRITE_DATA_SOURCE_KEY, writeDataSource);
-        dataSourceMap.put(READ_DATA_SOURCE_KEY, readDataSource);
+        Map<Object, Object> dataSourceMap = Map.of(
+                WRITE_DATA_SOURCE_KEY, writeDataSource,
+                READ_DATA_SOURCE_KEY, readDataSource
+        );
 
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
         dataSourceRouter.setTargetDataSources(dataSourceMap);
