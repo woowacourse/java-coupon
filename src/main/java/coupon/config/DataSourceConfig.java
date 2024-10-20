@@ -41,13 +41,13 @@ public class DataSourceConfig {
             @Qualifier("writeDataSource") DataSource writeDataSource,
             @Qualifier("readDataSource") DataSource readDataSource
     ) {
-        Map<Object, Object> dataSourceMap = Map.of(
+        Map<Object, Object> dataSources = Map.of(
                 WRITE_DATA_SOURCE_KEY, writeDataSource,
                 READ_DATA_SOURCE_KEY, readDataSource
         );
 
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
-        dataSourceRouter.setTargetDataSources(dataSourceMap);
+        dataSourceRouter.setTargetDataSources(dataSources);
         dataSourceRouter.setDefaultTargetDataSource(writeDataSource);
         return dataSourceRouter;
     }
