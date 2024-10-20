@@ -2,7 +2,6 @@ package coupon.service;
 
 import coupon.domain.coupon.Coupon;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CouponService {
@@ -13,7 +12,6 @@ public class CouponService {
         this.couponDBService = couponDBService;
     }
 
-    @Transactional
     public Coupon create(Coupon coupon) {
         return couponDBService.create(coupon);
     }
