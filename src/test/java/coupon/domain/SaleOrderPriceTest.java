@@ -25,7 +25,7 @@ class SaleOrderPriceTest {
     @DisplayName("최소 주문 금액 가격 미만일 수 없다")
     @Test
     void throwIllegalArgumentException_When_ShorterThanMinOrderPrice() {
-        int shortagePrice = MIN_SALE_PRICE + 1;
+        int shortagePrice = MIN_SALE_PRICE - 1;
         assertThatThrownBy(() -> new SaleOrderPrice(shortagePrice))
                 .isInstanceOf(IllegalArgumentException.class);
     }
