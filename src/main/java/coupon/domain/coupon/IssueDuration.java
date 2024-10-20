@@ -25,7 +25,7 @@ public class IssueDuration {
     }
 
     private void validateTime(LocalDateTime startTime, LocalDateTime endTime) {
-        if (!startTime.isBefore(endTime)) {
+        if (startTime.isAfter(endTime)) {
             throw new IllegalArgumentException("시작 시간은 종료 시간보다 이전이어야 합니다");
         }
     }
