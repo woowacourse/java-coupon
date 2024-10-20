@@ -46,6 +46,10 @@ public class Coupon {
         this.couponPeriod = couponPeriod;
     }
 
+    public boolean isIdOf(Long id) {
+        return this.id.equals(id);
+    }
+
     public String getRawName() {
         return name.getValue();
     }
