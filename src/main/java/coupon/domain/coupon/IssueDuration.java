@@ -8,25 +8,25 @@ import java.time.LocalDateTime;
 public class IssueDuration {
     private static int DEFAULT_DURATION_DAYS = 7;
 
-    @Column(name = "start_time")
-    private LocalDateTime startTime;
+    @Column(name = "start_at")
+    private LocalDateTime startAt;
 
-    @Column(name= "end_time")
-    private LocalDateTime endTime;
+    @Column(name= "end_at")
+    private LocalDateTime endAt;
 
-    public IssueDuration(LocalDateTime startTime, LocalDateTime endTime) {
-        validateTime(startTime, endTime);
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public IssueDuration(LocalDateTime startAt, LocalDateTime endAt) {
+        validate(startAt, endAt);
+        this.startAt = startAt;
+        this.endAt = endAt;
     }
 
     public IssueDuration() {
         this(LocalDateTime.now(), LocalDateTime.now().plusDays(DEFAULT_DURATION_DAYS));
     }
 
-    private void validateTime(LocalDateTime startTime, LocalDateTime endTime) {
-        if (startTime.isAfter(endTime)) {
-            throw new IllegalArgumentException("시작 시간은 종료 시간보다 이전이어야 합니다");
+    private void validate(LocalDateTime startAt, LocalDateTime endAt) {
+        if (startAt.isAfter(endAt)) {
+            throw new IllegalArgumentException("시작 시점은 종료 시점보다 이전이어야 합니다");
         }
     }
 }

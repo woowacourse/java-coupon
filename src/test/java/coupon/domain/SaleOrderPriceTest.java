@@ -34,5 +34,4 @@ class SaleOrderPriceTest {
         assertThatCode(() -> new SaleOrderPrice(validSalePrice))
                 .doesNotThrowAnyException();
     }
-
 }
