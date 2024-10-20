@@ -9,7 +9,6 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
@@ -31,9 +30,10 @@ public class DataSourceConfig {
     @Bean
     public DataSource routingDataSource(DataSource writerDataSource, DataSource readerDataSource) {
         ReadOnlyDataSourceRouter routingDataSource = new ReadOnlyDataSourceRouter();
-        Map<Object, Object> targetDataSources = new HashMap<>();
-        targetDataSources.put(DataSourceType.WRITER, writerDataSource);
-        targetDataSources.put(DataSourceType.READER, readerDataSource);
+        Map<Object, Object> targetDataSources = Map.of(
+                DataSourceType.WRITER, writerDataSource,
+                DataSourceType.READER, readerDataSource
+        );
         routingDataSource.setTargetDataSources(targetDataSources);
         routingDataSource.setDefaultTargetDataSource(writerDataSource);
         return routingDataSource;

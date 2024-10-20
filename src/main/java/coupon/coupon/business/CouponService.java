@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -24,10 +22,7 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(long id) {
-        Optional<Coupon> coupon = couponRepository.findById(id);
-        if(coupon.isEmpty()) {
-            coupon = Optional.ofNullable(couponWriterService.findCouponInWriter(id));
-        }
-        return coupon.orElse(null);
+        return couponRepository.findById(id)
+                .orElseGet(() -> couponWriterService.findCouponInWriter(id));
     }
 }
