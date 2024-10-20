@@ -62,20 +62,24 @@ public class Coupon {
     @Column(name = "issue_ended_at", nullable = false)
     private LocalDateTime issueEndedAt;
 
-    public Coupon(
-            String name, BigDecimal discountAmount, BigDecimal minimumOrderPrice, CouponCategory couponCategory,
+    public Coupon(String name, BigDecimal discountAmount, BigDecimal minimumOrderPrice, CouponCategory couponCategory,
             LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
-        validateName(name);
-        validateDiscountAmount(discountAmount);
-        validateMinimumOrderPrice(minimumOrderPrice);
-        validateDiscountRate(discountAmount, minimumOrderPrice);
-        validateIssueDate(issueStartedAt, issueEndedAt);
+        validate(name, discountAmount, minimumOrderPrice, issueStartedAt, issueEndedAt);
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderPrice = minimumOrderPrice;
         this.couponCategory = couponCategory;
         this.issueStartedAt = issueStartedAt;
         this.issueEndedAt = issueEndedAt;
+    }
+
+    private void validate(String name, BigDecimal discountAmount, BigDecimal minimumOrderPrice,
+            LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
+        validateName(name);
+        validateDiscountAmount(discountAmount);
+        validateMinimumOrderPrice(minimumOrderPrice);
+        validateDiscountRate(discountAmount, minimumOrderPrice);
+        validateIssueDate(issueStartedAt, issueEndedAt);
     }
 
     private void validateName(String name) {
