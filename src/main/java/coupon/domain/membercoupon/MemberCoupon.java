@@ -23,7 +23,7 @@ public class MemberCoupon {
 
     private final LocalDate endDate;
 
-    public static MemberCoupon from(MemberCouponEntity entity, Coupon coupon, Member member) {
+    public static MemberCoupon of(MemberCouponEntity entity, Coupon coupon, Member member) {
 
         if (!member.isIdOf(entity.getMemberId()) || !coupon.isIdOf(entity.getCouponId())) {
             throw new IllegalArgumentException("매개변수간 일관성이 지켜지지 않았습니다.");

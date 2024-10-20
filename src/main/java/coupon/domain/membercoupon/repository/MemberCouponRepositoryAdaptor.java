@@ -10,7 +10,9 @@ import coupon.domain.membercoupon.MemberCoupon;
 import coupon.infra.db.MemberCouponEntity;
 import coupon.infra.db.jpa.JpaMemberCouponRepository;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,7 +25,7 @@ public class MemberCouponRepositoryAdaptor implements
 
     private final MemberRepository memberRepository;
 
-    private final JpaMemberCouponRepository memberCouponRepository;
+    private final JpaMemberCouponRepository jpaMemberCouponRepository;
 
 
     @Override
@@ -33,19 +35,35 @@ public class MemberCouponRepositoryAdaptor implements
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException("해당 회원이 존재하지 않습니다."));
 
-        List<MemberCouponEntity> memberCouponEntities = memberCouponRepository.findAllByMemberIdAndCouponId(
+        List<MemberCouponEntity> memberCouponEntities = jpaMemberCouponRepository.findAllByMemberIdAndCouponId(
                 memberId,
                 couponId
         );
 
         return memberCouponEntities.stream()
-                .map(entity -> MemberCoupon.from(entity, coupon, member))
+                .map(entity -> MemberCoupon.of(entity, coupon, member))
                 .toList();
     }
 
     @Override
     public List<MemberCoupon> findAllByMemberId(Long memberId) {
-        return List.of();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("해당 회원이 존재하지 않습니다."));
+
+        List<MemberCouponEntity> memberCouponEntities = jpaMemberCouponRepository.findAllByMemberId(memberId);
+        Map<Long, Coupon> couponMap = findIdCouponMap(memberCouponEntities);
+
+        return memberCouponEntities.stream().map(memberCouponEntity -> {
+            Long couponId = memberCouponEntity.getCouponId();
+            Coupon coupon = couponMap.get(couponId);
+            return MemberCoupon.of(memberCouponEntity, coupon, member);
+        }).toList();
+    }
+
+    private Map<Long, Coupon> findIdCouponMap(List<MemberCouponEntity> memberCouponEntities) {
+        List<Long> couponIds = memberCouponEntities.stream().map(MemberCouponEntity::getCouponId).toList();
+        return couponRepository.findAllByIdIn(couponIds).stream()
+                .collect(Collectors.toMap(Coupon::getId, coupon -> coupon));
     }
 
     @Override
