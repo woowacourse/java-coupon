@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import coupon.domain.coupon.Category;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponRepository;
+import coupon.fixture.CouponFixture;
 import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +49,7 @@ class CouponServiceTest {
     @DisplayName("복제 지연 테스트")
     @Test
     void replicaDelayTest() {
-        Coupon coupon = new Coupon("pram", 1_000, 30_000, Category.FOOD, LocalDate.now(), LocalDate.now());
+        Coupon coupon = CouponFixture.PRAM_COUPON.coupon();
         Coupon savedCoupon = couponService.create(coupon);
         Coupon result = couponService.getCoupon(savedCoupon.getId());
         assertThat(result).isNotNull();
