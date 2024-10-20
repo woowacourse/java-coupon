@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class CouponServiceTest {
@@ -17,6 +18,7 @@ class CouponServiceTest {
     private CouponService couponService;
 
     @Test
+    @Sql(scripts = "/reset-database.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void 복제지연테스트() {
         // given
         String name = "냥인의쿠폰";
@@ -34,6 +36,6 @@ class CouponServiceTest {
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());
 
         // then
-        assertThat(savedCoupon).isNotNull();
+        assertThat(savedCoupon.getId()).isEqualTo(1L);
     }
 }
