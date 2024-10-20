@@ -29,10 +29,9 @@ public class CouponReader {
     }
 
     private CouponEntity findByIdInRepository(Long id) {
-        CouponEntity couponEntity = couponRepository.findById(id)
+        return couponRepository.findById(id)
                 .orElseGet(() -> dataAccessSupporter.executeWriteDataBase(() -> couponRepository.findById(id))
                         .orElseThrow(NoSuchElementException::new));
-        return couponEntity;
     }
 
     private void updateCache(CouponEntity couponEntity) {
