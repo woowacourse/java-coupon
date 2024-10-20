@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CouponRoutingContext {
 
     private static final Map<Long, LocalDateTime> createdAtById = new ConcurrentHashMap<>();
-    private static final ThreadLocal<Long> currentCouponId = new ThreadLocal<>();
+    private static final ThreadLocal<Long> currentCouponId = ThreadLocal.withInitial(() -> null);
 
     private CouponRoutingContext() {
 
@@ -20,6 +20,11 @@ public class CouponRoutingContext {
 
     public static void recordCouponCreatedAt(long couponId) {
         createdAtById.put(couponId, LocalDateTime.now());
+    }
+
+    public static void removeCouponCreatedAt() {
+        Long couponId = currentCouponId.get();
+        createdAtById.remove(couponId);
     }
 
     public static void setCurrentCouponId(long couponId) {

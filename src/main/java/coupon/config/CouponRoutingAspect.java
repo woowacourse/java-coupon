@@ -2,7 +2,6 @@ package coupon.config;
 
 import coupon.coupon.domain.Coupon;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
@@ -21,10 +20,5 @@ public class CouponRoutingAspect {
         }
         CouponRoutingContext.recordCouponCreatedAt(result.getId());
         return result;
-    }
-
-    @After("@annotation(org.springframework.transaction.annotation.Transactional)")
-    public void clearCouponContext() {
-        CouponRoutingContext.clearCurrentCouponId();
     }
 }
