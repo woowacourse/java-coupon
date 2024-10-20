@@ -20,6 +20,11 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) {
+        return couponRepository.findById(id)
+                .orElseGet(() -> getCouponWithWriteDb(id));
+    }
+
+    private Coupon getCouponWithWriteDb(Long id) {
         return transactionExecutor.execute(() -> couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다.")));
     }
