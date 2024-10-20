@@ -26,7 +26,7 @@ public class CouponServiceTest {
                 LocalDateTime.now().plusDays(1L)
         );
         Coupon savedCoupon = couponService.create(coupon);
-        Coupon foundCoupon   = couponService.findCoupon(savedCoupon.getId());
+        Coupon foundCoupon = couponService.findCoupon(savedCoupon.getId());
         assertThat(foundCoupon).isNotNull();
     }
 }
