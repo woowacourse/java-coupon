@@ -4,11 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MemberCouponTest {
-    
+
     @DisplayName("회원에게 발급된 쿠폰의 발급 일시로 만료 일시를 계산한다.")
     @Test
     void calculateExpireAt() {
@@ -26,8 +27,11 @@ class MemberCouponTest {
         // when
         MemberCoupon memberCoupon = new MemberCoupon(coupon, memberId);
         LocalDateTime actual = memberCoupon.getExpireAt();
+        LocalDateTime expected = memberCoupon.getIssuedAt()
+                .plusDays(7)
+                .with(LocalTime.of(23, 59, 59, 999_999_000));
 
         // then
-        assertThat(actual).isAfter(memberCoupon.getIssuedAt());
+        assertThat(actual).isEqualTo(expected);
     }
 }
