@@ -1,11 +1,16 @@
 package coupon.coupon.domain;
 
-public record CouponName(String name) {
+import lombok.Getter;
+
+@Getter
+public class CouponName {
 
     private static final int MAX_LENGTH = 30;
+    private final String name;
 
-    public CouponName {
+    public CouponName(String name) {
         validate(name);
+        this.name = name;
     }
 
     private void validate(String name) {

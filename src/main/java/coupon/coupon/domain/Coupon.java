@@ -2,6 +2,9 @@ package coupon.coupon.domain;
 
 import java.time.LocalDateTime;
 
+import lombok.Getter;
+
+@Getter
 public class Coupon {
 
     private final CouponName name;
@@ -28,30 +31,26 @@ public class Coupon {
     }
 
     public String getName() {
-        return name.name();
+        return name.getName();
     }
 
     public int getDiscountPrice() {
-        return discountPrice.price();
+        return discountPrice.getPrice();
     }
 
     public int getMinimumOrderPrice() {
-        return minimumOrderPrice.price();
+        return minimumOrderPrice.getPrice();
     }
 
     public double getDiscountPercent() {
         return discountPercent.getPercent();
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
     public LocalDateTime getIssuedAt() {
-        return issuedPeriod.issuedAt();
+        return issuedPeriod.getIssuedAt();
     }
 
     public LocalDateTime getExpiresAt() {
-        return issuedPeriod.expiresAt();
+        return issuedPeriod.getExpiresAt();
     }
 }

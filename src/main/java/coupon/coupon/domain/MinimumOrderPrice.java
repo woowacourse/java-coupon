@@ -1,12 +1,17 @@
 package coupon.coupon.domain;
 
-public record MinimumOrderPrice(int price) {
+import lombok.Getter;
+
+@Getter
+public class MinimumOrderPrice {
 
     private static final int MIN_LENGTH = 5_000;
     private static final int MAX_LENGTH = 100_000;
+    private final int price;
 
-    public MinimumOrderPrice {
+    public MinimumOrderPrice(int price) {
         validate(price);
+        this.price = price;
     }
 
     private void validate(int minimumOrderPrice) {

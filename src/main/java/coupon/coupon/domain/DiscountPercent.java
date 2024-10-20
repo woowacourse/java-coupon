@@ -1,5 +1,8 @@
 package coupon.coupon.domain;
 
+import lombok.Getter;
+
+@Getter
 public class DiscountPercent {
 
     private static final double MIN_PERCENT = 3;
@@ -20,9 +23,5 @@ public class DiscountPercent {
         if (percent > MAX_PERCENT) {
             throw new IllegalArgumentException("할인율은 " + MAX_PERCENT + "% 이하여야 한다.");
         }
-    }
-
-    public double getPercent() {
-        return percent;
     }
 }

@@ -3,13 +3,21 @@ package coupon.coupon.domain;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public record IssuePeriod(LocalDateTime issuedAt, LocalDateTime expiresAt) {
+import lombok.Getter;
+
+@Getter
+public class IssuePeriod {
 
     private static final LocalTime MIN_TIME = LocalTime.of(0, 0, 0);
     private static final LocalTime MAX_TIME = LocalTime.of(23, 59, 59);
+    private final LocalDateTime issuedAt;
+    private final LocalDateTime expiresAt;
 
-    public IssuePeriod {
+
+    public IssuePeriod(LocalDateTime issuedAt, LocalDateTime expiresAt) {
         validate(issuedAt, expiresAt);
+        this.issuedAt = issuedAt;
+        this.expiresAt = expiresAt;
     }
 
     private void validate(LocalDateTime issuedAt, LocalDateTime expiresAt) {
