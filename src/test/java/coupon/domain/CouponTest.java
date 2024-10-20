@@ -86,13 +86,10 @@ class CouponTest {
 
     private static Stream<Arguments> provideDiscountAmountScenarios() {
         return Stream.of(
-                // Below minimum
                 Arguments.of("BelowMinimum", 500, "Discount amount must be at least 1000 won."),
                 Arguments.of("BelowMinimum", 750, "Discount amount must be at least 1000 won."),
-                // Above maximum
                 Arguments.of("AboveMaximum", 10_500, "Discount amount must be at most 10000 won."),
                 Arguments.of("AboveMaximum", 15_000, "Discount amount must be at most 10000 won."),
-                // Not increment of 500
                 Arguments.of("NotIncrementOf500", 2_750, "Discount amount must be in increments of 500 won."),
                 Arguments.of("NotIncrementOf500", 1_250, "Discount amount must be in increments of 500 won.")
         );
@@ -115,10 +112,8 @@ class CouponTest {
 
     private static Stream<Arguments> provideMinOrderAmountScenarios() {
         return Stream.of(
-                // Below minimum
                 Arguments.of("BelowMinimum", 3_000, "Minimum order amount must be at least 5000 won."),
                 Arguments.of("BelowMinimum", 4_999, "Minimum order amount must be at least 5000 won."),
-                // Above maximum
                 Arguments.of("AboveMaximum", 150_000, "Minimum order amount must be at most 100000 won."),
                 Arguments.of("AboveMaximum", 200_000, "Minimum order amount must be at most 100000 won.")
         );
@@ -140,10 +135,8 @@ class CouponTest {
 
     private static Stream<Arguments> provideDiscountRateScenarios() {
         return Stream.of(
-                // Below minimum
                 Arguments.of("BelowMinimum", 1_000, 50_000, "Discount rate must be at least 3%."),
                 Arguments.of("BelowMinimum", 1_500, 60_000, "Discount rate must be at least 3%."),
-                // Above maximum
                 Arguments.of("AboveMaximum", 2_500, 10_000, "Discount rate must be at most 20%."),
                 Arguments.of("AboveMaximum", 4_000, 15_000, "Discount rate must be at most 20%.")
         );

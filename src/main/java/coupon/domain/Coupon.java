@@ -98,7 +98,7 @@ public class Coupon {
     }
 
     private void validateDiscountRate(int discountAmount, int minOrderAmount) {
-        int discountRate = (discountAmount * 100) / minOrderAmount; // Integer division floors the decimal
+        int discountRate = (discountAmount * 100) / minOrderAmount;
         if (discountRate < MIN_DISCOUNT_RATE) {
             throw new IllegalArgumentException("Discount rate must be at least " + MIN_DISCOUNT_RATE + "%.");
         }
