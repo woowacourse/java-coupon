@@ -2,6 +2,7 @@ package coupon.domain.coupon;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,14 +19,14 @@ public class IssuePeriod {
     @Column(nullable = false)
     private LocalDateTime issueEndedAt;
 
-    public IssuePeriod(LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
-        validateIssuePeriod(issueStartedAt, issueEndedAt);
-        this.issueStartedAt = issueStartedAt;
-        this.issueEndedAt = issueEndedAt;
+    public IssuePeriod(LocalDate issueStartedDate, LocalDate issueEndedDate) {
+        validateIssuePeriod(issueStartedDate, issueEndedDate);
+        this.issueStartedAt = issueStartedDate.atTime(0, 0, 0, 0);
+        this.issueEndedAt = issueEndedDate.atTime(23, 59, 59, 999_999_000);
     }
 
-    private void validateIssuePeriod(LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
-        if (issueStartedAt.isAfter(issueEndedAt)) {
+    private void validateIssuePeriod(LocalDate issueStartedDate, LocalDate issueEndedDate) {
+        if (issueStartedDate.isAfter(issueEndedDate)) {
             throw new IllegalArgumentException("발급 시작일은 종료일보다 빠를 수 없습니다.");
         }
     }

@@ -8,7 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,14 +44,14 @@ public class Coupon {
     public Coupon(String name,
                   int discountAmount,
                   int minOrderAmount,
-                  LocalDateTime issueStartedAt,
-                  LocalDateTime issueEndedAt,
+                  LocalDate issueStartedDate,
+                  LocalDate issueEndedDate,
                   Category category) {
         this.name = new CouponName(name);
         this.discountAmount = new DiscountAmount(discountAmount);
         this.minOrderAmount = new MinOrderAmount(minOrderAmount);
         this.discountRate = DiscountRate.calculateDiscountRate(discountAmount, minOrderAmount);
-        this.issuePeriod = new IssuePeriod(issueStartedAt, issueEndedAt);
+        this.issuePeriod = new IssuePeriod(issueStartedDate, issueEndedDate);
         this.category = category;
     }
 }
