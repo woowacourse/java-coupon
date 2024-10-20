@@ -46,6 +46,6 @@ public class MemberCoupon {
         this.coupon = coupon;
         this.used = false;
         this.issueAt = LocalDateTime.now();
-        this.expiredAt = issueAt.plusDays(7).withHour(23).withMinute(59).withSecond(59).withNano(999999);
+        this.expiredAt = issueAt.plusDays(7).withHour(23).withMinute(59).withSecond(59).withNano(999999000);
     }
 }
