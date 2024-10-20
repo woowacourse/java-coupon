@@ -62,7 +62,7 @@ class MemberCouponTest {
         doReturn(LocalDate.now())
                 .when(mockMemberCoupon).checkExpireDate();
 
-        assertThat(memberCoupon.isUsable()).isTrue();
+        assertThat(mockMemberCoupon.isUsable()).isFalse();
     }
 
     @DisplayName("생성 성공: 쿠폰 발급일 범위 내 발급")
