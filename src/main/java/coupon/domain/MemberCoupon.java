@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class MemberCoupon {
 
+    private static final int EXPIRATION_DAYS = 7;
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -37,6 +39,8 @@ public class MemberCoupon {
     }
 
     public LocalDateTime getExpiredAt() {
-        return issuedAt.plusDays(7).with(LocalTime.MAX).truncatedTo(ChronoUnit.MICROS);
+        return issuedAt.plusDays(EXPIRATION_DAYS)
+                .with(LocalTime.MAX)
+                .truncatedTo(ChronoUnit.MICROS);
     }
 }
