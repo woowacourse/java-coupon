@@ -16,7 +16,7 @@ public class CouponServiceTest {
     private CouponService couponService;
 
     @Test
-    void 복제지연테스트() throws InterruptedException {
+    void 복제지연테스트() {
         Coupon coupon = new Coupon(
                 "쿠폰",
                 1000,
