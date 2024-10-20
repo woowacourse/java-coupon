@@ -1,6 +1,5 @@
 package coupon.domain.coupon;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
@@ -9,7 +8,6 @@ public class DiscountPrice {
     private static final int MAX_DISCOUNT_PRICE = 10000;
     private static final int UNIT_DISCOUNT_PRICE = 500;
 
-    @Column(name = "discount_price", nullable = false)
     private int price;
 
     public DiscountPrice(int price) {

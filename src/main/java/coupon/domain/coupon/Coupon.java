@@ -1,5 +1,7 @@
 package coupon.domain.coupon;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -13,17 +15,16 @@ import java.time.LocalDateTime;
 @Entity
 public class Coupon {
 
-    private static final double MIN_DISCOUNT_RATIO = 3.0;
-    private static final double MAX_DISCOUNT_RATIO = 20.0;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "coupon_name", nullable = false))
     private CouponName name;
 
     @Embedded
+    @AttributeOverride(name = "price", column = @Column(name = "discount_price", nullable = false))
     private DiscountPrice discountPrice;
 
     @Column(nullable = false)
@@ -31,9 +32,14 @@ public class Coupon {
     private Category category;
 
     @Embedded
+    @AttributeOverride(name = "price", column = @Column(name = "sale_order_price", nullable = false))
     private SaleOrderPrice saleOrderPrice;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "startAt", column = @Column(name = "start_at", nullable = false)),
+            @AttributeOverride(name = "endAt", column = @Column(name = "end_at", nullable = false))
+    })
     private IssueDuration duration;
 
     public Coupon(

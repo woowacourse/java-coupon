@@ -1,6 +1,5 @@
 package coupon.domain.coupon;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
@@ -8,7 +7,6 @@ public class CouponName {
 
     private static final int NAME_MAX_LENGTH = 30;
 
-    @Column(name = "coupon_name", nullable = false)
     private String value;
 
     public CouponName(String value) {

@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 @Embeddable
 public class IssueDuration {
 
-    @Column(name = "start_at")
     private LocalDateTime startAt;
 
     @Column(name= "end_at")
