@@ -15,7 +15,6 @@ public class CouponController {
 
     private final CouponService couponService;
 
-
     @GetMapping
     public List<Coupon> findAll() {
         return couponService.getCoupons();

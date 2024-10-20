@@ -16,14 +16,13 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        System.out.println(TransactionSynchronizationManager.getCurrentTransactionName() + TransactionSynchronizationManager.isCurrentTransactionReadOnly());
-        if (TransactionSynchronizationManager.isCurrentTransactionReadOnly() && isReplicationFinished()) {
+        if (TransactionSynchronizationManager.isCurrentTransactionReadOnly() && isReaderReady()) {
             return DataSourceType.READER;
         }
         return DataSourceType.WRITER;
     }
 
-    private boolean isReplicationFinished() {
+    private boolean isReaderReady() {
         Map<Object, DataSource> resolvedDataSources = getResolvedDataSources();
         DataSource readerSource = resolvedDataSources.get(DataSourceType.READER);
         JdbcTemplate template = new JdbcTemplate(readerSource);
