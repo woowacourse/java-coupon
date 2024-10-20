@@ -1,6 +1,7 @@
 package coupon.domain.coupon;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -24,15 +25,19 @@ public class Coupon {
     @Column(unique = true)
     private CouponName name;
 
+    @Embedded
     private DiscountAmount discountAmount;
 
+    @Embedded
     private DiscountPercent discountPercent;
 
+    @Embedded
     private MinimumAmount minimumAmount;
 
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
+    @Embedded
     private IssuancePeriod issuancePeriod;
 
     public Coupon(
