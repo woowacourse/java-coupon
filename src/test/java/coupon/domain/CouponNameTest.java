@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 class CouponNameTest {
 
-    @DisplayName("쿠폰이름의 최대 길이를 초과할 수 없다")
+    @DisplayName("쿠폰 이름의 최대 길이를 초과할 수 없다")
     @Test
     void throwIllegalArgumentException_When_LongerThanMaxLength() {
         String invalidName = "*".repeat(31);
@@ -35,6 +35,4 @@ class CouponNameTest {
         assertThatCode(() -> new CouponName(validName))
                 .doesNotThrowAnyException();
     }
-
-
 }
