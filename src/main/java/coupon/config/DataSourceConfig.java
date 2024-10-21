@@ -19,6 +19,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 public class DataSourceConfig {
 
+    private static final String WRITER_DATA_SOURCE = "writerDataSource";
+    private static final String READER_DATA_SOURCE = "readerDataSource";
+    private static final String ROUTING_DATA_SOURCE = "routingDataSource";
+
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     @Bean
     public DataSource writerDataSource() {
@@ -35,15 +39,15 @@ public class DataSourceConfig {
                 .build();
     }
 
-    @DependsOn({"writerDataSource", "readerDataSource"})
+    @DependsOn({WRITER_DATA_SOURCE, READER_DATA_SOURCE})
     @Bean
     public DataSource routingDataSource(
-            @Qualifier("writerDataSource") DataSource writer,
-            @Qualifier("readerDataSource") DataSource reader) {
+            @Qualifier(WRITER_DATA_SOURCE) DataSource writer,
+            @Qualifier(READER_DATA_SOURCE) DataSource reader
+    ) {
         ReadOnlyDataSourceRouter readOnlyDataSourceRouter = new ReadOnlyDataSourceRouter();
 
         Map<Object, Object> dataSourceMap = new HashMap<>();
-
         dataSourceMap.put(DataSourceConstant.WRITE, writer);
         dataSourceMap.put(DataSourceConstant.READ, reader);
 
@@ -53,7 +57,7 @@ public class DataSourceConfig {
         return readOnlyDataSourceRouter;
     }
 
-    @DependsOn({"routingDataSource"})
+    @DependsOn({ROUTING_DATA_SOURCE})
     @Primary
     @Bean
     public DataSource dataSource(DataSource routingDataSource) {
