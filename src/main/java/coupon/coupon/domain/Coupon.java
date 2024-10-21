@@ -26,13 +26,13 @@ public class Coupon {
     private CouponCategory category;
 
     @Column(nullable = false)
-    private Integer discountAmount;
+    private int discountAmount;
 
     @Column(nullable = false)
-    private Integer discountRate;
+    private int discountRate;
 
     @Column(nullable = false)
-    private Integer minOrderAmount;
+    private int minOrderAmount;
 
     @Column(nullable = false)
     private LocalDateTime startedAt;
@@ -44,9 +44,9 @@ public class Coupon {
             Long id,
             String name,
             CouponCategory category,
-            Integer discountAmount,
-            Integer discountRate,
-            Integer minOrderAmount,
+            int discountAmount,
+            int discountRate,
+            int minOrderAmount,
             LocalDateTime startedAt,
             LocalDateTime endedAt
     ) {
@@ -63,9 +63,9 @@ public class Coupon {
 
     private void validate(
             String name,
-            Integer discountAmount,
-            Integer discountRate,
-            Integer minOrderAmount,
+            int discountAmount,
+            int discountRate,
+            int minOrderAmount,
             LocalDateTime startedAt,
             LocalDateTime endedAt
     ) {
@@ -113,8 +113,8 @@ public class Coupon {
     public Coupon(
             String name,
             CouponCategory category,
-            Integer discountAmount,
-            Integer minOrderAmount,
+            int discountAmount,
+            int minOrderAmount,
             LocalDateTime startedAt,
             LocalDateTime endedAt
     ) {

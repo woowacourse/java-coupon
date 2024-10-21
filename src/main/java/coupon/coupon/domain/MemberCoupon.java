@@ -32,7 +32,7 @@ public class MemberCoupon {
     private Coupon coupon;
 
     @Column(nullable = false)
-    private Boolean isUsed;
+    private boolean isUsed;
 
     @Column(nullable = false)
     private LocalDateTime issuedAt;
@@ -40,7 +40,7 @@ public class MemberCoupon {
     @Column(nullable = false)
     private LocalDateTime expiredAt;
 
-    public MemberCoupon(Member member, Coupon coupon, Boolean isUsed, LocalDateTime issuedAt, LocalDateTime expiredAt) {
+    public MemberCoupon(Member member, Coupon coupon, boolean isUsed, LocalDateTime issuedAt, LocalDateTime expiredAt) {
         this(null, member, coupon, isUsed, issuedAt, expiredAt);
     }
 }
