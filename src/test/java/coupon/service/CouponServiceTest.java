@@ -2,8 +2,9 @@ package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import coupon.domain.Coupon;
-import coupon.repository.CouponEntity;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.repository.CouponEntity;
+import coupon.coupon.service.CouponService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

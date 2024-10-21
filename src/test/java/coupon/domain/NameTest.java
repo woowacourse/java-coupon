@@ -2,8 +2,9 @@ package coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
+import coupon.coupon.domain.Name;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class NameTest {
         assertAll(
                 () -> assertThatThrownBy(() -> new Name(""))
                         .isInstanceOf(IllegalArgumentException.class),
-                () ->  assertThatThrownBy(() -> new Name(null))
+                () -> assertThatThrownBy(() -> new Name(null))
                         .isInstanceOf(IllegalArgumentException.class)
         );
     }
