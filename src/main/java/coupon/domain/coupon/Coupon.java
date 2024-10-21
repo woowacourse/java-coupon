@@ -18,6 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
 
+    private static final int MIN_DISCOUNT_RATE = 3;
+    private static final int MAX_DISCOUNT_RATE = 20;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,9 +33,6 @@ public class Coupon {
 
     @Embedded
     private MinOrderAmount minOrderAmount;
-
-    @Embedded
-    private DiscountRate discountRate;
 
     @Embedded
     private IssuePeriod issuePeriod;
@@ -50,8 +50,16 @@ public class Coupon {
         this.name = new CouponName(name);
         this.discountAmount = new DiscountAmount(discountAmount);
         this.minOrderAmount = new MinOrderAmount(minOrderAmount);
-        this.discountRate = DiscountRate.calculateDiscountRate(discountAmount, minOrderAmount);
+        validateDiscountRate(discountAmount, minOrderAmount);
         this.issuePeriod = new IssuePeriod(issueStartedDate, issueEndedDate);
         this.category = category;
+    }
+
+    private void validateDiscountRate(int discountAmount, int minOrderAmount) {
+        int discountRate = (int) Math.floor((double) discountAmount / minOrderAmount * 100);
+        if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
+            throw new IllegalArgumentException("할인율은 %d%% 이상 %d%% 이하여야 합니다."
+                    .formatted(MIN_DISCOUNT_RATE, MAX_DISCOUNT_RATE));
+        }
     }
 }
