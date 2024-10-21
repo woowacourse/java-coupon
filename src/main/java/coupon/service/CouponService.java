@@ -39,6 +39,7 @@ public class CouponService {
     }
 
     private Coupon getCachedCoupon(Long id) {
+        return getCouponCache().get(id, Coupon.class);
     }
 
     private Cache getCouponCache() {
