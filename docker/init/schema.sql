@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS coupon
     discount_amount         INT,
     minimum_order_amount    INT,
     category                ENUM('FASHION', 'ELECTRONICS', 'FURNITURE', 'FOOD') NOT NULL,
-    issue_started_at        DATETIME        NOT NULL,
-    issue_ended_at          DATETIME        NOT NULL,
+    issue_started_at        DATETIME(6)     NOT NULL,
+    issue_ended_at          DATETIME(6)     NOT NULL,
     issue_limit             BIGINT          NOT NULL,
     issue_count             BIGINT          NOT NULL,
     PRIMARY KEY (coupon_id)

@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CouponPeriod {
 
-    @Column(name = "issue_started_at", nullable = false)
+    @Column(name = "issue_started_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime issueStartedAt;
 
-    @Column(name = "issue_ended_at", nullable = false)
+    @Column(name = "issue_ended_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime issueEndedAt;
 
     public CouponPeriod(LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
