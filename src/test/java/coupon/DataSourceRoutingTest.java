@@ -2,47 +2,43 @@ package coupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import coupon.config.DataSourceType;
-import coupon.config.ReplicationRoutingDataSource;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.sql.SQLException;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 public class DataSourceRoutingTest {
 
-    private static final String TEST_METHOD_NAME = "determineCurrentLookupKey";
+    private static final String WRITER_DB_PORT = "33306";
+    private static final String READER_DB_PORT = "33307";
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @DisplayName("읽기 전용 트랜잭션이 아니면, Writer DB 데이터소스가 바운딩된다.")
     @Test
     @Transactional(readOnly = false)
-    void writeOnlyTransactionTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        ReplicationRoutingDataSource replicationRoutingDataSource = new ReplicationRoutingDataSource();
+    void writeOnlyTransactionTest() throws SQLException {
+        DataSource dataSource = applicationContext.getBean(DataSource.class);
 
-        Method determineCurrentLookupKey = ReplicationRoutingDataSource.class.getDeclaredMethod(TEST_METHOD_NAME);
-        determineCurrentLookupKey.setAccessible(true);
+        String actual = dataSource.getConnection().getMetaData().getURL();
 
-        DataSourceType dataSourceType = (DataSourceType) determineCurrentLookupKey
-                .invoke(replicationRoutingDataSource);
-
-        assertThat(dataSourceType).isEqualTo(DataSourceType.WRITER);
+        assertThat(actual).contains(WRITER_DB_PORT);
     }
 
     @Test
     @DisplayName("읽기전용 트랜잭션이면 reader DB 데이터소스가 바운딩된다.")
     @Transactional(readOnly = true)
-    void readOnlyTransactionTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        ReplicationRoutingDataSource replicationRoutingDataSource = new ReplicationRoutingDataSource();
+    void readOnlyTransactionTest() throws SQLException {
+        DataSource dataSource = applicationContext.getBean(DataSource.class);
 
-        Method determineCurrentLookupKey = ReplicationRoutingDataSource.class.getDeclaredMethod(TEST_METHOD_NAME);
-        determineCurrentLookupKey.setAccessible(true);
+        String actual = dataSource.getConnection().getMetaData().getURL();
 
-        DataSourceType dataSourceType = (DataSourceType) determineCurrentLookupKey
-                .invoke(replicationRoutingDataSource);
-
-        assertThat(dataSourceType).isEqualTo(DataSourceType.READER);
+        assertThat(actual).contains(READER_DB_PORT);
     }
 }
