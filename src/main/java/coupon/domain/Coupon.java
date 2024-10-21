@@ -104,7 +104,7 @@ public class Coupon {
                     DISCOUNT_AMOUNT_MAX));
         }
         if (discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
-            throw new IllegalArgumentException(String.format("할인 금액은 %,d원 단위로 설정할 수 있습니다.", DISCOUNT_AMOUNT_MIN));
+            throw new IllegalArgumentException(String.format("할인 금액은 %,d원 단위로 설정할 수 있습니다.", DISCOUNT_AMOUNT_UNIT));
         }
     }
 
