@@ -44,7 +44,7 @@ public class MemberCoupon {
     @Column(name = "expired_at", columnDefinition = "datetime(6)")
     private LocalDateTime expiredAt;
 
-    public MemberCoupon( Member member, Coupon coupon) {
+    public MemberCoupon(Member member, Coupon coupon) {
         this.member = member;
         this.coupon = coupon;
         this.used = false;
