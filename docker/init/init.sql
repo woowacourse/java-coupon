@@ -13,3 +13,23 @@ CREATE TABLE IF NOT EXISTS coupon (
     created_at DATETIME NOT NULL,
     modified_at DATETIME NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS member (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
+    created_at DATETIME NOT NULL,
+    modified_at DATETIME NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS member_coupon (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    coupon_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    used BOOLEAN NOT NULL,
+    issued_date DATETIME NOT NULL,
+    expiry_date DATETIME NOT NULL,
+    created_at DATETIME NOT NULL,
+    modified_at DATETIME NOT NULL,
+    FOREIGN KEY (coupon_id) REFERENCES coupon(id),
+    FOREIGN KEY (member_id) REFERENCES member(id)
+);
