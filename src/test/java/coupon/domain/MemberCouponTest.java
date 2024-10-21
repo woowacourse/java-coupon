@@ -13,7 +13,7 @@ class MemberCouponTest {
     @DisplayName("발급 일시가 없는 경우 예외가 발생한다")
     @Test
     void validateIssuedAt() {
-        Coupon coupon = new Coupon("쿠폰", 1000, 5000, Category.FASHION, LocalDateTime.now(), LocalDateTime.now()
+        Coupon coupon = new Coupon("쿠폰", 1000, 5000, Category.FASHION.name(), LocalDateTime.now(), LocalDateTime.now()
                 .plusDays(1));
         Member member = new Member("회원이름");
 
@@ -25,7 +25,7 @@ class MemberCouponTest {
     @DisplayName("쿠폰의 만료일은 발급일로부터 7일 후의 23:59:59.999999까지 사용할 수 있다")
     @Test
     void calculateExpiryDate() {
-        Coupon coupon = new Coupon("쿠폰", 1000, 5000, Category.FASHION, LocalDateTime.now(), LocalDateTime.now()
+        Coupon coupon = new Coupon("쿠폰", 1000, 5000, Category.FASHION.name(), LocalDateTime.now(), LocalDateTime.now()
                 .plusDays(1));
         Member member = new Member("회원이름");
 

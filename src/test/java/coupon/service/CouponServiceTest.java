@@ -25,7 +25,7 @@ public class CouponServiceTest {
     @DisplayName("쿠폰 생성에 성공한다.")
     @Test
     void create() {
-        Coupon coupon = new Coupon("유효한 쿠폰", 1000, 5000, Category.FASHION, LocalDateTime.now(), LocalDateTime.now());
+        Coupon coupon = new Coupon("유효한 쿠폰", 1000, 5000, Category.FASHION.name(), LocalDateTime.now(), LocalDateTime.now());
         Coupon saved = couponService.create(coupon);
         assertThat(couponRepository.findById(saved.getId())).isNotNull();
     }
@@ -40,7 +40,8 @@ public class CouponServiceTest {
 
     @Test
     void 복제지연테스트() {
-        Coupon coupon = new Coupon("쿠폰", 1000, 10000, Category.FOOD, LocalDateTime.now(), LocalDateTime.now().plusDays(2));
+        Coupon coupon = new Coupon("쿠폰", 1000, 10000, Category.FOOD.name(), LocalDateTime.now(), LocalDateTime.now()
+                .plusDays(2));
         couponService.create(coupon);
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());
         assertThat(savedCoupon).isNotNull();

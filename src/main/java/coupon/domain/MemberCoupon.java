@@ -31,6 +31,7 @@ public class MemberCoupon {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Column(nullable = false)
     private Boolean isUsed;
 
     @Column(nullable = false)
