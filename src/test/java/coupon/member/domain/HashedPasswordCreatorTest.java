@@ -1,10 +1,8 @@
-package member.domain;
+package coupon.member.domain;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import coupon.member.domain.HashedPasswordCreator;
-import coupon.member.domain.Password;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

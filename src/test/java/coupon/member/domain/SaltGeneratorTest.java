@@ -1,8 +1,7 @@
-package member.domain;
+package coupon.member.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import coupon.member.domain.SaltGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
