@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,10 +30,10 @@ public class MemberCoupon {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Coupon coupon;
+    private Member member;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Member member;
+    private Coupon coupon;
 
     @Column(name = "used", columnDefinition = "boolean")
     private Boolean used;
@@ -43,11 +44,11 @@ public class MemberCoupon {
     @Column(name = "expired_at", columnDefinition = "datetime(6)")
     private LocalDateTime expiredAt;
 
-    public MemberCoupon(Coupon coupon, Member member) {
-        this.coupon = coupon;
+    public MemberCoupon( Member member, Coupon coupon) {
         this.member = member;
+        this.coupon = coupon;
         this.used = false;
         this.issuedAt = LocalDateTime.now();
-        this.expiredAt = issuedAt.plusDays(EXPIRATION_DAYS - 1).with(LocalDateTime.MAX);
+        this.expiredAt = issuedAt.plusDays(EXPIRATION_DAYS - 1).with(LocalTime.MAX);
     }
 }
