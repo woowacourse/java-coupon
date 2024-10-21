@@ -6,8 +6,10 @@ import coupon.infra.db.MemberCouponEntity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public class MemberCoupon {
 
@@ -49,5 +51,13 @@ public class MemberCoupon {
                 LocalTime.of(0, 0, 0, 0)
         );
         return !use && base.isAfter(startDateTimeExclude) && base.isBefore(endDateTimeExclude);
+    }
+
+    public Long getCouponId() {
+        return coupon.getId();
+    }
+
+    public Long getMemberId() {
+        return member.getId();
     }
 }

@@ -11,7 +11,6 @@ import coupon.infra.db.MemberCouponEntity;
 import coupon.infra.db.jpa.JpaMemberCouponRepository;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -67,7 +66,19 @@ public class MemberCouponRepositoryAdaptor implements
     }
 
     @Override
-    public Optional<MemberCoupon> save(MemberCoupon memberCoupon) {
-        return Optional.empty();
+    public MemberCoupon save(MemberCoupon memberCoupon) {
+        MemberCouponEntity save = jpaMemberCouponRepository.save(toEntity(memberCoupon));
+        return MemberCoupon.of(save, memberCoupon.getCoupon(), memberCoupon.getMember());
+    }
+
+    private MemberCouponEntity toEntity(MemberCoupon memberCoupon) {
+        return new MemberCouponEntity(
+                memberCoupon.getId(),
+                memberCoupon.getCouponId(),
+                memberCoupon.getMemberId(),
+                memberCoupon.isUse(),
+                memberCoupon.getStartDate(),
+                memberCoupon.getEndDate()
+        );
     }
 }

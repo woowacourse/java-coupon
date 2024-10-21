@@ -2,7 +2,6 @@ package coupon.domain.membercoupon.repository;
 
 import coupon.domain.membercoupon.MemberCoupon;
 import java.util.List;
-import java.util.Optional;
 
 public interface MemberCouponRepository {
 
@@ -10,5 +9,5 @@ public interface MemberCouponRepository {
 
     List<MemberCoupon> findAllByMemberId(Long memberId);
 
-    Optional<MemberCoupon> save(MemberCoupon memberCoupon);
+    MemberCoupon save(MemberCoupon memberCoupon);
 }
