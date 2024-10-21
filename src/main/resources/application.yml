@@ -1,4 +1,10 @@
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 36379
+      timeout: 60000
+
   jpa:
     hibernate:
       naming:

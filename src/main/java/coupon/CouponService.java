@@ -1,12 +1,10 @@
 package coupon;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -14,26 +12,38 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 public class CouponService {
 
     private final CouponRepository couponRepository;
-
-    private final Map<Long, Coupon> cache = new ConcurrentHashMap<>();
+    private final RedisCacheService redisCacheService;
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) {
-        log.info("CouponService.getCoupon Transaction readOnly {}", TransactionSynchronizationManager.isCurrentTransactionReadOnly());
-        if (cache.containsKey(id)) {
-            return cache.get(id);
+        Optional<Coupon> coupon = redisCacheService.getCouponFromCache(id);
+
+        if (coupon.isPresent()) {
+            log.info("Coupon with ID {} found in cache", id);
+            Coupon cacheCoupon = coupon.get();
+            redisCacheService.extendCacheTTL(cacheCoupon);
+            return cacheCoupon;
         }
-        return couponRepository.findById(id).orElseThrow();
+
+        return getCouponFromDB(id);
+    }
+
+    private Coupon getCouponFromDB(Long id) {
+        log.info("Coupon with ID {} not found in cache. Fetching from DB.", id);
+        Coupon findCoupon = couponRepository.findById(id).orElseThrow();
+
+        try {
+            redisCacheService.cache(findCoupon);
+        } catch (Exception e) {
+            log.error("Failed to cache coupon with ID {}: {}", id, e.getMessage());
+        }
+
+        return findCoupon;
     }
 
     @Transactional
     public void create(Coupon coupon) {
-        log.info("CouponService.create Transaction readOnly {}", TransactionSynchronizationManager.isCurrentTransactionReadOnly());
         couponRepository.save(coupon);
-        cache.put(coupon.getId(), coupon);
-    }
-
-    public Map<Long, Coupon> getCache() {
-        return cache;
+        redisCacheService.cache(coupon);
     }
 }
