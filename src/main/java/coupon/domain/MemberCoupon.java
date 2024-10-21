@@ -35,7 +35,7 @@ public class MemberCoupon {
     private Member member;
 
     @Column(name = "used", columnDefinition = "boolean")
-    private boolean used;
+    private Boolean used;
 
     @Column(name = "issued_at", columnDefinition = "datetime(6)")
     private LocalDateTime issuedAt;
