@@ -7,4 +7,8 @@ public class CouponException extends RuntimeException{
     public CouponException(CouponErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
+
+    public CouponErrorMessage getErrorMessage() {
+        return errorMessage;
+    }
 }
