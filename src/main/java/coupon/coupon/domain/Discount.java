@@ -9,7 +9,6 @@ public class Discount {
     private int percent;
 
     protected Discount() {
-
     }
 
     public Discount(int price, int minimumOrderAmount) {
