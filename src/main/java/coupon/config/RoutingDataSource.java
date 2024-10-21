@@ -12,10 +12,10 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
-            log.info("USE REPLICA");
+            log.debug("USE REPLICA");
             return DataSourceConfig.REPLICA_SERVER;
         }
-        log.info("USE SOURCE");
+        log.debug("USE SOURCE");
         return DataSourceConfig.SOURCE_SERVER;
     }
 }
