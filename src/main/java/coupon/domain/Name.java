@@ -18,7 +18,7 @@ public class Name {
             throw new NameNotExistException();
         }
         if (value.length() > MAX_LENGTH) {
-            throw new NameLengthExceedException(MAX_LENGTH);
+            throw new NameLengthExceedException(String.valueOf(MAX_LENGTH));
         }
     }
 }
