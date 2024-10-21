@@ -1,9 +1,8 @@
-package member.service;
+package coupon.member.service;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import coupon.member.request.MemberCreateRequest;
-import coupon.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
