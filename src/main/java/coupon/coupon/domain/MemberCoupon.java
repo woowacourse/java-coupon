@@ -1,38 +1,22 @@
 package coupon.coupon.domain;
 
-import coupon.BaseEntity;
 import coupon.member.domain.Member;
-import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
-@Table(name = "member_coupon")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberCoupon extends BaseEntity {
+public class MemberCoupon {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private final Coupon coupon;
+    private final Member member;
+    private final boolean used;
+    private final DatePeriod datePeriod;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
-
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
-
-    @Column(name = "used", nullable = false)
-    private boolean used;
-
-    @Column(name = "issued_date", nullable = false)
-    private LocalDateTime issedDate;
-
-    @Column(name = "expiry_date", nullable = false)
-    private LocalDateTime expiryDate;
+    public MemberCoupon(Coupon coupon, Member member, boolean used, LocalDateTime issuedAt) {
+        this.coupon = coupon;
+        this.member = member;
+        this.used = used;
+        this.datePeriod = new DatePeriod(issuedAt, issuedAt.plusDays(7));
+    }
 }

@@ -1,9 +1,11 @@
 package coupon.coupon.service;
 
 import coupon.coupon.domain.Coupon;
-import java.util.Optional;
+import coupon.coupon.entity.CouponEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -12,12 +14,12 @@ public class CouponService {
     private final CouponWriterService couponWriterService;
     private final CouponReaderService couponReaderService;
 
-    public void create(Coupon coupon) {
-        couponWriterService.create(coupon);
+    public CouponEntity create(Coupon coupon) {
+        return couponWriterService.create(new CouponEntity(coupon));
     }
 
-    public Coupon getCoupon(long couponId) {
-        Optional<Coupon> coupon = couponReaderService.getCoupon(couponId);
+    public CouponEntity getCoupon(long couponId) {
+        Optional<CouponEntity> coupon = couponReaderService.getCoupon(couponId);
         return coupon.orElseGet(() -> couponWriterService.getCoupon(couponId));
     }
 }

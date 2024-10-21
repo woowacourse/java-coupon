@@ -1,15 +1,18 @@
 package coupon.domain;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-import coupon.coupon.domain.Category;
-import coupon.coupon.domain.Coupon;
-import coupon.coupon.domain.ExceptionMessage;
-import java.time.LocalDateTime;
+import coupon.coupon.domain.*;
+import coupon.coupon.service.DiscountAmountPolicy;
+import coupon.coupon.service.DiscountRatePolicy;
+import coupon.coupon.service.MinimumOrderAmountPolicy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CouponTest {
 
@@ -20,13 +23,14 @@ class CouponTest {
         LocalDateTime today = LocalDateTime.now();
         assertThatThrownBy(() -> new Coupon(
                 name,
+                List.of(),
                 1000,
                 5000,
                 Category.ELECTRONICS,
                 today,
                 today.plusDays(8)
         )).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(String.format(ExceptionMessage.NAME_LENGTH_EXCEPTION.getMessage(), Coupon.MAX_NAME_LENGTH));
+                .hasMessage(String.format(ExceptionMessage.NAME_LENGTH_EXCEPTION.getMessage(), CouponName.MAX_NAME_LENGTH));
     }
 
     @DisplayName("이름이 30글자를 초과하면 예외를 발생시킨다")
@@ -35,13 +39,14 @@ class CouponTest {
         LocalDateTime today = LocalDateTime.now();
         assertThatThrownBy(() -> new Coupon(
                 "f".repeat(31),
+                List.of(),
                 1000,
                 5000,
                 Category.ELECTRONICS,
                 today,
                 today.plusDays(8)
         )).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(String.format(ExceptionMessage.NAME_LENGTH_EXCEPTION.getMessage(), Coupon.MAX_NAME_LENGTH));
+                .hasMessage(String.format(ExceptionMessage.NAME_LENGTH_EXCEPTION.getMessage(), CouponName.MAX_NAME_LENGTH));
     }
 
     @DisplayName("할인 금액은 1000원 이상 10000원 이하, 단위는 500원이어야 한다")
@@ -51,6 +56,7 @@ class CouponTest {
         LocalDateTime today = LocalDateTime.now();
         assertThatThrownBy(() -> new Coupon(
                 "nyangin",
+                List.of(),
                 discountAmount,
                 5000,
                 Category.ELECTRONICS,
@@ -59,9 +65,9 @@ class CouponTest {
         )).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format(
                         ExceptionMessage.DISCOUNT_AMOUNT_EXCEPTION.getMessage(),
-                        Coupon.MIN_DISCOUNT_AMOUNT,
-                        Coupon.MAX_DISCOUNT_AMOUNT,
-                        Coupon.DISCOUNT_AMOUNT_UNIT
+                        DiscountAmountPolicy.MIN_DISCOUNT_AMOUNT,
+                        DiscountAmountPolicy.MAX_DISCOUNT_AMOUNT,
+                        DiscountAmountPolicy.DISCOUNT_AMOUNT_UNIT
                 ));
     }
 
@@ -72,6 +78,7 @@ class CouponTest {
         LocalDateTime today = LocalDateTime.now();
         assertThatThrownBy(() -> new Coupon(
                 "nyangin",
+                List.of(),
                 1000,
                 minimumOrderAmount,
                 Category.ELECTRONICS,
@@ -80,8 +87,8 @@ class CouponTest {
         )).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format(
                         ExceptionMessage.MINIMUM_ORDER_AMOUNT_EXCEPTION.getMessage(),
-                        Coupon.MIN_MINIMUM_ORDER_AMOUNT,
-                        Coupon.MAX_MINIMUM_ORDER_AMOUNT
+                        MinimumOrderAmountPolicy.MIN_MINIMUM_ORDER_AMOUNT,
+                        MinimumOrderAmountPolicy.MAX_MINIMUM_ORDER_AMOUNT
                 ));
     }
 
@@ -91,6 +98,7 @@ class CouponTest {
         LocalDateTime today = LocalDateTime.now();
         assertThatThrownBy(() -> new Coupon(
                 "nyangin",
+                List.of(),
                 2500,
                 100000,
                 Category.ELECTRONICS,
@@ -99,8 +107,8 @@ class CouponTest {
         )).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format(
                         ExceptionMessage.DISCOUNT_RATE_EXCEPTION.getMessage(),
-                        Coupon.MIN_DISCOUNT_RATE,
-                        Coupon.MAX_DISCOUNT_RATE
+                        DiscountRatePolicy.MIN_DISCOUNT_RATE,
+                        DiscountRatePolicy.MAX_DISCOUNT_RATE
                 ));
     }
 
@@ -110,6 +118,7 @@ class CouponTest {
         LocalDateTime today = LocalDateTime.now();
         assertThatThrownBy(() -> new Coupon(
                 "nyangin",
+                List.of(),
                 1500,
                 5000,
                 Category.ELECTRONICS,
@@ -118,8 +127,8 @@ class CouponTest {
         )).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(String.format(
                         ExceptionMessage.DISCOUNT_RATE_EXCEPTION.getMessage(),
-                        Coupon.MIN_DISCOUNT_RATE,
-                        Coupon.MAX_DISCOUNT_RATE
+                        DiscountRatePolicy.MIN_DISCOUNT_RATE,
+                        DiscountRatePolicy.MAX_DISCOUNT_RATE
                 ));
     }
 
@@ -129,6 +138,7 @@ class CouponTest {
         LocalDateTime today = LocalDateTime.now();
         assertThatThrownBy(() -> new Coupon(
                 "nyangin",
+                List.of(),
                 1000,
                 5000,
                 Category.ELECTRONICS,
