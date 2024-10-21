@@ -1,8 +1,13 @@
 package coupon.domain;
 
+import coupon.domain.vo.DiscountAmount;
+import coupon.domain.vo.IssuePeriod;
+import coupon.domain.vo.MinimumOrderPrice;
+import coupon.domain.vo.Name;
 import coupon.exception.ErrorMessage;
 import coupon.exception.GlobalCustomException;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,7 +15,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +25,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon extends BaseTime {
 
-    private static final int NAME_MAX_LENGTH = 30;
-    private static final int DISCOUNT_AMOUNT_UNIT = 500;
-    private static final int DISCOUNT_AMOUNT_MINIMUM = 1_000;
-    private static final int DISCOUNT_AMOUNT_MAXIMUM = 10_000;
-    private static final int MINIMUM_ORDER_PRICE_MINIMUM = 5_000;
-    private static final int MINIMUM_ORDER_PRICE_MAXIMUM = 100_000;
     private static final int DISCOUNT_RATE_MINIMUM = 3;
     private static final int DISCOUNT_RATE_MAXIMUM = 20;
 
@@ -35,72 +33,36 @@ public class Coupon extends BaseTime {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 30)
-    private String name;
+    @Embedded
+    private Name name;
 
-    @Column(name = "discount_amount", nullable = false)
-    private int discountAmount;
+    @Embedded
+    private DiscountAmount discountAmount;
 
-    @Column(name = "minimum_order_price", nullable = false)
-    private int minimumOrderPrice;
+    @Embedded
+    private MinimumOrderPrice minimumOrderPrice;
 
     @Column(name = "category", nullable = false, columnDefinition = "varchar(20)")
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
-    @Column(name = "issue_started_at", nullable = false, columnDefinition = "datetime(6)")
-    private LocalDateTime issueStartedAt;
+    @Embedded
+    private IssuePeriod issuePeriod;
 
-    @Column(name = "issue_ended_at", nullable = false, columnDefinition = "datetime(6)")
-    private LocalDateTime issueEndedAt;
-
-    public Coupon(String name, int discountAmount, int minimumOrderPrice, Category category,
-                  LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
-        validateName(name);
-        validateDiscountAmount(discountAmount);
-        validateMinimumOrderPrice(minimumOrderPrice);
+    public Coupon(Name name, DiscountAmount discountAmount, MinimumOrderPrice minimumOrderPrice, Category category,
+                  IssuePeriod issuePeriod) {
         validateDiscountRate(discountAmount, minimumOrderPrice);
-        validateIssuePeriod(issueStartedAt, issueEndedAt);
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderPrice = minimumOrderPrice;
         this.category = category;
-        this.issueStartedAt = issueStartedAt;
-        this.issueEndedAt = issueEndedAt;
+        this.issuePeriod = issuePeriod;
     }
 
-    private void validateName(String name) {
-        if (name == null || name.isBlank() || name.length() > NAME_MAX_LENGTH) {
-            throw new GlobalCustomException(ErrorMessage.INVALID_COUPON_NAME);
-        }
-    }
-
-    private void validateDiscountAmount(int discountAmount) {
-        if (discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
-            throw new GlobalCustomException(ErrorMessage.INVALID_COUPON_DISCOUNT_AMOUNT_UNIT);
-        }
-
-        if (discountAmount < DISCOUNT_AMOUNT_MINIMUM || discountAmount > DISCOUNT_AMOUNT_MAXIMUM) {
-            throw new GlobalCustomException(ErrorMessage.INVALID_COUPON_DISCOUNT_AMOUNT_RANGE);
-        }
-    }
-
-    private void validateMinimumOrderPrice(int minimumOrderPrice) {
-        if (minimumOrderPrice < MINIMUM_ORDER_PRICE_MINIMUM || minimumOrderPrice > MINIMUM_ORDER_PRICE_MAXIMUM) {
-            throw new GlobalCustomException(ErrorMessage.INVALID_MINIMUM_ORDER_PRICE_RANGE);
-        }
-    }
-
-    private void validateDiscountRate(int discountAmount, int minimumOrderPrice) {
-        int discountRate = discountAmount * 100 / minimumOrderPrice;
+    private void validateDiscountRate(DiscountAmount discountAmount, MinimumOrderPrice minimumOrderPrice) {
+        int discountRate = discountAmount.calculateDiscountRate(minimumOrderPrice.getValue());
         if (discountRate < DISCOUNT_RATE_MINIMUM || discountRate > DISCOUNT_RATE_MAXIMUM) {
             throw new GlobalCustomException(ErrorMessage.INVALID_DISCOUNT_RATE_RANGE);
-        }
-    }
-
-    private void validateIssuePeriod(LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
-        if (issueStartedAt.isAfter(issueEndedAt)) {
-            throw new GlobalCustomException(ErrorMessage.INVALID_ISSUE_PERIOD);
         }
     }
 }

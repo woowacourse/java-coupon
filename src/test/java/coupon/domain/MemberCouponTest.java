@@ -2,6 +2,10 @@ package coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import coupon.domain.vo.DiscountAmount;
+import coupon.domain.vo.IssuePeriod;
+import coupon.domain.vo.MinimumOrderPrice;
+import coupon.domain.vo.Name;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,8 +18,12 @@ class MemberCouponTest {
 
     @BeforeEach
     void setUp() {
-        this.coupon = new Coupon("쿠폰이름", 1_000, 30_000, Category.FASHION, LocalDateTime.now(),
-                LocalDateTime.now());
+        Name name = new Name("쿠폰이름");
+        DiscountAmount discountAmount = new DiscountAmount(1_000);
+        MinimumOrderPrice minimumOrderPrice = new MinimumOrderPrice(30_000);
+        IssuePeriod issuePeriod = new IssuePeriod(LocalDateTime.now(), LocalDateTime.now());
+
+        this.coupon = new Coupon(name, discountAmount, minimumOrderPrice, Category.FASHION, issuePeriod);
         this.member = new Member("미아");
     }
 
