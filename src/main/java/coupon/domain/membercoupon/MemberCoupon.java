@@ -6,6 +6,7 @@ import coupon.infra.db.MemberCouponEntity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +26,10 @@ public class MemberCoupon {
 
     private final LocalDate endDate;
 
+    public MemberCoupon(Coupon coupon, Member member, boolean use, LocalDate startDate, LocalDate endDate) {
+        this(null, coupon, member, use, startDate, endDate);
+    }
+
     public static MemberCoupon of(MemberCouponEntity entity, Coupon coupon, Member member) {
 
         if (!member.isIdOf(entity.getMemberId()) || !coupon.isIdOf(entity.getCouponId())) {
@@ -35,7 +40,7 @@ public class MemberCoupon {
                 entity.getId(),
                 coupon,
                 member,
-                entity.isUse(),
+                entity.isAlreadyUse(),
                 entity.getStartDate(),
                 entity.getEndDate()
         );
@@ -59,5 +64,23 @@ public class MemberCoupon {
 
     public Long getMemberId() {
         return member.getId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        MemberCoupon that = (MemberCoupon) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

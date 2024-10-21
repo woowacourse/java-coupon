@@ -14,6 +14,10 @@ public class Member {
 
     private final String password;
 
+    public Member(String email, String password) {
+        this(null, email, password);
+    }
+
     public static Member from(MemberEntity entity) {
         return new Member(entity.getId(), entity.getEmail(), entity.getPassword());
     }

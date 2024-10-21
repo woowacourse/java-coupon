@@ -26,13 +26,19 @@ public class MemberCouponEntity {
 
     private Long memberId;
 
-    private boolean use;
+    private boolean alreadyUse;
 
     private LocalDate startDate;
 
     private LocalDate endDate;
 
-    public MemberCouponEntity(Long couponId, Long memberId, boolean use, LocalDate startDate, LocalDate endDate) {
-        this(null, couponId, memberId, use, startDate, endDate);
+    public MemberCouponEntity(
+            Long couponId,
+            Long memberId,
+            boolean alreadyUse,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+        this(null, couponId, memberId, alreadyUse, startDate, endDate);
     }
 }
