@@ -32,7 +32,7 @@ class CouponQueryServiceTest {
         jdbcTemplate.update("ALTER TABLE coupon AUTO_INCREMENT = 1");
     }
 
-    @DisplayName("성공: 존재하는 ID로 조회")
+    @DisplayName("성공: 존재하는 ID로 조회, 복제 지연 해결")
     @Test
     void findById() {
         Coupon saved = couponRepository.save(new Coupon("천원 할인 쿠폰", 1000, 10000,
