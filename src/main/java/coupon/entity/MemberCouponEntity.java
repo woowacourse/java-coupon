@@ -1,5 +1,7 @@
 package coupon.entity;
 
+import coupon.domain.Coupon;
+import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,14 +42,14 @@ public class MemberCouponEntity {
     private LocalDateTime expiredAt;
 
     public MemberCouponEntity(MemberCoupon memberCoupon) {
-        this.memberId = memberCoupon.getMemberId();
-        this.couponId = memberCoupon.getCouponId();
+        this.memberId = memberCoupon.getMember().getId();
+        this.couponId = memberCoupon.getCoupon().getId();
         this.used = memberCoupon.getUsed();
         this.issuedAt = memberCoupon.getIssuedAt();
         this.expiredAt = memberCoupon.getExpiredAt();
     }
 
-    public MemberCoupon toDomain() {
-        return new MemberCoupon(id, memberId, couponId, used, issuedAt, expiredAt);
+    public MemberCoupon toDomain(Member member, Coupon coupon) {
+        return new MemberCoupon(id, member, coupon, used, issuedAt, expiredAt);
     }
 }

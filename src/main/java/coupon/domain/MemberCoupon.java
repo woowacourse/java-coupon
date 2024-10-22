@@ -5,10 +5,12 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@EqualsAndHashCode(of = "id")
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberCoupon {
@@ -19,18 +21,29 @@ public class MemberCoupon {
     private static final int EXPIRATION_DAYS = 7;
 
     private Long id;
-    private Long memberId;
-    private Long couponId;
+    private Member member;
+    private Coupon coupon;
     private Boolean used;
     private LocalDateTime issuedAt;
     private LocalDateTime expiredAt;
 
-    public MemberCoupon(Member member, Coupon coupon) {
-        this.memberId = member.getId();
-        this.couponId = coupon.getId();
-        this.used = false;
-        this.issuedAt = LocalDateTime.now();
-        this.expiredAt = issuedAt.plusDays(EXPIRATION_DAYS).minusDays(1).with(LocalTime.MAX)
+    private MemberCoupon(Member member, Coupon coupon, Boolean used, LocalDateTime issuedAt, LocalDateTime expiredAt) {
+        this.member = member;
+        this.coupon = coupon;
+        this.used = used;
+        this.issuedAt = issuedAt;
+        this.expiredAt = expiredAt;
+    }
+
+    public static MemberCoupon issue(Member member, Coupon coupon) {
+        LocalDateTime issuedAt = LocalDateTime.now();
+        return new MemberCoupon(member, coupon, false, issuedAt, getExpiredAt(issuedAt));
+    }
+
+    private static LocalDateTime getExpiredAt(LocalDateTime issuedAt) {
+        return issuedAt.plusDays(EXPIRATION_DAYS)
+                .minusDays(1)
+                .with(LocalTime.MAX)
                 .truncatedTo(ChronoUnit.MICROS);
     }
 }

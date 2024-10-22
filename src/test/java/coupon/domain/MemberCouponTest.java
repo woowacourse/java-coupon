@@ -13,7 +13,7 @@ class MemberCouponTest {
         // given
         Member member = new Member("망쵸");
         Coupon coupon = new Coupon("망쵸 쿠폰", 1000, 10000);
-        MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
+        MemberCoupon memberCoupon = MemberCoupon.issue(member, coupon);
 
         // when, then
         assertThat(memberCoupon.getExpiredAt().toString()).endsWith("23:59:59.999999");
