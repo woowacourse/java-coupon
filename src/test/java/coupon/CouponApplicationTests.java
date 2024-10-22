@@ -1,11 +1,15 @@
 package coupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import coupon.domain.Coupon;
+import coupon.service.CouponQueryService;
+import coupon.service.CouponService;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 class CouponApplicationTests {
@@ -23,16 +27,21 @@ class CouponApplicationTests {
 
     @Test
     void findCouponForPresident() {
-        Coupon coupon = couponService.createCoupon(new Coupon("쿠폰1"));
+        Coupon coupon = couponService.createCoupon(
+                new Coupon("쿠폰1", 1_000, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1))
+        );
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());
         assertThat(savedCoupon).isNotNull();
     }
 
     @Test
     void findCouponForCustomer() {
-        Coupon coupon = couponService.createCoupon(new Coupon("쿠폰1"));
-        Coupon savedCoupon = couponQueryService.getCoupon(coupon.getId());
-        assertThat(savedCoupon).isNull(); // 지연되도 괜찮다고 판단.
+        Coupon coupon = couponService.createCoupon(
+                new Coupon("쿠폰1", 1_000, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1))
+        );
+        assertThatThrownBy(()->couponQueryService.getCoupon(coupon.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("존재하지 않는 쿠폰입니다."); // 지연되도 괜찮다고 판단.
     }
 
 }

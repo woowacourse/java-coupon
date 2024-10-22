@@ -2,6 +2,8 @@ package coupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import coupon.config.DataSourceType;
+import coupon.config.ReplicationRoutingDataSource;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.junit.jupiter.api.DisplayName;

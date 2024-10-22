@@ -1,7 +1,8 @@
-package coupon;
+package coupon.service;
 
+import coupon.repository.CouponRepository;
+import coupon.domain.Coupon;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service

@@ -1,6 +1,5 @@
-package coupon;
+package coupon.config;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
