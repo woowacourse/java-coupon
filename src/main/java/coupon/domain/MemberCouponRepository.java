@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
     List<MemberCoupon> findByCouponIdAndMemberId(Long couponId, Long memberId);
+
+    List<MemberCoupon> findByMemberId(Long memberId);
 }

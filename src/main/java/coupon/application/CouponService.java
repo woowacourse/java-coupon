@@ -1,6 +1,7 @@
 package coupon.application;
 
 import coupon.domain.Coupon;
+import coupon.domain.CouponCache;
 import coupon.domain.CouponRepository;
 import coupon.replication.ReplicationLag;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final CouponCache couponCache;
 
     @Transactional
     public void create(Coupon coupon) {
-        couponRepository.save(coupon);
+        Coupon savedCoupon = couponRepository.save(coupon);
+        couponCache.save(savedCoupon);
     }
 
     @ReplicationLag
