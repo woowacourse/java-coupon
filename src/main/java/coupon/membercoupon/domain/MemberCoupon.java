@@ -37,11 +37,11 @@ public class MemberCoupon {
     @Column(name = "issued_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime issuedAt;
 
-    @Column(name = "expired_at", nullable = false, columnDefinition = "DATETIME(6)")
-    private LocalDateTime expiredAt;
+    @Column(name = "expires_at", nullable = false, columnDefinition = "DATETIME(6)")
+    private LocalDateTime expiresAt;
 
-    public MemberCoupon(Long couponId, Long memberId, boolean used, LocalDateTime issuedAt, LocalDateTime expiredAt) {
-        this(null, couponId, memberId, used, issuedAt, expiredAt);
+    public MemberCoupon(Long couponId, Long memberId, boolean used, LocalDateTime issuedAt, LocalDateTime expiresAt) {
+        this(null, couponId, memberId, used, issuedAt, expiresAt);
     }
 
     public MemberCoupon(
@@ -50,14 +50,14 @@ public class MemberCoupon {
             Long memberId,
             boolean used,
             LocalDateTime issuedAt,
-            LocalDateTime expiredAt
+            LocalDateTime expiresAt
     ) {
         this.id = id;
         this.couponId = couponId;
         this.memberId = memberId;
         this.used = used;
         this.issuedAt = issuedAt;
-        this.expiredAt = expiredAt;
+        this.expiresAt = expiresAt;
     }
 
     public static MemberCoupon issue(Long memberId, Coupon coupon) {
