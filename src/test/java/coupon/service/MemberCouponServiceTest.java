@@ -38,11 +38,15 @@ class MemberCouponServiceTest {
     private MemberRepository memberRepository;
 
     private Coupon coupon;
+    private List<Coupon> coupons;
     private Member member;
 
     @BeforeEach
     void setUp() {
         coupon = couponRepository.save(new CouponEntity(Fixture.COUPON)).toDomain();
+        coupons = IntStream.range(0, 3)
+                .mapToObj(i -> couponRepository.save(new CouponEntity(Fixture.COUPON)).toDomain())
+                .toList();
         member = memberRepository.save(new MemberEntity(Fixture.MEMBER)).toDomain();
     }
 
@@ -81,7 +85,7 @@ class MemberCouponServiceTest {
     @Test
     void findAllByMemberTest() throws Exception {
         // given
-        IntStream.range(0, 3).forEach(i -> memberCouponService.create(member, coupon));
+        IntStream.range(0, 3).forEach(i -> memberCouponService.create(member, coupons.get(i)));
         waitForSeconds(3);
 
         // when
@@ -90,8 +94,9 @@ class MemberCouponServiceTest {
         // then
         assertAll(
                 () -> assertThat(memberCoupons).hasSize(3),
-                () -> assertThat(memberCoupons).allMatch(memberCoupon -> memberCoupon.getMember().equals(member)),
-                () -> assertThat(memberCoupons).allMatch(memberCoupon -> memberCoupon.getCoupon().equals(coupon))
+                () -> assertThat(memberCoupons)
+                        .extracting(MemberCoupon::getCoupon)
+                        .containsExactlyElementsOf(coupons)
         );
     }
 
