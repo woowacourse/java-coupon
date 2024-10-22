@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class CouponName {
 
-    private static final int MAX_COUPON_NAME_LENGTH = 30;
+    public static final int MAX_COUPON_NAME_LENGTH = 30;
 
     private final String name;
 
@@ -17,7 +17,7 @@ public class CouponName {
     }
 
     private void validate(String name) {
-        if (name == null || name.isEmpty()) {
+        if (name == null || name.isBlank()) {
             throw new CouponException(ErrorConstant.COUPON_NAME_IS_NULL_OR_EMPTY);
         }
 
