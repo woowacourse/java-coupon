@@ -14,10 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class CouponServiceTest {
 
     @Autowired
-    private CouponQueryService couponQueryService;
-
-    @Autowired
-    private CouponCommandService couponCommandService;
+    private CouponService couponService;
 
     @Autowired
     private DataSourceHelper dataSourceHelper;
@@ -29,8 +26,8 @@ class CouponServiceTest {
         Coupon coupon = CouponTestData.defaultCoupon().build();
 
         // when
-        couponCommandService.create(coupon);
-        Coupon savedCoupon = dataSourceHelper.executeInWriter(() -> couponQueryService.getCoupon(coupon.getId()));
+        couponService.create(coupon);
+        Coupon savedCoupon = dataSourceHelper.executeInWriter(() -> couponService.getCoupon(coupon.getId()));
 
         // then
         assertThat(savedCoupon).isNotNull();
