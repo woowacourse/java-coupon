@@ -41,11 +41,11 @@ public class Coupon {
     }
 
     public LocalDate getIssuanceDate() {
-        return issuablePeriod.getStartDate();
+        return issuablePeriod.getStartDateInclusive();
     }
 
     public LocalDate getExpirationDate() {
-        return issuablePeriod.getEndDate();
+        return issuablePeriod.getEndDateExclusive();
     }
 
     public boolean isIssuable(LocalDateTime issuedTime) {

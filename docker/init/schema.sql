@@ -14,12 +14,12 @@ CREATE TABLE IF NOT EXISTS coupon
 
 CREATE TABLE IF NOT EXISTS issued_coupon
 (
-    id         BIGINT PRIMARY KEY AUTO_INCREMENT,
-    coupon_id  BIGINT    NOT NULL,
-    used       BOOLEAN   NOT NULL,
-    member_id  BIGINT    NOT NULL,
-    issued_at  TIMESTAMP NOT NULL,
-    expired_at TIMESTAMP NOT NULL,
+    id             BIGINT PRIMARY KEY AUTO_INCREMENT,
+    coupon_id      BIGINT    NOT NULL,
+    used           BOOLEAN   NOT NULL,
+    member_id      BIGINT    NOT NULL,
+    issued_at      TIMESTAMP NOT NULL,
+    expirationDate DATE      NOT NULL,
     FOREIGN KEY (coupon_id) REFERENCES coupon (id)
 );
 

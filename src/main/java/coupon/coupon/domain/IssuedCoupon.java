@@ -45,7 +45,7 @@ public class IssuedCoupon {
         return !used && usablePeriod.isBetweenPeriod(currentTime);
     }
 
-    public LocalDateTime getExpiredAt() {
-        return usablePeriod.getEndDateTime();
+    public LocalDate getExpiredDate() {
+        return usablePeriod.getExpiredDate();
     }
 }

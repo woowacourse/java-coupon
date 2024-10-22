@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class IssuedCouponEntity {
                 memberId,
                 coupon.isUsed(),
                 coupon.getIssuedAt(),
-                coupon.getExpiredAt()
+                coupon.getExpiredDate()
         );
     }
 
@@ -51,6 +52,6 @@ public class IssuedCouponEntity {
     @Column(name = "issued_at", nullable = false)
     private LocalDateTime issuedAt;
 
-    @Column(name = "expired_at", nullable = false)
-    private LocalDateTime expiredAt;
+    @Column(name = "expirationDate", nullable = false)
+    private LocalDate expirationDate;
 }
