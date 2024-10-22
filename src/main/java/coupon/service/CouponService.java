@@ -5,6 +5,7 @@ import coupon.exception.NotFoundException;
 import coupon.repository.CouponRepository;
 import coupon.util.TransactionExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CouponService {
@@ -17,10 +18,12 @@ public class CouponService {
         this.transactionExecutor = transactionExecutor;
     }
 
+    @Transactional
     public void create(Coupon coupon) {
         couponRepository.save(coupon);
     }
 
+    @Transactional(readOnly = true)
     public Coupon getCoupon(long id) {
         return couponRepository.findById(id)
                 .orElseGet(() -> findCouponWithNonReadonlyTransaction(id));
