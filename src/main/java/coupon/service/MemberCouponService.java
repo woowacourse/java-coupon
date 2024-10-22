@@ -22,9 +22,19 @@ public class MemberCouponService {
     private MemberCouponRepository memberCouponRepository;
     private CouponLookupService couponLookupService;
 
+    @Transactional
     public void create(MemberCoupon memberCoupon) {
-        validateMemberIssueLimit(memberCoupon);
+        validate(memberCoupon);
         memberCouponRepository.save(memberCoupon);
+    }
+
+    private void validate(MemberCoupon memberCoupon) {
+        validateCoupon(memberCoupon.getCouponId());
+        validateMemberIssueLimit(memberCoupon);
+    }
+
+    private void validateCoupon(Long couponId) {
+        couponLookupService.findById(couponId);
     }
 
     private void validateMemberIssueLimit(MemberCoupon memberCoupon) {
