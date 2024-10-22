@@ -4,11 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import coupon.config.DataSourceHelper;
 import coupon.domain.Coupon;
+import coupon.support.Fixture;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 public class CouponServiceTest {
 
     @Autowired
@@ -19,8 +21,7 @@ public class CouponServiceTest {
 
     @Test
     void 복제_지연_테스트() {
-        Coupon coupon = new Coupon("망쵸 쿠폰", 1000, 10000);
-        couponService.create(coupon);
+        Coupon coupon = couponService.create(Fixture.COUPON);
         Coupon savedCoupon = dataSourceHelper.executeOnWrite(() -> couponService.getCoupon(coupon.getId()));
         assertThat(savedCoupon).isNotNull();
     }
