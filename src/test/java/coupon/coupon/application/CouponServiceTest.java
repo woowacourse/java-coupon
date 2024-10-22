@@ -2,9 +2,8 @@ package coupon.coupon.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
 import coupon.common.infra.datasource.DataSourceHelper;
-import coupon.coupon.domain.Coupon;
-import coupon.support.data.CouponTestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,20 @@ class CouponServiceTest {
     @DisplayName("복제 지연 테스트")
     void replicationLagTest() {
         // given
-        Coupon coupon = CouponTestData.defaultCoupon().build();
+        CreateCouponRequest request = new CreateCouponRequest(
+                "coupon",
+                1000L,
+                10000L,
+                "FOOD",
+                LocalDate.now(),
+                LocalDate.now()
+        );
 
         // when
-        couponService.create(coupon);
-        Coupon savedCoupon = dataSourceHelper.executeInWriter(() -> couponService.getCoupon(coupon.getId()));
+        Long couponId = couponService.createCoupon(request);
+        CouponResponse response = dataSourceHelper.executeInWriter(() -> couponService.getCoupon(couponId));
 
         // then
-        assertThat(savedCoupon).isNotNull();
+        assertThat(response).isNotNull();
     }
 }
