@@ -18,21 +18,19 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.zaxxer.hikari.HikariDataSource;
-
 @Configuration
 public class DataSourceConfig {
 
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     @Bean
     public DataSource writerDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+        return DataSourceBuilder.create().build();
     }
 
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
     @Bean
     public DataSource readerDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+        return DataSourceBuilder.create().build();
     }
 
     @DependsOn({"writerDataSource", "readerDataSource"})
