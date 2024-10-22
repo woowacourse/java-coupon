@@ -1,6 +1,8 @@
 package coupon.util;
 
+import java.util.function.Supplier;
+
 public interface TransactionExecutor<T> {
 
-    T exec(final TransactionExecLogic<T> logic);
+    T exec(Supplier<T> logic);
 }

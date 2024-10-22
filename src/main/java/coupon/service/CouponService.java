@@ -1,6 +1,7 @@
 package coupon.service;
 
 import java.util.NoSuchElementException;
+import java.util.function.Supplier;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +10,6 @@ import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponName;
 import coupon.service.dto.request.CouponCreateRequest;
 import coupon.service.port.CouponRepository;
-import coupon.util.TransactionExecLogic;
 import coupon.util.TransactionExecutor;
 
 @Transactional(readOnly = true)
@@ -45,7 +45,7 @@ public class CouponService {
     }
 
     private Coupon findByNameFromWriterDb(final CouponName couponName) {
-        final TransactionExecLogic<Coupon> logic = () -> couponRepository.findByName(couponName)
+        final Supplier<Coupon> logic = () -> couponRepository.findByName(couponName)
                 .orElseThrow(() -> new NoSuchElementException(
                         "입력된 쿠폰 이름에 일치하는 쿠폰 정보가 존재하지 않습니다. -" + couponName.getValue()));
         return transactionExecutor.exec(logic);

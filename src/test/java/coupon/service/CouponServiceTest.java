@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.ProductionCategory;
 import coupon.mock.FakeCouponRepository;
-import coupon.mock.FakeTransactionExecutor;
 import coupon.service.dto.request.CouponCreateRequest;
+import coupon.util.ProdTransactionExecutor;
 
 class CouponServiceTest {
 
@@ -26,7 +26,7 @@ class CouponServiceTest {
     void setUp() {
         couponRepository = new FakeCouponRepository();
         couponService = new CouponService(
-                couponRepository, new FakeTransactionExecutor<Coupon>()
+                couponRepository, new ProdTransactionExecutor<>()
         );
     }
 
