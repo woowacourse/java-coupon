@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
 
+import static coupon.service.CouponCache.COUPON_CACHE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -36,7 +37,7 @@ class CouponLookupServiceTest {
     @BeforeEach
     void setUp() {
         couponRepository.deleteAll();
-        cacheManager.getCache("coupon").clear();
+        cacheManager.getCache(COUPON_CACHE_NAME).clear();
     }
 
     @DisplayName("캐시에 존재하는 쿠폰을 조회한다.")

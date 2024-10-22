@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CouponCache {
 
+    public static final String COUPON_CACHE_NAME = "coupons";
+
     private final Cache couponCache;
 
     public CouponCache(CacheManager cacheManager) {
-        this.couponCache = cacheManager.getCache("coupon");
+        this.couponCache = cacheManager.getCache(COUPON_CACHE_NAME);
         if (couponCache == null) {
             throw new IllegalStateException("쿠폰 캐시를 찾을 수 없습니다.");
         }
