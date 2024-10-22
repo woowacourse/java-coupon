@@ -29,9 +29,6 @@ public class Coupon {
     private int discountAmount;
 
     @Column(nullable = false)
-    private int discountRate;
-
-    @Column(nullable = false)
     private int minOrderAmount;
 
     @Column(nullable = false)
@@ -45,17 +42,15 @@ public class Coupon {
             String name,
             CouponCategory category,
             int discountAmount,
-            int discountRate,
             int minOrderAmount,
             LocalDateTime startedAt,
             LocalDateTime endedAt
     ) {
-        validate(name, discountAmount, discountRate, minOrderAmount, startedAt, endedAt);
+        validate(name, discountAmount, minOrderAmount, startedAt, endedAt);
         this.id = id;
         this.name = name;
         this.category = category;
         this.discountAmount = discountAmount;
-        this.discountRate = discountRate;
         this.minOrderAmount = minOrderAmount;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
@@ -64,7 +59,6 @@ public class Coupon {
     private void validate(
             String name,
             int discountAmount,
-            int discountRate,
             int minOrderAmount,
             LocalDateTime startedAt,
             LocalDateTime endedAt
@@ -72,7 +66,7 @@ public class Coupon {
         validateName(name);
         validateDiscountAmount(discountAmount);
         validateMinOrderAmount(minOrderAmount);
-        validateDiscountRate(discountRate);
+        validateDiscountRate(discountAmount, minOrderAmount);
         validateIssuedPeriod(startedAt, endedAt);
     }
 
@@ -98,7 +92,8 @@ public class Coupon {
         }
     }
 
-    private void validateDiscountRate(Integer discountRate) {
+    private void validateDiscountRate(int discountAmount, int minOrderAmount) {
+        long discountRate = Math.round((double) discountAmount / minOrderAmount * 100);
         if (discountRate < 3 || 20 < discountRate) {
             throw new IllegalArgumentException("쿠폰의 할인율은 3% 이상 20% 이하여야 합니다.");
         }
@@ -123,7 +118,6 @@ public class Coupon {
                 name,
                 category,
                 discountAmount,
-                Math.round((float) discountAmount / minOrderAmount * 100),
                 minOrderAmount,
                 startedAt,
                 endedAt
