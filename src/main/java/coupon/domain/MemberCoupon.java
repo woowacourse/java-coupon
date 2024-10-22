@@ -1,21 +1,15 @@
 package coupon.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "member_coupon")
 @Getter
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberCoupon {
 
@@ -24,23 +18,11 @@ public class MemberCoupon {
      */
     private static final int EXPIRATION_DAYS = 7;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "member_id", nullable = false)
     private Long memberId;
-
-    @Column(name = "coupon_id", nullable = false)
     private Long couponId;
-
-    @Column(name = "used", columnDefinition = "boolean")
     private Boolean used;
-
-    @Column(name = "issued_at", columnDefinition = "datetime(6)")
     private LocalDateTime issuedAt;
-
-    @Column(name = "expired_at", columnDefinition = "datetime(6)")
     private LocalDateTime expiredAt;
 
     public MemberCoupon(Member member, Coupon coupon) {

@@ -1,14 +1,14 @@
 package coupon.repository;
 
-import coupon.domain.MemberCoupon;
+import coupon.entity.MemberCouponEntity;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
+public interface MemberCouponRepository extends JpaRepository<MemberCouponEntity, Long> {
 
-    List<MemberCoupon> findAllByMemberIdAndCouponId(Long memberId, Long couponId);
+    List<MemberCouponEntity> findAllByMemberIdAndCouponId(Long memberId, Long couponId);
 
-    List<MemberCoupon> findAllByMemberId(Long memberId);
+    List<MemberCouponEntity> findAllByMemberId(Long memberId);
 }
