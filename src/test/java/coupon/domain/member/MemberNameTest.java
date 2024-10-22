@@ -14,6 +14,6 @@ class MemberNameTest {
     void memberName_WhenEmpty() {
         assertThatThrownBy(() -> new MemberName(" "))
                 .isInstanceOf(CouponException.class)
-                .hasMessage(ErrorConstant.MEMBER_NAME_IS_NULL_OR_EMPTY.getMessage());
+                .hasMessage(ErrorConstant.MEMBER_NAME_IS_NULL_OR_BLANK.getMessage());
     }
 }

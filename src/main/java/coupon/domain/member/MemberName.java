@@ -16,7 +16,7 @@ public class MemberName {
 
     private void validate(String name) {
         if (name == null || name.isBlank()) {
-            throw new CouponException(ErrorConstant.MEMBER_NAME_IS_NULL_OR_EMPTY);
+            throw new CouponException(ErrorConstant.MEMBER_NAME_IS_NULL_OR_BLANK);
         }
     }
 }
