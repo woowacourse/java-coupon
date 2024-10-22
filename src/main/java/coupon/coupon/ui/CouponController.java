@@ -18,14 +18,14 @@ public class CouponController {
 
     private final CouponService couponService;
 
-    @GetMapping("/api/v1/coupons")
+    @GetMapping("/coupons")
     public ResponseEntity<List<CouponResponse>> getCoupons() {
         List<CouponResponse> responses = couponService.getCoupons();
 
         return ResponseEntity.ok(responses);
     }
 
-    @PostMapping("/api/v1/coupons")
+    @PostMapping("/coupons")
     public ResponseEntity<Void> createCoupon(@RequestBody CreateCouponRequest request) {
         Long couponId = couponService.createCoupon(request);
 

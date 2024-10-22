@@ -1,6 +1,9 @@
 package coupon.coupon.application;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,14 @@ public class CouponService {
         return couponRepository.findById(couponId)
                 .map(couponMapper::toResponse)
                 .orElseThrow(() -> new IllegalArgumentException(message));
+    }
+
+    @Transactional(readOnly = true)
+    public Map<Long, Coupon> getCouponMapEachById(List<Long> couponIds) {
+        List<Coupon> coupons = couponRepository.findAllByIdIn(couponIds);
+
+        return coupons.stream()
+                .collect(Collectors.toMap(Coupon::getId, Function.identity()));
     }
 
     @Transactional
