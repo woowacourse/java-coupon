@@ -1,9 +1,9 @@
 package coupon.application;
 
-import coupon.domain.CouponCache;
 import coupon.domain.MemberCoupon;
 import coupon.domain.MemberCouponRepository;
 import coupon.dto.CouponResponse;
+import coupon.dto.MemberCouponRequest;
 import coupon.dto.MemberCouponResponse;
 import java.time.LocalDate;
 import java.util.List;
@@ -15,24 +15,34 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberCouponService {
 
-    private static final int MIN_MEMBER_COUPON_COUNT = 5;
+    private static final int MAX_MEMBER_COUPON_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponCache couponCache;
+    private final CouponService couponService;
 
     @Transactional
-    public void create(Long memberId, Long couponId, LocalDate issueDate) {
-        List<MemberCoupon> memberCoupons = memberCouponRepository.findByCouponIdAndMemberId(couponId, memberId);
+    public void create(MemberCouponRequest memberCouponRequest) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findByCouponIdAndMemberId(
+                memberCouponRequest.couponId(), memberCouponRequest.memberId());
 
         validateMemberCouponsCount(memberCoupons);
+        validateCouponIssuancePeriod(memberCouponRequest);
 
-        MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId, issueDate);
+        MemberCoupon memberCoupon = memberCouponRequest.toMemberCoupon();
         memberCouponRepository.save(memberCoupon);
     }
 
     private void validateMemberCouponsCount(List<MemberCoupon> memberCoupons) {
-        if (memberCoupons.size() >= MIN_MEMBER_COUPON_COUNT) {
+        if (memberCoupons.size() >= MAX_MEMBER_COUPON_COUNT) {
             throw new IllegalArgumentException("Too many coupons");
+        }
+    }
+
+    private void validateCouponIssuancePeriod(MemberCouponRequest memberCouponRequest) {
+        CouponResponse coupon = couponService.getCoupon(memberCouponRequest.couponId());
+        LocalDate issueDate = memberCouponRequest.issueDate();
+        if (issueDate.isBefore(coupon.startDate()) || issueDate.isAfter(coupon.endDate())) {
+            throw new IllegalArgumentException("Invalid issuance period");
         }
     }
 
@@ -45,7 +55,8 @@ public class MemberCouponService {
 
     private MemberCouponResponse getMemberCouponResponse(MemberCoupon memberCoupon) {
         Long couponId = memberCoupon.getCouponId();
-        CouponResponse couponResponse = couponCache.findById(couponId);
-        return MemberCouponResponse.from(memberCoupon, couponResponse);
+        CouponResponse couponResponse = couponService.getCoupon(couponId);
+
+        return MemberCouponResponse.of(memberCoupon, couponResponse);
     }
 }

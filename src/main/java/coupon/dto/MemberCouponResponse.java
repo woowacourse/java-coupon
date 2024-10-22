@@ -11,7 +11,8 @@ public record MemberCouponResponse(
         LocalDate issueDate,
         LocalDate expirationDate
 ) {
-    public static MemberCouponResponse from(MemberCoupon memberCoupon, CouponResponse couponResponse) {
+
+    public static MemberCouponResponse of(MemberCoupon memberCoupon, CouponResponse couponResponse) {
         return new MemberCouponResponse(
                 memberCoupon.getId(),
                 couponResponse,
