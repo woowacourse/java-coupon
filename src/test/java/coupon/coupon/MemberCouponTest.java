@@ -5,7 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
-import coupon.member.Member;
+import coupon.coupon.domain.MemberCoupon;
+import coupon.member.domain.Member;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

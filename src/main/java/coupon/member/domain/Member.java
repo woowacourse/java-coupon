@@ -1,4 +1,4 @@
-package coupon.member;
+package coupon.member.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

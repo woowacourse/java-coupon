@@ -1,7 +1,6 @@
-package coupon.coupon;
+package coupon.coupon.domain;
 
-import coupon.coupon.domain.Coupon;
-import coupon.member.Member;
+import coupon.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
