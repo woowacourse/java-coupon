@@ -19,9 +19,9 @@ public class CouponPeriod {
     private LocalDateTime issueEndedAt;
 
     public CouponPeriod(LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
+        validatePeriod(issueStartedAt, issueEndedAt);
         this.issueStartedAt = issueStartedAt;
         this.issueEndedAt = issueEndedAt;
-        validatePeriod(issueStartedAt, issueEndedAt);
     }
 
     private void validatePeriod(LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
