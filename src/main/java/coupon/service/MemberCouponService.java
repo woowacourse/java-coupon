@@ -6,6 +6,7 @@ import coupon.domain.MemberCoupon;
 import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
+import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +24,9 @@ public class MemberCouponService {
     @Transactional
     public MemberCoupon issueCoupon(Long memberId, Long couponId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
         Coupon coupon = couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 쿠폰이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 쿠폰이 존재하지 않습니다."));
 
         validateMaxCouponCount(member, coupon);
 
