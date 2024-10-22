@@ -41,6 +41,7 @@ public class Coupon {
     @Column(name = "category", nullable = false)
     private CouponCategory couponCategory;
 
+    @Embedded
     private CouponPeriod couponPeriod;
 
     @Column(name = "issue_limit", nullable = false)
