@@ -23,7 +23,7 @@ public class Member {
     }
 
     public void addCoupon(Coupon coupon) {
-        MemberCoupon memberCoupon = new MemberCoupon(coupon, this);
+        MemberCoupon memberCoupon = new MemberCoupon(coupon.getId(), this);
         memberCoupons.add(memberCoupon);
     }
 

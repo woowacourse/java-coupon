@@ -15,8 +15,7 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Coupon coupon;
+    private Long couponId;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -31,13 +30,13 @@ public class MemberCoupon {
     protected MemberCoupon() {
     }
 
-    public MemberCoupon(Coupon coupon, Member member) {
-        this(null, coupon, member);
+    public MemberCoupon(Long couponId, Member member) {
+        this(null, couponId, member);
     }
 
-    private MemberCoupon(Long id, Coupon coupon, Member member) {
+    private MemberCoupon(Long id, Long couponId, Member member) {
         this.id = id;
-        this.coupon = coupon;
+        this.couponId = couponId;
         this.member = member;
         this.used = false;
         this.usedDate = null;
@@ -49,8 +48,8 @@ public class MemberCoupon {
         return id;
     }
 
-    public Coupon getCoupon() {
-        return coupon;
+    public Long getCouponId() {
+        return couponId;
     }
 
     public Member getMember() {
