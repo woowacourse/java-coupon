@@ -73,14 +73,15 @@ class CouponLookupServiceTest {
     @Test
     void findByMemberCoupons() throws InterruptedException {
         LocalDate now = LocalDate.now();
-        Coupon cachedCoupon = new Coupon(1L, "cached", 1000, 10000, now, now, Category.FASHION);
-        couponCache.cache(cachedCoupon);
         Coupon savedCoupon = couponRepository.save(new Coupon("saved", 1000, 10000, now, now, Category.FOOD));
         Thread.sleep(2000);
+        Coupon cachedCoupon = new Coupon(savedCoupon.getId() + 1, "cached", 1000, 10000, now, now, Category.FASHION);
+        couponCache.cache(cachedCoupon);
         List<MemberCoupon> memberCoupons = List.of(
                 new MemberCoupon(cachedCoupon.getId(), 1L, false, LocalDateTime.now()),
                 new MemberCoupon(savedCoupon.getId(), 1L, false, LocalDateTime.now())
         );
+        Thread.sleep(3000);
 
         List<String> couponNames = couponLookupService.findByMemberCoupons(memberCoupons)
                 .stream()
