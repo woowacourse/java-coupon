@@ -12,11 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final CouponCache couponCache;
     private final CouponLookupService couponLookupService;
 
     @Transactional
     public void create(Coupon coupon) {
         couponRepository.save(coupon);
+        couponCache.cache(coupon);
     }
 
     public Coupon getCoupon(Long couponId) {
