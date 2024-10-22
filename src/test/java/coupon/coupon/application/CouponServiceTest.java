@@ -24,7 +24,7 @@ class CouponServiceTest {
 
     @Test
     @DisplayName("복제 지연 테스트")
-    void replicationLazyTest() {
+    void replicationLagTest() {
         // given
         Coupon coupon = CouponTestData.defaultCoupon().build();
 
