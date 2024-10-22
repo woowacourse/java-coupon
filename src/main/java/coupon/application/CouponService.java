@@ -22,15 +22,6 @@ public class CouponService {
     }
 
     @ReplicationLag
-    @Transactional(readOnly = true)
-    public CouponResponse getCouponByAdmin(Long id) {
-        Coupon coupon = couponRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
-
-        return CouponResponse.from(coupon);
-    }
-
-    @ReplicationLag
     @Cacheable(value = "coupons", key = "#couponId")
     @Transactional(readOnly = true)
     public CouponResponse getCoupon(Long couponId) {

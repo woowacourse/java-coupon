@@ -43,7 +43,7 @@ class CouponServiceTest {
     void 복제지연테스트() throws Exception {
         Coupon coupon = new Coupon("CouponName", 1_000, 10_000, "가구", LocalDate.now(), LocalDate.now());
         couponService.create(coupon);
-        CouponResponse savedCoupon = couponService.getCouponByAdmin(coupon.getId());
+        CouponResponse savedCoupon = couponService.getCoupon(coupon.getId());
         assertThat(savedCoupon).isNotNull();
     }
 
