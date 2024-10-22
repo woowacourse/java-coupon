@@ -21,14 +21,14 @@ public class DataSourceConfiguration {
     }
 
     @Bean
-    @Qualifier(RoutingDataSource.WRITER_SERVER)
+    @Qualifier(RoutingDataSource.WRITER)
     @ConfigurationProperties("coupon.datasource.writer")
     public DataSource writerDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean
-    @Qualifier(RoutingDataSource.READER_SERVER)
+    @Qualifier(RoutingDataSource.READER)
     @ConfigurationProperties("coupon.datasource.reader")
     public DataSource readerDataSource() {
         return DataSourceBuilder.create().build();
@@ -36,14 +36,14 @@ public class DataSourceConfiguration {
 
     @Bean
     public DataSource routingDataSource(
-            @Qualifier(RoutingDataSource.WRITER_SERVER) DataSource writerDataSource,
-            @Qualifier(RoutingDataSource.READER_SERVER) DataSource readerDataSource
+            @Qualifier(RoutingDataSource.WRITER) DataSource writerDataSource,
+            @Qualifier(RoutingDataSource.READER) DataSource readerDataSource
     ) {
         RoutingDataSource routingDataSource = new RoutingDataSource();
 
         Map<Object, Object> dataSourceMap = Map.of(
-                RoutingDataSource.WRITER_SERVER, writerDataSource,
-                RoutingDataSource.READER_SERVER, readerDataSource
+                RoutingDataSource.WRITER, writerDataSource,
+                RoutingDataSource.READER, readerDataSource
         );
 
         routingDataSource.setTargetDataSources(dataSourceMap);
