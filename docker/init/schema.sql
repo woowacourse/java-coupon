@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS coupon
     name                    VARCHAR(30)     NOT NULL,
     discount_amount         INT,
     minimum_order_amount    INT,
-    category                ENUM('FASHION', 'ELECTRONICS', 'FURNITURE', 'FOOD') NOT NULL,
+    category                VARCHAR(255) NOT NULL,
     issue_started_at        DATETIME(6)     NOT NULL,
     issue_ended_at          DATETIME(6)     NOT NULL,
     issue_limit             BIGINT          NOT NULL,
