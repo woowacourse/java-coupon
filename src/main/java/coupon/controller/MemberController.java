@@ -1,8 +1,11 @@
 package coupon.controller;
 
+import coupon.domain.Coupon;
 import coupon.domain.MemberCoupon;
 import coupon.dto.CouponIssueRequest;
 import coupon.service.MemberCouponService;
+import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +20,12 @@ public class MemberController {
 
     public MemberController(MemberCouponService memberCouponService) {
         this.memberCouponService = memberCouponService;
+    }
+
+    @GetMapping("/{memberId}/coupons")
+    public List<Coupon> getCoupons(@PathVariable Long memberId) {
+        return memberCouponService.getCoupons(memberId);
+
     }
 
     @PostMapping("/{memberId}/coupons")

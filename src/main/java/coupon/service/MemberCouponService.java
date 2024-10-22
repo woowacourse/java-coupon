@@ -6,6 +6,7 @@ import coupon.domain.MemberCoupon;
 import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,19 @@ public class MemberCouponService {
     public MemberCouponService(MemberRepository memberRepository, CouponRepository couponRepository) {
         this.memberRepository = memberRepository;
         this.couponRepository = couponRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Coupon> getCoupons(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
+
+        List<Long> couponIds = member.getMemberCoupons().stream()
+                .map(MemberCoupon::getCouponId)
+                .distinct()
+                .toList();
+
+        return couponRepository.findByIdIn(couponIds);
     }
 
     @Transactional
