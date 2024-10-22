@@ -9,7 +9,7 @@ import lombok.Getter;
 public class DatePeriod {
 
     private static final LocalTime START_TIME = LocalTime.of(0, 0);
-    private static final LocalTime END_TIME = LocalTime.of(23, 59, 59, 999_999);
+    private static final LocalTime END_TIME = LocalTime.of(23, 59, 59, 999_999_000);
 
     private final LocalDate startDate;
     private final LocalDate endDate;
