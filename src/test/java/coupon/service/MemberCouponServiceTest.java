@@ -19,7 +19,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("writer")
 @SpringBootTest
 class MemberCouponServiceTest {
 
@@ -93,10 +95,9 @@ class MemberCouponServiceTest {
 
     @DisplayName("회원의 쿠폰 목록을 조회한다.")
     @Test
-    void findByMemberId() throws InterruptedException {
+    void findByMemberId() {
         LocalDate localDate = LocalDate.now();
         Coupon savedCoupon = couponRepository.save(new Coupon("saved", 2000, 10000, localDate, localDate, Category.FOOD));
-        Thread.sleep(2000);
         Coupon cachedCoupon = new Coupon(savedCoupon.getId() + 1, "cached", 1000, 20000, localDate, localDate, Category.FASHION);
         couponCache.cache(cachedCoupon);
 
@@ -105,7 +106,6 @@ class MemberCouponServiceTest {
                 new MemberCoupon(cachedCoupon.getId(), 1L, false, localDateTime));
         MemberCoupon memberCoupon2 = memberCouponRepository.save(
                 new MemberCoupon(savedCoupon.getId(), 1L, true, localDateTime));
-        Thread.sleep(3000);
 
         List<MemberCouponDto> foundMemberCoupons = memberCouponService.findByMemberId(1L);
 

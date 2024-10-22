@@ -14,11 +14,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
+import org.springframework.test.context.ActiveProfiles;
 
 import static coupon.service.CouponCache.COUPON_CACHE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@ActiveProfiles("writer")
 @SpringBootTest
 class CouponLookupServiceTest {
 
@@ -52,11 +54,10 @@ class CouponLookupServiceTest {
 
     @DisplayName("캐시에 존재하지 않는 쿠폰을 조회한다.")
     @Test
-    void findByIdWithoutCache() throws InterruptedException {
+    void findByIdWithoutCache() {
         LocalDate now = LocalDate.now();
         Coupon coupon = new Coupon("coupon", 1000, 10000, now, now, Category.FASHION);
         couponRepository.save(coupon);
-        Thread.sleep(2000);
 
         assertThat(couponLookupService.findById(coupon.getId())).isNotNull();
     }
@@ -71,17 +72,15 @@ class CouponLookupServiceTest {
 
     @DisplayName("멤버 쿠폰에 대한 쿠폰 목록을 조회한다.")
     @Test
-    void findByMemberCoupons() throws InterruptedException {
+    void findByMemberCoupons() {
         LocalDate now = LocalDate.now();
         Coupon savedCoupon = couponRepository.save(new Coupon("saved", 1000, 10000, now, now, Category.FOOD));
-        Thread.sleep(2000);
         Coupon cachedCoupon = new Coupon(savedCoupon.getId() + 1, "cached", 1000, 10000, now, now, Category.FASHION);
         couponCache.cache(cachedCoupon);
         List<MemberCoupon> memberCoupons = List.of(
                 new MemberCoupon(cachedCoupon.getId(), 1L, false, LocalDateTime.now()),
                 new MemberCoupon(savedCoupon.getId(), 1L, false, LocalDateTime.now())
         );
-        Thread.sleep(3000);
 
         List<String> couponNames = couponLookupService.findByMemberCoupons(memberCoupons)
                 .stream()
