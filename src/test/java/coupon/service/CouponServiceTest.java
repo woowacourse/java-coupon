@@ -78,7 +78,7 @@ class CouponServiceTest {
         Coupon coupon = new Coupon("coupon", 1000, 10000, now, now, Category.FASHION);
         couponService.create(coupon);
         cacheManager.getCache("coupons").evict(coupon.getId());
-        Thread.sleep(2000);
+        Thread.sleep(3000);
 
         Coupon foundCoupon = couponService.getCoupon(coupon.getId());
 
