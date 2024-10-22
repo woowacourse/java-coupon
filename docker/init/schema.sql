@@ -16,8 +16,8 @@ create table if not exists `coupon`
     `discount_amount`      int,
     `minimum_order_amount` int,
     `category`             varchar(20),
-    `issue_started_at`     datetime,
-    `issue_ended_at`       datetime,
+    `issue_started_at`     datetime(6),
+    `issue_ended_at`       datetime(6),
     primary key (`id`)
 ) engine = innodb
   default charset = utf8mb4;

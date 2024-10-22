@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -79,7 +80,8 @@ public class Coupon {
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
         this.issueStartedAt = LocalDateTime.now().with(LocalTime.MIN);
-        this.issueEndedAt = LocalDateTime.now().plusMonths(EXPIRATION_MONTH - 1).with(LocalTime.MAX);
+        this.issueEndedAt = LocalDateTime.now().plusMonths(EXPIRATION_MONTH).minusDays(1).with(LocalTime.MAX)
+                .truncatedTo(ChronoUnit.MICROS);
     }
 
     private void validateCoupon(String name, Integer discountAmount, Integer minimumOrderAmount) {

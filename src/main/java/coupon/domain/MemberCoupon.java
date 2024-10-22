@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,6 +50,7 @@ public class MemberCoupon {
         this.coupon = coupon;
         this.used = false;
         this.issuedAt = LocalDateTime.now();
-        this.expiredAt = issuedAt.plusDays(EXPIRATION_DAYS - 1).with(LocalTime.MAX);
+        this.expiredAt = issuedAt.plusDays(EXPIRATION_DAYS).minusDays(1).with(LocalTime.MAX)
+                .truncatedTo(ChronoUnit.MICROS);
     }
 }
