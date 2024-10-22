@@ -26,4 +26,12 @@ class IssuePeriodTest {
                 .isInstanceOf(CouponException.class)
                 .hasMessage(ErrorConstant.COUPON_ISSUE_DATE_IS_NULL.getMessage());
     }
+
+    @Test
+    @DisplayName("종료 일자가 시작일자보다 앞설 경우 에러를 발생한다.")
+    void issuePeriod_WhenStartDateIsAfterEndDate() {
+        assertThatThrownBy(() -> new IssuePeriod(LocalDate.now().plusDays(1), LocalDate.now()))
+                .isInstanceOf(CouponException.class)
+                .hasMessage(ErrorConstant.NOT_AVAILABLE_COUPON_DATE.getMessage());
+    }
 }
