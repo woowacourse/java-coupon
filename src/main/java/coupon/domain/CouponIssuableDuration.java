@@ -17,12 +17,16 @@ public class CouponIssuableDuration {
     private LocalDate end;
 
     public CouponIssuableDuration(LocalDate start, LocalDate end) {
-        if (start.isAfter(end)) {
-            throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
-        }
+        validatePeriod(start, end);
 
         this.start = start;
         this.end = end;
+    }
+
+    private void validatePeriod(LocalDate start, LocalDate end) {
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
+        }
     }
 
     public boolean isIssuable() {

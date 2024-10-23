@@ -47,10 +47,14 @@ public class Coupon {
     }
 
     public MemberCoupon issue(Long memberId) {
+        validateIssuable();
+
+        return MemberCoupon.issue(id, memberId);
+    }
+
+    private void validateIssuable() {
         if (!expiryDuration.isIssuable()) {
             throw new IllegalStateException("쿠폰 발급 기간이 지났습니다.");
         }
-
-        return MemberCoupon.issue(id, memberId);
     }
 }
