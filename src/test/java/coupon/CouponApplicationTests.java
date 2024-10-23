@@ -1,8 +1,10 @@
 package coupon;
 
+import static coupon.domain.Category.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.service.CouponQueryService;
 import coupon.service.CouponService;
@@ -28,7 +30,7 @@ class CouponApplicationTests {
     @Test
     void findCouponForPresident() {
         Coupon coupon = couponService.createCoupon(
-                new Coupon("쿠폰1", 1_000, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1))
+                new Coupon("쿠폰1", FOOD, 1_000, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1))
         );
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());
         assertThat(savedCoupon).isNotNull();
@@ -37,7 +39,7 @@ class CouponApplicationTests {
     @Test
     void findCouponForCustomer() {
         Coupon coupon = couponService.createCoupon(
-                new Coupon("쿠폰1", 1_000, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1))
+                new Coupon("쿠폰1",FOOD, 1_000, 10_000, LocalDateTime.now(), LocalDateTime.now().plusDays(1))
         );
         assertThatThrownBy(()->couponQueryService.getCoupon(coupon.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
