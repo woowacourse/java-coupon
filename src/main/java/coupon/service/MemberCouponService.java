@@ -4,8 +4,8 @@ import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
 import coupon.entity.MemberCouponEntity;
-import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
+import coupon.service.support.CacheService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberCouponService {
 
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponRepository couponRepository;
+    private final CacheService cacheService;
 
     @Transactional
     public MemberCoupon create(Member member, Coupon coupon) {
@@ -44,13 +44,7 @@ public class MemberCouponService {
     public List<MemberCoupon> findAllByMember(Member member) {
         List<MemberCouponEntity> issuedMemberCoupons = memberCouponRepository.findAllByMemberId(member.getId());
         return issuedMemberCoupons.stream()
-                .map(memberCoupon -> memberCoupon.toDomain(member, getCoupon(memberCoupon)))
+                .map(memberCoupon -> memberCoupon.toDomain(member, cacheService.getCoupon(memberCoupon)))
                 .toList();
-    }
-
-    private Coupon getCoupon(MemberCouponEntity memberCoupon) {
-        return couponRepository.findById(memberCoupon.getCouponId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."))
-                .toDomain();
     }
 }
