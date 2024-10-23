@@ -1,10 +1,8 @@
 package coupon.domain;
 
 import coupon.exception.CouponException;
-import jakarta.persistence.Embeddable;
 import java.util.Arrays;
 
-@Embeddable
 public enum Category {
 
     FASHION,
