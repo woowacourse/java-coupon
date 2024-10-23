@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 @DisplayName("쿠폰")
@@ -15,7 +16,7 @@ class CouponTest {
     @Test
     void validateName() {
         // given
-        String name = "hellothisisveryverylongnamecoupon";
+        String name = "a".repeat(31);
 
         // when & then
         assertThatThrownBy(() -> new Coupon(
@@ -27,7 +28,24 @@ class CouponTest {
                         LocalDateTime.now().plusDays(1)
                 )
         ).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("쿠폰의 이름은 30자 이하여야 합니다.");
+                .hasMessage("쿠폰의 이름은 1자 이상 30자 이하여야 합니다.");
+    }
+
+    @DisplayName("쿠폰의 이름이 비어있으면 예외가 발생한다.")
+    @NullAndEmptySource
+    @ParameterizedTest
+    void validateNameWithNullAndEmpty(String name) {
+        // when & then
+        assertThatThrownBy(() -> new Coupon(
+                        name,
+                        CouponCategory.FOOD,
+                        1000,
+                        30000,
+                        LocalDateTime.now(),
+                        LocalDateTime.now().plusDays(1)
+                )
+        ).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("쿠폰의 이름은 1자 이상 30자 이하여야 합니다.");
     }
 
     @DisplayName("쿠폰의 할인 금액이 1000원 미만, 10000원 초과면 예외가 발생한다.")
