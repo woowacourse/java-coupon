@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import jakarta.validation.ConstraintViolationException;
@@ -103,5 +104,47 @@ class CouponTest {
                 issuedStartDate.minusNanos(1)
         )).isInstanceOf(ConstraintViolationException.class)
                 .hasMessageContainingAll("발급 기간 시작일", "이전");
+    }
+
+    @Test
+    @DisplayName("쿠폰 발급 가능 날짜가 동일하고 오늘인 경우 발급이 가능하다.")
+    void issueAvailable() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        Coupon coupon = new Coupon(
+                "Coupon",
+                BigDecimal.valueOf(1000),
+                BigDecimal.valueOf(10000),
+                CouponCategory.FOOD,
+                now,
+                now
+        );
+
+        // when
+        boolean actual = coupon.issueAvailable();
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    @DisplayName("쿠폰 발급 가능 날짜가 동일하고 어제인 경우 발급이 불가능하다.")
+    void issueUnavailable() {
+        // given
+        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+        Coupon coupon = new Coupon(
+                "Coupon",
+                BigDecimal.valueOf(1000),
+                BigDecimal.valueOf(10000),
+                CouponCategory.FOOD,
+                yesterday,
+                yesterday
+        );
+
+        // when
+        boolean actual = coupon.issueAvailable();
+
+        // then
+        assertThat(actual).isFalse();
     }
 }

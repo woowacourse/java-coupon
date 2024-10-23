@@ -78,6 +78,19 @@ public class Coupon {
         validate();
     }
 
+    public boolean issueAvailable() {
+        if (issuedStartDate == null || issuedEndDate == null) {
+            return false;
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        if (issuedStartDate.toLocalDate() == issuedEndDate.toLocalDate()) {
+            return now.toLocalDate().equals(issuedStartDate.toLocalDate());
+        }
+
+        return !now.isBefore(issuedStartDate) && !now.isAfter(issuedEndDate);
+    }
+
     private void validate() {
         Set<ConstraintViolation<Coupon>> violations = validator.validate(this);
         if (!violations.isEmpty()) {
