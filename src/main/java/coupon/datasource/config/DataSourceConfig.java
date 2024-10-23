@@ -16,6 +16,7 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 public class DataSourceConfig {
 
     @Bean
+    @Qualifier("writerDataSource")
     @ConfigurationProperties("coupon.datasource.writer")
     public DataSource writerDataSource() {
         return DataSourceBuilder.create()
@@ -23,6 +24,7 @@ public class DataSourceConfig {
     }
 
     @Bean
+    @Qualifier("readerDataSource")
     @ConfigurationProperties("coupon.datasource.reader")
     public DataSource readerDataSource() {
         return DataSourceBuilder.create()
