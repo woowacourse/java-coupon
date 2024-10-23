@@ -21,7 +21,7 @@ spring:
       host: localhost
       port: 36379
       password: root
-      ttl: 3
+      ttl: 30
 
 coupon.datasource:
   writer:
