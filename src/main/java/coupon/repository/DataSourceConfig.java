@@ -45,16 +45,11 @@ public class DataSourceConfig {
     @DependsOn({"writeDataSource", "readDataSource"})
     public DataSource routeDataSource() {
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
-        DataSource writerDataSource = writeDataSource();
-        DataSource readerDataSource = readDataSource();
-
-        Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put(DataSourceRouter.WRITER_KEY, writerDataSource);
-        dataSourceMap.put(DataSourceRouter.READER_KEY, readerDataSource);
-
-        dataSourceRouter.setTargetDataSources(dataSourceMap);
-        dataSourceRouter.setDefaultTargetDataSource(writerDataSource);
-
+        dataSourceRouter.setTargetDataSources(Map.of(
+                DataSourceRouter.WRITER_KEY, writeDataSource(),
+                DataSourceRouter.READER_KEY, readDataSource()
+        ));
+        dataSourceRouter.setDefaultTargetDataSource(writeDataSource());
         return dataSourceRouter;
     }
 }
