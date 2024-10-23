@@ -16,7 +16,7 @@ public class MinimumOrderPrice {
 
     public MinimumOrderPrice(int price) {
         if (price < MIN_PRICE || price > MAX_PRICE) {
-            throw new IllegalArgumentException("할인 금액은 %d 원 이상, %d 원 이하여야 합니다.".formatted(MIN_PRICE, MAX_PRICE));
+            throw new IllegalArgumentException("최소 주문 금액은 %d 원 이상, %d 원 이하여야 합니다.".formatted(MIN_PRICE, MAX_PRICE));
         }
         this.price = price;
     }
