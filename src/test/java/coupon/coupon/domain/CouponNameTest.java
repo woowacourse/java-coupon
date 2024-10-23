@@ -23,7 +23,7 @@ class CouponNameTest {
     @DisplayName("쿠폰 이름의 길이가 30글자를 초과하면 예외가 발생한다.")
     void should_throw_exception_when_coupon_name_length_over_30() {
         // given
-        String name = "일이삼사오일이삼사오일이삼사오일이삼사오일이삼사오일이삼사오일";
+        String name = "일".repeat(31);
 
         // when & then
         assertThatThrownBy(() -> new CouponName(name))
