@@ -29,16 +29,14 @@ public class MemberCouponService {
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new CouponNotFoundException(couponId));
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
+        Member member = getMember(memberId);
 
         coupon.issue();
         memberCouponRepository.save(new MemberCoupon(member, coupon));
     }
 
     public CouponsResponse getCoupons(long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
+        Member member = getMember(memberId);
 
         List<CouponResponse> coupons = memberCouponRepository.findAllByMember(member)
                 .stream()
@@ -46,6 +44,11 @@ public class MemberCouponService {
                 .toList();
 
         return new CouponsResponse(coupons);
+    }
+
+    private Member getMember(long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 
     private CouponResponse toCouponResponse(Coupon coupon) {
