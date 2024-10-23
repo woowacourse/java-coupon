@@ -1,7 +1,6 @@
 package coupon.domain;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -22,8 +21,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Coupon {
 
-    private static final int MIN_PERCENT = 3;
-    private static final int MAX_PERCENT = 20;
+    private static final int MIN_DISCOUNT_PERCENT = 3;
+    private static final int MAX_DISCOUNT_PERCENT = 20;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,8 +63,9 @@ public class Coupon {
 
     private void validateDiscountPercent(DiscountPrice discountPrice, MinimumOrderPrice minimumOrderPrice) {
         int discountPercent = discountPrice.getPrice() * 100 / minimumOrderPrice.getPrice();
-        if (discountPercent < MIN_PERCENT || discountPercent > MAX_PERCENT) {
-            throw new IllegalArgumentException("할인율은 %d %% 이상, %d %% 이하 여야 합니다.".formatted(MIN_PERCENT, MAX_PERCENT));
+        if (discountPercent < MIN_DISCOUNT_PERCENT || discountPercent > MAX_DISCOUNT_PERCENT) {
+            throw new IllegalArgumentException("할인율은 %d %% 이상, %d %% 이하 여야 합니다.".formatted(MIN_DISCOUNT_PERCENT,
+                    MAX_DISCOUNT_PERCENT));
         }
     }
 }
