@@ -5,14 +5,15 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 public class DataSourceRouter extends AbstractRoutingDataSource {
 
-    public static final String READER_KEY = "read";
-    public static final String WRITER_KEY = "write";
+    public enum DatabaseKey {
+        READER, WRITER
+    }
 
     @Override
     protected Object determineCurrentLookupKey() {
         if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
-            return READER_KEY;
+            return DatabaseKey.READER;
         }
-        return WRITER_KEY;
+        return DatabaseKey.WRITER;
     }
 }

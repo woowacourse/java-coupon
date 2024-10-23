@@ -1,5 +1,6 @@
 package coupon.repository;
 
+import coupon.repository.DataSourceRouter.DatabaseKey;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,8 +47,8 @@ public class DataSourceConfig {
     public DataSource routeDataSource() {
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
         dataSourceRouter.setTargetDataSources(Map.of(
-                DataSourceRouter.WRITER_KEY, writeDataSource(),
-                DataSourceRouter.READER_KEY, readDataSource()
+                DatabaseKey.WRITER, writeDataSource(),
+                DatabaseKey.READER, readDataSource()
         ));
         dataSourceRouter.setDefaultTargetDataSource(writeDataSource());
         return dataSourceRouter;
