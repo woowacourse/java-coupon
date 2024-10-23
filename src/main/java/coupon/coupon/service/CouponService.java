@@ -1,6 +1,5 @@
 package coupon.coupon.service;
 
-
 import coupon.aspect.WriterTransactional;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
