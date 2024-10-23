@@ -5,7 +5,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class ReplicationLagAspect {
 
-    private final ApplicationContext applicationContext;
     private final ReplicationLagService replicationLagService;
 
     @Pointcut("@annotation(coupon.replication.ReplicationLag)")

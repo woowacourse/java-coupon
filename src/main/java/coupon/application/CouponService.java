@@ -2,8 +2,10 @@ package coupon.application;
 
 import coupon.domain.Coupon;
 import coupon.domain.CouponRepository;
+import coupon.dto.CouponResponse;
 import coupon.replication.ReplicationLag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,14 +16,18 @@ public class CouponService {
     private final CouponRepository couponRepository;
 
     @Transactional
-    public void create(Coupon coupon) {
-        couponRepository.save(coupon);
+    public Long create(Coupon coupon) {
+        Coupon savedCoupon = couponRepository.save(coupon);
+        return savedCoupon.getId();
     }
 
     @ReplicationLag
+    @Cacheable(value = "coupons", key = "#couponId")
     @Transactional(readOnly = true)
-    public Coupon getCoupon(Long id) {
-        return couponRepository.findById(id)
+    public CouponResponse getCoupon(Long couponId) {
+        Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
+
+        return CouponResponse.from(coupon);
     }
 }

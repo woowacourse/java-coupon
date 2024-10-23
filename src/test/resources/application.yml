@@ -38,3 +38,19 @@ coupon.datasource:
     username: root
     password: root
     maximumPoolSize: 1
+
+---
+spring:
+  config:
+    activate:
+      on-profile: writer
+
+coupon.datasource:
+  reader:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+    maximumPoolSize: 1
+
