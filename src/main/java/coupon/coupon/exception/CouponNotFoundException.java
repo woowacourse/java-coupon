@@ -1,4 +1,4 @@
-package coupon.coupon;
+package coupon.coupon.exception;
 
 import coupon.advice.NotFoundException;
 

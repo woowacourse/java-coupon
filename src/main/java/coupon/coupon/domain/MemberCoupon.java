@@ -72,4 +72,16 @@ public class MemberCoupon extends BaseEntity {
     public int hashCode() {
         return Objects.hashCode(getId());
     }
+
+    @Override
+    public String toString() {
+        return "MemberCoupon{" +
+                "id=" + id +
+                ", member=" + member +
+                ", coupon=" + coupon +
+                ", isUsed=" + isUsed +
+                ", issueStartedAt=" + issueStartedAt +
+                ", issueEndedAt=" + issueEndedAt +
+                '}';
+    }
 }

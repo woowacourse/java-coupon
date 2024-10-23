@@ -13,7 +13,20 @@ public class CouponFixture {
                 20000,
                 CouponCategory.FOOD,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusDays(7)
+                LocalDateTime.now().plusDays(7),
+                5
+        );
+    }
+
+    public static Coupon createValidFashionCoupon() {
+        return new Coupon(
+                "할인 쿠폰",
+                4000,
+                20000,
+                CouponCategory.FASHION,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(7),
+                10
         );
     }
 }
