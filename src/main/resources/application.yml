@@ -20,6 +20,8 @@ spring:
     redis:
       host: localhost
       port: 36379
+  cache:
+    type: redis
 
 coupon.datasource:
   writer:
