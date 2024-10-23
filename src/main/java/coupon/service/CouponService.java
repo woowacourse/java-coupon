@@ -4,6 +4,7 @@ import coupon.domain.Coupon;
 import coupon.exception.NotFoundException;
 import coupon.repository.CouponRepository;
 import coupon.util.TransactionExecutor;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +19,10 @@ public class CouponService {
         this.transactionExecutor = transactionExecutor;
     }
 
+    @CachePut(value = "coupons", key = "#coupon.id")
     @Transactional
-    public void create(Coupon coupon) {
-        couponRepository.save(coupon);
+    public Coupon create(Coupon coupon) {
+        return couponRepository.save(coupon);
     }
 
     @Transactional(readOnly = true)

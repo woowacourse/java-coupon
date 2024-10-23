@@ -16,6 +16,12 @@ spring:
     open-in-view: false
     show-sql: true
 
+  data:
+    redis:
+      port: 36379
+      repositories:
+        enabled: false
+
 coupon.datasource:
   writer:
     type: com.zaxxer.hikari.HikariDataSource

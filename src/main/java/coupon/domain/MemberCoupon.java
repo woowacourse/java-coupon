@@ -4,8 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -22,13 +20,9 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @ManyToOne
-    private Coupon coupon;
+    private long couponId;
 
-    @NotNull
-    @ManyToOne
-    private Member member;
+    private long memberId;
 
     private boolean used = false;
 
@@ -36,10 +30,9 @@ public class MemberCoupon {
 
     private LocalDateTime expiresAt;
 
-    public MemberCoupon(Coupon coupon, Member member) {
-        this.coupon = coupon;
-        this.member = member;
-        this.used = false;
+    public MemberCoupon(long couponId, long memberId) {
+        this.couponId = couponId;
+        this.memberId = memberId;
         this.issuedAt = LocalDateTime.now();
         this.expiresAt = calculateExpiresAt(this.issuedAt);
     }
