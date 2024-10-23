@@ -6,9 +6,11 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponCategory;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -16,6 +18,14 @@ class CouponServiceTest {
 
     @Autowired
     private CouponService couponService;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @AfterEach
+    void clearRedisCache() {
+        redisTemplate.keys("*coupon*").forEach(redisTemplate::delete);
+    }
 
     @Test
     @Sql(scripts = "/reset-database.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
