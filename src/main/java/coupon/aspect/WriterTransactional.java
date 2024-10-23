@@ -1,4 +1,4 @@
-package aspect;
+package coupon.aspect;
 
 import jakarta.transaction.Transactional;
 import java.lang.annotation.ElementType;

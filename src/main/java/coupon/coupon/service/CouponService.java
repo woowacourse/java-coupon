@@ -1,15 +1,17 @@
 package coupon.coupon.service;
 
-
-import aspect.WriterTransactional;
+import coupon.aspect.WriterTransactional;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
+import coupon.coupon.dto.CouponResponse;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CouponService {
 
@@ -67,8 +69,10 @@ public class CouponService {
     }
 
     @WriterTransactional
-    public Coupon findById(Long id) {
-        return couponRepository.findById(id)
+    @Cacheable(value = "coupon", key = "#id")
+    public CouponResponse findById(Long id) {
+        Coupon coupon = couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Coupon이 존재하지 않습니다."));
+        return CouponResponse.of(coupon);
     }
 }

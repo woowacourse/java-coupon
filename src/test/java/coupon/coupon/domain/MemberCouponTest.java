@@ -1,30 +1,19 @@
-package coupon.coupon;
+package coupon.coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import coupon.coupon.domain.Category;
-import coupon.coupon.domain.Coupon;
-import coupon.member.Member;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MemberCouponTest {
 
-    private Coupon coupon = new Coupon(
-            1L, "coupon",
-            1000, 5000, Category.ELECTRONICS, LocalDateTime.now(),
-            LocalDateTime.now().plusDays(30)
-    );
-
-    private Member member = new Member("member");
-
     @DisplayName("이미 사용된 쿠폰을 사용할 시 예외가 발생한다.")
     @Test
     void exception_WhenUseCouponThatIsUsed() {
         // given
-        MemberCoupon memberCoupon = new MemberCoupon(coupon, member, LocalDateTime.now());
+        MemberCoupon memberCoupon = new MemberCoupon(1L, 1L, LocalDateTime.now());
         memberCoupon.useCoupon();
 
         // when & then
@@ -35,7 +24,7 @@ class MemberCouponTest {
     @Test
     void exception_WhenUseExpiredCoupon() {
         // given
-        MemberCoupon memberCoupon = new MemberCoupon(coupon, member, LocalDateTime.now().minusDays(10));
+        MemberCoupon memberCoupon = new MemberCoupon(1L, 1L, LocalDateTime.now().minusDays(10));
 
         // when & then
         assertThatThrownBy(memberCoupon::useCoupon).isInstanceOf(IllegalStateException.class);
@@ -48,8 +37,8 @@ class MemberCouponTest {
         LocalDateTime issuedAt = LocalDateTime.of(2024, 10, 1, 10, 0);
 
         // when
-        MemberCoupon memberCoupon = new MemberCoupon(coupon, member, issuedAt);
-        LocalDateTime expectedExpiryDate = issuedAt.plusDays(7)
+        MemberCoupon memberCoupon = new MemberCoupon(1L, 1L, issuedAt);
+        LocalDateTime expectedExpiryDate = issuedAt.plusDays(6)
                 .withHour(23).withMinute(59).withSecond(59).withNano(999999999);
 
         // then
@@ -63,7 +52,7 @@ class MemberCouponTest {
         LocalDateTime issuedAt = LocalDateTime.now().minusDays(8);
 
         // when
-        MemberCoupon memberCoupon = new MemberCoupon(coupon, member, issuedAt);
+        MemberCoupon memberCoupon = new MemberCoupon(1L, 1L, issuedAt);
 
         // then
         assertThat(memberCoupon.getExpiresAt().isBefore(LocalDateTime.now())).isTrue();
