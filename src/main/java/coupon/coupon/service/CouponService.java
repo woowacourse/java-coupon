@@ -1,10 +1,11 @@
 package coupon.coupon.service;
 
-import coupon.coupon.exception.CouponNotFoundException;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.repository.CouponRepository;
+import coupon.coupon.exception.CouponNotFoundException;
 import coupon.util.TransactionExecutor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,8 @@ public class CouponService {
         couponRepository.save(coupon);
     }
 
-    public Coupon getCoupon(long couponId) {
+    @Cacheable(value = "coupons", key = "#couponId")
+    public Coupon getCouponById(long couponId) {
         return couponRepository.findById(couponId)
                 .orElseGet(() -> findCouponWithNewTransaction(couponId));
     }

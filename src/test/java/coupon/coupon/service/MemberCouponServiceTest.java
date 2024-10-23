@@ -16,14 +16,13 @@ import coupon.member.domain.repository.MemberRepository;
 import coupon.member.exception.MemberNotFoundException;
 import coupon.util.CouponFixture;
 import coupon.util.MemberFixture;
+import coupon.util.ServiceTest;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class MemberCouponServiceTest {
+class MemberCouponServiceTest extends ServiceTest {
 
     @Autowired
     private MemberCouponService memberCouponService;
@@ -81,7 +80,7 @@ class MemberCouponServiceTest {
 
     @DisplayName("회원이 보유한 쿠폰 목록을 정상적으로 조회한다.")
     @Test
-    void getCoupons() {
+    void getCouponsById() {
         // given
         Member member = memberRepository.save(MemberFixture.createChocochip());
         Coupon coupon1 = couponRepository.save(CouponFixture.createValidFoodCoupon());
@@ -104,7 +103,7 @@ class MemberCouponServiceTest {
 
     @DisplayName("존재하지 않는 회원 ID로 쿠폰 목록 조회 시 예외가 발생한다.")
     @Test
-    void throwExceptionWhenMemberNotFoundInGetCoupons() {
+    void throwExceptionWhenMemberNotFoundInGetCouponsById() {
         // given
         long invalidMemberId = 999L;
 

@@ -4,9 +4,7 @@ import coupon.coupon.controller.response.CouponResponse;
 import coupon.coupon.controller.response.CouponsResponse;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.MemberCoupon;
-import coupon.coupon.domain.repository.CouponRepository;
 import coupon.coupon.domain.repository.MemberCouponRepository;
-import coupon.coupon.exception.CouponNotFoundException;
 import coupon.member.domain.Member;
 import coupon.member.domain.repository.MemberRepository;
 import coupon.member.exception.MemberNotFoundException;
@@ -20,15 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class MemberCouponService {
 
-    private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
     private final MemberRepository memberRepository;
+    private final CouponService couponService;
 
     @Transactional
     public void issueCoupon(long memberId, long couponId) {
-        Coupon coupon = couponRepository.findById(couponId)
-                .orElseThrow(() -> new CouponNotFoundException(couponId));
-
+        Coupon coupon = couponService.getCouponById(couponId);
         Member member = getMember(memberId);
 
         coupon.issue();
@@ -52,7 +48,13 @@ public class MemberCouponService {
     }
 
     private CouponResponse toCouponResponse(Coupon coupon) {
-        return new CouponResponse(coupon.getId(), coupon.getName(), coupon.getDiscountAmount(),
-                coupon.getMinimumOrderPrice(), coupon.getCouponCategory().getDescription(), coupon.getIssueEndedAt());
+        return new CouponResponse(
+                coupon.getId(),
+                coupon.getName(),
+                coupon.getDiscountAmount(),
+                coupon.getMinimumOrderPrice(),
+                coupon.getCouponCategory().getDescription(),
+                coupon.getIssueEndedAt()
+        );
     }
 }

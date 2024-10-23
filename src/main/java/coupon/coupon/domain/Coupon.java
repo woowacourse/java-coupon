@@ -1,5 +1,9 @@
 package coupon.coupon.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import coupon.advice.DomainException;
 import coupon.coupon.exception.CouponIssueLimitExceededException;
 import coupon.coupon.exception.CouponIssueTimeException;
@@ -12,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.AccessLevel;
@@ -22,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "coupon")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Coupon extends BaseEntity {
+public class Coupon extends BaseEntity implements Serializable {
 
     private static final int NAME_LENGTH_LIMIT = 30;
     private static final int MIN_DISCOUNT_AMOUNT = 1000;
@@ -51,9 +56,13 @@ public class Coupon extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private CouponCategory couponCategory;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(name = "issue_started_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueStartedAt;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(name = "issue_ended_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueEndedAt;
 
