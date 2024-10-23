@@ -1,1 +1,2 @@
--- create database coupon if not exists coupon;
+create database coupon if not exists coupon;
+use coupon;
