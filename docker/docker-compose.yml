@@ -31,7 +31,6 @@ services:
         ipv4_address: 172.20.0.11
     volumes:
       - ./data/reader:/var/lib/mysql
-      - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql
     container_name: mysql_reader
     environment:
       MYSQL_ROOT_PASSWORD: root
