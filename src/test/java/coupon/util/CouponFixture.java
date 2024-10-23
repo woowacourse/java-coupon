@@ -17,4 +17,16 @@ public class CouponFixture {
                 5
         );
     }
+
+    public static Coupon createValidFashionCoupon() {
+        return new Coupon(
+                "할인 쿠폰",
+                4000,
+                20000,
+                CouponCategory.FASHION,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(7),
+                10
+        );
+    }
 }
