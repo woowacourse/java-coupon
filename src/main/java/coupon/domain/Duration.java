@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Duration {
+
     private LocalDate startDate;
     private LocalDate endDate;
 

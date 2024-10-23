@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class Coupon {
+
     private static final int MIN_PERCENT = 3;
     private static final int MAX_PERCENT = 20;
 

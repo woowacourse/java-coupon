@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class MinimumOrderPrice {
+
     private static final int MIN_PRICE = 5_000;
     private static final int MAX_PRICE = 100_000;
     private int price;

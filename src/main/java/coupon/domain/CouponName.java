@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class CouponName {
+
     private static final int MAX_LENGTH = 30;
 
     private String name;

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class CouponReaderRepository implements CouponRepository {
+
     private final CouponDataSource couponDataSource;
 
     public CouponReaderRepository(CouponDataSource couponDataSource) {
