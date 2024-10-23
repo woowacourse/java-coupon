@@ -34,7 +34,8 @@ public class Member {
 
         if (name.length() > MAX_NAME_LENGTH) {
             throw new IllegalArgumentException(
-                    String.format("이름은 %d자 이내로 입력해주세요. : %s, %d자", MAX_NAME_LENGTH, name, name.length()));
+                    String.format("이름은 %d자 이내로 입력해주세요. (입력 이름 : %s, %d자)",
+                            MAX_NAME_LENGTH, name, name.length()));
         }
     }
 }

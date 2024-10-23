@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class Coupon {
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final int MAX_NAME_LENGTH = 30;
 
@@ -69,27 +72,28 @@ public class Coupon {
 
         if (name.length() > MAX_NAME_LENGTH) {
             throw new IllegalArgumentException(
-                    String.format("이름은 %d자 이내로 입력해주세요. : %s, %d자", MAX_NAME_LENGTH, name, name.length()));
+                    String.format("이름은 %d자 이내로 입력해주세요. (입력 이름 : %s, %d자)", MAX_NAME_LENGTH, name, name.length()));
         }
     }
 
     private void validateDiscountAmount(int discountAmount) {
         if (discountAmount < MIN_DISCOUNT_AMOUNT || discountAmount > MAX_DISCOUNT_AMOUNT) {
             throw new IllegalArgumentException(
-                    String.format("할인 금액은 %d 이상 %d 이하여야 합니다. : %d",
+                    String.format("할인 금액은 %d 이상 %d 이하여야 합니다. (입력 금액 : %d)",
                             MIN_DISCOUNT_AMOUNT, MAX_DISCOUNT_AMOUNT, discountAmount));
         }
 
         if (discountAmount % UNIT_DISCOUNT_AMOUNT != 0) {
             throw new IllegalArgumentException(
-                    String.format("할인 금액은 %d 단위로 설정할 수 있습니다. : %d", UNIT_DISCOUNT_AMOUNT, discountAmount));
+                    String.format("할인 금액은 %d 단위로 설정할 수 있습니다. (입력 금액 : %d)",
+                            UNIT_DISCOUNT_AMOUNT, discountAmount));
         }
     }
 
     private void validateMinOrderAmount(int price) {
         if (price < MIN_OF_MIN_ORDER_AMOUNT || price > MAX_OF_MIN_ORDER_AMOUNT) {
             throw new IllegalArgumentException(
-                    String.format("최소 주문 금액은 %d 이상 %d 이하여야 합니다. : %d",
+                    String.format("최소 주문 금액은 %d 이상 %d 이하여야 합니다. (입력 금액 : %d)",
                             MIN_OF_MIN_ORDER_AMOUNT, MAX_OF_MIN_ORDER_AMOUNT, price));
         }
     }
@@ -97,12 +101,13 @@ public class Coupon {
     private void validatePeriod(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException(
-                    String.format("시작일은 종료일보다 이전이어야 합니다. : %s, %s", startDate, endDate));
+                    String.format("시작일은 종료일보다 이전이어야 합니다. (시작일: %s, 종료일: %s)",
+                            startDate.format(DATE_FORMAT), endDate.format(DATE_FORMAT)));
         }
 
         if (endDate.isBefore(LocalDate.now().atStartOfDay())) {
             throw new IllegalArgumentException(
-                    String.format("이미 지난 날을 종료일로 설정할 수 없습니다. : %s", endDate)
+                    String.format("이미 지난 날을 종료일로 설정할 수 없습니다. (종료일 : %s)", endDate.format(DATE_FORMAT))
             );
         }
     }
