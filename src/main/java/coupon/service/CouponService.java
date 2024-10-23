@@ -1,6 +1,5 @@
 package coupon.service;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import jakarta.persistence.EntityNotFoundException;

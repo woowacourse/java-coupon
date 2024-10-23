@@ -33,11 +33,11 @@ public class MemberCoupon {
     @OneToOne
     private Coupon coupon;
 
-    public MemberCoupon(final Boolean isUsed,
-                        final LocalDateTime createdAt,
-                        final LocalDateTime expiredAt,
-                        final Member member,
-                        final Coupon coupon) {
+    public MemberCoupon(Boolean isUsed,
+                        LocalDateTime createdAt,
+                        LocalDateTime expiredAt,
+                        Member member,
+                        Coupon coupon) {
         this.isUsed = isUsed;
         validate(createdAt, expiredAt);
         this.createdAt = createdAt;
@@ -46,7 +46,7 @@ public class MemberCoupon {
         this.coupon = coupon;
     }
 
-    private void validate(final LocalDateTime createdAt, final LocalDateTime expiredAt) {
+    private void validate(LocalDateTime createdAt, LocalDateTime expiredAt) {
         if (expiredAt.isBefore(createdAt)) {
             throw new IllegalArgumentException();
         }

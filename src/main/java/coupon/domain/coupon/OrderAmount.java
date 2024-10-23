@@ -18,7 +18,7 @@ public class OrderAmount {
         this.value = value;
     }
 
-    private void validate(final int value) {
+    private void validate(int value) {
         if (value < 5000 || value > 100000) {
             throw new IllegalArgumentException();
         }

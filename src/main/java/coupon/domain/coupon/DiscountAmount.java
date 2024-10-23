@@ -18,7 +18,7 @@ public class DiscountAmount {
         this.value = value;
     }
 
-    private void validate(final int value) {
+    private void validate(int value) {
         if (value < 1000 || value > 10000 || value % 500 != 0) {
             throw new IllegalArgumentException();
         }

@@ -16,7 +16,7 @@ public class CouponName {
         this.value = value;
     }
 
-    private void validate(final String value) {
+    private void validate(String value) {
         if (value.isEmpty() || value.length() > 30) {
             throw new IllegalArgumentException();
         }

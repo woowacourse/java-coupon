@@ -21,7 +21,7 @@ public class CouponDuration {
         this.endDate = endDate;
     }
 
-    private void validate(final LocalDate startDate, final LocalDate endDate) {
+    private void validate(LocalDate startDate, LocalDate endDate) {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException();
         }
