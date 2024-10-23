@@ -1,11 +1,8 @@
 package coupon.domain;
 
-import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
-import java.time.LocalDate;
-
 import jakarta.persistence.Embeddable;
-
+import java.time.LocalDate;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 

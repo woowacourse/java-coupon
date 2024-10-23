@@ -1,9 +1,7 @@
 package coupon.domain;
 
-import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 

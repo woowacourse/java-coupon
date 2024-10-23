@@ -1,11 +1,9 @@
 package coupon.repository;
 
+import com.zaxxer.hikari.HikariDataSource;
 import coupon.repository.DataSourceRouter.DatabaseKey;
-import java.util.HashMap;
 import java.util.Map;
-
 import javax.sql.DataSource;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
-
-import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 public class DataSourceConfig {

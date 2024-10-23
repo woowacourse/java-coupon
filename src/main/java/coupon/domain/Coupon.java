@@ -1,10 +1,5 @@
 package coupon.domain;
 
-import java.time.LocalDate;
-
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,13 +7,15 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.Table;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@Table(name = "Coupon")
 public class Coupon {
 
     private static final int MIN_DISCOUNT_PERCENT = 3;
@@ -44,7 +41,7 @@ public class Coupon {
     private Duration duration;
 
     public Coupon(String couponName, int discountPrice, int minOrderPrice,
-            Category category, LocalDate startDate, LocalDate endDate
+                  Category category, LocalDate startDate, LocalDate endDate
     ) {
         this.couponName = new CouponName(couponName);
         this.discountPrice = new DiscountPrice(discountPrice);
