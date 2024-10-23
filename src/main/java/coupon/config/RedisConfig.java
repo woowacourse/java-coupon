@@ -16,14 +16,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class RedisConfig {
 
-    private static final long DURATION = 10L;
+    private static final long DURATION = 3L;
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {
         RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
-                .entryTtl(Duration.ofMinutes(DURATION));
+                .entryTtl(Duration.ofDays(DURATION));
 
         return RedisCacheManager
                 .RedisCacheManagerBuilder
