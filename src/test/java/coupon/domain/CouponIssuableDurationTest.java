@@ -13,10 +13,9 @@ class CouponIssuableDurationTest {
     @Test
     @DisplayName("쿠폰 발급 가능 기간을 생성한다.")
     void create() {
-        LocalDate now = LocalDate.now();
-        LocalDate yesterday = now.minusDays(1);
+        LocalDate today = LocalDate.now();
 
-        assertThatCode(() -> new CouponIssuableDuration(yesterday, now))
+        assertThatCode(() -> new CouponIssuableDuration(today, today))
                 .doesNotThrowAnyException();
     }
 
@@ -43,11 +42,10 @@ class CouponIssuableDurationTest {
     }
 
     @Test
-    @DisplayName("만료기간이 지나지 않으면 쿠폰을 발급할 수 없다.")
+    @DisplayName("만료기간이 지나지 않으면 쿠폰을 발급할 수 있다.")
     void canIssue() {
         LocalDate today = LocalDate.now();
-        LocalDate end = today.plusDays(1);
-        CouponIssuableDuration issuableDuration = new CouponIssuableDuration(today, end);
+        CouponIssuableDuration issuableDuration = new CouponIssuableDuration(today, today);
 
         assertThat(issuableDuration.isIssuable()).isTrue();
     }
