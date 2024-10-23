@@ -66,6 +66,10 @@ public class Coupon {
         this.end = end;
     }
 
+    public boolean isExpired() {
+        return LocalDate.now().isAfter(end);
+    }
+
     private void validate(String name, int discount, int minimumOrder, LocalDate start, LocalDate end) {
         validateName(name);
         validateMinimumOrder(minimumOrder);
