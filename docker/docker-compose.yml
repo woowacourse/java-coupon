@@ -17,6 +17,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       TZ: Asia/Seoul
+      MYSQL_DATABASE: coupon
 
   mysql_reader:
     user: root
@@ -34,6 +35,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       TZ: Asia/Seoul
+      MYSQL_DATABASE: coupon
     depends_on:
       - mysql_writer
 
