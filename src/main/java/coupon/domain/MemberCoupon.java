@@ -20,9 +20,9 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private long couponId;
-
     private long memberId;
+
+    private long couponId;
 
     private boolean used = false;
 
@@ -30,9 +30,9 @@ public class MemberCoupon {
 
     private LocalDateTime expiresAt;
 
-    public MemberCoupon(long couponId, long memberId) {
-        this.couponId = couponId;
+    public MemberCoupon(long memberId, long couponId) {
         this.memberId = memberId;
+        this.couponId = couponId;
         this.issuedAt = LocalDateTime.now();
         this.expiresAt = calculateExpiresAt(this.issuedAt);
     }

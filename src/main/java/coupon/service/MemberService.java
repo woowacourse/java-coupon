@@ -4,11 +4,13 @@ import coupon.dao.MemberCouponCacheDao;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
+import coupon.dto.MemberCouponResponse;
 import coupon.exception.BadRequestException;
 import coupon.exception.NotFoundException;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
 import coupon.util.TransactionExecutor;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,18 @@ public class MemberService {
 
     public Member create(String name) {
         return memberRepository.save(new Member(name));
+    }
+
+    public List<MemberCouponResponse> getIssuedCoupons(long memberId) {
+        return memberCouponRepository.findByMemberId(memberId).stream()
+                .map(this::parseToResponse)
+                .toList();
+    }
+
+    private MemberCouponResponse parseToResponse(MemberCoupon memberCoupon) {
+        Coupon coupon = couponService.getCoupon(memberCoupon.getCouponId())
+                .orElseThrow(() -> new NotFoundException("Coupon not found: " + memberCoupon.getCouponId()));
+        return MemberCouponResponse.from(memberCoupon, coupon);
     }
 
     @Transactional
@@ -56,7 +70,7 @@ public class MemberService {
     private void validateCountWithIncrement(long memberId, long couponId) {
         cacheCountIfNotExistKey(memberId, couponId);
 
-        Long incrementCount = memberCouponCacheDao.incrementCount(couponId, couponId);
+        Long incrementCount = memberCouponCacheDao.incrementCount(memberId, couponId);
         if (incrementCount > MAX_MEMBER_COUPON_COUNT) {
             memberCouponCacheDao.setCount(memberId, couponId, MAX_MEMBER_COUPON_COUNT);
             throw new BadRequestException("Exceeded the number of coupons can be issued ");
