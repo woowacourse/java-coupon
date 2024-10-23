@@ -24,31 +24,27 @@ public class Coupon {
     private String name;
 
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "amount", column = @Column(name = "discount_price_amount")),
-    })
+    @AttributeOverride(name = "amount", column = @Column(name = "discount_price_amount"))
     private Money discountPrice;
 
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "amount", column = @Column(name = "minimum_order_price_amount")),
-    })
+    @AttributeOverride(name = "amount", column = @Column(name = "minimum_order_price_amount"))
     private Money minimumOrderPrice;
 
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @Column(name="started_at")
+    @Column(name = "started_at")
     private LocalDateTime startedAt;
 
-    @Column(name="end_at")
+    @Column(name = "end_at")
     private LocalDateTime endAt;
 
     public Coupon(final String name, final Money discountPrice, final Money minimumOrderPrice, final Category category, final LocalDateTime startedAt, final LocalDateTime endAt) {
         this(null, name, discountPrice, minimumOrderPrice, category, startedAt, endAt);
     }
 
-    public BigDecimal calculateDiscountRate(){
+    public BigDecimal calculateDiscountRate() {
         final BigDecimal discountRate = minimumOrderPrice
                 .divide(discountPrice)
                 .divide(BigDecimal.valueOf(10));

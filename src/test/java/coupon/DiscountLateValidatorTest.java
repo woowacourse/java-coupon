@@ -30,14 +30,14 @@ class DiscountLateValidatorTest {
     @Test
     @DisplayName("최소 할인율 미만이면, 예외를 발생한다.")
     void throw_exception_when_under_min_rate() {
-        assertThatThrownBy(() -> discountLateValidator.validate(new BigDecimal(2.999999999)))
+        assertThatThrownBy(() -> discountLateValidator.validate(new BigDecimal("2.999999999")))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("최대 할인율 초과면, 예외를 발생한다.")
     void throw_exception_when_under_max_rate() {
-        assertThatThrownBy(() -> discountLateValidator.validate(new BigDecimal(20.000001)))
+        assertThatThrownBy(() -> discountLateValidator.validate(new BigDecimal("20.000001")))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

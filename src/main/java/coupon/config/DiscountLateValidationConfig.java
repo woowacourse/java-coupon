@@ -5,8 +5,8 @@ import org.springframework.context.annotation.PropertySource;
 
 @PropertySource(value = "classpath:validation.yml") // 외부 YAML 파일 경로 지정
 @ConfigurationProperties(prefix = "discount-rate")
-public record DiscountLateValidationConfig (
+public record DiscountLateValidationConfig(
         double minRate,
         double maxRate
-){
+) {
 }

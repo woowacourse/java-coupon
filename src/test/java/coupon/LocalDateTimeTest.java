@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LocalDateTimeTest {
+class LocalDateTimeTest {
     private final LocalDateTime firstTime = LocalDateTime.of(2024, 10, 16, 0, 0, 0, 000_000_000);
     private final LocalDateTime lastTime = LocalDateTime.of(2024, 10, 16, 23, 59, 59, 999_999_999);
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
@@ -29,7 +29,7 @@ public class LocalDateTimeTest {
 
     @Test
     @DisplayName("1 ns 를 빼면, 15 23:59:59:999999 이 된다.")
-    void some2(){
+    void some2() {
         final LocalDateTime prevDayTime = firstTime.minusNanos(1);
         assertThat(formatter.format(prevDayTime)).isEqualTo("2024-10-15 23:59:59.999999");
     }
