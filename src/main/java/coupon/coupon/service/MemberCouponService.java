@@ -20,7 +20,6 @@ public class MemberCouponService {
     private final MemberCouponRepository memberCouponRepository;
     private final CouponService couponService;
 
-
     @Transactional
     public void issueCoupon(long couponId, long memberId, LocalDateTime issuedAt) {
         validateIssuance(couponId, memberId);
