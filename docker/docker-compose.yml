@@ -12,6 +12,7 @@ services:
         ipv4_address: 172.20.0.10
     volumes:
       - ./data/writer:/var/lib/mysql
+      - ./writer/:/docker-entrypoint-initdb.d
     container_name: mysql_writer
     restart: always
     environment:
