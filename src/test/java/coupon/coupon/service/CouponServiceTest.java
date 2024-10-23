@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import coupon.coupon.domain.CouponCategory;
 import coupon.coupon.domain.CouponEntity;
 import coupon.coupon.repository.CouponRepository;
+import coupon.coupon.support.TransactionExecutor;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ class CouponServiceTest {
 
     @Autowired
     private CouponRepository couponRepository;
+
+    @Autowired
+    private TransactionExecutor transactionExecutor;
 
     @Test
     void 쿠폰을_생성한다() {
@@ -46,7 +50,7 @@ class CouponServiceTest {
                         couponStartAt, couponStartAt.plusDays(1)));
 
         // when
-        CouponEntity actual = couponService.getCoupon(coupon.getId());
+        CouponEntity actual = transactionExecutor.executeByWriter(() -> couponService.getCoupon(coupon.getId()));
 
         // then
         assertAll(

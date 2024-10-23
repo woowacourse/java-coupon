@@ -39,6 +39,6 @@ public class CouponService {
     @Transactional(readOnly = true)
     public CouponEntity getCoupon(long couponId) {
         return couponRepository.findById(couponId)
-                .orElseGet(() -> couponBackupService.getCoupon(couponId));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰이에요."));
     }
 }
