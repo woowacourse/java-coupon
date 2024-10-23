@@ -19,6 +19,13 @@ import com.zaxxer.hikari.HikariDataSource;
 public class DataSourceConfig {
 
     @Bean
+    @Primary
+    @DependsOn({"routeDataSource"})
+    public DataSource dataSource() {
+        return new LazyConnectionDataSourceProxy(routeDataSource());
+    }
+
+    @Bean
     @ConfigurationProperties("coupon.datasource.writer")
     public DataSource writeDataSource() {
         return DataSourceBuilder.create()
@@ -49,12 +56,5 @@ public class DataSourceConfig {
         dataSourceRouter.setDefaultTargetDataSource(writerDataSource);
 
         return dataSourceRouter;
-    }
-
-    @Bean
-    @Primary
-    @DependsOn({"routeDataSource"})
-    public DataSource dataSource() {
-        return new LazyConnectionDataSourceProxy(routeDataSource());
     }
 }
