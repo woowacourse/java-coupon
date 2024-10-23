@@ -12,14 +12,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Getter
 @EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberCoupon {
 
-    private static final int EXPIRED_PERIOD = 7;
+    private static final int EXPIRED_PERIOD = 6;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_coupon_id")

@@ -38,7 +38,7 @@ class MemberCouponTest {
 
         // when
         MemberCoupon memberCoupon = new MemberCoupon(1L, 1L, issuedAt);
-        LocalDateTime expectedExpiryDate = issuedAt.plusDays(7)
+        LocalDateTime expectedExpiryDate = issuedAt.plusDays(6)
                 .withHour(23).withMinute(59).withSecond(59).withNano(999999999);
 
         // then
