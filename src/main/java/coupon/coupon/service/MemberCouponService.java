@@ -29,7 +29,7 @@ public class MemberCouponService {
         return memberCouponRepository.save(new MemberCoupon(coupon, memberId));
     }
 
-    private void validateMemberCouponLimit(Long memberId, Coupon coupon) {
+    private void validateMemberCouponLimit(long memberId, Coupon coupon) {
         int issuedCouponCount = memberCouponRepository.countByMemberIdAndCoupon(memberId, coupon);
         if (issuedCouponCount > MAX_COUPON_COUNT_PER_MEMBER) {
             throw new IllegalStateException("1인당 동일한 쿠폰은 5장까지 발급할 수 있습니다. 현재 발급 횟수:%d".formatted(issuedCouponCount));
