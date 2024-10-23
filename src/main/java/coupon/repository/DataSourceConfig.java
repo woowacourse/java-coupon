@@ -21,13 +21,17 @@ public class DataSourceConfig {
     @Bean
     @ConfigurationProperties("coupon.datasource.writer")
     public DataSource writeDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+        return DataSourceBuilder.create()
+                .type(HikariDataSource.class)
+                .build();
     }
 
     @Bean
     @ConfigurationProperties("coupon.datasource.reader")
     public DataSource readDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+        return DataSourceBuilder.create()
+                .type(HikariDataSource.class)
+                .build();
     }
 
     @Bean
