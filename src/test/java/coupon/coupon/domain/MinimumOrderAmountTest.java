@@ -20,7 +20,7 @@ class MinimumOrderAmountTest {
     }
 
     @Test
-    @DisplayName("최소 주문 금액이 5,000원 미만이면 예외가 발생한다.")
+    @DisplayName("최소 주문 금액이 100,000원을 초과하면 예외가 발생한다.")
     void should_throw_exception_when_amount_more_than_100000() {
         // given
         int invalidAmount = 100001;
