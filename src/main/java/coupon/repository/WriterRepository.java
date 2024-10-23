@@ -3,6 +3,7 @@ package coupon.repository;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import coupon.domain.coupon.Coupon;
@@ -21,7 +22,7 @@ public class WriterRepository {
         couponRepository.save(coupon);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<Coupon> findById(long id) {
         return couponRepository.findById(id);
     }
