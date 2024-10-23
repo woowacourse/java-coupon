@@ -31,7 +31,7 @@ public class MemberCouponService {
 
     private void validateMemberCouponLimit(long memberId, Coupon coupon) {
         int issuedCouponCount = memberCouponRepository.countByMemberIdAndCoupon(memberId, coupon);
-        if (issuedCouponCount > MAX_COUPON_COUNT_PER_MEMBER) {
+        if (issuedCouponCount >= MAX_COUPON_COUNT_PER_MEMBER) {
             throw new IllegalStateException("1인당 동일한 쿠폰은 %d장까지 발급할 수 있습니다. 현재 발급 횟수:%d"
                     .formatted(MAX_COUPON_COUNT_PER_MEMBER, issuedCouponCount));
         }
