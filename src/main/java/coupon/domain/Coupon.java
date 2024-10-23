@@ -29,25 +29,18 @@ public class Coupon {
     private long id;
 
     @Embedded
-    @AttributeOverride(name = "name", column = @Column(name = "coupon_name"))
     private CouponName couponName;
 
     @Embedded
-    @AttributeOverride(name = "price", column = @Column(name = "discount_price"))
     private DiscountPrice discountPrice;
 
     @Embedded
-    @AttributeOverride(name = "price", column = @Column(name = "min_order_price"))
     private MinimumOrderPrice minOrderPrice;
 
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
     @Embedded
-    @AttributeOverrides(value = {
-            @AttributeOverride(name = "startDate", column = @Column(name = "start_date")),
-            @AttributeOverride(name = "endDate", column = @Column(name = "end_date"))
-    })
     private Duration duration;
 
     public Coupon(String couponName, int discountPrice, int minOrderPrice,

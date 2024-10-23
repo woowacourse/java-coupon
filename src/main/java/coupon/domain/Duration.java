@@ -1,5 +1,7 @@
 package coupon.domain;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
 import java.time.LocalDate;
 
 import jakarta.persistence.Embeddable;
@@ -12,7 +14,10 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class Duration {
 
+    @Column(name = "start_date")
     private LocalDate startDate;
+
+    @Column(name = "end_date")
     private LocalDate endDate;
 
     public Duration(LocalDate startDate, LocalDate endDate) {

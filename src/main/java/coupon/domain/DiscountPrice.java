@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import lombok.EqualsAndHashCode;
@@ -14,6 +15,7 @@ public class DiscountPrice {
     private static final int MAX_PRICE = 10_000;
     private static final int UNIT_PRICE = 500;
 
+    @Column(name = "discount_price")
     private int price;
 
     public DiscountPrice(int price) {
