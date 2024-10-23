@@ -2,12 +2,14 @@ package coupon.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import coupon.domain.Coupon;
 import coupon.domain.CouponRepository;
 import coupon.domain.MemberCoupon;
 import coupon.domain.MemberCouponRepository;
 import coupon.dto.MemberCouponRequest;
+import coupon.dto.MemberCouponResponse;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +19,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("writer")
 @SpringBootTest
 class MemberCouponServiceTest {
 
@@ -132,5 +136,35 @@ class MemberCouponServiceTest {
 
         List<MemberCoupon> memberCoupons = memberCouponRepository.findByCouponIdAndMemberId(coupon.getId(), 1L);
         assertThat(memberCoupons.get(0).getIssueDate()).isEqualTo(issueDate);
+    }
+
+    @DisplayName("맴버 쿠폰 조회시 쿠폰 정보도 함께 조회한다.")
+    @Test
+    void findByMemberId() {
+        Coupon coupon = couponRepository.save(
+                new Coupon(
+                        "쿠폰",
+                        5_000,
+                        30_000,
+                        "가구",
+                        LocalDate.of(2024, 10, 22),
+                        LocalDate.of(2024, 10, 30)
+                )
+        );
+        MemberCoupon memberCoupon = new MemberCoupon(coupon.getId(), 1L, LocalDate.of(2024, 10, 25));
+        memberCouponRepository.save(memberCoupon);
+
+        MemberCouponResponse memberCouponResponse = memberCouponService.findByMemberId(1L).get(0);
+
+        assertAll(
+                () -> assertThat(memberCouponResponse.memberId()).isEqualTo(1L),
+                () -> assertThat(memberCouponResponse.couponResponse().id()).isEqualTo(coupon.getId()),
+                () -> assertThat(memberCouponResponse.couponResponse().name()).isEqualTo(coupon.getName()),
+                () -> assertThat(memberCouponResponse.couponResponse().discountAmount()).isEqualTo(coupon.getDiscountAmount()),
+                () -> assertThat(memberCouponResponse.couponResponse().minOrderAmount()).isEqualTo(coupon.getMinOrderAmount()),
+                () -> assertThat(memberCouponResponse.couponResponse().category()).isEqualTo(coupon.getCategory()),
+                () -> assertThat(memberCouponResponse.couponResponse().startDate()).isEqualTo(coupon.getStartDate()),
+                () -> assertThat(memberCouponResponse.couponResponse().endDate()).isEqualTo(coupon.getEndDate())
+        );
     }
 }
