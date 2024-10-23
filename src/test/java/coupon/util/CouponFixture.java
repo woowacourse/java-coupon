@@ -13,8 +13,8 @@ public class CouponFixture {
                 BigDecimal.valueOf(1000),
                 BigDecimal.valueOf(10000),
                 CouponCategory.FOOD,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusDays(7).minusNanos(1)
+                LocalDateTime.now().minusDays(2),
+                LocalDateTime.now().plusDays(2)
         );
     }
 }

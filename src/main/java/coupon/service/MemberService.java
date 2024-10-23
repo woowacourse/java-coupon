@@ -1,19 +1,73 @@
 package coupon.service;
 
+import coupon.dao.MemberCouponCacheDao;
+import coupon.domain.Coupon;
 import coupon.domain.Member;
+import coupon.domain.MemberCoupon;
+import coupon.exception.BadRequestException;
+import coupon.exception.NotFoundException;
+import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
+import coupon.util.TransactionExecutor;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepository memberRepository;
+    private static final int MAX_MEMBER_COUPON_COUNT = 5;
 
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
+    private final CouponService couponService;
+    private final TransactionExecutor transactionExecutor;
+
+    private final MemberRepository memberRepository;
+    private final MemberCouponRepository memberCouponRepository;
+    private final MemberCouponCacheDao memberCouponCacheDao;
 
     public Member create(String name) {
         return memberRepository.save(new Member(name));
+    }
+
+    @Transactional
+    public MemberCoupon issueCoupon(long memberId, long couponId) {
+        Optional<Coupon> coupon = couponService.getCoupon(couponId);
+        if (coupon.isEmpty()) {
+            throw new NotFoundException("Coupon not found: " + couponId);
+        }
+        validateIssueAvailable(coupon.get());
+
+        MemberCoupon memberCoupon = memberCouponRepository.save(new MemberCoupon(memberId, couponId));
+        validateCountWithIncrement(memberId, couponId);
+
+        return memberCoupon;
+    }
+
+    private void validateIssueAvailable(Coupon coupon) {
+        if (!coupon.issueAvailable()) {
+            throw new BadRequestException("Coupon could not be issued: (" +
+                    coupon.getIssuedStartDate() + " ~ " +
+                    coupon.getIssuedEndDate() + ")");
+        }
+    }
+
+    private void validateCountWithIncrement(long memberId, long couponId) {
+        cacheCountIfNotExistKey(memberId, couponId);
+
+        Long incrementCount = memberCouponCacheDao.incrementCount(couponId, couponId);
+        if (incrementCount > MAX_MEMBER_COUPON_COUNT) {
+            memberCouponCacheDao.setCount(memberId, couponId, MAX_MEMBER_COUPON_COUNT);
+            throw new BadRequestException("Exceeded the number of coupons can be issued ");
+        }
+    }
+
+    private void cacheCountIfNotExistKey(long memberId, long couponId) {
+        if (!memberCouponCacheDao.existKey(memberId, couponId)) {
+            long couponCount = transactionExecutor.executeOnWriter(() ->
+                    memberCouponRepository.countByMemberIdAndCouponId(memberId, couponId));
+            memberCouponCacheDao.setCount(memberId, couponId, couponCount);
+        }
     }
 }

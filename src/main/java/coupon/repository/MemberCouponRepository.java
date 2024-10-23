@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
-    int countByMemberIdAndCouponId(long memberId, long couponId);
+    long countByMemberIdAndCouponId(long memberId, long couponId);
 }
