@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -34,19 +33,11 @@ public class MemberCoupon {
     @Column(nullable = false)
     private LocalDateTime expiredAt;
 
-    public MemberCoupon(long couponId, long memberId, LocalDateTime issuedAt) {
-        validateIssuedAt(issuedAt);
+    public MemberCoupon(long couponId, long memberId) {
         this.couponId = couponId;
         this.memberId = memberId;
         this.isUsed = false;
-        this.issuedAt = issuedAt;
-        this.expiredAt = issuedAt.plusDays(7);
-    }
-
-    private void validateIssuedAt(LocalDateTime issuedAt) {
-        if (issuedAt.isBefore(LocalDate.now().atStartOfDay())) {
-            throw new IllegalArgumentException(
-                    String.format("이미 지난 날을 발급일로 설정할 수 없습니다. : %s", issuedAt));
-        }
+        this.issuedAt = LocalDateTime.now();
+        this.expiredAt = issuedAt.plusDays(6);
     }
 }

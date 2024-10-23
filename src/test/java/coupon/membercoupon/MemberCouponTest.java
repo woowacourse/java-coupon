@@ -1,7 +1,6 @@
 package coupon.membercoupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.time.LocalDateTime;
@@ -15,10 +14,9 @@ class MemberCouponTest {
         // given
         long couponId = 1L;
         long memberId = 1L;
-        LocalDateTime issuedAt = LocalDateTime.now();
 
         // when, then
-        assertDoesNotThrow(() -> new MemberCoupon(couponId, memberId, issuedAt));
+        assertDoesNotThrow(() -> new MemberCoupon(couponId, memberId));
     }
 
     @Test
@@ -29,7 +27,7 @@ class MemberCouponTest {
         LocalDateTime issuedAt = LocalDateTime.now();
 
         // when
-        MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId, issuedAt);
+        MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId);
         boolean actual = memberCoupon.isUsed();
 
         // then
@@ -37,29 +35,18 @@ class MemberCouponTest {
     }
 
     @Test
-    void 회원_쿠폰이_생성되면_만료일은_발급일로부터_7일로_설정() {
+    void 회원_쿠폰이_생성되면_만료일은_발급일_포함_7일로_설정() {
         // given
         long couponId = 1L;
         long memberId = 1L;
         LocalDateTime issuedAt = LocalDateTime.now();
 
         // when
-        MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId, issuedAt);
+        MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId);
         LocalDateTime actual = memberCoupon.getExpiredAt();
 
         // then
         long expected = ChronoUnit.DAYS.between(issuedAt, actual);
-        assertThat(expected).isEqualTo(7);
-    }
-
-    @Test
-    void 이미_지난날을_발급일로_설정할_경우_예외() {
-        // given
-        long couponId = 1L;
-        long memberId = 1L;
-        LocalDateTime issuedAt = LocalDateTime.now().minusDays(1);
-
-        // when, then
-        assertThatThrownBy(() -> new MemberCoupon(couponId, memberId, issuedAt));
+        assertThat(expected).isEqualTo(6);
     }
 }
