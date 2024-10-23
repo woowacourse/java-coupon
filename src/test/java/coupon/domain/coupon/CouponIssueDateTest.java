@@ -17,15 +17,15 @@ class CouponIssueDateTest {
         CouponIssueDate couponIssueDate = new CouponIssueDate(issueStartDate, issueEndDate);
 
         //when
-        boolean dateAvailableRangeDate = couponIssueDate.isDateAvailable(now);
-        boolean dateAvailableIssueStartDate = couponIssueDate.isDateAvailable(issueStartDate);
-        boolean dateAvailableIssueEndDate = couponIssueDate.isDateAvailable(issueEndDate);
+        boolean rangeDateAvailable = couponIssueDate.isDateAvailable(now);
+        boolean issueStartDateAvailable = couponIssueDate.isDateAvailable(issueStartDate);
+        boolean issueEndDateAvailable = couponIssueDate.isDateAvailable(issueEndDate);
 
         //then
         assertAll(
-                () -> Assertions.assertThat(dateAvailableRangeDate).isTrue(),
-                () -> Assertions.assertThat(dateAvailableIssueStartDate).isTrue(),
-                () -> Assertions.assertThat(dateAvailableIssueEndDate).isTrue()
+                () -> Assertions.assertThat(rangeDateAvailable).isTrue(),
+                () -> Assertions.assertThat(issueStartDateAvailable).isTrue(),
+                () -> Assertions.assertThat(issueEndDateAvailable).isTrue()
         );
     }
 
