@@ -2,7 +2,13 @@
 set -e
 
 echo "Waiting for master to be ready..."
-sleep 30
+
+while ! mysqladmin ping -h 172.20.0.10 --silent; do
+    echo "Waiting for MySQL master to be ready..."
+    sleep 2
+done
+
+echo "MySQL master is ready!"
 
 ## get log file and position
 master_log_file=$(mysql -uroot -p'root' -h 172.20.0.10 -S /var/run/mysqld/mysqld.sock -e "SHOW MASTER STATUS\G" | grep 'File:' | awk '{print $2}')
