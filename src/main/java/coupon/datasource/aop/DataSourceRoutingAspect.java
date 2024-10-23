@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataSourceRoutingAspect {
 
-    @Before("execution(* *..repository.*.save*(..))")
+    @Before("@annotation(coupon.datasource.aop.WriteTransaction)")
     public void setWriteContext() {
         DataSourceRoutingContext.setIsWrite();
     }

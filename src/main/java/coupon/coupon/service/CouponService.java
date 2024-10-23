@@ -2,6 +2,7 @@ package coupon.coupon.service;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.repository.CouponRepository;
+import coupon.datasource.aop.WriteTransaction;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
+    @WriteTransaction
     @Transactional
     public Coupon createCoupon(Coupon coupon) {
         return couponRepository.save(coupon);
