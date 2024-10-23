@@ -2,7 +2,9 @@ package coupon.domain;
 
 import java.math.BigDecimal;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
+@Embeddable
 record CouponApplicableAmount(@Column(name = "coupon_applicable_amount", nullable = false) BigDecimal value) {
 
     private static final BigDecimal MAXIMUM_APPLICABLE_MONEY = new BigDecimal("100000");
