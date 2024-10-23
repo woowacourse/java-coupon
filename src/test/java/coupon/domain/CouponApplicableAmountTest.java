@@ -6,13 +6,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class CouponApplicableAmountTest {
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(ints = {5000, 100000})
     @DisplayName("최소 적용 가능 금액을 생성한다.")
-    void create() {
-        BigDecimal amount = new BigDecimal(5000);
+    void create(int source) {
+        BigDecimal amount = new BigDecimal(source);
 
         assertThatCode(() -> new CouponApplicableAmount(amount))
                 .doesNotThrowAnyException();

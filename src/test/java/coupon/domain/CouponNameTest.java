@@ -7,13 +7,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class CouponNameTest {
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(ints = {1, 30})
     @DisplayName("쿠폰의 이름을 생성한다.")
-    void create() {
-        assertThatCode(() -> new CouponName("1,000원 할인 쿠폰"))
+    void create(int source) {
+        String name = "*".repeat(source);
+        assertThatCode(() -> new CouponName(name))
                 .doesNotThrowAnyException();
     }
 
