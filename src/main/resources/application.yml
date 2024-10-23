@@ -40,6 +40,5 @@ coupon.datasource:
 
 logging:
   level:
-    coupon:
-      config:
-        RoutingDataSource: DEBUG
+    coupon.config.RoutingDataSource: DEBUG
+    org.springframework.cache: TRACE
