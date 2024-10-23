@@ -20,7 +20,7 @@ public class OrderAmount {
 
     private void validate(int value) {
         if (value < 5000 || value > 100000) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("주문금액은 5000원 이상 100000 이하만 가능합니다.");
         }
     }
 }

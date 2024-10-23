@@ -18,7 +18,7 @@ public class CouponName {
 
     private void validate(String value) {
         if (value.isEmpty() || value.length() > 30) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("1 이상 30 이하의 쿠폰 이름을 입력해주세요.");
         }
     }
 }

@@ -23,7 +23,7 @@ public class CouponDuration {
 
     private void validate(LocalDate startDate, LocalDate endDate) {
         if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("시작 날짜는 종료 날짜보다 이전만 가능합니다.");
         }
     }
 }

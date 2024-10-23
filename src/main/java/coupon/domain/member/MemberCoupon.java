@@ -48,7 +48,7 @@ public class MemberCoupon {
 
     private void validate(LocalDateTime createdAt, LocalDateTime expiredAt) {
         if (expiredAt.isBefore(createdAt)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("만료 날짜는 생성날짜 이전일 수 없습니다.");
         }
     }
 }

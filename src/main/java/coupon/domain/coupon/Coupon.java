@@ -66,7 +66,7 @@ public class Coupon {
     private void validate(int discountAmount, int orderAmount) {
         double discountRate = (double) orderAmount / discountAmount;
         if (discountRate < 3 || discountRate > 20) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("할인율은 3% 이상 20% 이하만 가능합니다.");
         }
     }
 }
