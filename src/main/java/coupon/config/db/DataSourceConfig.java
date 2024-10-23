@@ -13,6 +13,8 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import static coupon.config.db.DataSourceConstants.ACTUAL_DATA_SOURCE;
+
 @Configuration
 public class DataSourceConfig {
 
@@ -32,7 +34,7 @@ public class DataSourceConfig {
     }
 
     @Primary
-    @DependsOn({"routingDataSource"})
+    @DependsOn({ACTUAL_DATA_SOURCE})
     @Bean
     public DataSource dataSource(DataSource routingDataSource) {
         return new LazyConnectionDataSourceProxy(routingDataSource);
