@@ -4,12 +4,10 @@ package coupon.coupon.service;
 import aspect.WriterTransactional;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
-import coupon.coupon.domain.MemberCoupon;
-import coupon.coupon.domain.MemberCouponRepository;
-import coupon.member.domain.Member;
-import coupon.member.service.MemberService;
+import coupon.coupon.dto.CouponResponse;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +23,8 @@ public class CouponService {
     private static final int MAX_ORDER_AMOUNT = 100000;
     private static final int MIN_DISCOUNT_RATE = 3;
     private static final int MAX_DISCOUNT_RATE = 20;
-    private static final int MAX_COUPON_ISSUE_LIMIT = 5;
 
     private final CouponRepository couponRepository;
-    private final MemberCouponRepository memberCouponRepository;
-    private final MemberService memberService;
 
     @Transactional
     public long create(Coupon coupon) {
@@ -74,28 +69,11 @@ public class CouponService {
         }
     }
 
-    @Transactional
-    public void issueCoupon(long couponId, long memberId) {
-        Coupon findCoupon = couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 쿠폰을 찾을 수 없습니다."));
-        Member findMember = memberService.findBy(memberId);
-
-        validateIssuance(findMember, findCoupon);
-
-        MemberCoupon memberCoupon = new MemberCoupon(findCoupon, findMember, LocalDateTime.now());
-        memberCouponRepository.save(memberCoupon);
-    }
-
-    private void validateIssuance(Member findMember, Coupon findCoupon) {
-        int issuedCouponCount = memberCouponRepository.countByMemberAndAndCoupon(findMember, findCoupon);
-        if (issuedCouponCount >= MAX_COUPON_ISSUE_LIMIT) {
-            throw new IllegalArgumentException(String.format("%d장 이상의 쿠폰을 발급할 수 없습니다.", MAX_COUPON_ISSUE_LIMIT));
-        }
-    }
-
     @WriterTransactional
-    public Coupon findById(Long id) {
-        return couponRepository.findById(id)
+    @Cacheable(value = "coupon", key = "#id")
+    public CouponResponse findById(Long id) {
+        Coupon coupon = couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Coupon이 존재하지 않습니다."));
+        return CouponResponse.of(coupon);
     }
 }

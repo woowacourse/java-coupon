@@ -7,9 +7,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
-import coupon.coupon.domain.MemberCoupon;
 import coupon.coupon.domain.MemberCouponRepository;
-import coupon.member.domain.Member;
+import coupon.coupon.dto.CouponResponse;
 import coupon.member.domain.MemberRepository;
 import coupon.member.service.MemberService;
 import java.time.LocalDateTime;
@@ -199,48 +198,9 @@ class CouponServiceTest {
 
         // when
         long savedId = couponService.create(coupon);
-        Coupon savedCoupon = couponService.findById(savedId);
+        CouponResponse savedCoupon = couponService.findById(savedId);
 
         // then
         assertThat(savedCoupon).isNotNull();
-    }
-
-    @DisplayName("회원에게 쿠폰을 발급한다.")
-    @Test
-    void issueCoupon() {
-        // given
-        Coupon coupon = new Coupon(
-                "Valid Coupon",
-                1000, 5000, Category.ELECTRONICS,
-                LocalDateTime.now(), LocalDateTime.now().plusDays(30));
-        Member member = new Member("rush");
-        Coupon savedCoupon = couponRepository.save(coupon);
-        Member savedMember = memberRepository.save(member);
-
-        // when & then
-        assertThatCode(
-                () -> couponService.issueCoupon(savedCoupon.getId(), savedMember.getId())).doesNotThrowAnyException();
-    }
-
-    @DisplayName("회원이 이미 최대 수량 쿠폰을 갖고 있을때, 쿠폰을 발급하면 예외가 발생한다.")
-    @Test
-    void exception_When_IssueCouponOverLimit() {
-        // given
-        Coupon coupon = new Coupon(
-                "Valid Coupon",
-                1000, 5000, Category.ELECTRONICS,
-                LocalDateTime.now(), LocalDateTime.now().plusDays(30));
-        Member member = new Member("rush");
-        Coupon savedCoupon = couponRepository.save(coupon);
-        Member savedMember = memberRepository.save(member);
-
-        for (int i = 0; i < 5; i++) {
-            memberCouponRepository.save(new MemberCoupon(savedCoupon, savedMember, LocalDateTime.now()));
-        }
-
-        // when & then
-        assertThatThrownBy(() -> couponService.issueCoupon(savedCoupon.getId(), savedMember.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("장 이상의 쿠폰을 발급할 수 없습니다.");
     }
 }
