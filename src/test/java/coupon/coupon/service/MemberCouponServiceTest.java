@@ -1,10 +1,12 @@
 package coupon.coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.MemberCoupon;
 import coupon.coupon.domain.repository.CouponRepository;
+import coupon.coupon.domain.repository.MemberCouponRepository;
 import coupon.coupon.dto.MemberCouponResponse;
 import coupon.coupon.fixture.CouponFixture;
 import java.util.List;
@@ -24,6 +26,9 @@ class MemberCouponServiceTest {
     private MemberCouponService memberCouponService;
 
     @Autowired
+    private MemberCouponRepository memberCouponRepository;
+
+    @Autowired
     private CouponRepository couponRepository;
 
     @Autowired
@@ -41,7 +46,7 @@ class MemberCouponServiceTest {
     @Test
     void issueCoupon() {
         // given
-        Long memberId = 1L;
+        long memberId = 1L;
         Coupon savedCoupon = couponRepository.save(CouponFixture.createFoodCoupon());
 
         // when
@@ -51,11 +56,26 @@ class MemberCouponServiceTest {
         assertThat(actual.getMemberId()).isEqualTo(memberId);
         assertThat(actual.getCoupon()).isEqualTo(savedCoupon);
     }
-    // TODO: 1인당 쿠폰 발급 제한 초과한 경우
+
+    @DisplayName("1인당 쿠폰 발급 제한을 초과한 경우 예외가 발생한다.")
+    @Test
+    void throwsException_whenExceedsMaxCouponCountPerMember() {
+        // given
+        long memberId = 1L;
+        Coupon coupon = couponRepository.save(CouponFixture.createFoodCoupon());
+        int maxCouponCountPerMember = 5;
+        while (maxCouponCountPerMember-- > 0) {
+            memberCouponRepository.save(new MemberCoupon(coupon, memberId));
+        }
+
+        // when & then
+        assertThatThrownBy(() -> memberCouponService.issueCoupon(memberId, coupon.getId()))
+                .isInstanceOf(IllegalStateException.class);
+    }
 
     @DisplayName("회원의 쿠폰 목록을 조회한다.")
     @Test
-    void getMemberCoupons () {
+    void getMemberCoupons() {
         // given
         long memberId = 1L;
         Coupon foodCoupon = couponRepository.save(CouponFixture.createFoodCoupon());
