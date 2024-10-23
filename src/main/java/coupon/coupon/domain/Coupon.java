@@ -1,6 +1,8 @@
 package coupon.coupon.domain;
 
 import coupon.advice.DomainException;
+import coupon.coupon.exception.CouponIssueLimitExceededException;
+import coupon.coupon.exception.CouponIssueTimeException;
 import coupon.util.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,9 +57,15 @@ public class Coupon extends BaseEntity {
     @Column(name = "issue_ended_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueEndedAt;
 
+    @Column(name = "issue_count")
+    private Long issueCount;
+
+    @Column(name = "issue_limit")
+    private Long issueLimit;
+
     public Coupon(
             Long id, String name, int discountAmount, int minimumOrderPrice, CouponCategory couponCategory,
-            LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
+            LocalDateTime issueStartedAt, LocalDateTime issueEndedAt, long issueLimit) {
 
         validate(name, discountAmount, minimumOrderPrice, issueStartedAt, issueEndedAt);
 
@@ -68,12 +76,14 @@ public class Coupon extends BaseEntity {
         this.couponCategory = couponCategory;
         this.issueStartedAt = issueStartedAt;
         this.issueEndedAt = issueEndedAt;
+        this.issueCount = 0L;
+        this.issueLimit = issueLimit;
     }
 
     public Coupon(
             String name, int discountAmount, int minimumOrderPrice, CouponCategory couponCategory,
-            LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
-        this(null, name, discountAmount, minimumOrderPrice, couponCategory, issueStartedAt, issueEndedAt);
+            LocalDateTime issueStartedAt, LocalDateTime issueEndedAt, long issueLimit) {
+        this(null, name, discountAmount, minimumOrderPrice, couponCategory, issueStartedAt, issueEndedAt, issueLimit);
     }
 
     private void validate(
@@ -133,6 +143,16 @@ public class Coupon extends BaseEntity {
         }
     }
 
+    public void issue() {
+        if (this.issueStartedAt.isAfter(LocalDateTime.now()) || this.issueEndedAt.isBefore(LocalDateTime.now())) {
+            throw new CouponIssueTimeException();
+        }
+        if (this.issueLimit <= this.issueCount) {
+            throw new CouponIssueLimitExceededException();
+        }
+        this.issueCount++;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -149,4 +169,6 @@ public class Coupon extends BaseEntity {
     public int hashCode() {
         return Objects.hashCode(getId());
     }
+
+    //TODO: toString 추가
 }

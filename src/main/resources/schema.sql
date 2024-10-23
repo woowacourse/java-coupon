@@ -20,7 +20,10 @@ CREATE TABLE coupon
     issue_started_at    DATETIME(6),
     issue_ended_at      DATETIME(6),
     created_at          DATETIME(6),
-    modified_at         DATETIME(6)
+    modified_at         DATETIME(6),
+    issue_count         BIGINT,
+    issue_limit         BIGINT
+
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;

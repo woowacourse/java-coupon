@@ -1,6 +1,6 @@
 package coupon.coupon.service;
 
-import coupon.coupon.CouponNotFoundException;
+import coupon.coupon.exception.CouponNotFoundException;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.repository.CouponRepository;
 import coupon.util.TransactionExecutor;

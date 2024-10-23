@@ -13,7 +13,8 @@ public class CouponFixture {
                 20000,
                 CouponCategory.FOOD,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusDays(7)
+                LocalDateTime.now().plusDays(7),
+                5
         );
     }
 }
