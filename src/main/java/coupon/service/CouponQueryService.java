@@ -10,14 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponQueryService {
 
     private final CouponRepository couponRepository;
-    private final CouponService couponService;
+    private final CouponCommandService couponCommandService;
 
-    public CouponQueryService(CouponRepository couponRepository, CouponService couponService) {
+    public CouponQueryService(CouponRepository couponRepository, CouponCommandService couponCommandService) {
         this.couponRepository = couponRepository;
-        this.couponService = couponService;
+        this.couponCommandService = couponCommandService;
     }
 
     public Coupon getCoupon(Long id) {
-        return couponRepository.findById(id).orElseGet(()->couponService.getCoupon(id));
+        return couponRepository.findById(id).orElseGet(()-> couponCommandService.getCoupon(id));
     }
 }

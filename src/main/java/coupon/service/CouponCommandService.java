@@ -7,11 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class CouponService {
+public class CouponCommandService {
 
     private final CouponRepository couponRepository;
 
-    public CouponService(CouponRepository couponRepository) {
+    public CouponCommandService(CouponRepository couponRepository) {
         this.couponRepository = couponRepository;
     }
 
