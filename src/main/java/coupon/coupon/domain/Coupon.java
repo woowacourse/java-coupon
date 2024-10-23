@@ -170,5 +170,18 @@ public class Coupon extends BaseEntity {
         return Objects.hashCode(getId());
     }
 
-    //TODO: toString 추가
+    @Override
+    public String toString() {
+        return "Coupon{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", discountAmount=" + discountAmount +
+                ", minimumOrderPrice=" + minimumOrderPrice +
+                ", couponCategory=" + couponCategory +
+                ", issueStartedAt=" + issueStartedAt +
+                ", issueEndedAt=" + issueEndedAt +
+                ", issueCount=" + issueCount +
+                ", issueLimit=" + issueLimit +
+                '}';
+    }
 }
