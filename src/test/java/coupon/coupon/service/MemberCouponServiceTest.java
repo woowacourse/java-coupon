@@ -137,8 +137,7 @@ class MemberCouponServiceTest {
                 () -> assertThat(memberCouponResponse.couponResponse()).isEqualTo(CouponResponse.of(coupon)),
                 () -> assertThat(memberCouponResponse.memberId()).isEqualTo(member.getId()),
                 () -> assertThat(memberCouponResponse.used()).isFalse(),
-                () -> assertThat(memberCouponResponse.issuedAt()).isEqualTo(memberCouponResponse.issuedAt()),
-                () -> assertThat(memberCouponResponse.expiresAt()).isEqualTo(memberCouponResponse.expiresAt())
+                () -> assertThat(memberCouponResponse.issuedAt()).isEqualTo(memberCoupon.getIssuedAt())
         );
     }
 }
