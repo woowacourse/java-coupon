@@ -1,7 +1,7 @@
 package coupon.coupon.service;
 
 
-import aspect.WriterTransactional;
+import coupon.aspect.WriterTransactional;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
 import coupon.coupon.dto.CouponResponse;
