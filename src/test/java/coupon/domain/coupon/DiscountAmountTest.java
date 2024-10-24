@@ -14,15 +14,15 @@ class DiscountAmountTest {
     @DisplayName("할인 금액을 생성한다.")
     @ParameterizedTest
     @ValueSource(strings = {"1000", "10000"})
-    void create() {
-        assertThatCode(() -> new DiscountAmount("10000"))
+    void create(String discountAmount) {
+        assertThatCode(() -> new DiscountAmount(discountAmount))
                 .doesNotThrowAnyException();
     }
 
     @DisplayName("할인 금액이 500원 단위가 아니면 예외가 발생한다.")
     @Test
     void create_Fail1() {
-        assertThatThrownBy(() -> new DiscountAmount("1012"))
+        assertThatThrownBy(() -> new DiscountAmount("501"))
                 .isInstanceOf(CouponException.class);
     }
 

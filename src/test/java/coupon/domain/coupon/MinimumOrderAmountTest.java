@@ -10,11 +10,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class MinimumOrderAmountTest {
 
-    @DisplayName("할인 금액을 생성한다.")
+    @DisplayName("최소 주문 금액을 생성한다.")
     @ParameterizedTest
     @ValueSource(strings = {"5000", "100000"})
-    void create() {
-        assertThatCode(() -> new MinimumOrderAmount("5000"))
+    void create(String minimumOrderAmount) {
+        assertThatCode(() -> new MinimumOrderAmount(minimumOrderAmount))
                 .doesNotThrowAnyException();
     }
 

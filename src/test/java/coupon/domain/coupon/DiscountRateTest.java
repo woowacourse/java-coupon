@@ -13,7 +13,7 @@ class DiscountRateTest {
     @Test
     void create() {
         DiscountAmount discountAmount = new DiscountAmount("1000");
-        MinimumOrderAmount minimumOrderAmount = new MinimumOrderAmount("30000");
+        MinimumOrderAmount minimumOrderAmount = new MinimumOrderAmount("33333");
 
         assertThatCode(() -> new DiscountRate(discountAmount, minimumOrderAmount))
                 .doesNotThrowAnyException();
@@ -23,7 +23,7 @@ class DiscountRateTest {
     @Test
     void create_Fail1() {
         DiscountAmount discountAmount = new DiscountAmount("1000");
-        MinimumOrderAmount minimumOrderAmount = new MinimumOrderAmount("40000");
+        MinimumOrderAmount minimumOrderAmount = new MinimumOrderAmount("33334");
 
         assertThatThrownBy(() -> new DiscountRate(discountAmount, minimumOrderAmount))
                 .isInstanceOf(CouponException.class);
@@ -32,8 +32,9 @@ class DiscountRateTest {
     @DisplayName("할인율이 20% 초과이면 예외가 발생한다.")
     @Test
     void create_Fail2() {
-        DiscountAmount discountAmount = new DiscountAmount("8000");
-        MinimumOrderAmount minimumOrderAmount = new MinimumOrderAmount("38000");
+        //case - 할인율 21%
+        DiscountAmount discountAmount = new DiscountAmount("10500");
+        MinimumOrderAmount minimumOrderAmount = new MinimumOrderAmount("50000");
 
         assertThatThrownBy(() -> new DiscountRate(discountAmount, minimumOrderAmount))
                 .isInstanceOf(CouponException.class);
