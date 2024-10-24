@@ -24,7 +24,7 @@ public class DiscountAmount {
     private void validate(int discountAmount, int minimumOrderAmount) {
         validateRange(discountAmount);
         validateMultiple(discountAmount);
-        int discountRate = (int) (((double) discountAmount / minimumOrderAmount) * 100);
+        int discountRate = Calculator.calculateDiscountRateOfPercentage(discountAmount, minimumOrderAmount);
         validateDiscountRate(discountRate);
     }
 
