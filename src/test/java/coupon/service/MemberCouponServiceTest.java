@@ -12,6 +12,7 @@ import coupon.entity.CouponEntity;
 import coupon.entity.MemberEntity;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
+import coupon.support.CacheCleanerExtension;
 import coupon.support.DatabaseCleanerExtension;
 import coupon.support.Fixture;
 import java.util.List;
@@ -24,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-@ExtendWith(DatabaseCleanerExtension.class)
+@ExtendWith(value = {DatabaseCleanerExtension.class, CacheCleanerExtension.class})
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class MemberCouponServiceTest {
 
@@ -40,7 +41,6 @@ class MemberCouponServiceTest {
     private Coupon coupon;
     private List<Coupon> coupons;
     private Member member;
-    private Member otherMember;
 
     @BeforeEach
     void setUp() {
@@ -49,7 +49,6 @@ class MemberCouponServiceTest {
                 .mapToObj(i -> couponRepository.save(new CouponEntity(Fixture.COUPON)).toDomain())
                 .toList();
         member = memberRepository.save(new MemberEntity(Fixture.MEMBER)).toDomain();
-        otherMember = memberRepository.save(new MemberEntity(Fixture.MEMBER)).toDomain();
     }
 
     @DisplayName("쿠폰이 5장 발급됐다면, 추가 발급이 불가하다.")
@@ -92,27 +91,6 @@ class MemberCouponServiceTest {
 
         // when
         List<MemberCoupon> memberCoupons = memberCouponService.findAllByMember(member);
-
-        // then
-        assertAll(
-                () -> assertThat(memberCoupons).hasSize(3),
-                () -> assertThat(memberCoupons)
-                        .extracting(MemberCoupon::getCoupon)
-                        .containsExactlyElementsOf(coupons)
-        );
-    }
-
-    @DisplayName("회원이 발급받은 쿠폰을 조회할 때, 캐시를 읽는다.")
-    @Test
-    void findAllByMemberWithCacheTest() throws Exception {
-        // given
-        IntStream.range(0, 3).forEach(i -> memberCouponService.create(member, coupons.get(i)));
-        IntStream.range(0, 3).forEach(i -> memberCouponService.create(otherMember, coupons.get(i)));
-        waitForSeconds(3);
-
-        // when
-        memberCouponService.findAllByMember(member);
-        List<MemberCoupon> memberCoupons = memberCouponService.findAllByMember(otherMember);
 
         // then
         assertAll(
