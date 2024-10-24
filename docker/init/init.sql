@@ -1,7 +1,7 @@
 create database coupon;
 use coupon;
 
-CREATE TABLE `coupon`
+CREATE TABLE `Coupon`
 (
     `id`                       bigint         NOT NULL AUTO_INCREMENT,
     `coupon_name`              varchar(255)   NOT NULL,
@@ -11,9 +11,9 @@ CREATE TABLE `coupon`
     `issuable_end_date`        date           NOT NULL,
     `coupon_category`          enum('FASHION','HOME_APPLIANCES','FURNITURE','FOOD') NOT NULL,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE `membercoupon`
+CREATE TABLE `MemberCoupon`
 (
     `id`         bigint NOT NULL AUTO_INCREMENT,
     `coupon_id`  bigint NOT NULL,
@@ -22,4 +22,4 @@ CREATE TABLE `membercoupon`
     `issued_at`  datetime(6) NOT NULL,
     `expires_at` datetime(6) DEFAULT NULL,
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
