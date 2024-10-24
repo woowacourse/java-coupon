@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.event.annotation.AfterTestClass;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 @DisplayName("쿠폰 서비스 테스트")
@@ -27,6 +28,11 @@ class CouponServiceTest {
     @BeforeTestClass
     void setUpIssuer() {
         issuer = memberRepository.save(new Member("리비"));
+    }
+
+    @AfterTestClass
+    void tearDownIssuer() {
+        memberRepository.delete(issuer);
     }
 
     @AfterEach
