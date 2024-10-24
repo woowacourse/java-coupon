@@ -12,8 +12,10 @@ import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
@@ -42,5 +44,9 @@ public class MemberCoupon {
 
     public MemberCoupon(Member member, Coupon coupon, boolean isUsed, LocalDateTime issuedAt, LocalDateTime expiredAt) {
         this(null, member, coupon, isUsed, issuedAt, expiredAt);
+    }
+
+    public MemberCoupon(Member member, Coupon coupon, LocalDateTime expiredAt) {
+        this(null, member, coupon, false, LocalDateTime.now(), expiredAt);
     }
 }
