@@ -12,17 +12,17 @@ public class Discount {
 
     private int discountPrice;
     private DiscountType discountType;
-    private int minDiscountPercent;
-    private int maxDiscountPercent;
+    private int minDiscountRange;
+    private int maxDiscountRange;
 
-    public Discount(DiscountType discountType, int discountPrice, int minDiscountPercent, int maxDiscountPercent) {
+    public Discount(DiscountType discountType, int discountPrice, int minDiscountRange, int maxDiscountRange) {
         validateDiscountPriceRange(discountPrice);
         validateDiscountPriceUnit(discountPrice);
 
         this.discountType = discountType;
         this.discountPrice = discountPrice;
-        this.minDiscountPercent = minDiscountPercent;
-        this.maxDiscountPercent = maxDiscountPercent;
+        this.minDiscountRange = minDiscountRange;
+        this.maxDiscountRange = maxDiscountRange;
     }
 
     public Discount() {
@@ -45,7 +45,7 @@ public class Discount {
     }
 
     public void validateDiscountPolicy(int minOrderPrice) {
-        DiscountPolicy discountPolicy = discountType.createDiscountPolicy(minDiscountPercent, maxDiscountPercent);
+        DiscountPolicy discountPolicy = discountType.createDiscountPolicy(minDiscountRange, maxDiscountRange);
         boolean isApprove = discountPolicy.validate(minOrderPrice, discountPrice);
         if (!isApprove) {
             throw new DiscountPolicyValidationException(minOrderPrice, discountPrice);
