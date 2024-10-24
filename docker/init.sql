@@ -9,7 +9,7 @@ CREATE TABLE Coupon
     minimumOrderAmount INT         NOT NULL,
     discountAmount     INT         NOT NULL,
     discountRate       INT         NOT NULL,
-    category           VARCHAR(255),
+    category           VARCHAR(30),
     issueStartDate     DATETIME,
     issueEndDate       DATETIME
 );
