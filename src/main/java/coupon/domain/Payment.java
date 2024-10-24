@@ -13,9 +13,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "ORDERS")
+@Table(name = "PAYMENT")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class Payment {
 
     private static final long MINIMUM_DISCOUNT = 5000L;
     private static final long MAXIMUM_DISCOUNT = 10000L;
@@ -31,7 +31,7 @@ public class Order {
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
-    public Order(final long price, final Category category) {
+    public Payment(final long price, final Category category) {
         validatePrice(price);
         this.price = price;
         this.category = category;

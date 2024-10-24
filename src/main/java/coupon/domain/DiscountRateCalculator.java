@@ -5,16 +5,16 @@ public class DiscountRateCalculator {
     private static final int MINIMUM_DISCOUNT_RATE = 3;
     private static final int MAXIMUM_DISCOUNT_RATE = 20;
 
-    private final long orderPrice;
+    private final long paymentPrice;
     private final long discountAmount;
 
-    public DiscountRateCalculator(final long orderPrice, final long discountAmount) {
-        this.orderPrice = orderPrice;
+    public DiscountRateCalculator(final long paymentPrice, final long discountAmount) {
+        this.paymentPrice = paymentPrice;
         this.discountAmount = discountAmount;
     }
 
     public long calculate() {
-        return Math.floorDiv(orderPrice, discountAmount);
+        return Math.floorDiv(paymentPrice, discountAmount);
     }
 
     public void validateRate() {

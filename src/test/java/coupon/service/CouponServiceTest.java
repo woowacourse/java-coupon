@@ -13,7 +13,7 @@ import coupon.domain.Category;
 import coupon.domain.repository.CouponRepository;
 import coupon.service.dto.request.CouponCreateServiceRequest;
 import coupon.service.dto.request.CouponPublishServiceRequest;
-import coupon.service.dto.request.OrderCreateServiceRequest;
+import coupon.service.dto.request.PaymentCreateServiceRequest;
 import coupon.service.dto.response.CouponServiceResponse;
 
 @SpringBootTest
@@ -29,12 +29,12 @@ class CouponServiceTest {
     @DisplayName("쿠폰을 발급한다.")
     void publish_coupon() {
         // given
-        final long orderPrice = 10000L;
+        final long paymentPrice = 10000L;
         final long discountAmount = 1000L;
         final LocalDateTime startAt = LocalDateTime.of(2024, 1, 1, 1, 0);
         final LocalDateTime endAt = LocalDateTime.of(2024, 1, 1, 1, 1);
 
-        final CouponPublishServiceRequest request = publishCouponServiceRequest(orderPrice, discountAmount, startAt,
+        final CouponPublishServiceRequest request = publishCouponServiceRequest(paymentPrice, discountAmount, startAt,
                 endAt);
 
         // when
@@ -51,7 +51,7 @@ class CouponServiceTest {
                                                                     final long discountAmount,
                                                                     final LocalDateTime start,
                                                                     final LocalDateTime endAt) {
-        final OrderCreateServiceRequest orderRequest = new OrderCreateServiceRequest(
+        final PaymentCreateServiceRequest paymentRequest = new PaymentCreateServiceRequest(
                 price, Category.FASHION.name());
         final CouponCreateServiceRequest couponRequest = new CouponCreateServiceRequest(
                 "couponName",
@@ -59,6 +59,6 @@ class CouponServiceTest {
                 start,
                 endAt
         );
-        return new CouponPublishServiceRequest(orderRequest, couponRequest);
+        return new CouponPublishServiceRequest(paymentRequest, couponRequest);
     }
 }

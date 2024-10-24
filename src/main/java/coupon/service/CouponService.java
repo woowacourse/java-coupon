@@ -8,10 +8,10 @@ import coupon.domain.Coupon;
 import coupon.domain.CouponName;
 import coupon.domain.Discount;
 import coupon.domain.DiscountRateCalculator;
-import coupon.domain.Order;
+import coupon.domain.Payment;
 import coupon.domain.Period;
 import coupon.domain.repository.CouponRepository;
-import coupon.domain.repository.OrderRepository;
+import coupon.domain.repository.PaymentRepository;
 import coupon.service.dto.request.CouponPublishServiceRequest;
 import coupon.service.dto.response.CouponServiceResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +21,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CouponService {
 
-    private final OrderRepository orderRepository;
+    private final PaymentRepository paymentRepository;
     private final CouponRepository couponRepository;
 
     @Transactional
     public long publish(final CouponPublishServiceRequest request) {
         validateDiscountRate(request);
-        final Order order = createOrder(request);
-        final Coupon coupon = createCoupon(request, order);
-        orderRepository.save(order);
+        final Payment payment = createPayment(request);
+        final Coupon coupon = createCoupon(request, payment);
+        paymentRepository.save(payment);
         couponRepository.save(coupon);
         return coupon.getId();
     }
@@ -45,21 +45,21 @@ public class CouponService {
     }
 
     private void validateDiscountRate(final CouponPublishServiceRequest request) {
-        final DiscountRateCalculator calculator = new DiscountRateCalculator(request.orderPrice(),
+        final DiscountRateCalculator calculator = new DiscountRateCalculator(request.paymentPrice(),
                 request.discountAmount());
         calculator.validateRate();
     }
 
-    private Order createOrder(final CouponPublishServiceRequest request) {
-        final long price = request.orderPrice();
-        final Category category = Category.from(request.orderCategory());
-        return new Order(price, category);
+    private Payment createPayment(final CouponPublishServiceRequest request) {
+        final long price = request.paymentPrice();
+        final Category category = Category.from(request.paymentCategory());
+        return new Payment(price, category);
     }
 
-    private Coupon createCoupon(final CouponPublishServiceRequest request, final Order order) {
+    private Coupon createCoupon(final CouponPublishServiceRequest request, final Payment payment) {
         final CouponName couponName = new CouponName(request.couponName());
         final Discount discount = new Discount(request.discountAmount());
         final Period period = new Period(request.couponStart(), request.couponEnd());
-        return new Coupon(couponName, discount, period, order);
+        return new Coupon(couponName, discount, period, payment);
     }
 }

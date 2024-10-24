@@ -2,7 +2,7 @@ package coupon.service.dto.request;
 
 import java.time.LocalDateTime;
 
-public record CouponPublishServiceRequest(OrderCreateServiceRequest orderRequest,
+public record CouponPublishServiceRequest(PaymentCreateServiceRequest paymentRequest,
                                           CouponCreateServiceRequest couponRequest) {
 
     public String couponName() {
@@ -21,11 +21,11 @@ public record CouponPublishServiceRequest(OrderCreateServiceRequest orderRequest
         return couponRequest.end();
     }
 
-    public long orderPrice() {
-        return orderRequest.price();
+    public long paymentPrice() {
+        return paymentRequest.price();
     }
 
-    public String orderCategory() {
-        return orderRequest.category();
+    public String paymentCategory() {
+        return paymentRequest.category();
     }
 }

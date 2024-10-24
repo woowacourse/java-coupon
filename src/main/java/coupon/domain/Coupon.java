@@ -9,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import lombok.AccessLevel;
@@ -36,15 +36,15 @@ public class Coupon {
     @Embedded
     private Period period;
 
-    @OneToOne
-    @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
-    private Order order;
+    @ManyToOne
+    @JoinColumn(name = "PAYMENT_ID", referencedColumnName = "ID")
+    private Payment payment;
 
-    public Coupon(final CouponName name, final Discount discount, final Period period, final Order order) {
+    public Coupon(final CouponName name, final Discount discount, final Period period, final Payment payment) {
         this.name = name;
         this.discount = discount;
         this.period = period;
-        this.order = order;
+        this.payment = payment;
     }
 
     public String getCouponName() {
