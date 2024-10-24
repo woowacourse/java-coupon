@@ -13,11 +13,11 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
-            log.debug("Using Reader DataSource");
+            log.debug("Reader dataSource used");
             return READER_SERVER;
         }
 
-        log.debug("Using Writer DataSource");
+        log.debug("Writer dataSource used");
         return WRITER_SERVER;
     }
 }

@@ -1,7 +1,9 @@
 package coupon.domain;
 
 import java.util.Arrays;
+import lombok.Getter;
 
+@Getter
 public enum CouponCategory {
     FASHION("패션"),
     ELECTRONICS("가전"),

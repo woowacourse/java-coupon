@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -78,6 +79,7 @@ public class Coupon {
         validate();
     }
 
+    @JsonIgnore
     public boolean issueAvailable() {
         if (issuedStartDate == null || issuedEndDate == null) {
             return false;
@@ -98,17 +100,20 @@ public class Coupon {
         }
     }
 
+    @JsonIgnore
     @AssertTrue(message = "할인 금액은 500원 단위여야 합니다.")
     public boolean isValidDiscountAmountUnit() {
         return discountAmount.remainder(BigDecimal.valueOf(500)).compareTo(BigDecimal.ZERO) == 0;
     }
 
+    @JsonIgnore
     @AssertTrue(message = "할인율은 3% 이상 20% 이하여야 합니다.")
     public boolean isValidDiscountRate() {
         BigDecimal ratio = discountAmount.divide(minimumOrderAmount, 2, RoundingMode.DOWN);
         return ratio.compareTo(BigDecimal.valueOf(0.03)) >= 0 && ratio.compareTo(BigDecimal.valueOf(0.2)) <= 0;
     }
 
+    @JsonIgnore
     @AssertTrue(message = "발급 기간 시작일은 종료일보다 이전이거나 같아야 합니다.")
     public boolean isValidIssuedStartDate() {
         return !issuedStartDate.isAfter(issuedEndDate);
