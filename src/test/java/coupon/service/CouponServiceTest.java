@@ -2,7 +2,7 @@ package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ class CouponServiceTest {
 
     @Test
     void 복제지연테스트() {
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
         Coupon coupon = new Coupon("coupon", 1000, 10000, Category.FOOD, today, today);
         couponService.create(coupon);
         Coupon savedCoupon = couponService.getCoupon(coupon.getId());

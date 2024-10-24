@@ -1,12 +1,15 @@
 package coupon.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,29 +18,30 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "coupon")
 public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "discount_amount", nullable = false)
     private Integer discountAmount;
 
-    @Column(nullable = false)
+    @Column(name = "purchase_amount", nullable = false)
     private Integer purchaseAmount;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Category category;
 
-    @Column(nullable = false)
-    private LocalDate startDate;
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime startDate;
 
-    @Column(nullable = false)
-    private LocalDate endDate;
+    @Column(name = "end_date", nullable = false)
+    private LocalDateTime endDate;
 
     public Coupon(
             Long id,
@@ -45,8 +49,8 @@ public class Coupon {
             Integer discountAmount,
             Integer purchaseAmount,
             Category category,
-            LocalDate startDate,
-            LocalDate endDate
+            LocalDateTime startDate,
+            LocalDateTime endDate
     ) {
         validate(name, discountAmount, purchaseAmount, startDate, endDate);
         this.id = id;
@@ -63,8 +67,8 @@ public class Coupon {
             Integer discountAmount,
             Integer purchaseAmount,
             Category category,
-            LocalDate startDate,
-            LocalDate endDate
+            LocalDateTime startDate,
+            LocalDateTime endDate
     ) {
         this(null, name, discountAmount, purchaseAmount, category, startDate, endDate);
     }
@@ -73,8 +77,8 @@ public class Coupon {
             String name,
             Integer discountAmount,
             Integer purchaseAmount,
-            LocalDate startDate,
-            LocalDate endDate
+            LocalDateTime startDate,
+            LocalDateTime endDate
     ) {
         validateName(name);
         validateDiscountAmount(discountAmount);
@@ -111,7 +115,7 @@ public class Coupon {
         }
     }
 
-    private void validateIssuancePeriod(LocalDate startDate, LocalDate endDate) {
+    private void validateIssuancePeriod(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
         }
