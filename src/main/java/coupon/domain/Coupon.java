@@ -1,22 +1,17 @@
 package coupon.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "coupon")
 @Getter
+@EqualsAndHashCode(of = "id")
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
 
@@ -50,27 +45,12 @@ public class Coupon {
     private static final int MINIMUM_ORDER_AMOUNT_MIN = 5000;
     private static final int MINIMUM_ORDER_AMOUNT_MAX = 100000;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name", nullable = false, columnDefinition = "varchar(30)")
     private String name;
-
-    @Column(name = "discount_amount", columnDefinition = "int")
     private Integer discountAmount;
-
-    @Column(name = "minimum_order_amount", columnDefinition = "int")
     private Integer minimumOrderAmount;
-
-    @Column(name = "category", columnDefinition = "varchar(20)")
-    @Enumerated(value = EnumType.STRING)
     private CouponCategory category;
-
-    @Column(name = "issue_started_at", columnDefinition = "datetime")
     private LocalDateTime issueStartedAt;
-
-    @Column(name = "issue_ended_at", columnDefinition = "datetime")
     private LocalDateTime issueEndedAt;
 
     public Coupon(String name, Integer discountAmount, Integer minimumOrderAmount) {
@@ -79,7 +59,8 @@ public class Coupon {
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
         this.issueStartedAt = LocalDateTime.now().with(LocalTime.MIN);
-        this.issueEndedAt = LocalDateTime.now().plusMonths(EXPIRATION_MONTH - 1).with(LocalTime.MAX);
+        this.issueEndedAt = LocalDateTime.now().plusMonths(EXPIRATION_MONTH).minusDays(1).with(LocalTime.MAX)
+                .truncatedTo(ChronoUnit.MICROS);
     }
 
     private void validateCoupon(String name, Integer discountAmount, Integer minimumOrderAmount) {
