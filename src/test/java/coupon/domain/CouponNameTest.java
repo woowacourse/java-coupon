@@ -6,8 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class
-CouponNameTest {
+class CouponNameTest {
 
     @Test
     @DisplayName("쿠폰이름을 생성한다.")
