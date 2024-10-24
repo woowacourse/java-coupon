@@ -20,6 +20,12 @@ public class CouponService {
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long couponId) {
         return couponRepository.findById(couponId)
+                .orElseGet(() -> getCouponFromWriter(couponId));
+    }
+
+    @Transactional
+    public Coupon getCouponFromWriter(Long couponId) {
+        return couponRepository.findById(couponId)
                 .orElseThrow(IllegalArgumentException::new);
     }
 }
