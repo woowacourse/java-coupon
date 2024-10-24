@@ -42,13 +42,13 @@ public class Member {
         validateNameLength(name);
     }
 
-    private void validateNameNotBlank(String name) {
+    private void validateNameNotBlank(final String name) {
         if (name == null || name.isBlank()) {
             throw new CouponApplicationException("멤버의 이름은 비어있을 수 없습니다");
         }
     }
 
-    private void validateNameLength(String name) {
+    private void validateNameLength(final String name) {
         final var nameLength = name.length();
         if (MIN_NAME_LENGTH > nameLength || nameLength > MAX_NAME_LENGTH) {
             throw new CouponApplicationException(
