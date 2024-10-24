@@ -41,7 +41,7 @@ public class DataSourceConfig {
             @Qualifier("writerDataSource") DataSource writerDataSource,
             @Qualifier("readerDataSource") DataSource readerDataSource
     ) {
-        ReadOnlyDataSourceRouter router = new ReadOnlyDataSourceRouter();
+        DataSourceRouter router = new DataSourceRouter();
 
         Map<Object, Object> dataSources = new HashMap<>();
         dataSources.put(DataSourceType.WRITER, writerDataSource);
