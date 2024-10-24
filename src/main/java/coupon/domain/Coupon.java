@@ -31,8 +31,8 @@ public class Coupon {
     @Column(nullable = false)
     private int minimumOrderAmount;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(columnDefinition = "ENUM", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
     private Category category;
 
     @Column(nullable = false)
@@ -68,13 +68,7 @@ public class Coupon {
             LocalDateTime startDate,
             LocalDateTime endDate
     ) {
-        validateCoupon(name, discountAmount, minimumOrderAmount, category, startDate, endDate);
-        this.name = name;
-        this.discountAmount = discountAmount;
-        this.minimumOrderAmount = minimumOrderAmount;
-        this.category = category;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this(null, name, discountAmount, minimumOrderAmount, category, startDate, endDate);
     }
 
     private void validateCoupon(
