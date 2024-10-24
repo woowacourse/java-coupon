@@ -6,13 +6,12 @@ import coupon.coupon.CouponFixture;
 import coupon.member.domain.Member;
 import coupon.member.domain.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.test.context.event.annotation.AfterTestClass;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 @DisplayName("쿠폰 서비스 테스트")
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
@@ -25,19 +24,15 @@ class CouponServiceTest {
 
     private Member issuer;
 
-    @BeforeTestClass
-    void setUpIssuer() {
+    @BeforeEach
+    void setUp() {
         issuer = memberRepository.save(new Member("리비"));
-    }
-
-    @AfterTestClass
-    void tearDownIssuer() {
-        memberRepository.delete(issuer);
     }
 
     @AfterEach
     void tearDown() {
         couponService.deleteAll();
+        memberRepository.delete(issuer);
     }
 
     @DisplayName("쿠폰을 생성하고 저장할 수 있다")
