@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class CouponService {
     private final CouponRepository couponRepository;
 
     @CachePut(key = "#result.id", value = "coupon")
+    @Transactional
     public Coupon create(CouponCreateRequest request) {
         Coupon coupon = new Coupon(
                 request.name(),
@@ -29,6 +31,7 @@ public class CouponService {
     }
 
     @Cacheable(key = "#id", value = "coupon")
+    @Transactional(readOnly = true)
     public Coupon read(long id) {
         return couponRepository.findById(id)
                 .orElseThrow(() -> new CouponException("coupon with id " + id + " not found"));
