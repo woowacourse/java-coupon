@@ -18,6 +18,16 @@ import java.util.Objects;
 @Entity
 public class Coupon {
 
+    private static final int MAX_COUPON_NAME = 30;
+    private static final int MIN_ORDER_AMOUNT = 5000;
+    private static final int MAX_ORDER_AMOUNT = 100000;
+    private static final int MIN_DISCOUNT_AMOUNT = 1000;
+    private static final int MAX_DISCOUNT_AMOUNT = 10000;
+    private static final int DISCOUNT_AMOUNT_UNIT = 500;
+    private static final int MIN_DISCOUNT_RATE = 3;
+    private static final int MAX_DISCOUNT_RATE = 20;
+    private static final int PERCENT_FACTOR = 100;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -59,22 +69,22 @@ public class Coupon {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("쿠폰 이름은 필수입니다.");
         }
-        if (name.length() > 30) {
+        if (name.length() > MAX_COUPON_NAME) {
             throw new IllegalArgumentException("쿠폰 이름은 30자 이하여야 합니다.");
         }
     }
 
     private void validateMinimumOrderAmount(int minimumOrderAmount) {
-        if (minimumOrderAmount < 5000 || minimumOrderAmount > 100000) {
+        if (minimumOrderAmount < MIN_ORDER_AMOUNT || minimumOrderAmount > MAX_ORDER_AMOUNT) {
             throw new IllegalArgumentException("최소 주문 금액은 5,000원 이상, 100,000원 이하여야 합니다.");
         }
     }
 
     private void validateDiscountAmount(int discountAmount) {
-        if (discountAmount < 1000 || discountAmount > 10000) {
+        if (discountAmount < MIN_DISCOUNT_AMOUNT || discountAmount > MAX_DISCOUNT_AMOUNT) {
             throw new IllegalArgumentException("할인 금액은 1,000원 이상, 10,000원 이하여야 합니다.");
         }
-        if (discountAmount % 500 != 0) {
+        if (discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
             throw new IllegalArgumentException("할인 금액은 500원 단위로 설정해야 합니다.");
         }
     }
@@ -82,13 +92,13 @@ public class Coupon {
 
     private void validateDiscountRate(int discountAmount, int minimumOrderAmount) {
         int discountRate = calculateDiscountRate(discountAmount, minimumOrderAmount);
-        if (discountRate < 3 || discountRate > 20) {
+        if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
             throw new IllegalArgumentException("할인율은 3% 이상, 20% 이하여야 합니다.");
         }
     }
 
     private int calculateDiscountRate(int discountAmount, int minimumOrderAmount) {
-        return (discountAmount * 100) / minimumOrderAmount;
+        return (discountAmount * PERCENT_FACTOR) / minimumOrderAmount;
     }
 
     private void validateIssuePeriod(LocalDateTime issueStartDate, LocalDateTime issueEndDate) {
