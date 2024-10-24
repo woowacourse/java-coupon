@@ -8,18 +8,33 @@ import coupon.CouponException;
 import coupon.dto.CouponCreateRequest;
 import coupon.entity.Category;
 import coupon.entity.Coupon;
+import coupon.repository.CouponRepository;
 import java.time.LocalDate;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.cache.CacheManager;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class CouponServiceTest {
 
     @Autowired
     private CouponService couponService;
+
+    @Autowired
+    private CouponRepository couponRepository;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @BeforeEach
+    void setUp() {
+        couponRepository.deleteAll();
+        cacheManager.getCache("coupon").clear();
+    }
 
     @DisplayName("입력으로 쿠폰을 생성하고 찾는다.")
     @Test

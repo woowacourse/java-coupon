@@ -1,5 +1,6 @@
 package coupon.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -19,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Coupon {
@@ -102,5 +104,9 @@ public class Coupon {
         if (start.isAfter(end)) {
             throw new CouponException("Start date cannot be after end date");
         }
+    }
+
+    public boolean isExpired() {
+        return LocalDate.now().isAfter(end);
     }
 }
