@@ -34,13 +34,18 @@ public class DataSourceConfig {
         DataSource writeDataSource = writerDataSource();
         DataSource readDataSource = readerDataSource();
 
-        Map<Object, Object> dataSourceMap = new HashMap<>();
-        dataSourceMap.put(DataSourceType.WRITER, writeDataSource);
-        dataSourceMap.put(DataSourceType.READER, readDataSource);
+        Map<Object, Object> dataSourceMap = initializeDataSource(writeDataSource, readDataSource);
         dataSourceRouter.setTargetDataSources(dataSourceMap);
         dataSourceRouter.setDefaultTargetDataSource(writeDataSource);
 
         return dataSourceRouter;
+    }
+
+    private Map<Object, Object> initializeDataSource(DataSource writeDataSource, DataSource readDataSource) {
+        Map<Object, Object> dataSourceMap = new HashMap<>();
+        dataSourceMap.put(DataSourceType.WRITER, writeDataSource);
+        dataSourceMap.put(DataSourceType.READER, readDataSource);
+        return dataSourceMap;
     }
 
     @Bean
