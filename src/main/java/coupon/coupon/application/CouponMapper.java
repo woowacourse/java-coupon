@@ -1,6 +1,5 @@
 package coupon.coupon.application;
 
-import java.util.List;
 import coupon.common.domain.Money;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponCategory;
@@ -8,12 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CouponMapper {
-
-    public List<CouponResponse> toResponses(List<Coupon> coupons) {
-        return coupons.stream()
-                .map(this::toResponse)
-                .toList();
-    }
 
     public CouponResponse toResponse(Coupon coupon) {
         return new CouponResponse(

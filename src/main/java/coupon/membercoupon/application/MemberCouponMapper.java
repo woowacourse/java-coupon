@@ -2,31 +2,26 @@ package coupon.membercoupon.application;
 
 import java.util.List;
 import java.util.Map;
-import coupon.coupon.application.CouponMapper;
-import coupon.coupon.domain.Coupon;
+import coupon.coupon.application.CouponResponse;
 import coupon.membercoupon.domain.MemberCoupon;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class MemberCouponMapper {
-
-    private final CouponMapper couponMapper;
 
     public List<MemberCouponWithCouponResponse> toWithCouponResponses(
             List<MemberCoupon> memberCoupons,
-            Map<Long, Coupon> couponMap
+            Map<Long, CouponResponse> couponMap
     ) {
         return memberCoupons.stream()
                 .map(memberCoupon -> {
-                    Coupon coupon = couponMap.get(memberCoupon.getCouponId());
-                    return toWithCouponResponse(memberCoupon, coupon);
+                    CouponResponse couponResponse = couponMap.get(memberCoupon.getCouponId());
+                    return toWithCouponResponse(memberCoupon, couponResponse);
                 })
                 .toList();
     }
 
-    public MemberCouponWithCouponResponse toWithCouponResponse(MemberCoupon memberCoupon, Coupon coupon) {
+    public MemberCouponWithCouponResponse toWithCouponResponse(MemberCoupon memberCoupon, CouponResponse couponResponse) {
         return new MemberCouponWithCouponResponse(
                 memberCoupon.getId(),
                 memberCoupon.getCouponId(),
@@ -34,7 +29,7 @@ public class MemberCouponMapper {
                 memberCoupon.isUsed(),
                 memberCoupon.getIssuedAt(),
                 memberCoupon.getExpiresAt(),
-                couponMapper.toResponse(coupon)
+                couponResponse
         );
     }
 }
