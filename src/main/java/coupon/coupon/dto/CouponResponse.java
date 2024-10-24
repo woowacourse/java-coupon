@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public record CouponResponse(
         Long id,
         String name,
+        Long issuerId,
         BigDecimal discountAmount,
         BigDecimal minimumOrderAmount,
         Category category,
@@ -18,6 +19,7 @@ public record CouponResponse(
         return new CouponResponse(
                 coupon.getId(),
                 coupon.getName(),
+                coupon.getIssuer().getId(),
                 coupon.getDiscountAmount(),
                 coupon.getMinimumOrderAmount(),
                 coupon.getCategory(),

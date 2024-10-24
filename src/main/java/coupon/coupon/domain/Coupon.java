@@ -2,13 +2,17 @@ package coupon.coupon.domain;
 
 import coupon.BaseEntity;
 import coupon.coupon.exception.CouponApplicationException;
+import coupon.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -40,6 +44,10 @@ public class Coupon extends BaseEntity {
     @Column(name = "name", nullable = false, length = MAX_NAME_LENGTH)
     private String name;
 
+    @JoinColumn(name = "issuer", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member issuer;
+
     @Column(name = "discount_amount")
     private BigDecimal discountAmount;
 
@@ -59,6 +67,7 @@ public class Coupon extends BaseEntity {
     public Coupon(
             final Long id,
             final String name,
+            final Member issuer,
             final BigDecimal discountAmount,
             final BigDecimal minimumOrderAmount,
             final Category category,
@@ -68,6 +77,7 @@ public class Coupon extends BaseEntity {
         validate(name, discountAmount, minimumOrderAmount, category, issuedAt, expiredAt);
         this.id = id;
         this.name = name;
+        this.issuer = issuer;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
         this.category = category;
@@ -77,17 +87,19 @@ public class Coupon extends BaseEntity {
 
     public Coupon(
             final String name,
+            final Member issuer,
             final BigDecimal discountAmount,
             final BigDecimal minimumOrderAmount,
             final Category category,
             final LocalDateTime issuedAt,
             final LocalDateTime expiredAt
     ) {
-        this(null, name, discountAmount, minimumOrderAmount, category, issuedAt, expiredAt);
+        this(null, name, issuer, discountAmount, minimumOrderAmount, category, issuedAt, expiredAt);
     }
 
     public Coupon(
             final String name,
+            final Member issuer,
             final int discountAmount,
             final int minimumOrderAmount,
             final Category category,
@@ -97,6 +109,7 @@ public class Coupon extends BaseEntity {
         this(
                 null,
                 name,
+                issuer,
                 BigDecimal.valueOf(discountAmount),
                 BigDecimal.valueOf(minimumOrderAmount),
                 category,

@@ -4,6 +4,8 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
 import coupon.coupon.dto.CouponCreateRequest;
 import coupon.coupon.exception.CouponApplicationException;
+import coupon.member.domain.Member;
+import coupon.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public Coupon getCoupon(final Long couponId) {
@@ -22,7 +25,13 @@ public class CouponService {
 
     @Transactional
     public Coupon createCoupon(final CouponCreateRequest couponRequest) {
-        return couponRepository.save(couponRequest.toCouponEntity());
+        final var issuer = findIssuer(couponRequest.issuerId());
+        return couponRepository.save(couponRequest.toCouponEntity(issuer));
+    }
+
+    private Member findIssuer(final Long issuerId) {
+        return memberRepository.findById(issuerId)
+                .orElseThrow(() -> new CouponApplicationException("쿠폰 발급자 정보를 찾을 수 없습니다"));
     }
 
     @Transactional

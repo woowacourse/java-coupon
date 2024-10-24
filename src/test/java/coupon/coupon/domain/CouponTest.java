@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.coupon.exception.CouponApplicationException;
+import coupon.member.domain.Member;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ class CouponTest {
     private static final Category VALID_CATEGORY = Category.FASHION;
     private static final LocalDateTime VALID_ISSUED_AT = LocalDateTime.now();
     private static final LocalDateTime VALID_EXPIRED_AT = LocalDateTime.now().plusDays(3);
+    private static final Member VALID_ISSUER = new Member("리비");
 
     @DisplayName("유효한 쿠폰 생성")
     @Test
@@ -26,6 +28,7 @@ class CouponTest {
         assertThatCode(
                 () -> new Coupon(
                         VALID_COUPON_NAME,
+                        VALID_ISSUER,
                         VALID_DISCOUNT_AMOUNT,
                         VALID_MIN_ORDER_AMOUNT,
                         VALID_CATEGORY,
@@ -41,6 +44,7 @@ class CouponTest {
         assertThatThrownBy(
                 () -> new Coupon(
                         null,
+                        VALID_ISSUER,
                         VALID_DISCOUNT_AMOUNT,
                         VALID_MIN_ORDER_AMOUNT,
                         VALID_CATEGORY,
@@ -59,6 +63,7 @@ class CouponTest {
         assertThatThrownBy(
                 () -> new Coupon(
                         invalidCouponName,
+                        VALID_ISSUER,
                         VALID_DISCOUNT_AMOUNT,
                         VALID_MIN_ORDER_AMOUNT,
                         VALID_CATEGORY,
@@ -76,6 +81,7 @@ class CouponTest {
         assertThatThrownBy(
                 () -> new Coupon(
                         length31CouponName,
+                        VALID_ISSUER,
                         VALID_DISCOUNT_AMOUNT,
                         VALID_MIN_ORDER_AMOUNT,
                         VALID_CATEGORY,
@@ -93,6 +99,7 @@ class CouponTest {
         assertThatThrownBy(
                 () -> new Coupon(
                         VALID_COUPON_NAME,
+                        VALID_ISSUER,
                         invalidDiscountAmount,
                         VALID_MIN_ORDER_AMOUNT,
                         VALID_CATEGORY,
@@ -110,6 +117,7 @@ class CouponTest {
         assertThatThrownBy(
                 () -> new Coupon(
                         VALID_COUPON_NAME,
+                        VALID_ISSUER,
                         invalidDiscountAmount,
                         VALID_MIN_ORDER_AMOUNT,
                         VALID_CATEGORY,
@@ -131,6 +139,7 @@ class CouponTest {
         assertThatThrownBy(
                 () -> new Coupon(
                         VALID_COUPON_NAME,
+                        VALID_ISSUER,
                         discountAmount,
                         minimumOrderAmount,
                         VALID_CATEGORY,
@@ -151,6 +160,7 @@ class CouponTest {
         assertThatThrownBy(
                 () -> new Coupon(
                         VALID_COUPON_NAME,
+                        VALID_ISSUER,
                         discountAmount,
                         minimumOrderAmount,
                         VALID_CATEGORY,
@@ -169,6 +179,7 @@ class CouponTest {
         assertThatThrownBy(
                 () -> new Coupon(
                         VALID_COUPON_NAME,
+                        VALID_ISSUER,
                         VALID_DISCOUNT_AMOUNT,
                         VALID_MIN_ORDER_AMOUNT,
                         VALID_CATEGORY,

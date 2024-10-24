@@ -3,6 +3,7 @@ package coupon.coupon;
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.dto.CouponCreateRequest;
+import coupon.member.domain.Member;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -46,11 +47,18 @@ public enum CouponFixture {
         this.expiredAt = expiredAt;
     }
 
-    public Coupon getCoupon() {
-        return new Coupon(id, name, discountAmount, minimumOrderAmount, category, issuedAt, expiredAt);
+    public Coupon getCoupon(final Member issuer) {
+        return new Coupon(id, name, issuer, discountAmount, minimumOrderAmount, category, issuedAt, expiredAt);
     }
 
-    public CouponCreateRequest getCouponCreateRequest() {
-        return new CouponCreateRequest(name, discountAmount, minimumOrderAmount, category.name(), issuedAt, expiredAt);
+    public CouponCreateRequest getCouponCreateRequest(Member issuer) {
+        return new CouponCreateRequest(
+                name,
+                issuer.getId(),
+                discountAmount,
+                minimumOrderAmount,
+                category.name(),
+                issuedAt, expiredAt
+        );
     }
 }
