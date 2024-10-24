@@ -1,7 +1,7 @@
 package coupon.coupon.domain;
 
 import coupon.BaseEntity;
-import coupon.coupon.exception.CouponException;
+import coupon.coupon.exception.CouponApplicationException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -127,14 +127,14 @@ public class Coupon extends BaseEntity {
 
     private void validateNameNotBlank(final String name) {
         if (name == null || name.isBlank()) {
-            throw new CouponException("쿠폰의 이름은 비어있을 수 없습니다");
+            throw new CouponApplicationException("쿠폰의 이름은 비어있을 수 없습니다");
         }
     }
 
     private void validateNameLength(final String name) {
         final var nameLength = name.length();
         if (nameLength < MIN_NAME_LENGTH || nameLength > MAX_NAME_LENGTH) {
-            throw new CouponException(
+            throw new CouponApplicationException(
                     "쿠폰 이름의 길이는 " + MIN_NAME_LENGTH + "자 이상, " + MAX_NAME_LENGTH + "자 이하여야 합니다: " + nameLength
             );
         }
@@ -149,21 +149,22 @@ public class Coupon extends BaseEntity {
         final var isDiscountAmountLowerThanMinimumAmount = discountAmount.compareTo(MIN_DISCOUNT_AMOUNT) < 0;
         final var isDiscountAmountGreaterThanMaximumAmount = discountAmount.compareTo(MAX_DISCOUNT_AMOUNT) > 0;
         if (isDiscountAmountLowerThanMinimumAmount || isDiscountAmountGreaterThanMaximumAmount) {
-            throw new CouponException("쿠폰 할인 금액은 " + MIN_DISCOUNT_AMOUNT + "이상, " + MAX_DISCOUNT_AMOUNT + "이하여야 합니다.");
+            throw new CouponApplicationException(
+                    "쿠폰 할인 금액은 " + MIN_DISCOUNT_AMOUNT + "이상, " + MAX_DISCOUNT_AMOUNT + "이하여야 합니다.");
         }
     }
 
     private void validateDiscountAmountUnit(final BigDecimal discountAmount) {
         final var remainder = discountAmount.remainder(DISCOUNT_UNIT);
         if (!remainder.equals(BigDecimal.ZERO)) {
-            throw new CouponException("쿠폰 할인 금액은 " + DISCOUNT_UNIT + "으로 나누어 떨어져야 합니다.");
+            throw new CouponApplicationException("쿠폰 할인 금액은 " + DISCOUNT_UNIT + "으로 나누어 떨어져야 합니다.");
         }
     }
 
     private void validateDiscountRatio(final BigDecimal discountAmount, final BigDecimal minimumOrderAmount) {
         final var discountRatio = discountAmount.divide(minimumOrderAmount, 2, RoundingMode.HALF_UP).doubleValue();
         if (MIN_DISCOUNT_RATIO > discountRatio || discountRatio > MAX_DISCOUNT_RATIO) {
-            throw new CouponException(
+            throw new CouponApplicationException(
                     "쿠폰 할인율은 " + MIN_DISCOUNT_RATIO + " 이상, " + MAX_DISCOUNT_RATIO + "이하여야 합니다: " + discountRatio
             );
         }
@@ -173,7 +174,7 @@ public class Coupon extends BaseEntity {
         final var isMinimumOrderAmountLowerThanMinimumAmount = minimumOrderAmount.compareTo(MIN_ORDER_AMOUNT) < 0;
         final var isMaximumOrderAmountGreaterThanMaximumAmount = minimumOrderAmount.compareTo(MAX_ORDER_AMOUNT) > 0;
         if (isMinimumOrderAmountLowerThanMinimumAmount || isMaximumOrderAmountGreaterThanMaximumAmount) {
-            throw new CouponException(
+            throw new CouponApplicationException(
                     "최소 주문 금액은 " + MIN_ORDER_AMOUNT + " 이상, " + MAX_ORDER_AMOUNT + " 이하여야 합니다: " + minimumOrderAmount
             );
         }
@@ -181,7 +182,7 @@ public class Coupon extends BaseEntity {
 
     private void validateExpirationPeriod(LocalDateTime issuedAt, LocalDateTime expiredAt) {
         if (issuedAt.isAfter(expiredAt)) {
-            throw new CouponException("쿠폰 발급 시간은 만료 시간보다 과거일 수 없습니다");
+            throw new CouponApplicationException("쿠폰 발급 시간은 만료 시간보다 과거일 수 없습니다");
         }
     }
 }

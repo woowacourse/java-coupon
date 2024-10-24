@@ -3,7 +3,7 @@ package coupon.coupon.service;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
 import coupon.coupon.dto.CouponCreateRequest;
-import coupon.coupon.exception.CouponException;
+import coupon.coupon.exception.CouponApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ public class CouponService {
     @Transactional
     public Coupon getCoupon(final Long couponId) {
         return couponRepository.findById(couponId)
-                .orElseThrow(() -> new CouponException("쿠폰이 존재하지 않습니다."));
+                .orElseThrow(() -> new CouponApplicationException("쿠폰이 존재하지 않습니다."));
     }
 
     @Transactional

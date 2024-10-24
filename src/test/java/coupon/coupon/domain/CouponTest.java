@@ -3,7 +3,7 @@ package coupon.coupon.domain;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import coupon.coupon.exception.CouponException;
+import coupon.coupon.exception.CouponApplicationException;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class CouponTest {
                         VALID_ISSUED_AT,
                         VALID_EXPIRED_AT
                 ))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CouponApplicationException.class)
                 .hasMessage("쿠폰의 이름은 비어있을 수 없습니다");
 
     }
@@ -65,7 +65,7 @@ class CouponTest {
                         VALID_ISSUED_AT,
                         VALID_EXPIRED_AT
                 ))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CouponApplicationException.class)
                 .hasMessage("쿠폰의 이름은 비어있을 수 없습니다");
     }
 
@@ -82,7 +82,7 @@ class CouponTest {
                         VALID_ISSUED_AT,
                         VALID_EXPIRED_AT
                 ))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CouponApplicationException.class)
                 .hasMessage("쿠폰 이름의 길이는 1자 이상, 30자 이하여야 합니다: 31");
     }
 
@@ -99,7 +99,7 @@ class CouponTest {
                         VALID_ISSUED_AT,
                         VALID_EXPIRED_AT
                 ))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CouponApplicationException.class)
                 .hasMessage("쿠폰 할인 금액은 1000이상, 10000이하여야 합니다.");
     }
 
@@ -116,7 +116,7 @@ class CouponTest {
                         VALID_ISSUED_AT,
                         VALID_EXPIRED_AT
                 ))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CouponApplicationException.class)
                 .hasMessage("쿠폰 할인 금액은 500으로 나누어 떨어져야 합니다.");
     }
 
@@ -136,7 +136,7 @@ class CouponTest {
                         VALID_CATEGORY,
                         VALID_ISSUED_AT,
                         VALID_EXPIRED_AT
-                )).isInstanceOf(CouponException.class)
+                )).isInstanceOf(CouponApplicationException.class)
                 .hasMessageStartingWith("쿠폰 할인율은 0.03 이상, 0.2이하여야 합니다");
     }
 
@@ -157,7 +157,7 @@ class CouponTest {
                         VALID_ISSUED_AT,
                         VALID_EXPIRED_AT
                 ))
-                .isInstanceOf(CouponException.class)
+                .isInstanceOf(CouponApplicationException.class)
                 .hasMessageStartingWith("최소 주문 금액은 5000 이상, 100000 이하여야 합니다");
     }
 
@@ -175,6 +175,6 @@ class CouponTest {
                         issuedAt,
                         invalidExpiredAt
                 )
-        ).isInstanceOf(CouponException.class);
+        ).isInstanceOf(CouponApplicationException.class);
     }
 }
