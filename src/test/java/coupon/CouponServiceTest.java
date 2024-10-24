@@ -59,6 +59,25 @@ public class CouponServiceTest extends ServiceTestSupports {
                 .doesNotThrowAnyException();
     }
 
+    @DisplayName("쿠폰을 조회할 때 source DB에 존재하지 않고 캐시에도 존재하지 않으면 replica DB에서 조회 후 캐싱한다.")
+    @Test
+    void getCoupon3() {
+        long id = 1L;
+        long startTime = System.currentTimeMillis();
+        Coupon coupon = new Coupon("coupon", 1000, Category.APPLIANCES, 10000);
+        couponService.create(coupon);
+        redisTemplate.delete("coupon:" + id);
+
+        Coupon couponFromReplica = couponService.getCoupon(id);
+
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        int replicaLagMilliseconds = 1000;
+
+        assertThat(duration).isLessThan(replicaLagMilliseconds);
+        assertThat(couponFromReplica).isNotNull();
+    }
+
     @Test
     void 복제지연테스트() {
         Coupon coupon = new Coupon("coupon", 1000, Category.APPLIANCES, 10000);

@@ -13,6 +13,7 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
     private final RedisCacheService redisCacheService;
+    private final NewTransactionExecutor<Coupon> newTransactionExecutor;
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) {
@@ -30,7 +31,8 @@ public class CouponService {
 
     private Coupon getCouponFromDB(Long id) {
         log.info("Coupon with ID {} not found in cache. Fetching from DB.", id);
-        Coupon findCoupon = couponRepository.findById(id).orElseThrow();
+        Coupon findCoupon = couponRepository.findById(id)
+                .orElseGet(() -> getCouponWithNewTransaction(id));
 
         try {
             redisCacheService.cache(findCoupon);
@@ -39,6 +41,10 @@ public class CouponService {
         }
 
         return findCoupon;
+    }
+
+    private Coupon getCouponWithNewTransaction(Long id) {
+        return newTransactionExecutor.execute(() -> couponRepository.findById(id).orElseThrow());
     }
 
     @Transactional
