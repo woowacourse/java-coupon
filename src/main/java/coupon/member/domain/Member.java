@@ -1,4 +1,4 @@
-package coupon.member;
+package coupon.member.domain;
 
 import coupon.coupon.exception.CouponApplicationException;
 import jakarta.persistence.Column;
