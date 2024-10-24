@@ -11,3 +11,13 @@ create table if not exists coupon
     start         DATE         NOT NULL,
     end           DATE         NOT NULL
 );
+
+create table if not exists member_coupon
+(
+    id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+    coupon_id BIGINT  NOT NULL,
+    member_id BIGINT  NOT NULL,
+    used      BOOLEAN NOT NULL,
+    start     DATE    NOT NULL,
+    end       DATE    NOT NULL
+);

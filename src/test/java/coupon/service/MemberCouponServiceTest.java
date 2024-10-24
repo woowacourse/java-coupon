@@ -37,7 +37,7 @@ public class MemberCouponServiceTest {
                 50000,
                 Category.FOOD,
                 LocalDate.of(2024, 10, 11),
-                LocalDate.of(2024, 10, 15)
+                LocalDate.of(2025, 10, 30)
         ));
         CouponIssueRequest couponIssueRequest = new CouponIssueRequest(coupon.getId(), 1L, LocalDate.of(2024, 10, 5));
 

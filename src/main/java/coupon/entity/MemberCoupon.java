@@ -14,7 +14,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "member_coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class MemberCoupon {
