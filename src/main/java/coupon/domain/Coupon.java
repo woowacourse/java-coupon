@@ -31,8 +31,8 @@ public class Coupon {
     @Column(nullable = false)
     private int minimumOrderAmount;
 
+    @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
     private Category category;
 
     @Column(nullable = false)
