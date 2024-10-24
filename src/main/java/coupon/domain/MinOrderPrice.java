@@ -20,7 +20,7 @@ public class MinOrderPrice {
 
     private void validateRange(int price) {
         if (price < MIN_VALUE || price > MAX_VALUE) {
-            throw new IllegalArgumentException("최소 주문 금액은 5,000원 이상 100,000원 이하여야 합니다.");
+            throw new IllegalArgumentException(String.format("최소 주문 금액은 %d원 이상 %d원 이하여야 합니다.", MIN_VALUE, MAX_VALUE));
         }
     }
 

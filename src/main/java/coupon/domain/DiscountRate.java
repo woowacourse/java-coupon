@@ -25,7 +25,7 @@ public class DiscountRate {
 
     private void validateRange(int discountRate) {
         if (discountRate < MIN_RATE || discountRate > MAX_RATE) {
-            throw new IllegalArgumentException("할인율은 3% 이상 20% 이하여야 합니다.");
+            throw new IllegalArgumentException(String.format("할인율은 %d%% 이상 %d%% 이하여야 합니다.", MIN_RATE, MAX_RATE));
         }
     }
 

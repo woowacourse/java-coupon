@@ -21,7 +21,7 @@ public class Name {
 
     private void validateLength(String trimName) {
         if (trimName.length() < MIN_LENGTH || trimName.length() > MAX_LENGTH) {
-            throw new IllegalArgumentException("쿠폰의 이름은 공백을 제외하고 1자 이상 30자 이하여야 합니다.");
+            throw new IllegalArgumentException(String.format("쿠폰의 이름은 공백을 제외하고 %d자 이상 %d자 이하여야 합니다.", MIN_LENGTH, MAX_LENGTH));
         }
     }
 

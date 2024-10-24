@@ -22,13 +22,13 @@ public class DiscountAmount {
 
     private void validateRange(int amount) {
         if (amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
-            throw new IllegalArgumentException("할인 금액은 1,000원 이상 10,000원 이하여야 합니다.");
+            throw new IllegalArgumentException(String.format("할인 금액은 %d원 이상 %d원 이하여야 합니다.", MIN_AMOUNT, MAX_AMOUNT));
         }
     }
 
     private void validateUnit(int amount) {
         if (amount % AMOUNT_UNIT != 0) {
-            throw new IllegalArgumentException("할인 금액은 500원 단위로 설정할 수 있습니다.");
+            throw new IllegalArgumentException(String.format("할인 금액은 %d원 단위로 설정할 수 있습니다.", AMOUNT_UNIT));
         }
     }
 
