@@ -30,7 +30,7 @@ class CacheServiceTest {
     void getCouponWithCacheTest() throws Exception {
         // given
         Coupon coupon = couponService.create(Fixture.COUPON);
-        waitForSeconds(2);
+        waitForSeconds(3);
         couponService.getCoupon(coupon.getId());
 
         databaseCleaner.execute();
