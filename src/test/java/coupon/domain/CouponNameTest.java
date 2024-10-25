@@ -31,7 +31,7 @@ class CouponNameTest {
     @DisplayName("쿠폰 이름이 30글자를 넘으면 예외를 발생시킨다.")
     @Test
     void throwsWhenTooLong() {
-        String name = "jazz".repeat(10);
+        String name = "j".repeat(31);
 
         assertThatThrownBy(() -> new CouponName(name))
                 .isInstanceOf(IllegalArgumentException.class)
