@@ -3,18 +3,19 @@ package coupon;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.AfterEach;
+import coupon.cleaner.DatabaseCleanerExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
+@ExtendWith(DatabaseCleanerExtension.class)
 @SpringBootTest
 class RedisCacheServiceTest {
 
@@ -36,12 +37,6 @@ class RedisCacheServiceTest {
     @BeforeEach
     void setUp() {
         testCoupon = new Coupon("Test Coupon", 1000, Category.FASHION, 5000);
-    }
-
-    @AfterEach
-    void tearDown() {
-        Set<String> keys = redisTemplate.keys("coupon:*");
-        redisTemplate.delete(keys);
     }
 
     @DisplayName("캐싱된 쿠폰이 존재하면 가져온다.")
@@ -90,17 +85,32 @@ class RedisCacheServiceTest {
         assertThat(couponFromCache.isEmpty()).isTrue();
     }
 
-    @DisplayName("캐시에 저장되어 있는 쿠폰을 조회하여 캐시 히트할 경우 TTL을 10초로 연장한다.")
+    @DisplayName("캐시에 저장되어 있는 쿠폰을 조회하여 캐시 히트할 경우 TTL을 60초로 연장한다.")
     @Test
     void extendCacheTTL() {
         redisCacheService.extendCacheTTL(testCoupon);
 
         String redisKey = COUPON_CACHE_KEY_PREFIX + testCoupon.getId();
         Long ttl = redisTemplate.getExpire(redisKey, TimeUnit.SECONDS);
-        System.out.println("ttl = " + ttl);
         Optional<Coupon> couponFromCache = redisCacheService.getCouponFromCache(testCoupon.getId());
 
         assertThat(ttl).isBetween(EXTEND_TIME_TO_LIVE_SECONDS - 1, EXTEND_TIME_TO_LIVE_SECONDS);
         assertThat(couponFromCache).isNotEmpty();
+    }
+
+    @DisplayName("쿠폰의 잔여 TTL이 10초 초과면, 캐시 메모리에서 조회되어도 다시 연장하지 않는다.")
+    @Test
+    void doNotExtendCacheTTLWhenCouponTtlExceeded10Seconds() {
+        // 10초 초과인 TTL 쿠폰을 캐싱해두고, 캐시 히트되어 CouponService에서 캐싱 요청시
+        // 연장하지 않고 그대로 메서드를 종료한다.
+        String redisKey = COUPON_CACHE_KEY_PREFIX + testCoupon.getId();
+
+        redisCacheService.extendCacheTTL(testCoupon);
+        Long firstTtl = redisTemplate.getExpire(redisKey, TimeUnit.MICROSECONDS);
+
+        redisCacheService.extendCacheTTL(testCoupon);
+        Long secondTtl = redisTemplate.getExpire(redisKey, TimeUnit.MICROSECONDS);
+
+        assertThat(firstTtl).isGreaterThan(secondTtl);
     }
 }

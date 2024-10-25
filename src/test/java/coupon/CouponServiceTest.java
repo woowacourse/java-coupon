@@ -4,12 +4,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import java.util.NoSuchElementException;
+import coupon.cleaner.DatabaseCleanerExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
-public class CouponServiceTest extends ServiceTestSupports {
+@ExtendWith(DatabaseCleanerExtension.class)
+@SpringBootTest
+public class CouponServiceTest {
 
     @Autowired
     private CouponService couponService;
@@ -44,7 +49,6 @@ public class CouponServiceTest extends ServiceTestSupports {
     @Test
     void getCoupon() {
         long targetId = 1L;
-        redisTemplate.delete("coupon:" + targetId);
         assertThatCode(() -> couponService.getCoupon(targetId))
                 .isInstanceOf(NoSuchElementException.class);
     }

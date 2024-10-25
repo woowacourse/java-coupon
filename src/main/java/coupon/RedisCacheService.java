@@ -72,6 +72,11 @@ public class RedisCacheService {
     public void extendCacheTTL(Coupon coupon) {
         Long id = coupon.getId();
         String redisKey = COUPON_CACHE_KEY_PREFIX + id;
+        Long ttl = redisTemplate.getExpire(redisKey, TimeUnit.SECONDS);
+        if (10L < ttl) {
+            log.info("Coupon with ID {} not extends TTL", id);
+            return;
+        }
         cacheWithTTL(redisKey, coupon, EXTEND_TIME_TO_LIVE_SECONDS);
         log.info("Coupon with ID {} extends TTL", id);
     }
