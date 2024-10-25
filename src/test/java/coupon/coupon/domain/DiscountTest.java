@@ -35,9 +35,8 @@ class DiscountTest {
         int minimumOrderAmount = 10000;
 
         // When & Then
-        CouponException exception = assertThrows(CouponException.class, () -> {
-            new Discount(invalidPrice, minimumOrderAmount);
-        });
+        CouponException exception = assertThrows(CouponException.class,
+                () -> new Discount(invalidPrice, minimumOrderAmount));
 
         assertEquals(CouponErrorMessage.INVALID_DISCOUNT_PRICE, exception.getErrorMessage());
     }
@@ -50,9 +49,8 @@ class DiscountTest {
         int minimumOrderAmount = 50000;
 
         // When & Then
-        CouponException exception = assertThrows(CouponException.class, () -> {
-            new Discount(invalidPrice, minimumOrderAmount);
-        });
+        CouponException exception = assertThrows(CouponException.class, () ->
+            new Discount(invalidPrice, minimumOrderAmount));
 
         assertEquals(CouponErrorMessage.INVALID_DISCOUNT_PRICE, exception.getErrorMessage());
     }
@@ -65,9 +63,8 @@ class DiscountTest {
         int minimumOrderAmount = 10000;
 
         // When & Then
-        CouponException exception = assertThrows(CouponException.class, () -> {
-            new Discount(invalidPrice, minimumOrderAmount);
-        });
+        CouponException exception = assertThrows(CouponException.class, () ->
+            new Discount(invalidPrice, minimumOrderAmount));
 
         assertEquals(CouponErrorMessage.INVALID_DISCOUNT_PRICE, exception.getErrorMessage());
     }
@@ -80,9 +77,8 @@ class DiscountTest {
         int minimumOrderAmount = 100000;
 
         // When & Then
-        CouponException exception = assertThrows(CouponException.class, () -> {
-            new Discount(price, minimumOrderAmount);
-        });
+        CouponException exception = assertThrows(CouponException.class, () ->
+            new Discount(price, minimumOrderAmount));
 
         assertEquals(CouponErrorMessage.INVALID_DISCOUNT_PERCENT, exception.getErrorMessage());
     }
@@ -95,9 +91,8 @@ class DiscountTest {
         int minimumOrderAmount = 10000;
 
         // When & Then
-        CouponException exception = assertThrows(CouponException.class, () -> {
-            new Discount(price, minimumOrderAmount);
-        });
+        CouponException exception = assertThrows(CouponException.class, () ->
+            new Discount(price, minimumOrderAmount));
 
         assertEquals(CouponErrorMessage.INVALID_DISCOUNT_PERCENT, exception.getErrorMessage());
     }
