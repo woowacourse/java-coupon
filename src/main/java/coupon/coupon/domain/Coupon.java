@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
-    protected static final Long MIN_DISCOUNT_RATE = 3L;
-    protected static final Long MAX_DISCOUNT_RATE = 20L;
+    protected static final long MIN_DISCOUNT_RATE = 3L;
+    protected static final long MAX_DISCOUNT_RATE = 20L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
