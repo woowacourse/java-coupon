@@ -11,10 +11,8 @@ public class ReadOnlyDataSourceRouter extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
-            System.out.println(READER);
             return READER;
         }
-        System.out.println();
         return WRITER;
     }
 }
