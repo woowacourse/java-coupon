@@ -49,7 +49,7 @@ public class Discount {
         BigDecimal minimumOrderAmountDecimal = BigDecimal.valueOf(minimumOrderAmount);
 
         BigDecimal percentDecimal = priceDecimal
-                .divide(minimumOrderAmountDecimal, 2, RoundingMode.HALF_UP)
+                .divide(minimumOrderAmountDecimal, 2, RoundingMode.DOWN)
                 .multiply(BigDecimal.valueOf(100));
 
         return percentDecimal.intValue();
