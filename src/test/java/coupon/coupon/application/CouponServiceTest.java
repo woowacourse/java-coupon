@@ -4,13 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import coupon.common.infra.datasource.DataSourceHelper;
+import coupon.support.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class CouponServiceTest {
+class CouponServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private CouponService couponService;
@@ -32,8 +31,8 @@ class CouponServiceTest {
         );
 
         // when
-        Long couponId = couponService.createCoupon(request);
-        CouponResponse response = dataSourceHelper.executeInWriter(() -> couponService.getCoupon(couponId));
+        CouponResponse couponResponse = couponService.createCoupon(request);
+        CouponResponse response = dataSourceHelper.executeInWriter(() -> couponService.getCoupon(couponResponse.id()));
 
         // then
         assertThat(response).isNotNull();

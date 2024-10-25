@@ -1,9 +1,9 @@
 package coupon.membercoupon.domain;
 
 import java.util.List;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MemberCouponRepository extends Repository<MemberCoupon, Long> {
+public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
-    List<MemberCoupon> findAllByMemberId(Long memberId);
+    List<MemberCoupon> findByMemberId(Long memberId);
 }
