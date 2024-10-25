@@ -1,7 +1,6 @@
 package coupon.membercoupon.application;
 
 import java.util.List;
-import java.util.Map;
 import coupon.coupon.application.CouponResponse;
 import coupon.coupon.application.CouponService;
 import coupon.coupon.domain.Coupon;
@@ -24,29 +23,34 @@ public class MemberCouponService {
     private final MemberCouponRepository memberCouponRepository;
     private final MemberCouponMapper memberCouponMapper;
 
+    @Transactional(readOnly = true)
+    public List<MemberCouponWithCouponResponse> getMemberCouponWithCoupons(Long memberId) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findByMemberId(memberId);
+
+        return memberCoupons.stream()
+                .map(memberCoupon -> {
+                    CouponResponse couponResponse = couponService.getCoupon(memberCoupon.getCouponId());
+                    System.out.println("couponResponse: " + couponResponse);
+                    return memberCouponMapper.toWithCouponResponse(memberCoupon, couponResponse);
+                })
+                .toList();
+    }
+
     @Transactional
     public void issueMemberCoupon(Long memberId, Long couponId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("Member not found: " + memberId));
-        Coupon coupon = couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("Coupon not found: " + couponId));
+        Member member = getMember(memberId);
+        Coupon coupon = getCoupon(couponId);
 
         memberCouponRepository.save(MemberCoupon.issue(memberId, coupon));
     }
 
-    @Transactional(readOnly = true)
-    public List<MemberCouponWithCouponResponse> getMemberCouponWithCoupons(Long memberId) {
-        List<MemberCoupon> memberCoupons = memberCouponRepository.findByMemberId(memberId);
-        List<Long> couponIds = getCouponIds(memberCoupons);
-        Map<Long, CouponResponse> couponMap = couponService.getCouponResponseMap(couponIds);
-
-        return memberCouponMapper.toWithCouponResponses(memberCoupons, couponMap);
+    private Coupon getCoupon(Long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("Coupon not found: " + couponId));
     }
 
-    private List<Long> getCouponIds(List<MemberCoupon> memberCoupons) {
-        return memberCoupons.stream()
-                .map(MemberCoupon::getCouponId)
-                .distinct()
-                .toList();
+    private Member getMember(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found: " + memberId));
     }
 }
