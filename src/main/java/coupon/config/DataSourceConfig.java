@@ -1,7 +1,6 @@
 package coupon.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
