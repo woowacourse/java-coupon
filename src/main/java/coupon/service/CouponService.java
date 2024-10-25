@@ -27,7 +27,7 @@ public class CouponService {
     }
 
     private Coupon findFromWriter(long couponId) {
-        return dataSourceSupport.executeOnWriter(
+        return dataSourceSupport.executeWithNewTransaction(
                 () -> couponRepository.findById(couponId)
                         .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다. couponId: " + couponId))
         );

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataSourceSupport {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public <T> T executeOnWriter(Supplier<T> supplier) {
+    public <T> T executeWithNewTransaction(Supplier<T> supplier) {
         return supplier.get();
     }
 }
