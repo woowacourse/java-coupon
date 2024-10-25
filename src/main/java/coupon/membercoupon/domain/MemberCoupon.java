@@ -13,6 +13,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
+import org.springframework.cglib.core.Local;
+
 import coupon.coupon.domain.Coupon;
 import coupon.member.domain.Member;
 import lombok.AccessLevel;
@@ -51,10 +53,6 @@ public class MemberCoupon {
         this.member = member;
         this.coupon = coupon;
         this.isUsed = isUsed;
-    }
-
-    @PrePersist
-    public void prePersist() {
         this.issuedAt = LocalDateTime.now();
         this.expiresAt = this.issuedAt.plusDays(7).with(LocalTime.MAX);
     }
