@@ -2,6 +2,7 @@ package coupon.coupon.domain;
 
 import coupon.coupon.exception.CouponErrorMessage;
 import coupon.coupon.exception.CouponException;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
@@ -18,7 +19,10 @@ public class Discount {
     private static final int MIN_DISCOUNT_PERCENT = 3;
     private static final int MAX_DISCOUNT_PERCENT = 20;
 
+    @Column(nullable = false)
     private int price;
+
+    @Column(nullable = false)
     private int percent;
 
     protected Discount() {
