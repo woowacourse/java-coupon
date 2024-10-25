@@ -72,7 +72,7 @@ class CouponTest {
         // Given
         String name = "Welcome Discount";
         int price = 1500;
-        int minimumOrderAmount = 2000;
+        int minimumOrderAmount = 4900;
         Category category = Category.FOOD;
         LocalDateTime startAt = LocalDateTime.now();
         LocalDateTime endAt = startAt.plusDays(10);
@@ -88,7 +88,7 @@ class CouponTest {
         // Given
         String name = "Welcome Discount";
         int price = 1500;
-        int minimumOrderAmount = 120000;
+        int minimumOrderAmount = 100001;
         Category category = Category.FOOD;
         LocalDateTime startAt = LocalDateTime.now();
         LocalDateTime endAt = startAt.plusDays(10);
