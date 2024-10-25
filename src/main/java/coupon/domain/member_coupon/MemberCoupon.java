@@ -22,11 +22,9 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Member member;
+    private long memberId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "coupon_id")
     private Coupon coupon;
 
@@ -36,18 +34,18 @@ public class MemberCoupon {
 
     private LocalDate expiredAt;
 
-    public static MemberCoupon issue(Member member, Coupon coupon) {
+    public static MemberCoupon issue(long mebmerId, Coupon coupon) {
         LocalDate issuedAt = LocalDate.now();
         if(!coupon.issueAvailable(issuedAt)) {
             throw new CouponIssueDateException();
         }
 
         LocalDate expiredAt = issuedAt.plusDays(DEFAULT_USING_PERIOD);
-        return new MemberCoupon(member, coupon, false, issuedAt, expiredAt);
+        return new MemberCoupon(mebmerId, coupon, false, issuedAt, expiredAt);
     }
 
-    public MemberCoupon(Member member, Coupon coupon, boolean isUsed, LocalDate issuedAt, LocalDate expiredAt) {
-        this.member = member;
+    public MemberCoupon(long memberId, Coupon coupon, boolean isUsed, LocalDate issuedAt, LocalDate expiredAt) {
+        this.memberId = memberId;
         this.coupon = coupon;
         this.isUsed = isUsed;
         this.issuedAt = issuedAt;

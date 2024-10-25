@@ -31,7 +31,7 @@ class MemberCouponTest {
                 issueStartDate,
                 issueEndDate);
 
-        Assertions.assertThatThrownBy(() -> MemberCoupon.issue(member, coupon))
+        Assertions.assertThatThrownBy(() -> MemberCoupon.issue(member.getId(), coupon))
                 .isExactlyInstanceOf(CouponIssueDateException.class);
     }
 }
