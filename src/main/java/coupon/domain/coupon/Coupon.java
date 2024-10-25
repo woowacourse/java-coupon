@@ -1,5 +1,6 @@
 package coupon.domain.coupon;
 
+import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -58,5 +59,10 @@ public class Coupon {
         if (!discountAmount.isValidDiscountRate(minimumOrderAmount.getValue())) {
             throw new IllegalArgumentException("할인율은 3% 이상 20% 이하여야 합니다.");
         }
+    }
+
+    public boolean isIssuable() {
+        LocalDateTime now = LocalDateTime.now();
+        return !now.isBefore(issuancePeriod.getStartDate()) && !now.isAfter(issuancePeriod.getEndDate());
     }
 }
