@@ -20,7 +20,7 @@ public class CouponController {
 
     @GetMapping("/coupons/{couponId}")
     public ResponseEntity<CouponResponse> getCoupon(@PathVariable final Long couponId) {
-        final var coupon = couponService.getCoupon(couponId);
+        final var coupon = couponService.getCouponByAdmin(couponId);
         return ResponseEntity.ok(CouponResponse.from(coupon));
     }
 

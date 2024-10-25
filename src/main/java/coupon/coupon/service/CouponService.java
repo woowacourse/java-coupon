@@ -18,6 +18,12 @@ public class CouponService {
     private final MemberRepository memberRepository;
 
     @Transactional
+    public Coupon getCouponByAdmin(final Long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new CouponApplicationException("쿠폰이 존재하지 않습니다."));
+    }
+
+    @Transactional(readOnly = true)
     public Coupon getCoupon(final Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new CouponApplicationException("쿠폰이 존재하지 않습니다."));

@@ -50,7 +50,7 @@ class CouponServiceTest {
         final var couponCreateRequest = CouponFixture.TOUROOT_COUPON.getCouponCreateRequest(issuer);
         final var savedCoupon = couponService.createCoupon(couponCreateRequest);
 
-        final var found = couponService.getCoupon(savedCoupon.getId());
+        final var found = couponService.getCouponByAdmin(savedCoupon.getId());
 
         assertThat(found.getName()).isEqualTo("투룻 쿠폰");
     }
@@ -61,7 +61,7 @@ class CouponServiceTest {
         final var couponCreateRequest = CouponFixture.TOUROOT_COUPON.getCouponCreateRequest(issuer);
         final var saved = couponService.createCoupon(couponCreateRequest);
 
-        final var found = couponService.getCoupon(saved.getId());
+        final var found = couponService.getCouponByAdmin(saved.getId());
         assertThat(found).isNotNull();
     }
 }
