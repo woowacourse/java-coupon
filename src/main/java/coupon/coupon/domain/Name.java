@@ -1,10 +1,12 @@
 package coupon.coupon.domain;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor
+@Getter
 public class Name {
 
     private String name;
@@ -21,9 +23,5 @@ public class Name {
         if (name.length() > 30) {
             throw new IllegalArgumentException("name의 길이는 30자를 초과할 수 없습니다.");
         }
-    }
-
-    public String getName() {
-        return name;
     }
 }

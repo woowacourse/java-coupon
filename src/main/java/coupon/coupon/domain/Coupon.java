@@ -7,10 +7,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class Coupon {
 
@@ -21,7 +24,8 @@ public class Coupon {
     @Embedded
     private Name name;
 
-    private int discountPrice;
+    @Embedded
+    private DiscountAmount discountAmount;
 
     private int minimumOrderPrice;
 
@@ -32,13 +36,10 @@ public class Coupon {
 
     private LocalDateTime endTime;
 
-    public Coupon() {
-    }
-
-    public Coupon(String name, int discountPrice, int minimumOrderPrice,
+    public Coupon(String name, BigDecimal discountAmount, int minimumOrderPrice,
                   Category category, LocalDateTime startTime, LocalDateTime endTime) {
         this.name = new Name(name);
-        this.discountPrice = discountPrice;
+        this.discountAmount = new DiscountAmount(discountAmount);
         this.minimumOrderPrice = minimumOrderPrice;
         this.category = category;
         this.startTime = startTime;
