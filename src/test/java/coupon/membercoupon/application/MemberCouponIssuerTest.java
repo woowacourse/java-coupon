@@ -1,9 +1,15 @@
 package coupon.membercoupon.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import coupon.common.infra.datasource.DataSourceHelper;
 import coupon.coupon.application.CouponResponse;
 import coupon.coupon.application.CouponService;
@@ -19,7 +25,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class MemberCouponServiceTest extends IntegrationTestSupport {
+class MemberCouponIssuerTest extends IntegrationTestSupport {
 
     @Autowired
     private DataSourceHelper dataSourceHelper;
@@ -31,37 +37,48 @@ class MemberCouponServiceTest extends IntegrationTestSupport {
     private CouponService couponService;
 
     @Autowired
-    private MemberCouponService memberCouponService;
-
-    @Autowired
     private MemberCouponRepository memberCouponRepository;
 
     @Autowired
-    private MemberCouponMapper memberCouponMapper;
+    private MemberCouponIssuer memberCouponIssuer;
 
     @Test
-    @DisplayName("멤버 쿠폰과 함께 쿠폰 정보를 조회할 수 있다.")
-    void getMemberCouponWithCoupons() {
+    @DisplayName("멤버는 쿠폰에 대한 회원 쿠폰을 발급할 수 있다.")
+    void issue() {
         // given
         Member member = memberRepository.save(MemberTestData.defaultMember().build());
-        CouponResponse couponResponse = create();
-
-        MemberCoupon memberCoupon1 = createMemberCoupon(member.getId(), couponResponse.id());
-        MemberCoupon memberCoupon2 = createMemberCoupon(member.getId(), couponResponse.id());
+        CouponResponse couponResponse = createCoupon();
 
         // when
-        List<MemberCouponWithCouponResponse> responses = dataSourceHelper.executeInWriter(
-                () -> memberCouponService.getMemberCouponWithCoupons(member.getId())
-        );
+        Long memberCouponId = memberCouponIssuer.issue(member.getId(), couponResponse.id());
+
 
         // then
-        assertThat(responses).containsExactly(
-                memberCouponMapper.toWithCouponResponse(memberCoupon1, couponResponse),
-                memberCouponMapper.toWithCouponResponse(memberCoupon2, couponResponse)
+        MemberCoupon memberCoupon = dataSourceHelper.executeInWriter(
+                () -> memberCouponRepository.findById(memberCouponId).orElseThrow()
         );
+        assertThat(memberCoupon.getMemberId()).isEqualTo(member.getId());
     }
 
-    private CouponResponse create() {
+    @Test
+    @DisplayName("멤버는 쿠폰에 대한 회원 쿠폰을 최대 5개까지 발급할 수 있다.")
+    void issueExceedLimit() {
+        // given
+        Member member = memberRepository.save(MemberTestData.defaultMember().build());
+        CouponResponse couponResponse = createCoupon();
+        int maxMemberCouponCount = 5;
+
+        for (int i = 0; i < maxMemberCouponCount; i++) {
+            memberCouponIssuer.issue(member.getId(), couponResponse.id());
+        }
+
+        // when & then
+        assertThatThrownBy(() -> memberCouponIssuer.issue(member.getId(), couponResponse.id()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("회원 쿠폰 발급 한도 초과 5/5");
+    }
+
+    private CouponResponse createCoupon() {
         CreateCouponRequest request = new CreateCouponRequest(
                 "coupon",
                 1000L,

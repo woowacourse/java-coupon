@@ -31,7 +31,7 @@ class CouponServiceTest extends IntegrationTestSupport {
         );
 
         // when
-        CouponResponse couponResponse = couponService.createCoupon(request);
+        CouponResponse couponResponse = couponService.create(request);
         CouponResponse response = dataSourceHelper.executeInWriter(() -> couponService.getCoupon(couponResponse.id()));
 
         // then

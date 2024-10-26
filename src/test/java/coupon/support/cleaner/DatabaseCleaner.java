@@ -20,7 +20,7 @@ public class DatabaseCleaner {
     public void clear() {
         em.clear();
         truncate();
-        clearCache();
+//        clearCache();
     }
 
     private void truncate() {

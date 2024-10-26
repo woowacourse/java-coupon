@@ -28,7 +28,7 @@ public class CouponService {
 
     @Transactional
     @CachePut(value = COUPON_CACHE_NAME, key = "#result")
-    public CouponResponse createCoupon(CreateCouponRequest request) {
+    public CouponResponse create(CreateCouponRequest request) {
         Coupon coupon = couponMapper.toCoupon(request);
         Coupon savedCoupon = couponRepository.save(coupon);
 

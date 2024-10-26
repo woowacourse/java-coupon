@@ -11,5 +11,5 @@ public record CouponResponse(
         String category,
         LocalDateTime issueStartDate,
         LocalDateTime issueEndDate
-) implements Serializable {
+) {
 }

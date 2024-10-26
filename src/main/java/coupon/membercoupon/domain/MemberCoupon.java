@@ -61,6 +61,8 @@ public class MemberCoupon {
     }
 
     public static MemberCoupon issue(Long memberId, Coupon coupon) {
+        coupon.issue();
+
         return new MemberCoupon(
                 coupon.getId(),
                 memberId,
