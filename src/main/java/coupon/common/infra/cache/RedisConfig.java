@@ -2,6 +2,7 @@ package coupon.common.infra.cache;
 
 import static org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair.fromSerializer;
 
+import java.time.Duration;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
@@ -53,7 +54,8 @@ public class RedisConfig {
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper) {
         RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper)));
+                .serializeValuesWith(fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper)))
+                .entryTtl(Duration.ofMinutes(30));
 
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(cacheConfig)

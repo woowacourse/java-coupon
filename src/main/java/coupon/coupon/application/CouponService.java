@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CouponService {
 
-    private static final String COUPON_CACHE_NAME = "coupon";
+    private static final String COUPON_CACHE_NAME = "coupons";
 
     private final CouponRepository couponRepository;
     private final CouponMapper couponMapper;
@@ -27,7 +27,7 @@ public class CouponService {
     }
 
     @Transactional
-    @CachePut(value = COUPON_CACHE_NAME, key = "#result")
+    @CachePut(value = COUPON_CACHE_NAME, key = "#result.id")
     public CouponResponse create(CreateCouponRequest request) {
         Coupon coupon = couponMapper.toCoupon(request);
         Coupon savedCoupon = couponRepository.save(coupon);

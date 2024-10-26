@@ -1,5 +1,6 @@
 package coupon.membercoupon.application;
 
+import java.util.concurrent.TimeUnit;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
 import coupon.member.domain.Member;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCouponIssuer {
 
-    private static final String MEMBER_COUPON_CACHE_FORMAT = "member-coupon:%s:%s";
+    private static final String MEMBER_COUPON_COUNT_CACHE_FORMAT = "member-coupons-count::%d::%d";
     private static final int MAX_MEMBER_COUPON_COUNT = 5;
 
     private final MemberRepository memberRepository;
@@ -36,10 +37,10 @@ public class MemberCouponIssuer {
     }
 
     private void increaseMemberCouponCount(Long memberId, Long couponId) {
-        String key = MEMBER_COUPON_CACHE_FORMAT.formatted(memberId, couponId);
+        String key = MEMBER_COUPON_COUNT_CACHE_FORMAT.formatted(memberId, couponId);
 
         int memberCouponCount = getMemberCouponCount(memberId, couponId);
-        if (memberCouponCount >= MAX_MEMBER_COUPON_COUNT) {
+        if (memberCouponCount + 1 > MAX_MEMBER_COUPON_COUNT) {
             throw new IllegalArgumentException("회원 쿠폰 발급 한도 초과 %d/%d".formatted(memberCouponCount, MAX_MEMBER_COUPON_COUNT));
         }
 
@@ -47,7 +48,7 @@ public class MemberCouponIssuer {
     }
 
     private int getMemberCouponCount(Long memberId, Long couponId) {
-        String key = MEMBER_COUPON_CACHE_FORMAT.formatted(memberId, couponId);
+        String key = MEMBER_COUPON_COUNT_CACHE_FORMAT.formatted(memberId, couponId);
 
         Integer memberCountFromCache = redisTemplate.opsForValue().get(key);
         if (memberCountFromCache != null) {
@@ -55,7 +56,7 @@ public class MemberCouponIssuer {
         }
 
         int countFromDB = (int) memberCouponRepository.countByMemberIdAndCouponId(memberId, couponId);
-        redisTemplate.opsForValue().set(key, countFromDB);
+        redisTemplate.opsForValue().set(key, countFromDB, 30, TimeUnit.MINUTES);
         return countFromDB;
     }
 

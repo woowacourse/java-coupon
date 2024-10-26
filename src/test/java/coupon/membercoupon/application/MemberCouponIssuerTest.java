@@ -83,13 +83,4 @@ class MemberCouponIssuerTest extends IntegrationTestSupport {
         );
         return couponService.create(request);
     }
-
-    private MemberCoupon createMemberCoupon(Long memberId, Long couponId) {
-        MemberCoupon memberCoupon = MemberCouponTestData.defaultMemberCoupon()
-                .withMemberId(memberId)
-                .withCouponId(couponId)
-                .build();
-
-        return memberCouponRepository.save(memberCoupon);
-    }
 }
