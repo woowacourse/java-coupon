@@ -21,6 +21,10 @@ spring:
     sql:
       init:
         mode: never
+  data:
+    redis:
+      port: 6379
+      host: 172.20.0.20
 
 coupon.datasource:
   writer:
