@@ -122,4 +122,16 @@ public class CouponTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("최소 주문 금액은 5,000원 이상 100,000원 이하여야 합니다.");
     }
+
+    @Test
+    @DisplayName("쿠폰 생성 실패 : 발급 종료일이 23:59:59 이후일 경우")
+    void testIssuanceEndTimeInvalid() {
+        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime end = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(999999999);
+
+        assertThatThrownBy(() -> new Coupon("테스트 쿠폰", 1000, 5000, Category.FASHION, start, end))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("발급 종료일은 23:59:59까지 종료해야 합니다.");
+    }
+
 }

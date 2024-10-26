@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @NoArgsConstructor
 @Getter
@@ -84,5 +85,20 @@ public class Coupon {
         if (issuanceStart == null || issuanceEnd == null || issuanceStart.isAfter(issuanceEnd)) {
             throw new IllegalArgumentException("발급 시작일은 종료일보다 이전이어야 합니다.");
         }
+        validateStartTime(issuanceStart);
+        validateEndTime(issuanceEnd);
     }
+
+    private void validateStartTime(LocalDateTime startTime) {
+        if (startTime.toLocalTime().isBefore(LocalTime.of(0, 0, 0, 0))) {
+            throw new IllegalArgumentException("발급 시작일은 00:00:00부터 시작해야 합니다.");
+        }
+    }
+
+    private void validateEndTime(LocalDateTime endTime) {
+        if (endTime.toLocalTime().isAfter(LocalTime.of(23, 59, 59, 999999000))) {
+            throw new IllegalArgumentException("발급 종료일은 23:59:59까지 종료해야 합니다.");
+        }
+    }
+
 }
