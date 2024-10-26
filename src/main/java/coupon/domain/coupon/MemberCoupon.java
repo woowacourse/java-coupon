@@ -1,12 +1,10 @@
 package coupon.domain.coupon;
 
-import coupon.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -26,14 +24,15 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    private Coupon coupon;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
-    @ManyToOne(optional = false)
-    private Member member;
+    @Column(name = "coupon_id", nullable = false)
+    private Long couponId;
+
 
     @Column(nullable = false)
-    private boolean isUsed;
+    private boolean used;
 
     @Column(name = "issued_at", nullable = false)
     private LocalDateTime issuedAt;
@@ -41,10 +40,10 @@ public class MemberCoupon {
     @Column(name = "expired_at", nullable = false)
     private LocalDateTime expiredAt;
 
-    public MemberCoupon(Coupon coupon, Member member, LocalDateTime issuedAt) {
-        this.coupon = coupon;
-        this.member = member;
-        this.isUsed = false;
+    public MemberCoupon(Long memberId, Long couponId, LocalDateTime issuedAt) {
+        this.memberId = memberId;
+        this.couponId = couponId;
+        this.used = false;
         this.issuedAt = issuedAt;
         this.expiredAt = issuedAt.plusDays(AVAILABLE_PERIOD_DAYS).truncatedTo(ChronoUnit.DAYS);
     }

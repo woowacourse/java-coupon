@@ -32,7 +32,7 @@ class MemberCouponTest {
     @DisplayName("회원 쿠폰 생성한다.")
     @Test
     void create() {
-        assertThatCode(() -> new MemberCoupon(coupon, member, LocalDateTime.of(2024, 10, 10, 0, 0, 0)))
+        assertThatCode(() -> new MemberCoupon(member.getId(), coupon.getId(), LocalDateTime.of(2024, 10, 10, 0, 0, 0)))
                 .doesNotThrowAnyException();
     }
 
@@ -40,7 +40,7 @@ class MemberCouponTest {
     @Test
     void checkExpiredAt() {
         LocalDateTime issuedAt = LocalDateTime.of(2024, 10, 10, 12, 0, 0);
-        MemberCoupon memberCoupon = new MemberCoupon(coupon, member, issuedAt);
+        MemberCoupon memberCoupon = new MemberCoupon(member.getId(), coupon.getId(), issuedAt);
 
         LocalDateTime actual = memberCoupon.getExpiredAt();
         LocalDateTime expected = LocalDateTime.of(2024, 10, 17, 0, 0, 0);
@@ -52,7 +52,7 @@ class MemberCouponTest {
     @Test
     void checkIsUsed() {
         LocalDateTime issuedAt = LocalDateTime.of(2024, 10, 10, 12, 0, 0);
-        MemberCoupon memberCoupon = new MemberCoupon(coupon, member, issuedAt);
+        MemberCoupon memberCoupon = new MemberCoupon(member.getId(), coupon.getId(), issuedAt);
 
         assertThat(memberCoupon.isUsed()).isFalse();
     }

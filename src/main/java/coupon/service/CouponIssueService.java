@@ -36,7 +36,7 @@ public class CouponIssueService {
         LocalDateTime issuanceTime = LocalDateTime.now();
         coupon.validateDateCouponIssuance(issuanceTime);
         validateIssuedCount(member, coupon);
-        memberCouponRepository.save(new MemberCoupon(coupon, member, issuanceTime));
+        memberCouponRepository.save(new MemberCoupon(member.getId(), coupon.getId(), issuanceTime));
     }
 
     private void validateIssuedCount(Member member, Coupon coupon) {
