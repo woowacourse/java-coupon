@@ -20,8 +20,8 @@ public record CouponResponse(
                 coupon.getDiscountAmount().getAmount(),
                 coupon.getMinOderAmount().getAmount(),
                 coupon.getCategory().name(),
-                coupon.getIssuanceDate().getStartDate(),
-                coupon.getIssuanceDate().getEndDate()
+                coupon.getIssuablePeriod().getStartDate(),
+                coupon.getIssuablePeriod().getEndDate()
         );
     }
 }

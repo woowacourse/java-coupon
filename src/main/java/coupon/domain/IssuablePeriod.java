@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class IssuancePeriod {
+public class IssuablePeriod {
 
     @NotNull
     @Column(nullable = false, name = "start_date")
@@ -21,7 +21,7 @@ public class IssuancePeriod {
     @Column(nullable = false, name = "end_date")
     private LocalDateTime endDate;
 
-    public IssuancePeriod(LocalDateTime startDate, LocalDateTime endDate) {
+    public IssuablePeriod(LocalDateTime startDate, LocalDateTime endDate) {
         validate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;

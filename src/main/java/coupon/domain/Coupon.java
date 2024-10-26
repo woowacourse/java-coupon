@@ -41,22 +41,22 @@ public class Coupon {
 
     @NotNull
     @Embedded
-    private IssuancePeriod issuanceDate;
+    private IssuablePeriod issuablePeriod;
 
     public Coupon(Long id, CouponName name, DiscountAmount discountAmount, MinOrderAmount minOderAmount,
-                  Category category, IssuancePeriod issuanceDate) {
+                  Category category, IssuablePeriod issuablePeriod) {
         validate(discountAmount, minOderAmount);
         this.id = id;
         this.name = name;
         this.discountAmount = discountAmount;
         this.minOderAmount = minOderAmount;
         this.category = category;
-        this.issuanceDate = issuanceDate;
+        this.issuablePeriod = issuablePeriod;
     }
 
     public Coupon(CouponName name, DiscountAmount discountAmount, MinOrderAmount minOderAmount, Category category,
-                  IssuancePeriod issuanceDate) {
-        this(null, name, discountAmount, minOderAmount, category, issuanceDate);
+                  IssuablePeriod issuablePeriod) {
+        this(null, name, discountAmount, minOderAmount, category, issuablePeriod);
     }
 
     private void validate(DiscountAmount discountAmount, MinOrderAmount minOderAmount) {

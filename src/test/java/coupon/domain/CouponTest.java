@@ -10,8 +10,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class CouponTest {
 
-    private CouponName COUPON_NAME = new CouponName("행운쿠폰");
-    private IssuancePeriod ISSUANCE_PERIOD = new IssuancePeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+    private final CouponName COUPON_NAME = new CouponName("행운쿠폰");
+    private final IssuablePeriod ISSUABLE_PERIOD = new IssuablePeriod(LocalDateTime.now(),
+            LocalDateTime.now().plusDays(1));
 
     @ParameterizedTest
     @CsvSource({"6500,30000", "2000,100000"})
@@ -19,14 +20,14 @@ class CouponTest {
         DiscountAmount discountAmount = new DiscountAmount(discountValue);
         MinOrderAmount minOrderAmount = new MinOrderAmount(minOrderValue);
         assertThatThrownBy(
-                () -> new Coupon(COUPON_NAME, discountAmount, minOrderAmount, Category.FOOD, ISSUANCE_PERIOD));
+                () -> new Coupon(COUPON_NAME, discountAmount, minOrderAmount, Category.FOOD, ISSUABLE_PERIOD));
     }
 
     @Test
     void 할인율이_3퍼센트_이상이고_20퍼센트_이하이면_에러가_발생하지_않는다() {
         DiscountAmount discountAmount = new DiscountAmount(1000);
         MinOrderAmount minOrderAmount = new MinOrderAmount(30000);
-        assertThatCode(() -> new Coupon(COUPON_NAME, discountAmount, minOrderAmount, Category.FOOD, ISSUANCE_PERIOD))
+        assertThatCode(() -> new Coupon(COUPON_NAME, discountAmount, minOrderAmount, Category.FOOD, ISSUABLE_PERIOD))
                 .doesNotThrowAnyException();
     }
 }

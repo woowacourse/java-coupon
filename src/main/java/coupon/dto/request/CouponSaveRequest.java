@@ -4,7 +4,7 @@ import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.domain.CouponName;
 import coupon.domain.DiscountAmount;
-import coupon.domain.IssuancePeriod;
+import coupon.domain.IssuablePeriod;
 import coupon.domain.MinOrderAmount;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -35,7 +35,7 @@ public record CouponSaveRequest(
                 new DiscountAmount(discountAmount),
                 new MinOrderAmount(minOrderAmount),
                 Category.from(category),
-                new IssuancePeriod(issuanceStartDate, issuanceEndDate)
+                new IssuablePeriod(issuanceStartDate, issuanceEndDate)
         );
     }
 }
