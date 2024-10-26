@@ -44,7 +44,7 @@ public class DataSourceConfig {
 
         ReadOnlyDataSourceRouter readOnlyDataSourceRouter = new ReadOnlyDataSourceRouter();
         readOnlyDataSourceRouter.setTargetDataSources(dataSourceMap);
-        readOnlyDataSourceRouter.setDefaultTargetDataSource(readDataSource);
+        readOnlyDataSourceRouter.setDefaultTargetDataSource(writeDataSource);
         return readOnlyDataSourceRouter;
     }
 }
