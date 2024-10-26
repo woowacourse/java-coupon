@@ -19,6 +19,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "coupon")
 public class Coupon {
 
+    private static final int MIN_DISCOUNT_RATE = 3;
+    private static final int MAX_DISCOUNT_RATE = 20;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -61,7 +64,7 @@ public class Coupon {
 
     private void validate(DiscountAmount discountAmount, MinOrderAmount minOderAmount) {
         int discountRate = (int) ((double) discountAmount.getAmount() / minOderAmount.getAmount() * 100);
-        if (discountRate < 3 || discountRate > 20) {
+        if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
             throw new IllegalArgumentException("할인율은 3% 이상 20% 이하여야 합니다.");
         }
     }

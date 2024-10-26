@@ -2,8 +2,6 @@ package coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DiscountAmount {
 
-    @Min(1000)
-    @Max(10000)
+    private static final int MIN_AMOUNT = 1000;
+    private static final int MAX_AMOUNT = 10000;
+    private static final int AMOUNT_UNIT = 500;
+
     @Column(nullable = false, name = "discount_amount")
     private Long amount;
 
@@ -24,10 +24,10 @@ public class DiscountAmount {
     }
 
     private void validate(long amount) {
-        if (amount < 1000 || amount > 10000) {
+        if (amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
             throw new IllegalArgumentException("할인 금액은 1000원 이상 10000원 이하여야 합니다.");
         }
-        if (amount % 500 != 0) {
+        if (amount % AMOUNT_UNIT != 0) {
             throw new IllegalArgumentException("할인 금액은 500원 단위로만 입력 가능합니다.");
         }
     }
