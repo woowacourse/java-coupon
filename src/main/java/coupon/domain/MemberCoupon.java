@@ -28,8 +28,8 @@ public class MemberCoupon {
     private LocalDate issueDate;
     private LocalDate expirationDate;
 
-    private MemberCoupon(Long id, Coupon coupon, Member member, boolean isUsed, LocalDate issueDate,
-                         LocalDate expirationDate) {
+    protected MemberCoupon(Long id, Coupon coupon, Member member, boolean isUsed, LocalDate issueDate,
+                           LocalDate expirationDate) {
         this.id = id;
         this.coupon = coupon;
         this.member = member;
@@ -44,10 +44,29 @@ public class MemberCoupon {
         return new MemberCoupon(null, coupon, member, false, today, today.plusDays(6));
     }
 
+    public void use() {
+        validatePeriodOfUse();
+        validateAlreadyUsed();
+        isUsed = true;
+    }
+
     private static void validateCouponCanIssue(Coupon coupon, LocalDate date) {
         if (coupon.canIssueAt(date)) {
             return;
         }
         throw new IllegalStateException("쿠폰 발급 가능 기간이 아닙니다.");
+    }
+
+    private void validateAlreadyUsed() {
+        if (isUsed) {
+            throw new IllegalStateException("이미 사용된 쿠폰입니다.");
+        }
+    }
+
+    private void validatePeriodOfUse() {
+        LocalDate today = LocalDate.now();
+        if (issueDate.isAfter(today) || expirationDate.isBefore(today)) {
+            throw new IllegalStateException("사용 가능한 기간이 아닙니다.");
+        }
     }
 }
