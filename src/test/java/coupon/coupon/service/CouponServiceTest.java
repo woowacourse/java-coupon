@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 @SpringBootTest
 public class CouponServiceTest {
@@ -20,7 +21,7 @@ public class CouponServiceTest {
     void replicationLag() {
         Long couponId = couponService.createCoupon();
         assertThatThrownBy(() -> couponService.findCouponById(couponId))
-                .isExactlyInstanceOf(IllegalArgumentException.class)
+                .isExactlyInstanceOf(InvalidDataAccessApiUsageException.class)
                 .hasMessage("쿠폰이 존재하지 않습니다.");
     }
 
