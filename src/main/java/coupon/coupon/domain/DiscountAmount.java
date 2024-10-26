@@ -10,21 +10,24 @@ public record DiscountAmount(Long discountAmount) {
     private static final Long DISCOUNT_AMOUNT_UNIT = 500L;
 
     public DiscountAmount {
-        validateDiscountable(discountAmount);
-    }
-
-    public void validateDiscountable(final Long discountAmount) {
+        validateDiscountAmountNull(discountAmount);
         validateDiscountAmountRange(discountAmount);
         validateDiscountUnit(discountAmount);
     }
 
-    public void validateDiscountAmountRange(final Long discountAmount) {
+    private void validateDiscountAmountNull(final Long discountAmount) {
+        if (discountAmount == null) {
+            throw new IllegalArgumentException("할인 금액은 null이 될 수 없습니다.");
+        }
+    }
+
+    private void validateDiscountAmountRange(final Long discountAmount) {
         if (discountAmount > MAXIMUM_DISCOUNT_AMOUNT || discountAmount < MINIMUM_DISCOUNT_AMOUNT) {
             throw new IllegalArgumentException(String.format("할인 금액은 %,d원 이상 %,d원 이하만 가능합니다.", MINIMUM_DISCOUNT_AMOUNT, MAXIMUM_DISCOUNT_AMOUNT));
         }
     }
 
-    public void validateDiscountUnit(final Long discountAmount) {
+    private void validateDiscountUnit(final Long discountAmount) {
         if (discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
             throw new IllegalArgumentException(String.format("할인 금액은 %,d원 단위로만 가능합니다.", DISCOUNT_AMOUNT_UNIT));
         }

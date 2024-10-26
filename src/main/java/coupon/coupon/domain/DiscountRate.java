@@ -9,10 +9,17 @@ public record DiscountRate(Integer discountRate) {
     private static final Integer MAXIMUM_DISCOUNT_RATE = 20;
 
     public DiscountRate {
+        validateDiscountRateNull(discountRate);
         validateRateRange(discountRate);
     }
 
-    public static DiscountRate from(Long discountAmount, Long minimumOrderAmount) {
+    private void validateDiscountRateNull(final Integer discountRate) {
+        if (discountRate == null) {
+            throw new IllegalArgumentException("할인율은 null이 될 수 없습니다.");
+        }
+    }
+
+    public static DiscountRate from(final Long discountAmount, final Long minimumOrderAmount) {
         return new DiscountRate((int) ((double) discountAmount / minimumOrderAmount * 100));
     }
 

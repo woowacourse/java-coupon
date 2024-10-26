@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class DiscountRateTest {
@@ -16,6 +17,15 @@ class DiscountRateTest {
         final Long discountAmount = 1000L;
         final Long minimumOrderAmount = 30000L;
         assertThat(DiscountRate.from(discountAmount, minimumOrderAmount).discountRate()).isEqualTo(3);
+    }
+
+    @ParameterizedTest
+    @NullSource
+    @DisplayName("할인율 생성 실패: 할인율이 Null 인 경우")
+    void createName(Integer invalidRate) {
+        assertThatThrownBy(() -> new DiscountRate(invalidRate))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("할인율은 null이 될 수 없습니다.");
     }
 
     @ParameterizedTest
