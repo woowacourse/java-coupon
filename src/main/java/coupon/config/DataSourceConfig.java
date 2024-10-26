@@ -42,9 +42,9 @@ public class DataSourceConfig {
         dataSourceMap.put(DataSourceType.WRITER, writeDataSource);
         dataSourceMap.put(DataSourceType.READER, readDataSource);
 
-        ReadOnlyDataSourceRouter readOnlyDataSourceRouter = new ReadOnlyDataSourceRouter();
-        readOnlyDataSourceRouter.setTargetDataSources(dataSourceMap);
-        readOnlyDataSourceRouter.setDefaultTargetDataSource(writeDataSource);
-        return readOnlyDataSourceRouter;
+        ReplicationDataSourceRouter replicationDataSourceRouter = new ReplicationDataSourceRouter();
+        replicationDataSourceRouter.setTargetDataSources(dataSourceMap);
+        replicationDataSourceRouter.setDefaultTargetDataSource(writeDataSource);
+        return replicationDataSourceRouter;
     }
 }
