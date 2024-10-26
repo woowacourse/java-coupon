@@ -35,4 +35,9 @@ coupon.datasource:
 
 logging:
   level:
-    coupon.config: debug
+    coupon:
+      config: debug
+    org:
+      springframework:
+        transaction:
+          interceptor: TRACE
