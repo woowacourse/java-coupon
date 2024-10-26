@@ -3,6 +3,8 @@ package coupon.coupon.domain;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.Objects;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,6 +19,7 @@ public class Coupon {
 
     private static final BigDecimal MINIMUM_DISCOUNT_RATE = BigDecimal.valueOf(3);
     private static final BigDecimal MAXIMUM_DISCOUNT_RATE = BigDecimal.valueOf(20);
+    public static final String CATEGORY_NON_NULL_MESSAGE = "카테고리를 선택해주세요";
     private static final String DISCOUNT_RATE_MESSAGE = String.format(
             "할인율은 %s%% 이상, %s%% 이하이어야 합니다.",
             MINIMUM_DISCOUNT_RATE.toPlainString(),
@@ -33,6 +36,7 @@ public class Coupon {
     @Embedded
     private MinimumOrderAmount minimumOrderAmount;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Category category;
     @Embedded
     private Term term;
@@ -50,7 +54,7 @@ public class Coupon {
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
-        this.category = category;
+        this.category = Objects.requireNonNull(category, CATEGORY_NON_NULL_MESSAGE);
         this.term = term;
     }
 

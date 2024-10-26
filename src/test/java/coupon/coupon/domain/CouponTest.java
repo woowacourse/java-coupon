@@ -58,4 +58,21 @@ class CouponTest {
                 .isInstanceOf(CouponException.class)
                 .hasMessage("할인율은 3% 이상, 20% 이하이어야 합니다.");
     }
+
+    @DisplayName("카테고리는 null일 수 없다.")
+    @Test
+    void cannotCreateIfCategoryNull() {
+        // given
+        String name = "coupon";
+        int discountAmount = 2500;
+        int minimumOrderAmount = 10000;
+        Category category = null;
+        LocalDate startAt = LocalDate.now();
+        LocalDate endAt = LocalDate.now().plusDays(1);
+
+        // when & then
+        assertThatThrownBy(() -> new Coupon(name, discountAmount, minimumOrderAmount, category, startAt, endAt))
+                .isInstanceOf(CouponException.class)
+                .hasMessage("카테고리를 선택해주세요.");
+    }
 }
