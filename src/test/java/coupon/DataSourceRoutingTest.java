@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 public class DataSourceRoutingTest {
 
-    private static final String WRITER_DB_PORT = "33306";
-    private static final String READER_DB_PORT = "33307";
+    private static final String WRITER_DB_URL = "jdbc:h2:mem:writer";
+    private static final String READER_DB_URL = "jdbc:h2:mem:reader";
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -28,7 +28,7 @@ public class DataSourceRoutingTest {
 
         String actual = dataSource.getConnection().getMetaData().getURL();
 
-        assertThat(actual).contains(WRITER_DB_PORT);
+        assertThat(actual).isEqualTo(WRITER_DB_URL);
     }
 
     @Test
@@ -39,6 +39,6 @@ public class DataSourceRoutingTest {
 
         String actual = dataSource.getConnection().getMetaData().getURL();
 
-        assertThat(actual).contains(READER_DB_PORT);
+        assertThat(actual).isEqualTo(READER_DB_URL);
     }
 }
