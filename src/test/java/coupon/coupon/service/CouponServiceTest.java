@@ -9,6 +9,7 @@ import coupon.coupon.domain.MemberCoupon;
 import coupon.member.Member;
 import coupon.member.MemberService;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +58,10 @@ class CouponServiceTest {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(3L)
         );
+
         Member savedMember = memberService.createMember(member);
         Coupon savedCoupon = couponService.createCoupon(coupon);
+
         MemberCoupon memberCoupon = new MemberCoupon(savedMember, savedCoupon, LocalDateTime.now().plusDays(5L));
 
         // when
@@ -81,6 +84,7 @@ class CouponServiceTest {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(3L)
         );
+
         Member savedMember = memberService.createMember(member);
         Coupon savedCoupon = couponService.createCoupon(coupon);
 
@@ -94,5 +98,32 @@ class CouponServiceTest {
         MemberCoupon memberCoupon = new MemberCoupon(savedMember, savedCoupon, LocalDateTime.now().plusDays(5L));
         assertThatThrownBy(() -> couponService.issueMemberCoupon(memberCoupon))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("사용자는 발급된 쿠폰을 확인할 수 있다.")
+    @Test
+    void readMemberCoupons() {
+        // given
+        Member member = new Member("사용자");
+        Coupon coupon = new Coupon(
+                "쿠폰",
+                CouponCategory.FASHION,
+                1000,
+                30000,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(3L)
+        );
+
+        Member savedMember = memberService.createMember(member);
+        Coupon savedCoupon = couponService.createCoupon(coupon);
+
+        MemberCoupon memberCoupon = new MemberCoupon(savedMember, savedCoupon, LocalDateTime.now().plusDays(5L));
+        couponService.issueMemberCoupon(memberCoupon);
+
+        // when
+        List<MemberCoupon> memberCoupons = couponService.readMemberCoupons(member);
+
+        // then
+        assertThat(memberCoupons).hasSize(1);
     }
 }

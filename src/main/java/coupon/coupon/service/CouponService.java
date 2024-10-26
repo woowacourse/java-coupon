@@ -5,6 +5,7 @@ import coupon.coupon.domain.MemberCoupon;
 import coupon.coupon.repository.CouponRepository;
 import coupon.coupon.repository.MemberCouponRepository;
 import coupon.datasource.aop.WriteTransaction;
+import coupon.member.Member;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +47,10 @@ public class CouponService {
         if (memberCoupons.size() >= 5) {
             throw new IllegalArgumentException("이미 5개 이상 발급된 쿠폰입니다.");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberCoupon> readMemberCoupons(Member member) {
+        return memberCouponRepository.findAllByMember(member);
     }
 }
