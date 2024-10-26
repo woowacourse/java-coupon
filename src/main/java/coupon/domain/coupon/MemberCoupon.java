@@ -30,7 +30,6 @@ public class MemberCoupon {
     @Column(name = "coupon_id", nullable = false)
     private Long couponId;
 
-
     @Column(nullable = false)
     private boolean used;
 
