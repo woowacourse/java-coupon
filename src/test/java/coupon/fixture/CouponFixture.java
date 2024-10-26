@@ -8,7 +8,7 @@ public class CouponFixture {
 
     private static final String NAME = "50% 빅세일 쿠폰";
     private static final Long DISCOUNT_AMOUNT = 1_000L;
-    private static final Integer MINIMUM_ORDER_AMOUNT = 30_000;
+    private static final Long MINIMUM_ORDER_AMOUNT = 30_000L;
 
     public static Coupon createCoupon() {
         LocalDate startDate = LocalDate.from(LocalDate.now());

@@ -5,9 +5,9 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public record DiscountAmount(Long discountAmount) {
 
-    private static final long MINIMUM_DISCOUNT_AMOUNT = 1_000;
-    private static final long MAXIMUM_DISCOUNT_AMOUNT = 10_000;
-    private static final long DISCOUNT_AMOUNT_UNIT = 500;
+    private static final Long MINIMUM_DISCOUNT_AMOUNT = 1_000L;
+    private static final Long MAXIMUM_DISCOUNT_AMOUNT = 10_000L;
+    private static final Long DISCOUNT_AMOUNT_UNIT = 500L;
 
     public DiscountAmount {
         validateDiscountable(discountAmount);

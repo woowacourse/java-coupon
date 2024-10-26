@@ -14,7 +14,7 @@ class DiscountRateTest {
     @DisplayName("할인율 생성 성공: 할인금액과 최소 주문 금액을 입력받아 할인율을 생성, 소수점은 버림")
     void createRate() {
         final Long discountAmount = 1000L;
-        final Integer minimumOrderAmount = 30000;
+        final Long minimumOrderAmount = 30000L;
         assertThat(DiscountRate.from(discountAmount, minimumOrderAmount).discountRate()).isEqualTo(3);
     }
 

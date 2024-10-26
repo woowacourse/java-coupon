@@ -50,7 +50,7 @@ public class Coupon extends BaseTimeEntity {
     public Coupon(
             final String name,
             final Long discountAmount,
-            final Integer minimumOrderAmount,
+            final Long minimumOrderAmount,
             final LocalDate issueStartDate,
             final LocalDate issueEndDate
     ) {

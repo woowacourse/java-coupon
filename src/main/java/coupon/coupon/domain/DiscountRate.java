@@ -5,14 +5,14 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public record DiscountRate(Integer discountRate) {
 
-    private static final double MINIMUM_DISCOUNT_RATE = 3;
-    private static final double MAXIMUM_DISCOUNT_RATE = 20;
+    private static final Integer MINIMUM_DISCOUNT_RATE = 3;
+    private static final Integer MAXIMUM_DISCOUNT_RATE = 20;
 
     public DiscountRate {
         validateRateRange(discountRate);
     }
 
-    public static DiscountRate from(Long discountAmount, Integer minimumOrderAmount) {
+    public static DiscountRate from(Long discountAmount, Long minimumOrderAmount) {
         return new DiscountRate((int) ((double) discountAmount / minimumOrderAmount * 100));
     }
 
