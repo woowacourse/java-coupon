@@ -41,7 +41,7 @@ public class Coupon {
     @Column(nullable = false)
     private IssuablePeriod issuablePeriod;
 
-    public Coupon(Long id, CouponName name, DiscountAmount discountAmount, MinOrderAmount minOderAmount,
+    private Coupon(Long id, CouponName name, DiscountAmount discountAmount, MinOrderAmount minOderAmount,
                   Category category, IssuablePeriod issuablePeriod) {
         validate(discountAmount, minOderAmount);
         this.id = id;
