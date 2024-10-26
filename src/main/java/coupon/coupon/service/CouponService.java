@@ -32,18 +32,17 @@ public class CouponService {
 
     @WriteTransaction
     @Transactional
-    public MemberCoupon issueCoupon(MemberCoupon memberCoupon) {
+    public MemberCoupon issueMemberCoupon(MemberCoupon memberCoupon) {
+        validateIssuedMemberCouponCount(memberCoupon);
+        return memberCouponRepository.save(memberCoupon);
+    }
+
+    private void validateIssuedMemberCouponCount(MemberCoupon memberCoupon) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByCouponAndMember(
                 memberCoupon.getCoupon(),
                 memberCoupon.getMember()
         );
 
-        validateIssuedMemberCouponCount(memberCoupons);
-
-        return memberCouponRepository.save(memberCoupon);
-    }
-
-    private void validateIssuedMemberCouponCount(List<MemberCoupon> memberCoupons) {
         if (memberCoupons.size() >= 5) {
             throw new IllegalArgumentException("이미 5개 이상 발급된 쿠폰입니다.");
         }
