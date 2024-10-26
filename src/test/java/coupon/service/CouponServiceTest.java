@@ -85,6 +85,28 @@ class CouponServiceTest {
                 .hasMessage("한 회원당 %d장만 쿠폰 발급이 가능합니다.".formatted(5));
     }
 
+    @DisplayName("회원이 소유한 쿠폰을 모두 조회한다.")
+    @Test
+    void findAllCoupons() {
+        Coupon coupon1 = couponRepository.save(CouponFixture.DAON_COUPON.coupon());
+        Coupon coupon2 = couponRepository.save(CouponFixture.BLACKJACK_COUPON.coupon());
+        Coupon coupon3 = couponRepository.save(CouponFixture.CHESS_COUPON.coupon());
+        Coupon coupon4 = couponRepository.save(CouponFixture.BASEBALL_COUPON.coupon());
+        Coupon coupon5 = couponRepository.save(CouponFixture.LOTTO_COUPON.coupon());
+        List<MemberCoupon> memberCoupons = List.of(
+                new MemberCoupon(coupon1.getId(), member.getId()),
+                new MemberCoupon(coupon2.getId(), member.getId()),
+                new MemberCoupon(coupon3.getId(), member.getId()),
+                new MemberCoupon(coupon4.getId(), member.getId()),
+                new MemberCoupon(coupon5.getId(), member.getId())
+        );
+        memberCouponRepository.saveAll(memberCoupons);
+
+        List<Coupon> results = couponService.findAllCoupons(member.getId());
+
+        assertThat(results).hasSize(5);
+    }
+
     @DisplayName("id로 조회한다.")
     @Test
     void findById() {
