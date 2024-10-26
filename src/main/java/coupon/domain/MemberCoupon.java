@@ -11,6 +11,8 @@ import java.time.LocalDate;
 
 @Entity
 public class MemberCoupon {
+    private static long EXPIRATION_DAY = 7L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -62,5 +64,21 @@ public class MemberCoupon {
         if (issueDate == null) {
             throw new IllegalArgumentException("발급일은 필수입니다.");
         }
+    }
+
+    public void use() {
+        validateExpiration();
+        isUsed = true;
+    }
+
+    private void validateExpiration() {
+        if (issueDate.plusDays(EXPIRATION_DAY).isBefore(LocalDate.now())) {
+            throw new IllegalStateException(
+                    String.format("쿠폰의 사용 기한이 만료되었습니다. 쿠폰은 발급일로부터 %d일 동안 사용 가능합니다.", EXPIRATION_DAY));
+        }
+    }
+
+    public boolean isUsed() {
+        return isUsed;
     }
 }
