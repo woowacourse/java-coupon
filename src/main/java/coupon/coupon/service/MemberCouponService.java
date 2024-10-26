@@ -3,7 +3,6 @@ package coupon.coupon.service;
 import coupon.coupon.domain.MemberCoupon;
 import coupon.coupon.dto.MemberCouponResponse;
 import coupon.coupon.repository.MemberCouponRepository;
-import coupon.datasource.aop.WriteTransaction;
 import coupon.member.Member;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ public class MemberCouponService {
     private final MemberCouponRepository memberCouponRepository;
     private final CouponService couponService;
 
-    @WriteTransaction
     @Transactional
     public MemberCoupon issueMemberCoupon(MemberCoupon memberCoupon) {
         validateIssuedMemberCouponCount(memberCoupon);

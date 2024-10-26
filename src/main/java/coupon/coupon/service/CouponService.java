@@ -2,7 +2,6 @@ package coupon.coupon.service;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.repository.CouponRepository;
-import coupon.datasource.aop.WriteTransaction;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
@@ -16,7 +15,6 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
-    @WriteTransaction
     @Transactional
     @CachePut(cacheNames = "coupons", key = "#result.id")
     public Coupon createCoupon(Coupon coupon) {
