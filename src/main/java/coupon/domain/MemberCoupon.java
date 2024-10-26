@@ -65,4 +65,8 @@ public class MemberCoupon {
 
     protected MemberCoupon() {
     }
+
+    public long getCouponId() {
+        return couponId;
+    }
 }

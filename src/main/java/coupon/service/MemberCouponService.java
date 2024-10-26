@@ -11,22 +11,37 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class MemberCouponService {
 
-    private final MemberCouponRepository memberCouponRepository;
+    private static final int MAX_MEMBER_COUPON_COUNT = 5;
 
-    public MemberCouponService(MemberCouponRepository memberCouponRepository) {
+    private final MemberCouponRepository memberCouponRepository;
+    private final CouponService couponService;
+
+    public MemberCouponService(MemberCouponRepository memberCouponRepository, CouponService couponService) {
         this.memberCouponRepository = memberCouponRepository;
+        this.couponService = couponService;
     }
 
     @Transactional
     @CachePut(value = "member_coupon")
     public MemberCoupon issue(Member member, Coupon coupon) {
         MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
+        validateIssuedCount(member, coupon);
         return memberCouponRepository.save(memberCoupon);
     }
 
+    private void validateIssuedCount(Member member, Coupon coupon) {
+        List<MemberCoupon> issuedCoupons = memberCouponRepository.findAllByMemberIdAndCouponId(member.getId(), coupon.getId());
+        if (issuedCoupons.size() == MAX_MEMBER_COUPON_COUNT) {
+            throw new IllegalStateException("한 멤버에게 발행가능한 동일 쿠폰은 " + MAX_MEMBER_COUPON_COUNT + "개 입니다.");
+        }
+    }
+
     @Cacheable(value = "member_coupon")
-    public List<MemberCoupon> getMemberCoupon(Member member) {
-        return memberCouponRepository.findAllByMemberId(member.getId());
+    public List<Coupon> findAllMemberCoupon(Member member) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(member.getId());
+        return memberCoupons.stream()
+                .map(memberCoupon -> couponService.findCoupon(memberCoupon.getCouponId()))
+                .toList();
     }
 
 
