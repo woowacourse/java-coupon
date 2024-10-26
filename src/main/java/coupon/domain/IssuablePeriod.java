@@ -2,7 +2,6 @@ package coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,22 +12,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class IssuablePeriod {
 
-    @NotNull
-    @Column(nullable = false, name = "start_date")
-    private LocalDateTime startDate;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP(6)")
+    private LocalDateTime startAt;
 
-    @NotNull
-    @Column(nullable = false, name = "end_date")
-    private LocalDateTime endDate;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP(6)")
+    private LocalDateTime endAt;
 
-    public IssuablePeriod(LocalDateTime startDate, LocalDateTime endDate) {
-        validate(startDate, endDate);
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public IssuablePeriod(LocalDateTime startAt, LocalDateTime endAt) {
+        validate(startAt, endAt);
+        this.startAt = startAt;
+        this.endAt = endAt;
     }
 
-    private void validate(LocalDateTime startDate, LocalDateTime endDate) {
-        if (startDate.isAfter(endDate)) {
+    private void validate(LocalDateTime startAt, LocalDateTime endAt) {
+        if (startAt.isAfter(endAt)) {
             throw new IllegalArgumentException("시작일이 종료일보다 이후일 수 없습니다.");
         }
     }

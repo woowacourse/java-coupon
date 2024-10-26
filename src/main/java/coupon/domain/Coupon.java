@@ -1,5 +1,6 @@
 package coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -7,8 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "coupon")
 public class Coupon {
 
     private static final int MIN_DISCOUNT_RATE = 3;
@@ -26,24 +24,21 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Embedded
     private CouponName name;
 
-    @NotNull
     @Embedded
     private DiscountAmount discountAmount;
 
-    @NotNull
     @Embedded
     private MinOrderAmount minOderAmount;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Category category;
 
-    @NotNull
     @Embedded
+    @Column(nullable = false)
     private IssuablePeriod issuablePeriod;
 
     public Coupon(Long id, CouponName name, DiscountAmount discountAmount, MinOrderAmount minOderAmount,

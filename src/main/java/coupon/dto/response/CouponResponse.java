@@ -16,12 +16,12 @@ public record CouponResponse(
     public static CouponResponse from(Coupon coupon) {
         return new CouponResponse(
                 coupon.getId(),
-                coupon.getName().getValue(),
+                coupon.getName().getName(),
                 coupon.getDiscountAmount().getAmount(),
                 coupon.getMinOderAmount().getAmount(),
                 coupon.getCategory().name(),
-                coupon.getIssuablePeriod().getStartDate(),
-                coupon.getIssuablePeriod().getEndDate()
+                coupon.getIssuablePeriod().getStartAt(),
+                coupon.getIssuablePeriod().getEndAt()
         );
     }
 }

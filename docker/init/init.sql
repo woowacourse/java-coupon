@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS coupon (
     discount_amount BIGINT NOT NULL,
     min_order_amount BIGINT NOT NULL,
     category ENUM('FASHION', 'ELECTRONICS', 'FURNITURE', 'FOOD') NOT NULL,
-    start_date DATETIME NOT NULL,
-    end_date DATETIME NOT NULL
+    start_at TIMESTAMP(6) NOT NULL,
+    end_at TIMESTAMP(6) NOT NULL
 );
