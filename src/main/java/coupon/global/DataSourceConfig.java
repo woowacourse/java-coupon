@@ -28,17 +28,25 @@ public class DataSourceConfig {
     }
 
     @Bean
-    @Primary
     @DependsOn({"writeDataSource", "readDataSource"})
-    public DataSource dataSource() {
-        Map<Object, Object> dataSources = new HashMap<>();
-        dataSources.put(DataSourceType.WRITER, writeDataSource());
-        dataSources.put(DataSourceType.READER, readDataSource());
-
+    public DataSource routeDataSource() {
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
-        dataSourceRouter.setTargetDataSources(dataSources);
-        dataSourceRouter.setDefaultTargetDataSource(writeDataSource());
+        DataSource writeDataSource = writeDataSource();
+        DataSource readDataSource = readDataSource();
 
-        return new LazyConnectionDataSourceProxy(dataSourceRouter);
+        Map<Object, Object> dataSourceMap = new HashMap<>();
+        dataSourceMap.put(DataSourceType.WRITER, writeDataSource);
+        dataSourceMap.put(DataSourceType.READER, readDataSource);
+        dataSourceRouter.setTargetDataSources(dataSourceMap);
+        dataSourceRouter.setDefaultTargetDataSource(writeDataSource);
+
+        return dataSourceRouter;
+    }
+
+    @Bean
+    @Primary
+    @DependsOn({"routeDataSource"})
+    public DataSource dataSource() {
+        return new LazyConnectionDataSourceProxy(routeDataSource());
     }
 }
