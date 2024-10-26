@@ -1,10 +1,9 @@
 package coupon.domain.member_coupon;
 
 import coupon.domain.coupon.Coupon;
-import coupon.domain.member.Member;
 import coupon.exception.CouponIssueDateException;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,6 +23,7 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "member_id")
     private long memberId;
 
     @ManyToOne
@@ -38,7 +38,7 @@ public class MemberCoupon {
 
     public static MemberCoupon issue(long mebmerId, Coupon coupon) {
         LocalDate issuedAt = LocalDate.now();
-        if(!coupon.issueAvailable(issuedAt)) {
+        if (!coupon.issueAvailable(issuedAt)) {
             throw new CouponIssueDateException();
         }
 

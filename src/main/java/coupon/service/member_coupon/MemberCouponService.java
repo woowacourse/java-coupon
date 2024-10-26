@@ -69,7 +69,7 @@ public class MemberCouponService {
             throw new MemberCouponIssueLimitException();
         }
 
-        return Integer.parseInt("1");
+        return result;
     }
 
     private Coupon getCoupon(long couponId) {
