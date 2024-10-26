@@ -19,57 +19,41 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCouponService {
 
-    private static final String COUPON_ISSUE_COUNT_UP_SCRIPT =
-            "local value = redis.call('GET', KEYS[1]); " +
-                    "if not value then " +
-                    "    value = 0; " +
-                    "    redis.call('SET', KEYS[1], value); " +
-                    "end; " +
-                    "if tonumber(value) >= 5 then " +
-                    "    return '-1'; " +
-                    "else " +
-                    "    value = tonumber(value) + 1; " +
-                    "    redis.call('SET', KEYS[1], value); " +
-                    "    return tostring(value); " +
-                    "end";
-
     private final CouponRepository couponRepository;
     private final MemberRepository memberRepository;
     private final MemberCouponRepository memberCouponRepository;
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate redisTemplate; // 제네릭을 사용해 Coupon으로 지정
 
     @Transactional
     public CouponIssueResponse issueMemberCoupon(long memberId, long couponId) {
         memberRepository.getById(memberId);
+        Coupon coupon = getCoupon(couponId);
 
-        MemberCoupon issuedMemberCoupon = MemberCoupon.issue(memberId, getCoupon(couponId));
+        MemberCoupon issuedMemberCoupon = MemberCoupon.issue(memberId, coupon);
         memberCouponRepository.save(issuedMemberCoupon);
-        updateIssuedMemberCouponCount(memberId, couponId);
+        addMemberCoupon(memberId, coupon);
 
         return CouponIssueResponse.from(issuedMemberCoupon);
     }
 
-    private int updateIssuedMemberCouponCount(long memberId, long couponId) {
-        String key = RedisKey.MEMBER_COUPON_COUNT.getKey(memberId, couponId);
-        DefaultRedisScript<String> script = new DefaultRedisScript<>();
-        script.setScriptText(COUPON_ISSUE_COUNT_UP_SCRIPT);
-        script.setResultType(String.class);
-
-        String result = (String) redisTemplate.execute(script, Collections.singletonList(key));
-        if(result.equals("-1")) {
+    // TODO: 동시성 처리
+    private void addMemberCoupon(long memberId, Coupon coupon) {
+        String memberCouponsKey = RedisKey.MEMBER_COUPONS.getKey(memberId);
+        long size = redisTemplate.opsForSet().size(memberCouponsKey);
+        if(size >= 5) {
             throw new MemberCouponIssueLimitException();
         }
 
-        return Integer.parseInt(result);
+        String memberCouponKey = RedisKey.MEMBER_COUPON.getKey(memberId, coupon.getId());
+        redisTemplate.opsForValue().set(memberCouponKey, coupon);
     }
 
     private Coupon getCoupon(long couponId) {
         String couponKey = RedisKey.COUPON.getKey(couponId);
         Coupon coupon = (Coupon) redisTemplate.opsForValue().get(couponKey);
-        if(coupon == null) {
+        if (coupon == null) {
             coupon = couponRepository.getById(couponId);
         }
-
         return coupon;
     }
 }

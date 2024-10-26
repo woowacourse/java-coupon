@@ -1,13 +1,13 @@
 package coupon.config.cache;
 
-import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
 public enum RedisKey {
-    MEMBER_COUPON_COUNT("member:%d:coupon:%d:count"),
+    MEMBER_COUPON("member:%d:coupon:%d"),
+    MEMBER_COUPONS("member:%d:coupons"),
     COUPON("coupon:%d");
 
     private final String key;
