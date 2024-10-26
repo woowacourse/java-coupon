@@ -38,11 +38,6 @@ public class MemberCoupon {
     }
 
     public MemberCoupon(Coupon coupon, Member member) {
-        this(null, coupon, member);
-    }
-
-    private MemberCoupon(Long id, Coupon coupon, Member member) {
-        this.id = id;
         this.coupon = coupon;
         this.member = member;
         this.used = false;
