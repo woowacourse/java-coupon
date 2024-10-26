@@ -21,11 +21,11 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    @Column(name = "member_id")
+    private long memberId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Coupon coupon;
+    @Column(name = "coupon_id")
+    private long couponId;
 
     @Column(name = "used", nullable = false)
     private boolean isUsed;
@@ -45,8 +45,8 @@ public class MemberCoupon {
     ) {
         validateIssuedAt(coupon, issuedAt);
         validateExpiration(issuedAt, expiredAt);
-        this.member = member;
-        this.coupon = coupon;
+        this.memberId = member.getId();
+        this.couponId = coupon.getId();
         this.isUsed = isUsed;
         this.issuedAt = issuedAt;
         this.expiredAt = expiredAt;
