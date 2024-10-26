@@ -1,5 +1,7 @@
 package coupon.domain.membercoupon;
 
+import coupon.domain.coupon.Coupon;
+import coupon.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +45,11 @@ public class MemberCoupon {
         this.expiredAt = toExpiredAt(issuedAt);
         this.memberId = memberId;
         this.couponId = couponId;
+    }
+
+    public static MemberCoupon issue(LocalDateTime issuedAt, Member member, Coupon coupon) {
+        coupon.issue(issuedAt);
+        return new MemberCoupon(issuedAt, member.getId(), coupon.getId());
     }
 
     private LocalDateTime toExpiredAt(LocalDateTime issuedAt) {
