@@ -7,7 +7,7 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponCategory;
 import coupon.coupon.domain.MemberCoupon;
 import coupon.member.Member;
-import coupon.member.MemberService;
+import coupon.member.service.MemberService;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

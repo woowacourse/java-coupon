@@ -1,5 +1,7 @@
-package coupon.member;
+package coupon.member.service;
 
+import coupon.member.Member;
+import coupon.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
