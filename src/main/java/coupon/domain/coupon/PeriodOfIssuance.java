@@ -18,6 +18,10 @@ public class PeriodOfIssuance {
         this.endDate = endDate;
     }
 
+    public boolean have(LocalDate date) {
+        return !startDate.isAfter(date) && !endDate.isBefore(date);
+    }
+
     private void validate(LocalDate startDate, LocalDate endDate) {
         validateNotNull(startDate, endDate);
         validateOrder(startDate, endDate);

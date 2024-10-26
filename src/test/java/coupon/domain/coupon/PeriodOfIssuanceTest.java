@@ -49,4 +49,18 @@ class PeriodOfIssuanceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("시작일은 종료일 이전이어야 합니다.");
     }
+
+    @Test
+    @DisplayName("기한 내 특정 날짜의 포함 여부를 알 수 있다.")
+    void have() {
+        PeriodOfIssuance periodOfIssuance = new PeriodOfIssuance(
+                LocalDate.of(2024, 12, 20), LocalDate.of(2024, 12, 20));
+        SoftAssertions softAssertions = new SoftAssertions();
+
+        softAssertions.assertThat(periodOfIssuance.have(LocalDate.of(2024, 12, 19))).isFalse();
+        softAssertions.assertThat(periodOfIssuance.have(LocalDate.of(2024, 12, 20))).isTrue();
+        softAssertions.assertThat(periodOfIssuance.have(LocalDate.of(2024, 12, 21))).isFalse();
+
+        softAssertions.assertAll();
+    }
 }
