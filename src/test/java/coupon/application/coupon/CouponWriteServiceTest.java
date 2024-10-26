@@ -13,10 +13,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class CouponServiceTest extends AcceptanceTestSupport {
+class CouponWriteServiceTest extends AcceptanceTestSupport {
 
     @Autowired
-    private CouponService couponService;
+    private CouponReadService couponReadService;
+
+    @Autowired
+    private CouponWriteService couponWriteService;
 
     @Autowired
     private CouponRepository couponRepository;
@@ -26,7 +29,7 @@ class CouponServiceTest extends AcceptanceTestSupport {
     void getCoupon() {
         Coupon coupon = couponRepository.save(CouponTestData.defaultCoupon().build());
 
-        Coupon actual = couponService.getCoupon(coupon.getId());
+        Coupon actual = couponReadService.getCoupon(coupon.getId());
 
         assertThat(actual).isEqualTo(coupon);
     }
@@ -36,7 +39,7 @@ class CouponServiceTest extends AcceptanceTestSupport {
     void getCouponByNotExistId() {
         Long given = -1L;
 
-        assertThatThrownBy(() -> couponService.getCoupon(given))
+        assertThatThrownBy(() -> couponReadService.getCoupon(given))
                 .isInstanceOf(CouponException.class)
                 .hasMessage(ExceptionType.COUPON_NOT_FOUND.getMessage());
     }
@@ -45,9 +48,9 @@ class CouponServiceTest extends AcceptanceTestSupport {
     @Test
     void create() {
         Coupon coupon = CouponTestData.defaultCoupon().build();
-        couponService.create(coupon);
+        couponWriteService.create(coupon);
 
-        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        Coupon savedCoupon = couponReadService.getCoupon(coupon.getId());
 
         assertThat(savedCoupon).isEqualTo(coupon);
     }
@@ -55,9 +58,9 @@ class CouponServiceTest extends AcceptanceTestSupport {
     @Test
     void testReplicationLag() {
         Coupon coupon = CouponTestData.defaultCoupon().build();
-        couponService.create(coupon);
+        couponWriteService.create(coupon);
 
-        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        Coupon savedCoupon = couponReadService.getCoupon(coupon.getId());
 
         assertThat(savedCoupon).isNotNull();
     }
