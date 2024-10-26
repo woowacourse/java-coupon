@@ -26,7 +26,7 @@ class CouponTest {
         @DisplayName("할인율이 3% 미만이면 쿠폰을 생성할 수 없다.")
         void failWithTooSmallDiscount() {
             assertThatThrownBy(
-                    () -> new Coupon("name", 2999, 100000, Category.FASHION, LocalDate.now(), LocalDate.now()))
+                    () -> new Coupon("name", 2000, 100000, Category.FASHION, LocalDate.now(), LocalDate.now()))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -34,7 +34,7 @@ class CouponTest {
         @DisplayName("할인율이 20%를 초과하면 쿠폰을 생성할 수 없다.")
         void failWithTooBigDiscount() {
             assertThatThrownBy(
-                    () -> new Coupon("name", 2001, 10000, Category.FASHION, LocalDate.now(), LocalDate.now()))
+                    () -> new Coupon("name", 2100, 10000, Category.FASHION, LocalDate.now(), LocalDate.now()))
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }
