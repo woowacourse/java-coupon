@@ -16,6 +16,12 @@ spring:
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
+  data:
+    redis:
+      host: localhost
+      port: 36379
+  cache:
+    type: redis
 
 coupon.datasource:
   writer:
@@ -32,3 +38,4 @@ coupon.datasource:
     username: root
     password: root
     maximumPoolSize: 10
+

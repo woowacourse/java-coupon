@@ -11,6 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +28,11 @@ public class MemberCouponService {
     private final MemberReader memberReader;
     private final MemberCouponReader memberCouponReader;
     private final MemberCouponWriter memberCouponWriter;
+    private final TransactionRouter transactionRouter;
+
 
     @Transactional
+    @CacheEvict(cacheNames = "memberCoupons", key = "#memberId")
     public MemberCoupon issueCoupon(long memberId, long couponId) {
         Member member = memberReader.getMember(memberId);
         validateIssueCount(memberId, couponId);
@@ -52,8 +57,10 @@ public class MemberCouponService {
         }
     }
 
+    @Cacheable(cacheNames = "memberCoupons", key = "#memberId", unless = "#result.isEmpty()")
     public List<MemberCouponResponse> findAllByMemberId(long memberId) {
-        return memberCouponReader.findAllByMemberId(memberId).stream()
+        List<MemberCoupon> memberCoupons = transactionRouter.route(() -> memberCouponReader.findAllByMemberId(memberId));
+        return memberCoupons.stream()
                 .map(memberCoupon ->
                         MemberCouponResponse.of(memberCoupon, couponService.getCoupon(memberCoupon.getCouponId()))
                 )
