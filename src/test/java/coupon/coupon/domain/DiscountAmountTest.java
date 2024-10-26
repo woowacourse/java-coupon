@@ -48,7 +48,7 @@ class DiscountAmountTest {
 
     @DisplayName("주어진 금액에 대한 할인 금액의 비율을 계산한다.")
     @Test
-    void getDiscountRate(){
+    void getDiscountRate() {
         // given
         DiscountAmount discountAmount = new DiscountAmount(2500);
         MinimumOrderAmount minimumOrderAmount = new MinimumOrderAmount(10000);
