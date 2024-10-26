@@ -3,6 +3,7 @@ package coupon.domain.coupon;
 import coupon.exception.CouponException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import lombok.AccessLevel;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class DiscountRate {
+public class DiscountRate implements Serializable {
 
     private static final int MINIMUM_DISCOUNT_RATE = 3;
     private static final int MAXIMUM_DISCOUNT_RATE = 20;

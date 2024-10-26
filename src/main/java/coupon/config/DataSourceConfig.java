@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
-@Profile(value = {"prod", "multiDataSourceTest"})
+@Profile(value = {"multiDataSourceTest"})
 @Configuration
 public class DataSourceConfig {
 

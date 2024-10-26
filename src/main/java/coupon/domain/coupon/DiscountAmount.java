@@ -3,6 +3,7 @@ package coupon.domain.coupon;
 import coupon.exception.CouponException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class DiscountAmount {
+public class DiscountAmount implements Serializable {
 
     private static final BigDecimal MIN_VALUE = new BigDecimal("1000");
     private static final BigDecimal MAX_VALUE = new BigDecimal("30000");

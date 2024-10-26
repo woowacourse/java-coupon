@@ -3,6 +3,7 @@ package coupon.domain.coupon;
 import coupon.exception.CouponException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import org.apache.logging.log4j.util.Strings;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class CouponName {
+public class CouponName implements Serializable {
 
     private static final int COUPON_NAME_MAX_LENGTH = 30;
 
