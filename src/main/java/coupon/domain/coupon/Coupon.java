@@ -62,6 +62,10 @@ public class Coupon {
     protected Coupon() {
     }
 
+    public boolean isBetweenIssueDuration(LocalDateTime issuedAt) {
+        return duration.isBetween(issuedAt);
+    }
+
     public Long getId() {
         return id;
     }

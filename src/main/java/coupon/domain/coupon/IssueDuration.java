@@ -9,7 +9,7 @@ public class IssueDuration {
 
     private LocalDateTime startAt;
 
-    @Column(name= "end_at")
+    @Column(name = "end_at")
     private LocalDateTime endAt;
 
     public IssueDuration(LocalDateTime startAt, LocalDateTime endAt) {
@@ -19,6 +19,11 @@ public class IssueDuration {
     }
 
     protected IssueDuration() {
+    }
+
+    public boolean isBetween(LocalDateTime issuedAt) {
+        return (issuedAt.isAfter(startAt) || issuedAt.isEqual(startAt))
+                && (issuedAt.isBefore(endAt) || issuedAt.isEqual(endAt));
     }
 
     private void validate(LocalDateTime startAt, LocalDateTime endAt) {
