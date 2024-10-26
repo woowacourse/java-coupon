@@ -20,13 +20,13 @@ public record DiscountAmount(Long discountAmount) {
 
     public void validateDiscountAmountRange(final Long discountAmount) {
         if (discountAmount > MAXIMUM_DISCOUNT_AMOUNT || discountAmount < MINIMUM_DISCOUNT_AMOUNT) {
-            throw new IllegalArgumentException("할인 금액은 1,000원 이상 10,000원 이하만 가능합니다.");
+            throw new IllegalArgumentException(String.format("할인 금액은 %,d원 이상 %,d원 이하만 가능합니다.", MINIMUM_DISCOUNT_AMOUNT, MAXIMUM_DISCOUNT_AMOUNT));
         }
     }
 
     public void validateDiscountUnit(final Long discountAmount) {
         if (discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
-            throw new IllegalArgumentException("할인 금액은 500원 단위로만 가능합니다.");
+            throw new IllegalArgumentException(String.format("할인 금액은 %,d원 단위로만 가능합니다.", DISCOUNT_AMOUNT_UNIT));
         }
     }
 }

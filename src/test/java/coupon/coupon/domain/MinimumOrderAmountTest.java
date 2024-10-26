@@ -12,6 +12,6 @@ class MinimumOrderAmountTest {
     void createAmountWhenInvalidRange(final Long invalidAmount) {
         assertThatThrownBy(() -> new MinimumOrderAmount(invalidAmount))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("최소 주문 금액은 5,000원 이상 10,000원 이하이어야 합니다.");
+                .hasMessage("최소 주문 금액은 5,000원 이상 100,000원 이하이어야 합니다.");
     }
 }

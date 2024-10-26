@@ -14,7 +14,7 @@ public record MinimumOrderAmount(Long minimumOrderAmount) {
 
     public void validateAmount(Long minimumOrderAmount) {
         if (minimumOrderAmount < MINIMUM_ORDER_AMOUNT || minimumOrderAmount > MAXIMUM_ORDER_AMOUNT) {
-            throw new IllegalArgumentException("최소 주문 금액은 5,000원 이상 10,000원 이하이어야 합니다.");
+            throw new IllegalArgumentException(String.format("최소 주문 금액은 %,d원 이상 %,d원 이하이어야 합니다.", MINIMUM_ORDER_AMOUNT, MAXIMUM_ORDER_AMOUNT));
         }
     }
 }

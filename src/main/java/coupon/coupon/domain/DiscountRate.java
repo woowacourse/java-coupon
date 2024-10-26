@@ -18,7 +18,7 @@ public record DiscountRate(Integer discountRate) {
 
     public void validateRateRange(final Integer discountRate) {
         if (discountRate < MINIMUM_DISCOUNT_RATE || discountRate > MAXIMUM_DISCOUNT_RATE) {
-            throw new IllegalArgumentException("할인율은 3% 이상 20% 이하의 값이어야 합니다.");
+            throw new IllegalArgumentException(String.format("할인율은 %,d%% 이상 %,d%% 이하의 값이어야 합니다.", MINIMUM_DISCOUNT_RATE, MAXIMUM_DISCOUNT_RATE));
         }
     }
 }
