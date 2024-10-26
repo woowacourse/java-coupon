@@ -19,8 +19,8 @@ class CouponTest {
     void 할인율이_3퍼센트_미만이거나_20퍼센트_초과이면_예외가_발생한다(long discountValue, long minOrderValue) {
         DiscountAmount discountAmount = new DiscountAmount(discountValue);
         MinOrderAmount minOrderAmount = new MinOrderAmount(minOrderValue);
-        assertThatThrownBy(
-                () -> new Coupon(COUPON_NAME, discountAmount, minOrderAmount, Category.FOOD, ISSUABLE_PERIOD));
+        assertThatThrownBy(() -> new Coupon(COUPON_NAME, discountAmount, minOrderAmount, Category.FOOD, ISSUABLE_PERIOD))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
