@@ -1,6 +1,7 @@
 package coupon.domain.coupon;
 
 import coupon.domain.Category;
+import coupon.exception.CouponException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -10,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -56,5 +58,12 @@ public class Coupon {
         this.discountRate = new DiscountRate(discountAmount, minimumOrderAmount);
         this.category = category;
         this.issueDuration = issueDuration;
+    }
+
+    public void validateDateCouponIssuance(LocalDateTime localDateTime) {
+        if (issueDuration.isWithin(localDateTime)) {
+            return;
+        }
+        throw new CouponException("해당 쿠폰은 발급 기간이 아닙니다.");
     }
 }

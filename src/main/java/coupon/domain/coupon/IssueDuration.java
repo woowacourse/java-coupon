@@ -3,6 +3,7 @@ package coupon.domain.coupon;
 import coupon.exception.CouponException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,5 +30,13 @@ public class IssueDuration {
         if (endAt.isBefore(startAt) || endAt.isEqual(startAt)) {
             throw new CouponException("쿠폰 발급 종료일은 시작일 보다 이후 입니다.");
         }
+    }
+
+    boolean isWithin(LocalDateTime localDateTime) {
+        LocalDate date = localDateTime.toLocalDate();
+        LocalDate startDate = startAt.toLocalDate();
+        LocalDate endDate = endAt.toLocalDate();
+        return (startDate.isEqual(date) || startDate.isBefore(date)) &&
+                (endDate.isEqual(date) || endDate.isAfter(date));
     }
 }
