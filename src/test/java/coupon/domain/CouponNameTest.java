@@ -9,12 +9,16 @@ class CouponNameTest {
 
     @Test
     void 쿠폰_이름이_30자_초과이면_예외가_발생한다() {
-        assertThatThrownBy(() -> new CouponName("쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠"))
+        String invalidName = "쿠".repeat(31);
+
+        assertThatThrownBy(() -> new CouponName(invalidName))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void 쿠폰_이름이_30자_이하이면_객체가_생성된다() {
-        assertDoesNotThrow(() -> new CouponName("쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰쿠폰"));
+        String validName = "쿠".repeat(30);
+
+        assertDoesNotThrow(() -> new CouponName(validName));
     }
 }
