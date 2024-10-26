@@ -15,16 +15,11 @@ import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-class MemberCouponQueryServiceTest {
+class MemberCouponQueryServiceTest extends ServiceTest {
 
     @Autowired
     private MemberCouponQueryService memberCouponQueryService;
@@ -35,11 +30,9 @@ class MemberCouponQueryServiceTest {
     @Autowired
     private MemberCouponRepository memberCouponRepository;
 
-    private Coupon savedCoupon;
-    private long memberId = 1;
-
-    @BeforeEach
-    void setup() {
+    @DisplayName("회원의 쿠폰 목록 조회 시 쿠폰, 회원에게 발급된 쿠폰의 정보를 반환한다.")
+    @Test
+    void getMemberCoupons() {
         Coupon coupon = new Coupon(
                 new CouponName("쿠폰1"),
                 new DiscountAmount("1000"),
@@ -50,15 +43,11 @@ class MemberCouponQueryServiceTest {
                         LocalDateTime.of(2025, 1, 1, 1, 0, 1)
                 )
         );
-        savedCoupon = couponRepository.save(coupon);
-
+        Coupon savedCoupon = couponRepository.save(coupon);
+        long memberId = 1L;
         memberCouponRepository.save(new MemberCoupon(memberId, coupon.getId(), LocalDateTime.of(2024, 2, 1, 1, 0, 0)));
         memberCouponRepository.save(new MemberCoupon(memberId, coupon.getId(), LocalDateTime.of(2024, 4, 1, 1, 0, 0)));
-    }
 
-    @DisplayName("회원의 쿠폰 목록 조회 시 쿠폰, 회원에게 발급된 쿠폰의 정보를 반환한다.")
-    @Test
-    void getMemberCoupons() {
         List<GetMemberCouponResponse> actual = memberCouponQueryService.getMemberCoupons(memberId);
 
         assertAll(

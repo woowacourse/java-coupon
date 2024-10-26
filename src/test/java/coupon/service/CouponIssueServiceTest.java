@@ -20,12 +20,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-@Transactional
-class CouponIssueServiceTest {
+
+class CouponIssueServiceTest extends ServiceTest {
 
     @Autowired
     private CouponIssueService couponIssueService;
@@ -72,11 +69,9 @@ class CouponIssueServiceTest {
     @DisplayName("쿠폰 발급 가능 갯수를 초과하면 예외가 발생한다.")
     @Test
     void issue2() {
-        couponIssueService.issue(savedMember.getId(), savedCoupon.getId());
-        couponIssueService.issue(savedMember.getId(), savedCoupon.getId());
-        couponIssueService.issue(savedMember.getId(), savedCoupon.getId());
-        couponIssueService.issue(savedMember.getId(), savedCoupon.getId());
-        couponIssueService.issue(savedMember.getId(), savedCoupon.getId());
+        for (int i = 0; i < 5; i++) {
+            couponIssueService.issue(savedMember.getId(), savedCoupon.getId());
+        }
 
         assertThatThrownBy(() -> couponIssueService.issue(savedMember.getId(), savedCoupon.getId()))
                 .isInstanceOf(CouponException.class);

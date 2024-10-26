@@ -1,0 +1,15 @@
+coupon.datasource:
+  writer:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.h2.Driver
+    jdbc-url: jdbc:h2:mem:writer;
+    username: sa
+    password:
+    maximumPoolSize: 10
+  reader:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.h2.Driver
+    jdbc-url: jdbc:h2:mem:reader;
+    username: root
+    password: root
+    maximumPoolSize: 10

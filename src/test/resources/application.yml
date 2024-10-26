@@ -1,22 +1,10 @@
-coupon.datasource:
-  writer:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: org.h2.Driver
-    jdbc-url: jdbc:h2:mem:writer;
-    username: sa
-    password:
-    maximumPoolSize: 10
-  reader:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: org.h2.Driver
-    jdbc-url: jdbc:h2:mem:reader;
-    username: root
-    password: root
-    maximumPoolSize: 10
-
 spring:
   jpa:
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+  data:
+    redis:
+      port: 6379
+      host: 172.20.0.20
