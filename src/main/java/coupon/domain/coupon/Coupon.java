@@ -1,5 +1,6 @@
 package coupon.domain.coupon;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.AttributeOverride;
@@ -59,8 +60,8 @@ public class Coupon {
         this.category = category;
         this.couponDuration = new CouponDuration(startDate, endDate);
         validate(discountAmount, orderAmount);
-        this.orderAmount = new OrderAmount(orderAmount);
-        this.discountAmount = new DiscountAmount(discountAmount);
+        this.orderAmount = new OrderAmount(new BigDecimal(orderAmount));
+        this.discountAmount = new DiscountAmount(new BigDecimal(discountAmount));
     }
 
     private void validate(int discountAmount, int orderAmount) {
