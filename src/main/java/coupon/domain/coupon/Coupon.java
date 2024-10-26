@@ -1,6 +1,6 @@
 package coupon.domain.coupon;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -35,8 +35,8 @@ public class Coupon {
 
     @Embedded
     @AttributeOverrides(value = {
-            @AttributeOverride(name = "startDate", column = @Column(name = "start_date")),
-            @AttributeOverride(name = "endDate", column = @Column(name = "end_date"))
+            @AttributeOverride(name = "startDate", column = @Column(name = "start_date", columnDefinition = "DATETIME(6)")),
+            @AttributeOverride(name = "endDate", column = @Column(name = "end_date", columnDefinition = "DATETIME(6)"))
     })
     private CouponDuration couponDuration;
 
@@ -50,8 +50,8 @@ public class Coupon {
 
     public Coupon(String couponName,
                   Category category,
-                  LocalDate startDate,
-                  LocalDate endDate,
+                  LocalDateTime startDate,
+                  LocalDateTime endDate,
                   int orderAmount,
                   int discountAmount
     ) {
