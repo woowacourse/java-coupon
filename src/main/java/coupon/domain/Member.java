@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Member {
 
+    private static final int MAX_NAME_LENGTH = 30;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +29,7 @@ public class Member {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Member name cannot be null or empty");
         }
-        if (name.length() > 30) {
+        if (name.length() > MAX_NAME_LENGTH) {
             throw new IllegalArgumentException("Member name cannot be longer than 30 characters");
         }
     }
