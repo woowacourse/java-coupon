@@ -38,4 +38,30 @@ class TermTest {
         assertThat(term).extracting("startAt").isEqualTo(LocalDateTime.of(2024, 10, 1, 0, 0, 0, 0));
         assertThat(term).extracting("endAt").isEqualTo(LocalDateTime.of(2024, 10, 2, 23, 59, 59, 999_999_000));
     }
+
+    @DisplayName("시작일이 null일 경우 예외가 발생한다.")
+    @Test
+    void cannotCreateIfStartIsNull() {
+        // given
+        LocalDate startAt = null;
+        LocalDate endAt = LocalDate.of(2024, 10, 2);
+
+        // when & then
+        assertThatThrownBy(() -> new Term(startAt, endAt))
+                .isInstanceOf(CouponException.class)
+                .hasMessage("시작 날짜와 끝 날짜를 설정해주세요");
+    }
+
+    @DisplayName("종료일이 null일 경우 예외가 발생한다.")
+    @Test
+    void cannotCreateIfEndIsNull() {
+        // given
+        LocalDate startAt = null;
+        LocalDate endAt = LocalDate.of(2024, 10, 1);
+
+        // when & then
+        assertThatThrownBy(() -> new Term(startAt, endAt))
+                .isInstanceOf(CouponException.class)
+                .hasMessage("시작 날짜와 끝 날짜를 설정해주세요");
+    }
 }
