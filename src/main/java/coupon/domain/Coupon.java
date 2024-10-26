@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -28,6 +29,7 @@ public class Coupon {
 
 	public Coupon(String name, int price, int minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
 		validateName(name);
+		validateDate(startAt, endAt);
 		this.name = name;
 		this.discount = new Discount(price, minimumOrderAmount);
 		this.minimumOrderAmount = minimumOrderAmount;
@@ -42,7 +44,7 @@ public class Coupon {
 		}
 	}
 
-	private void validateDate(String name) {
+	private void validateDate(LocalDate startAt, LocalDate endAt) {
 		if(startAt.isAfter(endAt)) {
 			throw new IllegalArgumentException("시작일이 종료일 보다 늦을 수 없습니다.");
 		}
