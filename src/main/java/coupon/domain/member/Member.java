@@ -6,12 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Member {
 
     @Id
@@ -20,8 +22,7 @@ public class Member {
     @Embedded
     private MemberName memberName;
 
-    public Member(Long id, MemberName memberName) {
-        this.id = id;
+    public Member(MemberName memberName) {
         this.memberName = memberName;
     }
 }

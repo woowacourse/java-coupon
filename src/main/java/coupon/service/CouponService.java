@@ -1,21 +1,25 @@
 package coupon.service;
 
+import coupon.domain.MemberCoupon;
 import coupon.domain.coupon.Coupon;
+import coupon.domain.member.Member;
 import coupon.repository.CouponRepository;
+import coupon.repository.MemberCouponRepository;
 import coupon.service.support.DataSourceSupport;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class CouponService {
 
-    private final CouponRepository couponRepository;
-    private final DataSourceSupport dataSourceSupport;
+    private static final int ISSUED_MEMBER_COUPON_LIMIT = 5;
 
-    public CouponService(CouponRepository couponRepository, DataSourceSupport dataSourceSupport) {
-        this.couponRepository = couponRepository;
-        this.dataSourceSupport = dataSourceSupport;
-    }
+    private final CouponRepository couponRepository;
+    private final MemberCouponRepository memberCouponRepository;
+    private final DataSourceSupport dataSourceSupport;
 
     @Transactional
     public Coupon create(Coupon coupon) {
@@ -31,5 +35,21 @@ public class CouponService {
     private Coupon getCouponFromWriter(Long couponId) {
         return dataSourceSupport.executeOnWriter(() -> couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 쿠폰 id입니다.")));
+    }
+
+    @Transactional
+    public MemberCoupon issueMemberCoupon(Long couponId, Member member) {
+        Coupon coupon = couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰 id입니다."));
+        validateIssueLimit(member, coupon);
+        MemberCoupon memberCoupon = MemberCoupon.issue(member, coupon);
+        return memberCouponRepository.save(memberCoupon);
+    }
+
+    private void validateIssueLimit(Member member, Coupon coupon) {
+        List<MemberCoupon> memberCoupon = memberCouponRepository.findAllByMemberAndCoupon(member, coupon);
+        if (memberCoupon.size() >= ISSUED_MEMBER_COUPON_LIMIT) {
+            throw new IllegalArgumentException("쿠폰을 더 발급할 수 없습니다.");
+        }
     }
 }
