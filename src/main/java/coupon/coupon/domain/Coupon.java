@@ -21,7 +21,6 @@ public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Embedded
     private CouponName name;
     @Embedded
