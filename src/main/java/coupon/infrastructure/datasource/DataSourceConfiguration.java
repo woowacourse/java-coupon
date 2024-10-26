@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -38,14 +39,17 @@ public class DataSourceConfiguration {
 
     @Bean
     @DependsOn({WRITE_DATASOURCE, READ_DATASOURCE})
-    public DataSource routingDataSource() {
+    public DataSource routingDataSource(
+            @Qualifier("writeDataSource") DataSource writeDataSource,
+            @Qualifier("readDataSource") DataSource readDataSource
+    ) {
         final ReadOnlyDataSourceRouter routingDataSource = new ReadOnlyDataSourceRouter();
         final Map<Object, Object> dataSourceMap = Map.of(
-                DataSourceType.READER, readDataSource(),
-                DataSourceType.WRITER, writeDataSource());
+                DataSourceType.WRITER, writeDataSource,
+                DataSourceType.READER, readDataSource);
 
         routingDataSource.setTargetDataSources(dataSourceMap);
-        routingDataSource.setDefaultTargetDataSource(writeDataSource());
+        routingDataSource.setDefaultTargetDataSource(writeDataSource);
 
         return routingDataSource;
     }
@@ -53,7 +57,7 @@ public class DataSourceConfiguration {
     @Bean
     @Primary
     @DependsOn({ROUTING_DATASOURCE})
-    public DataSource dataSource() {
-        return new LazyConnectionDataSourceProxy(routingDataSource());
+    public DataSource dataSource(DataSource routingDataSource) {
+        return new LazyConnectionDataSourceProxy(routingDataSource);
     }
 }
