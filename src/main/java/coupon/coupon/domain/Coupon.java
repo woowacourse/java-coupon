@@ -30,6 +30,9 @@ public class Coupon {
     @Embedded
     private MinimumOrderAmount minimumOrderAmount;
 
+    @Embedded
+    private DiscountRate discountRate;
+
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
@@ -42,6 +45,7 @@ public class Coupon {
         this.name = new Name(name);
         this.discountAmount = new DiscountAmount(discountAmount);
         this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
+        this.discountRate = new DiscountRate(discountAmount, minimumOrderAmount);
         this.category = category;
         this.startTime = startTime;
         this.endTime = endTime;

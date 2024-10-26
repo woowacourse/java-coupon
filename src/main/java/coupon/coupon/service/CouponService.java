@@ -19,7 +19,7 @@ public class CouponService {
 
     @Transactional
     public Long createCoupon() {
-        Coupon newCoupon = new Coupon("쿠폰", new BigDecimal(1000), new BigDecimal(10000),
+        Coupon newCoupon = new Coupon("쿠폰", new BigDecimal(3000), new BigDecimal(100000),
                 Category.FOOD, LocalDateTime.now(), LocalDateTime.now().plusWeeks(1L));
         Coupon coupon = couponRepository.save(newCoupon);
 
