@@ -42,7 +42,6 @@ public class DataSourceConfig {
 
         routingDataSource.setTargetDataSources(dataSourceMap);
         routingDataSource.setDefaultTargetDataSource(writer);
-
         return routingDataSource;
     }
 

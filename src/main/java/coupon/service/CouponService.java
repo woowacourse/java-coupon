@@ -4,6 +4,7 @@ import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.dto.CouponRequest;
 import coupon.dto.CouponResponse;
+import coupon.global.ReplicationLagFallback;
 import coupon.repository.CategoryRepository;
 import coupon.repository.CouponRepository;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,14 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
     private final CategoryRepository categoryRepository;
+    private final ReplicationLagFallback replicationLagFallback;
 
-    public CouponService(CouponRepository couponRepository, CategoryRepository categoryRepository) {
+    public CouponService(CouponRepository couponRepository,
+                         CategoryRepository categoryRepository,
+                         ReplicationLagFallback replicationLagFallback) {
         this.couponRepository = couponRepository;
         this.categoryRepository = categoryRepository;
+        this.replicationLagFallback = replicationLagFallback;
     }
 
     @Transactional
@@ -30,15 +35,15 @@ public class CouponService {
         return CouponResponse.from(newCoupon);
     }
 
-    /**
-     * 이 메서드는 DB가 reader와 writer로 분리된 환경에서 복제 지연(Replication Lag) 때문에 readOnly=true를 사용하지 않았습니다. readOnly를 사용하면 Reader
-     * DB에서만 조회하게 되어, Writer DB에 아직 반영되지 않은 최신 데이터를 조회하지 못할 수 있기 때문입니다.
-     */
-    @Transactional
+    @Transactional(readOnly = true)
     public CouponResponse getCoupon(Long couponId) {
         Coupon coupon = couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
-
+                .orElseGet(() -> replicationLagFallback.readFromWriter(() -> findById(couponId)));
         return CouponResponse.from(coupon);
+    }
+
+    private Coupon findById(Long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
     }
 }
