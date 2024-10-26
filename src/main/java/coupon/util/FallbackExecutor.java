@@ -6,10 +6,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class WriteDBConnector {
+public class FallbackExecutor {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public <T> T apply(Supplier<T> function) {
+    public <T> T execute(Supplier<T> function) {
         return function.get();
     }
 }

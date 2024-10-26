@@ -3,7 +3,7 @@ package coupon.service;
 import coupon.domain.Coupon;
 import coupon.dto.request.CouponSaveRequest;
 import coupon.repository.CouponRepository;
-import coupon.util.WriteDBConnector;
+import coupon.util.FallbackExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
-    private final WriteDBConnector writeDBConnector;
+    private final FallbackExecutor fallbackExecutor;
 
     @Transactional
     public Coupon save(CouponSaveRequest couponSaveRequest) {
@@ -24,11 +24,11 @@ public class CouponService {
     @Transactional(readOnly = true)
     public Coupon findById(long couponId) {
         return couponRepository.findById(couponId)
-                .orElse(findByIdWithWriteDB(couponId));
+                .orElse(retryFindById(couponId));
     }
 
-    private Coupon findByIdWithWriteDB(long couponId) {
-        return writeDBConnector.apply(() -> couponRepository.findById(couponId))
+    private Coupon retryFindById(long couponId) {
+        return fallbackExecutor.execute(() -> couponRepository.findById(couponId))
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
     }
 }
