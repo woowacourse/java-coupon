@@ -41,4 +41,10 @@ public class Coupon {
 			throw new IllegalArgumentException("이름은 30자 이내로 입력해주세요.");
 		}
 	}
+
+	private void validateDate(String name) {
+		if(startAt.isAfter(endAt)) {
+			throw new IllegalArgumentException("시작일이 종료일 보다 늦을 수 없습니다.");
+		}
+	}
 }
