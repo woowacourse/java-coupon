@@ -28,6 +28,5 @@ CREATE TABLE IF NOT EXISTS member_coupon (
     issue_date  DATETIME(6) NOT NULL,
     expire_date DATETIME(6) NOT NULL,
     CONSTRAINT pk_member_coupon PRIMARY KEY (id),
-    CONSTRAINT fk_member FOREIGN KEY (member_id) REFERENCES member(id),
-    CONSTRAINT fk_coupon FOREIGN KEY (coupon_id) REFERENCES coupon(id)
+    CONSTRAINT fk_member FOREIGN KEY (member_id) REFERENCES member(id)
     );

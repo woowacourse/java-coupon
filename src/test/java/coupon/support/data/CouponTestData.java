@@ -13,7 +13,6 @@ public class CouponTestData {
 
     public static CouponBuilder defaultCoupon() {
         return new CouponBuilder()
-                .withId(1L)
                 .withName(new CouponName("쿠폰"))
                 .withDiscountAmount(new DiscountAmount(BigDecimal.valueOf(1000)))
                 .withMinimumOrderAmount(new MinimumOrderAmount(BigDecimal.valueOf(5000)))
