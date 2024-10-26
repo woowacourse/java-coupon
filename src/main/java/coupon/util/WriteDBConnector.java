@@ -1,6 +1,6 @@
 package coupon.util;
 
-import java.util.function.Function;
+import java.util.function.Supplier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class WriteDBConnector {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public <T, R> R apply(Function<T, R> function, T t) {
-        return function.apply(t);
+    public <T> T apply(Supplier<T> function) {
+        return function.get();
     }
 }

@@ -28,7 +28,7 @@ public class CouponService {
     }
 
     private Coupon findByIdWithWriteDB(long couponId) {
-        return writeDBConnector.apply(countId -> couponRepository.findById(couponId), couponId)
+        return writeDBConnector.apply(() -> couponRepository.findById(couponId))
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
     }
 }
