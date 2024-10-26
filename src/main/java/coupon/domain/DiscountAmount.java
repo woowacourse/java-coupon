@@ -25,10 +25,10 @@ public class DiscountAmount {
 
     private void validate(long amount) {
         if (amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
-            throw new IllegalArgumentException("할인 금액은 1000원 이상 10000원 이하여야 합니다.");
+            throw new IllegalArgumentException("할인 금액은 " + MIN_AMOUNT + "원 이상 " + MAX_AMOUNT + "원 이하여야 합니다.");
         }
         if (amount % AMOUNT_UNIT != 0) {
-            throw new IllegalArgumentException("할인 금액은 500원 단위로만 입력 가능합니다.");
+            throw new IllegalArgumentException("할인 금액은 " + AMOUNT_UNIT + "원 단위로만 입력 가능합니다.");
         }
     }
 }

@@ -15,6 +15,6 @@ public enum Category {
     public static Category from(String name) {
         return Arrays.stream(values()).filter(value -> value.displayName.equals(name))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException(name + "과 일치하는 카테고리가 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException(name + "과(와) 일치하는 카테고리가 없습니다."));
     }
 }

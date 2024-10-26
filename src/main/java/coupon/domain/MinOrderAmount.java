@@ -24,7 +24,7 @@ public class MinOrderAmount {
 
     private void validate(long amount) {
         if (amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
-            throw new IllegalArgumentException("최소 주문 금액은 5000원 이상 100000원 이하여야 합니다.");
+            throw new IllegalArgumentException("최소 주문 금액은 " + MIN_AMOUNT + "원 이상 " + MAX_AMOUNT + "원 이하여야 합니다.");
         }
     }
 }
