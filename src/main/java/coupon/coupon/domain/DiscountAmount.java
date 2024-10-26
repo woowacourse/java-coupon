@@ -1,6 +1,7 @@
 package coupon.coupon.domain;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -29,7 +30,7 @@ public class DiscountAmount {
         this(BigDecimal.valueOf(discountAmount));
     }
 
-    public DiscountAmount(BigDecimal discountAmount) {
+    private DiscountAmount(BigDecimal discountAmount) {
         validate(discountAmount);
         this.discountAmount = discountAmount;
     }
@@ -51,6 +52,11 @@ public class DiscountAmount {
         }
     }
 
+    public BigDecimal getDiscountRate(MinimumOrderAmount minimumOrderAmount) {
+        return discountAmount.multiply(BigDecimal.valueOf(100))
+                .divide(minimumOrderAmount.getMinimumOrderAmount(), 0, RoundingMode.DOWN);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -64,9 +70,5 @@ public class DiscountAmount {
     @Override
     public int hashCode() {
         return Objects.hash(discountAmount);
-    }
-
-    public BigDecimal getDiscountAmount() {
-        return discountAmount;
     }
 }

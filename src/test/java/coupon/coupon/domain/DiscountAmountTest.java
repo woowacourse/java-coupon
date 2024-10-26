@@ -1,9 +1,11 @@
 package coupon.coupon.domain;
 
+import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import coupon.coupon.CouponException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class DiscountAmountTest {
@@ -42,5 +44,19 @@ class DiscountAmountTest {
         assertThatThrownBy(() -> new DiscountAmount(discountAmount))
                 .isInstanceOf(CouponException.class)
                 .hasMessage("할인 금액은 1000원 이상, 10000원 이하이어야 합니다.");
+    }
+
+    @DisplayName("주어진 금액에 대한 할인 금액의 비율을 계산한다.")
+    @Test
+    void getDiscountRate(){
+        // given
+        DiscountAmount discountAmount = new DiscountAmount(2500);
+        MinimumOrderAmount minimumOrderAmount = new MinimumOrderAmount(10000);
+
+        // when
+        BigDecimal discountRate = discountAmount.getDiscountRate(minimumOrderAmount);
+
+        //then
+        assertThat(discountRate.intValue()).isEqualTo(25);
     }
 }

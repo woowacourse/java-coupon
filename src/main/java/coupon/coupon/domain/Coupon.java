@@ -1,7 +1,6 @@
 package coupon.coupon.domain;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 import jakarta.persistence.Column;
@@ -42,7 +41,6 @@ public class Coupon {
     private Term term;
 
     protected Coupon() {
-
     }
 
     public Coupon(String name, long discountAmount, long minimumOrderAmount, Category category, LocalDate startAt, LocalDate endAt) {
@@ -59,9 +57,7 @@ public class Coupon {
     }
 
     private void validateDiscountRate(DiscountAmount discountAmount, MinimumOrderAmount minimumOrderAmount) {
-        BigDecimal discountRate = discountAmount.getDiscountAmount()
-                .multiply(BigDecimal.valueOf(100))
-                .divide(minimumOrderAmount.getMinimumOrderAmount(), 0, RoundingMode.DOWN);
+        BigDecimal discountRate = discountAmount.getDiscountRate(minimumOrderAmount);
         if (discountRate.compareTo(MINIMUM_DISCOUNT_RATE) < 0 || discountRate.compareTo(MAXIMUM_DISCOUNT_RATE) > 0) {
             throw new CouponException(DISCOUNT_RATE_MESSAGE);
         }
