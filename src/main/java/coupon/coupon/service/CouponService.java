@@ -22,7 +22,7 @@ public class CouponService {
     }
 
     @Transactional
-    public Coupon getCoupon(long id) {
+    public Coupon getCouponByAdmin(long id) {
         return couponRepository.findById(id)
                 .orElseThrow(() -> new CouponException("요청하신 쿠폰을 찾을 수 없어요."));
     }

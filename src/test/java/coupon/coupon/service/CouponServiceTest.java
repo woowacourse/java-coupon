@@ -38,7 +38,7 @@ public class CouponServiceTest {
         couponService.create(coupon);
 
         // then
-        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        Coupon savedCoupon = couponService.getCouponByAdmin(coupon.getId());
         assertThat(savedCoupon).isNotNull();
     }
 
@@ -49,7 +49,7 @@ public class CouponServiceTest {
         long notExistCouponId = 0;
 
         // when & then
-        assertThatThrownBy(() -> couponService.getCoupon(notExistCouponId))
+        assertThatThrownBy(() -> couponService.getCouponByAdmin(notExistCouponId))
                 .isInstanceOf(CouponException.class)
                 .hasMessage("요청하신 쿠폰을 찾을 수 없어요.");
     }
