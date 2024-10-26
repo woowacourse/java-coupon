@@ -63,4 +63,8 @@ public class Coupon {
     public boolean issueAvailable(LocalDate date) {
         return couponIssueDate.isDateAvailable(date);
     }
+
+    public String getCouponName() {
+        return name.getName();
+    }
 }

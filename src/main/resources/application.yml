@@ -5,7 +5,6 @@ spring:
       time-to-live: 360000
       host: localhost
       port: 36379
-
   jpa:
     hibernate:
       naming:

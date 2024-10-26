@@ -11,10 +11,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class MemberCoupon {
     private static final int DEFAULT_USING_PERIOD = 6;
 
@@ -50,5 +52,9 @@ public class MemberCoupon {
         this.isUsed = isUsed;
         this.issuedAt = issuedAt;
         this.expiredAt = expiredAt;
+    }
+
+    public String getCouponName() {
+        return coupon.getCouponName();
     }
 }
