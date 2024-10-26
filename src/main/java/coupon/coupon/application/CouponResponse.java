@@ -1,6 +1,5 @@
 package coupon.coupon.application;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public record CouponResponse(

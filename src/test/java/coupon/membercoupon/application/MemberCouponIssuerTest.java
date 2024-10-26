@@ -4,12 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 import coupon.common.infra.datasource.DataSourceHelper;
 import coupon.coupon.application.CouponResponse;
 import coupon.coupon.application.CouponService;

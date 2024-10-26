@@ -39,7 +39,7 @@ public class MemberCouponIssuer {
         String key = MEMBER_COUPON_CACHE_FORMAT.formatted(memberId, couponId);
 
         int memberCouponCount = getMemberCouponCount(memberId, couponId);
-        if (memberCouponCount + 1 > MAX_MEMBER_COUPON_COUNT) {
+        if (memberCouponCount >= MAX_MEMBER_COUPON_COUNT) {
             throw new IllegalArgumentException("회원 쿠폰 발급 한도 초과 %d/%d".formatted(memberCouponCount, MAX_MEMBER_COUPON_COUNT));
         }
 

@@ -20,7 +20,7 @@ public class DatabaseCleaner {
     public void clear() {
         em.clear();
         truncate();
-//        clearCache();
+        clearCache();
     }
 
     private void truncate() {
@@ -30,13 +30,12 @@ public class DatabaseCleaner {
     }
 
     private List<String> getTruncateQueries() {
-        String sql = """
-                SELECT Concat('TRUNCATE TABLE ', TABLE_NAME, ' RESTART IDENTITY', ';') AS q
-                FROM INFORMATION_SCHEMA.TABLES
-                WHERE TABLE_SCHEMA = 'PUBLIC'
-                """;
+        String showTablesSql = "SHOW TABLES";
+        List<String> tableNames = em.createNativeQuery(showTablesSql).getResultList();
 
-        return em.createNativeQuery(sql).getResultList();
+        return tableNames.stream()
+                .map(tableName -> "TRUNCATE TABLE " + tableName)
+                .toList();
     }
 
     private void clearCache() {
