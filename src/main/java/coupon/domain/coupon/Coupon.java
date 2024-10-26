@@ -36,4 +36,8 @@ public class Coupon {
                 new DiscountAmount(discountAmount, minimumOrderAmount), Category.valueOf(category),
                 new PeriodOfIssuance(startDate, endDate));
     }
+
+    public boolean canIssueAt(LocalDate date) {
+        return periodOfIssuance.have(date);
+    }
 }
