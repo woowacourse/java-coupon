@@ -27,12 +27,12 @@ public class CouponService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
 
-        long count = memberCouponRepository.countMemberCouponByMember(member);
+        long count = memberCouponRepository.countMemberCouponByMemberId(member.getId());
         if (count >= MAXIMUM_COUPON_PER_MEMBER) {
             throw new IllegalArgumentException("한 회원당 %d장만 쿠폰 발급이 가능합니다.".formatted(MAXIMUM_COUPON_PER_MEMBER));
         }
         Coupon savedCoupon = couponRepository.save(coupon);
-        MemberCoupon memberCoupon = new MemberCoupon(savedCoupon, member);
+        MemberCoupon memberCoupon = new MemberCoupon(savedCoupon.getId(), member.getId());
         memberCouponRepository.save(memberCoupon);
         return savedCoupon;
     }

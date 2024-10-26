@@ -66,12 +66,17 @@ class CouponServiceTest {
     @DisplayName("회원이 소유한 쿠폰이 5장보다 많으면 예외가 발생한다.")
     @Test
     void insertWithMoreThanCouponLimitSize() {
+        Coupon coupon1 = couponRepository.save(CouponFixture.DAON_COUPON.coupon());
+        Coupon coupon2 = couponRepository.save(CouponFixture.BLACKJACK_COUPON.coupon());
+        Coupon coupon3 = couponRepository.save(CouponFixture.CHESS_COUPON.coupon());
+        Coupon coupon4 = couponRepository.save(CouponFixture.BASEBALL_COUPON.coupon());
+        Coupon coupon5 = couponRepository.save(CouponFixture.LOTTO_COUPON.coupon());
         List<MemberCoupon> memberCoupons = List.of(
-                new MemberCoupon(couponRepository.save(CouponFixture.DAON_COUPON.coupon()), member),
-                new MemberCoupon(couponRepository.save(CouponFixture.BLACKJACK_COUPON.coupon()), member),
-                new MemberCoupon(couponRepository.save(CouponFixture.CHESS_COUPON.coupon()), member),
-                new MemberCoupon(couponRepository.save(CouponFixture.BASEBALL_COUPON.coupon()), member),
-                new MemberCoupon(couponRepository.save(CouponFixture.LOTTO_COUPON.coupon()), member)
+                new MemberCoupon(coupon1.getId(), member.getId()),
+                new MemberCoupon(coupon2.getId(), member.getId()),
+                new MemberCoupon(coupon3.getId(), member.getId()),
+                new MemberCoupon(coupon4.getId(), member.getId()),
+                new MemberCoupon(coupon5.getId(), member.getId())
         );
         memberCouponRepository.saveAll(memberCoupons);
 
@@ -83,8 +88,7 @@ class CouponServiceTest {
     @DisplayName("id로 조회한다.")
     @Test
     void findById() {
-        Coupon foundCoupon = couponRepository.findById(coupon.getId())
-                .orElseThrow();
+        Coupon foundCoupon = couponService.getCoupon(coupon.getId());
         assertThat(foundCoupon).isNotNull();
     }
 
