@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
@@ -33,7 +32,6 @@ public class DataSourceConfig {
     }
 
     @Bean
-    @DependsOn({"writeDataSource", "readDataSource"})
     public DataSource routeDataSource(@Qualifier("writeDataSource") DataSource writeDataSource, @Qualifier("readDataSource") DataSource readDataSource) {
         DataSourceRouter dataSourceRouter = new DataSourceRouter();
         HashMap<Object, Object> dataSourceMap = new HashMap<>();
@@ -48,7 +46,6 @@ public class DataSourceConfig {
 
     @Bean
     @Primary
-    @DependsOn({"routeDataSource"})
     public DataSource dataSource(DataSource routeDataSource) {
         return new LazyConnectionDataSourceProxy(routeDataSource);
     }
