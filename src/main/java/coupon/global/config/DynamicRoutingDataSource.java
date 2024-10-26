@@ -8,8 +8,8 @@ public class DynamicRoutingDataSource extends AbstractRoutingDataSource {
     @Override
     protected Object determineCurrentLookupKey() {
         if (TransactionSynchronizationManager.isCurrentTransactionReadOnly()) {
-            return DataSourceConfig.READER;
+            return DataSourceType.READER;
         }
-        return DataSourceConfig.WRITER;
+        return DataSourceType.WRITER;
     }
 }
