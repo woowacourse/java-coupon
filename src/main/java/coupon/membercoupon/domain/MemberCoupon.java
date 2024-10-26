@@ -32,13 +32,11 @@ public class MemberCoupon {
     @Column(name = "member_coupon_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
+    @Column(name = "coupon_id", nullable = false)
+    private Long couponId;
 
     @Column(name = "is_used", nullable = false)
     private Boolean isUsed;
@@ -49,9 +47,9 @@ public class MemberCoupon {
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
 
-    public MemberCoupon(Member member, Coupon coupon, Boolean isUsed) {
-        this.member = member;
-        this.coupon = coupon;
+    public MemberCoupon(Long memberId, Long couponId, Boolean isUsed) {
+        this.memberId = memberId;
+        this.couponId = couponId;
         this.isUsed = isUsed;
         this.issuedAt = LocalDateTime.now();
         this.expiresAt = this.issuedAt.plusDays(7).with(LocalTime.MAX);
