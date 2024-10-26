@@ -57,4 +57,8 @@ public class MemberCoupon {
     public String getCouponName() {
         return coupon.getCouponName();
     }
+
+    public long getCouponId() {
+        return coupon.getId();
+    }
 }

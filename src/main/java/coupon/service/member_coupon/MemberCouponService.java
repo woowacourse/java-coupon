@@ -8,7 +8,10 @@ import coupon.domain.member_coupon.MemberCoupon;
 import coupon.domain.member_coupon.repository.MemberCouponRepository;
 import coupon.exception.MemberCouponIssueLimitException;
 import coupon.service.coupon.dto.CouponIssueResponse;
+import coupon.service.member_coupon.dto.MemberCouponsResponse;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -19,41 +22,63 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCouponService {
 
+    private static final String COUPON_ISSUE_COUNT_UP_SCRIPT =
+            "local value = redis.call('GET', KEYS[1]); " +
+                    "if not value then " +
+                    "    value = 0; " +
+                    "    redis.call('SET', KEYS[1], value); " +
+                    "end; " +
+                    "if tonumber(value) >= 5 then " +
+                    "    return '-1'; " +
+                    "else " +
+                    "    value = tonumber(value) + 1; " +
+                    "    redis.call('SET', KEYS[1], value); " +
+                    "    return tostring(value); " +
+                    "end";
+
     private final CouponRepository couponRepository;
     private final MemberRepository memberRepository;
     private final MemberCouponRepository memberCouponRepository;
-    private final RedisTemplate redisTemplate; // 제네릭을 사용해 Coupon으로 지정
+    private final RedisTemplate redisTemplate;
+
+    @Transactional(readOnly = true)
+    public MemberCouponsResponse getMemberCoupons(long memberId) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findByMemberId(memberId);
+        return MemberCouponsResponse.from(memberCoupons);
+    }
 
     @Transactional
     public CouponIssueResponse issueMemberCoupon(long memberId, long couponId) {
         memberRepository.getById(memberId);
-        Coupon coupon = getCoupon(couponId);
 
-        MemberCoupon issuedMemberCoupon = MemberCoupon.issue(memberId, coupon);
+        MemberCoupon issuedMemberCoupon = MemberCoupon.issue(memberId, getCoupon(couponId));
         memberCouponRepository.save(issuedMemberCoupon);
-        addMemberCoupon(memberId, coupon);
+        updateIssuedMemberCouponCount(memberId, couponId);
 
         return CouponIssueResponse.from(issuedMemberCoupon);
     }
 
-    // TODO: 동시성 처리
-    private void addMemberCoupon(long memberId, Coupon coupon) {
-        String memberCouponsKey = RedisKey.MEMBER_COUPONS.getKey(memberId);
-        long size = redisTemplate.opsForSet().size(memberCouponsKey);
-        if(size >= 5) {
+    private int updateIssuedMemberCouponCount(long memberId, long couponId) {
+        String key = RedisKey.MEMBER_COUPONS.getKey(memberId, couponId);
+        DefaultRedisScript<Object> script = new DefaultRedisScript<>();
+        script.setScriptText(COUPON_ISSUE_COUNT_UP_SCRIPT);
+        script.setResultType(Object.class);
+
+        int result = (Integer) redisTemplate.execute(script, Collections.singletonList(key));
+        if(result == -1) {
             throw new MemberCouponIssueLimitException();
         }
 
-        String memberCouponKey = RedisKey.MEMBER_COUPON.getKey(memberId, coupon.getId());
-        redisTemplate.opsForValue().set(memberCouponKey, coupon);
+        return Integer.parseInt("1");
     }
 
     private Coupon getCoupon(long couponId) {
         String couponKey = RedisKey.COUPON.getKey(couponId);
         Coupon coupon = (Coupon) redisTemplate.opsForValue().get(couponKey);
-        if (coupon == null) {
+        if(coupon == null) {
             coupon = couponRepository.getById(couponId);
         }
+
         return coupon;
     }
 }
