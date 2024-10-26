@@ -34,6 +34,9 @@ public class RedisConfig {
         return new LettuceConnectionFactory(redisHost, redisPort);
     }
 
+    /**
+     * 참고: https://velog.io/@bagt/Redis-역직렬화-삽질기-feat.-RedisSerializer
+     */
     @Bean
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
