@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -15,6 +16,7 @@ public class DatabaseCleanerExtension implements BeforeEachCallback {
     public void beforeEach(ExtensionContext extensionContext) {
         ApplicationContext context = SpringExtension.getApplicationContext(extensionContext);
         cleanup(context);
+        cleanCache(context);
     }
 
     private void cleanup(ApplicationContext context) {
@@ -39,5 +41,13 @@ public class DatabaseCleanerExtension implements BeforeEachCallback {
     @SuppressWarnings("unchecked")
     private List<String> findTableNames(EntityManager em) {
         return em.createNativeQuery("SHOW TABLES").getResultList();
+    }
+
+    private void cleanCache(ApplicationContext context) {
+        RedisTemplate<?, ?> redisTemplate = context.getBean("redisTemplate", RedisTemplate.class);
+        redisTemplate.getConnectionFactory()
+                .getConnection()
+                .serverCommands()
+                .flushAll();
     }
 }

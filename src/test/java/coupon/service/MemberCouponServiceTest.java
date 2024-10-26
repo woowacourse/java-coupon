@@ -68,7 +68,7 @@ class MemberCouponServiceTest extends BaseServiceTest {
 
         // when
         List<MemberCouponResponse> responses = transactionSupport.executeWithWriter(
-                () -> memberCouponService.findMemberCoupons(member.getId())); // todo : transactionSupport 제거
+                () -> memberCouponService.findMemberCoupons(member.getId()));
 
         // then
         assertThat(responses).hasSize(3);
