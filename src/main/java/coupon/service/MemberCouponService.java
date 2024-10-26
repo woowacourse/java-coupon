@@ -5,6 +5,7 @@ import coupon.domain.member.Member;
 import coupon.domain.member.MemberRepository;
 import coupon.domain.membercoupon.MemberCoupon;
 import coupon.domain.membercoupon.MemberCouponRepository;
+import coupon.service.dto.MemberCouponResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class MemberCouponService {
     @Transactional
     public void issue(Long memberId, Long couponId) {
         Member member = getMember(memberId);
-        Coupon coupon = couponService.getCoupon(couponId); // todo
+        Coupon coupon = couponService.getCoupon(couponId);
         validateMemberCouponCount(memberId, couponId);
 
         MemberCoupon memberCoupon = MemberCoupon.issue(LocalDateTime.now(), member, coupon);
@@ -43,5 +44,18 @@ public class MemberCouponService {
         if (memberCoupons.size() >= MAX_MEMBER_COUPON_COUNT) {
             throw new IllegalArgumentException("이미 %d장의 쿠폰을 발급받았습니다.".formatted(MAX_MEMBER_COUPON_COUNT));
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberCouponResponse> findMemberCoupons(Long memberId) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findByMemberId(memberId);
+        return memberCoupons.stream()
+                .map(this::toMemberCouponResponse)
+                .toList();
+    }
+
+    private MemberCouponResponse toMemberCouponResponse(MemberCoupon memberCoupon) {
+        Coupon coupon = couponService.getCoupon(memberCoupon.getCouponId());
+        return MemberCouponResponse.of(memberCoupon, coupon);
     }
 }
