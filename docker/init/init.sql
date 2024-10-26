@@ -17,3 +17,12 @@ CREATE TABLE IF NOT EXISTS member (
     account VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS member_coupon (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    coupon_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    is_used TINYINT(1) NOT NULL DEFAULT 0,
+    issued_at TIMESTAMP(6) NOT NULL,
+    expired_at TIMESTAMP(6) NOT NULL
+);
