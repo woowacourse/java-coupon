@@ -19,6 +19,13 @@ public class Member {
 	}
 
 	public Member(String name) {
+		validateName(name);
 		this.name = name;
+	}
+
+	private void validateName(String name) {
+		if(name.length() > 30) {
+			throw new IllegalArgumentException("이름은 30자 이하만 가능합니다.");
+		}
 	}
 }
