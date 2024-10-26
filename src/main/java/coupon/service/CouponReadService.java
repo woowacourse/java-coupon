@@ -13,7 +13,7 @@ public class CouponReadService {
 
     private final CouponRepository couponRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<Coupon> readById(Long id) {
         return couponRepository.findById(id);
     }
