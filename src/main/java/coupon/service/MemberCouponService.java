@@ -7,8 +7,11 @@ import coupon.repository.MemberCouponRepository;
 import java.util.List;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
+@Transactional(readOnly = true)
 public class MemberCouponService {
 
     private static final int MAX_MEMBER_COUPON_COUNT = 5;
@@ -43,6 +46,4 @@ public class MemberCouponService {
                 .map(memberCoupon -> couponService.findCoupon(memberCoupon.getCouponId()))
                 .toList();
     }
-
-
 }
