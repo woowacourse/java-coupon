@@ -15,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CouponIssueService {
 
-    public static final int MAX_COUPON_ISSUANCE_COUNT = 5;
+    private static final int MAX_COUPON_ISSUANCE_COUNT = 5;
+
     private final CouponRepository couponRepository;
     private final MemberRepository memberRepository;
     private final MemberCouponRepository memberCouponRepository;
