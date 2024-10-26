@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,9 +54,6 @@ public class MemberCoupon {
 
     private LocalDateTime toExpiredAt(LocalDateTime issuedAt) {
         return issuedAt.plusDays(COUPON_EXPIRATION_DAYS)
-                .withHour(23)
-                .withMinute(59)
-                .withSecond(59)
-                .withNano(999_999_000);
+                .with(LocalTime.of(23, 59, 59, 999_999_000));
     }
 }
