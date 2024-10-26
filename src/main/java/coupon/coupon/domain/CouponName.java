@@ -9,8 +9,9 @@ import coupon.coupon.CouponException;
 public class CouponName {
 
     private static final int MAX_LENGTH = 30;
+    private static final String NAME_LENGTH_MESSAGE = String.format("쿠폰은 %d자 이하의 이름을 설정해주세요.", MAX_LENGTH);
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = MAX_LENGTH)
     private String name;
 
     protected CouponName() {
@@ -34,7 +35,7 @@ public class CouponName {
 
     private void validateNameLength(String name) {
         if (name.isBlank() || name.length() > MAX_LENGTH) {
-            throw new CouponException("쿠폰은 30자 이하의 이름을 설정해주세요.");
+            throw new CouponException(NAME_LENGTH_MESSAGE);
         }
     }
 

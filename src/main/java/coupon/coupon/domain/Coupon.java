@@ -17,6 +17,11 @@ public class Coupon {
 
     private static final BigDecimal MINIMUM_DISCOUNT_RATE = BigDecimal.valueOf(3);
     private static final BigDecimal MAXIMUM_DISCOUNT_RATE = BigDecimal.valueOf(20);
+    private static final String DISCOUNT_RATE_MESSAGE = String.format(
+            "할인율은 %s%% 이상, %s%% 이하이어야 합니다.",
+            MINIMUM_DISCOUNT_RATE.toPlainString(),
+            MAXIMUM_DISCOUNT_RATE.toPlainString()
+    );
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +59,7 @@ public class Coupon {
                 .multiply(BigDecimal.valueOf(100))
                 .divide(minimumOrderAmount.getMinimumOrderAmount(), 0, RoundingMode.DOWN);
         if (discountRate.compareTo(MINIMUM_DISCOUNT_RATE) < 0 || discountRate.compareTo(MAXIMUM_DISCOUNT_RATE) > 0) {
-            throw new CouponException("할인율은 3% 이상, 20% 이하이어야 합니다.");
+            throw new CouponException(DISCOUNT_RATE_MESSAGE);
         }
     }
 

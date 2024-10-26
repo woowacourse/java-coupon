@@ -11,6 +11,11 @@ public class MinimumOrderAmount {
 
     private static final BigDecimal MIN_OF_MINIMUM_ORDER_AMOUNT = BigDecimal.valueOf(5000);
     private static final BigDecimal MAX_OF_MINIMUM_ORDER_AMOUNT = BigDecimal.valueOf(100000);
+    private static final String MINIMUM_ORDER_AMOUNT_RANGE_MESSAGE = String.format(
+            "최소 주문 금액은 %s원 이상, %s원 이하이어야 합니다.",
+            MIN_OF_MINIMUM_ORDER_AMOUNT.toPlainString(),
+            MAX_OF_MINIMUM_ORDER_AMOUNT.toPlainString()
+    );
 
     @Column(nullable = false)
     private BigDecimal minimumOrderAmount;
@@ -29,7 +34,7 @@ public class MinimumOrderAmount {
 
     private void validateRangeOfMinimumOrderAmount(BigDecimal minimumOrderAmount) {
         if (minimumOrderAmount.compareTo(MIN_OF_MINIMUM_ORDER_AMOUNT) < 0 || (minimumOrderAmount.compareTo(MAX_OF_MINIMUM_ORDER_AMOUNT) > 0)) {
-            throw new CouponException("최소 주문 금액은 5000원 이상, 100000원 이하이어야 합니다.");
+            throw new CouponException(MINIMUM_ORDER_AMOUNT_RANGE_MESSAGE);
         }
     }
 

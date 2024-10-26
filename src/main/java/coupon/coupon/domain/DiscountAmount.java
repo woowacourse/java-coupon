@@ -12,6 +12,12 @@ public class DiscountAmount {
     private static final BigDecimal UNIT = BigDecimal.valueOf(500);
     private static final BigDecimal MINIMUM_DISCOUNT_AMOUNT = BigDecimal.valueOf(1000);
     private static final BigDecimal MAXIMUM_DISCOUNT_AMOUNT = BigDecimal.valueOf(10000);
+    private static final String DISCOUNT_AMOUNT_UNIT_MESSAGE = String.format("할인 금액은 %d원 단위로 설정할 수 있습니다.", UNIT);
+    private static final String DISCOUNT_AMOUNT_RANGE_MESSAGE = String.format(
+            "할인 금액은 %s원 이상, %s원 이하이어야 합니다.",
+            MINIMUM_DISCOUNT_AMOUNT.toPlainString(),
+            MAXIMUM_DISCOUNT_AMOUNT.toPlainString()
+    );
 
     @Column(nullable = false)
     private BigDecimal discountAmount;
@@ -35,13 +41,13 @@ public class DiscountAmount {
 
     private void validateUnit(BigDecimal discountAmount) {
         if (!discountAmount.remainder(UNIT).equals(BigDecimal.ZERO)) {
-            throw new CouponException("할인 금액은 500원 단위로 설정할 수 있습니다.");
+            throw new CouponException(DISCOUNT_AMOUNT_UNIT_MESSAGE);
         }
     }
 
     private void validateRangeOfDiscountAmount(BigDecimal discountAmount) {
         if (discountAmount.compareTo(MINIMUM_DISCOUNT_AMOUNT) < 0 || discountAmount.compareTo(MAXIMUM_DISCOUNT_AMOUNT) > 0) {
-            throw new CouponException("할인 금액은 1000원 이상, 10000원 이하이어야 합니다.");
+            throw new CouponException(DISCOUNT_AMOUNT_RANGE_MESSAGE);
         }
     }
 

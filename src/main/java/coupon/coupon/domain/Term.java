@@ -8,6 +8,8 @@ import coupon.coupon.CouponException;
 @Embeddable
 public class Term {
 
+    private static final String TERM_MESSAGE = "종료일이 시작일보다 앞설 수 없습니다.";
+
     @Column(nullable = false)
     private LocalDate startAt;
 
@@ -25,7 +27,7 @@ public class Term {
 
     private void validateTerm(LocalDate startAt, LocalDate endAt) {
         if (endAt.isBefore(startAt)) {
-            throw new CouponException("종료일이 시작일보다 앞설 수 없습니다.");
+            throw new CouponException(TERM_MESSAGE);
         }
     }
 }
