@@ -36,9 +36,8 @@ public class Coupon {
     @Enumerated(value = EnumType.STRING)
     private Category category;
 
-    private LocalDateTime startTime;
-
-    private LocalDateTime endTime;
+    @Embedded
+    private IssuablePeriod issuablePeriod;
 
     public Coupon(String name, BigDecimal discountAmount, BigDecimal minimumOrderAmount,
                   Category category, LocalDateTime startTime, LocalDateTime endTime) {
@@ -47,7 +46,6 @@ public class Coupon {
         this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
         this.discountRate = new DiscountRate(discountAmount, minimumOrderAmount);
         this.category = category;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.issuablePeriod = new IssuablePeriod(startTime, endTime);
     }
 }
