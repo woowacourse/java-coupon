@@ -26,7 +26,7 @@ public class DiscountAmount {
         if (isDiscountAmountLessThan(discountAmount, MINIMUM_AMOUNT)
                 || isDiscountAmountGreaterThan(discountAmount, MAXIMUM_AMOUNT)) {
             throw new IllegalArgumentException(
-                    "할인 금액은 " + MINIMUM_AMOUNT + "이상, " + MINIMUM_AMOUNT + "이하의 값이어야 합니다.");
+                    "할인 금액은 " + MINIMUM_AMOUNT + "이상, " + MAXIMUM_AMOUNT + "이하의 값이어야 합니다.");
         }
     }
 

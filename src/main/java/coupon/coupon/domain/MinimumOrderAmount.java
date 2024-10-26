@@ -24,7 +24,7 @@ public class MinimumOrderAmount {
         if (isMinimumOrderAmountLessThan(minimumOrderAmount, MINIMUM_AMOUNT)
                 || isMinimumOrderAmountGreaterThan(minimumOrderAmount, MAXIMUM_AMOUNT)) {
             throw new IllegalArgumentException(
-                    "최소 주문 금액은 " + MINIMUM_AMOUNT + "이상, " + MINIMUM_AMOUNT + "이하의 값이어야 합니다.");
+                    "최소 주문 금액은 " + MINIMUM_AMOUNT + "이상, " + MAXIMUM_AMOUNT + "이하의 값이어야 합니다.");
         }
     }
 

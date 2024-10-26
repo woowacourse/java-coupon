@@ -19,7 +19,7 @@ class DiscountAmountTest {
 
         assertThatThrownBy(() -> new DiscountAmount(discountAmount))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("할인 금액은 " + MINIMUM_AMOUNT + "이상, " + MINIMUM_AMOUNT + "이하의 값이어야 합니다.");
+                .hasMessage("할인 금액은 " + MINIMUM_AMOUNT + "이상, " + MAXIMUM_AMOUNT + "이하의 값이어야 합니다.");
     }
 
     @DisplayName("입력한 할인 금액이 최대 할인 금액보다 큰 경우, 예외가 발생한다.")
@@ -29,7 +29,7 @@ class DiscountAmountTest {
 
         assertThatThrownBy(() -> new DiscountAmount(discountAmount))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("할인 금액은 " + MINIMUM_AMOUNT + "이상, " + MINIMUM_AMOUNT + "이하의 값이어야 합니다.");
+                .hasMessage("할인 금액은 " + MINIMUM_AMOUNT + "이상, " + MAXIMUM_AMOUNT + "이하의 값이어야 합니다.");
     }
 
     @DisplayName("입력한 할인 금액이 할인 금액 입력 단위로 나누어 떨어지지 않는 경우, 예외가 발생한다.")

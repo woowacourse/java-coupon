@@ -18,7 +18,7 @@ class MinimumOrderAmountTest {
 
         assertThatThrownBy(() -> new MinimumOrderAmount(minimumOrderAmount))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("최소 주문 금액은 " + MINIMUM_AMOUNT + "이상, " + MINIMUM_AMOUNT + "이하의 값이어야 합니다.");
+                .hasMessage("최소 주문 금액은 " + MINIMUM_AMOUNT + "이상, " + MAXIMUM_AMOUNT + "이하의 값이어야 합니다.");
     }
 
     @DisplayName("입력한 최소 주문 금액이 최대 금액보다 큰 경우, 예외가 발생한다.")
@@ -28,6 +28,6 @@ class MinimumOrderAmountTest {
 
         assertThatThrownBy(() -> new MinimumOrderAmount(minimumOrderAmount))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
-                .hasMessage("최소 주문 금액은 " + MINIMUM_AMOUNT + "이상, " + MINIMUM_AMOUNT + "이하의 값이어야 합니다.");
+                .hasMessage("최소 주문 금액은 " + MINIMUM_AMOUNT + "이상, " + MAXIMUM_AMOUNT + "이하의 값이어야 합니다.");
     }
 }
