@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class CouponTest {
 
@@ -16,12 +17,14 @@ public class CouponTest {
 
         Coupon coupon = new Coupon("테스트 쿠폰", 1000, 5000, Category.FASHION, start, end);
 
-        assertThat(coupon.getName()).isEqualTo("테스트 쿠폰");
-        assertThat(coupon.getDiscountAmount()).isEqualTo(1000);
-        assertThat(coupon.getMinimumOrderAmount()).isEqualTo(5000);
-        assertThat(coupon.getCategory()).isEqualTo(Category.FASHION);
-        assertThat(coupon.getStartDate()).isEqualTo(start);
-        assertThat(coupon.getEndDate()).isEqualTo(end);
+        assertAll(
+                () -> assertThat(coupon.getName()).isEqualTo("테스트 쿠폰"),
+                () -> assertThat(coupon.getDiscountAmount()).isEqualTo(1000),
+                () -> assertThat(coupon.getMinimumOrderAmount()).isEqualTo(5000),
+                () -> assertThat(coupon.getCategory()).isEqualTo(Category.FASHION),
+                () -> assertThat(coupon.getStartDate()).isEqualTo(start),
+                () -> assertThat(coupon.getEndDate()).isEqualTo(end)
+        );
     }
 
     @Test
