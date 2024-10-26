@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
-import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 public class DataSourceConfig {
@@ -28,13 +27,13 @@ public class DataSourceConfig {
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
     @Bean(name = READER_DATA_SOURCE)
     public DataSource readerDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+        return DataSourceBuilder.create().build();
     }
 
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     @Bean(name = WRITER_DATA_SOURCE)
     public DataSource writerDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+        return DataSourceBuilder.create().build();
     }
 
     @DependsOn({WRITER_DATA_SOURCE, READER_DATA_SOURCE})
