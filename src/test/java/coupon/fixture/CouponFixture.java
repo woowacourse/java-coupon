@@ -6,7 +6,12 @@ import java.time.LocalDate;
 
 public enum CouponFixture {
 
-    PRAM_COUPON("pram", 1_000, 30_000, Category.FOOD, LocalDate.now(), LocalDate.now());
+    PRAM_COUPON("pram", 1_000, 30_000, Category.FOOD, LocalDate.now(), LocalDate.now()),
+    DAON_COUPON("daon", 1_500, 45_000, Category.APPLICATION, LocalDate.now(), LocalDate.now()),
+    BLACKJACK_COUPON("blackjack", 2_000, 60_000, Category.APPLICATION, LocalDate.now(), LocalDate.now()),
+    LOTTO_COUPON("lotto", 2_000, 60_000, Category.FASHION, LocalDate.now(), LocalDate.now()),
+    CHESS_COUPON("chess", 2_500, 75_000, Category.FURNITURE, LocalDate.now(), LocalDate.now()),
+    BASEBALL_COUPON("baseball", 3_000, 90_000, Category.FASHION, LocalDate.now(), LocalDate.now());
 
     private final String name;
     private final int discountAmount;
