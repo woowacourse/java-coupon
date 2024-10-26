@@ -24,7 +24,7 @@ public class Discount {
 		}
 	}
 
-	private void validatePercent(int price) {
+	private void validatePercent(int percent) {
 		if(percent < 3 || percent > 20) {
 			throw new IllegalArgumentException("할인율은 3% 이상, 20% 이하여야 합니다.");
 		}
