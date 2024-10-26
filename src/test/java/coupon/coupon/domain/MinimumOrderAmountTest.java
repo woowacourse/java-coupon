@@ -12,7 +12,7 @@ class MinimumOrderAmountTest {
     @Test
     void cannotCreateIfMinimumOrderAmountUnder() {
         // given
-        int minimumOrderAmount = 4500;
+        int minimumOrderAmount = 4990;
 
         // when & then
         assertThatThrownBy(() -> new MinimumOrderAmount(minimumOrderAmount))
@@ -24,7 +24,7 @@ class MinimumOrderAmountTest {
     @Test
     void cannotCreateIfMinimumOrderAmountOver() {
         // given
-        int minimumOrderAmount = 100500;
+        int minimumOrderAmount = 100010;
 
         // when & then
         assertThatThrownBy(() -> new MinimumOrderAmount(minimumOrderAmount))
