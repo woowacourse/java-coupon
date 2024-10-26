@@ -11,11 +11,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 public class MemberCoupon {
 
-    private static final int COUPON_AVAILABLE_DURATION = 7;
+    private static final long COUPON_AVAILABLE_DURATION = 7;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,18 +39,15 @@ public class MemberCoupon {
 
     public MemberCoupon(
             Member member,
-            Coupon coupon,
-            boolean isUsed,
-            LocalDateTime issuedAt,
-            LocalDateTime expiredAt
+            Coupon coupon
     ) {
         validateIssuedAt(coupon, issuedAt);
-        validateExpiration(issuedAt, expiredAt);
+        validateExpiration(expiredAt);
         this.memberId = member.getId();
         this.couponId = coupon.getId();
-        this.isUsed = isUsed;
-        this.issuedAt = issuedAt;
-        this.expiredAt = expiredAt;
+        this.isUsed = false;
+        this.issuedAt = LocalDateTime.now();
+        this.expiredAt = issuedAt.toLocalDate().plusDays(COUPON_AVAILABLE_DURATION).atTime(LocalTime.MAX);
     }
 
     private void validateIssuedAt(Coupon coupon, LocalDateTime issuedAt) {
@@ -58,8 +56,8 @@ public class MemberCoupon {
         }
     }
 
-    private void validateExpiration(LocalDateTime issuedAt, LocalDateTime expiredAt) {
-        long diffDays = Duration.between(issuedAt, expiredAt).toDays();
+    private void validateExpiration(LocalDateTime expiredAt) {
+        long diffDays = Duration.between(LocalDateTime.now(), expiredAt).toDays();
         if (diffDays > COUPON_AVAILABLE_DURATION) {
             throw new IllegalArgumentException("회원 쿠폰의 만료일은 발급일로부터 " + COUPON_AVAILABLE_DURATION + "이내여야 합니다");
         }
