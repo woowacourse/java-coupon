@@ -42,7 +42,7 @@ public class CouponService {
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰 id입니다."));
         validateIssueLimit(member, coupon);
-        MemberCoupon memberCoupon = MemberCoupon.issue(member, coupon);
+        MemberCoupon memberCoupon = MemberCoupon.issue(member, coupon.getId());
         return memberCouponRepository.save(memberCoupon);
     }
 

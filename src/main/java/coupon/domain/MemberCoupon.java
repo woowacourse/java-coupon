@@ -1,6 +1,5 @@
 package coupon.domain;
 
-import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,9 +23,7 @@ public class MemberCoupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_id")
-    private Coupon coupon;
+    private Long couponId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -34,17 +31,17 @@ public class MemberCoupon {
     private LocalDate issueDate;
     private LocalDate expirationDate;
 
-    public MemberCoupon(Coupon coupon, Member member, boolean used, LocalDate issueDate) {
-        this.coupon = coupon;
+    public MemberCoupon(Long couponId, Member member, boolean used, LocalDate issueDate) {
+        this.couponId = couponId;
         this.member = member;
         this.used = used;
         this.issueDate = issueDate;
         this.expirationDate = issueDate.plusDays(6);
     }
 
-    public static MemberCoupon issue(Member member, Coupon coupon) {
+    public static MemberCoupon issue(Member member, Long couponId) {
         return new MemberCoupon(
-                coupon,
+                couponId,
                 member,
                 false,
                 LocalDate.now()
