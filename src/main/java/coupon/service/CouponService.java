@@ -3,6 +3,7 @@ package coupon.service;
 import coupon.domain.MemberCoupon;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
+import coupon.dto.CouponAndMemberCouponResponse;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.service.support.DataSourceSupport;
@@ -47,9 +48,21 @@ public class CouponService {
     }
 
     private void validateIssueLimit(Member member, Coupon coupon) {
-        List<MemberCoupon> memberCoupon = memberCouponRepository.findAllByMemberAndCoupon(member, coupon);
+        List<MemberCoupon> memberCoupon = memberCouponRepository.findAllByMemberAndCouponId(member, coupon.getId());
         if (memberCoupon.size() >= ISSUED_MEMBER_COUPON_LIMIT) {
             throw new IllegalArgumentException("쿠폰을 더 발급할 수 없습니다.");
         }
+    }
+
+    @Transactional
+    public CouponAndMemberCouponResponse findCouponAndMemberCouponByMember(Member member) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMember(member);
+        List<Coupon> coupons = memberCoupons.stream()
+                .map(MemberCoupon::getCouponId)
+                .distinct()
+                .map(couponId -> couponRepository.findById(couponId)
+                        .orElseThrow(() -> new IllegalArgumentException("쿠폰을 조회하던 중 예외가 발생했습니다.")))
+                .toList();
+        return new CouponAndMemberCouponResponse(coupons, memberCoupons);
     }
 }

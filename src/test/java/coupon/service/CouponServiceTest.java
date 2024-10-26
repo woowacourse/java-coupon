@@ -2,8 +2,10 @@ package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import coupon.domain.Category;
+import coupon.domain.MemberCoupon;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponName;
 import coupon.domain.coupon.DiscountMount;
@@ -11,6 +13,7 @@ import coupon.domain.coupon.MinimumMount;
 import coupon.domain.coupon.Period;
 import coupon.domain.member.Member;
 import coupon.domain.member.MemberName;
+import coupon.dto.CouponAndMemberCouponResponse;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
@@ -32,12 +35,14 @@ class CouponServiceTest {
     private MemberCouponRepository memberCouponRepository;
     @Autowired
     private MemberRepository memberRepository;
+    private Member member;
 
     @BeforeEach
     void truncateTables() {
         memberCouponRepository.deleteAll();
         couponRepository.deleteAll();
         memberRepository.deleteAll();
+        member = memberRepository.save(new Member(new MemberName("포케리스웨트")));
     }
 
     @Test
@@ -68,7 +73,6 @@ class CouponServiceTest {
     @DisplayName("같은 쿠폰을 한 멤버가 5번 넘게 발급할 수 없다.")
     @Test
     void issueMemberCouponMoreThanLimit() {
-        Member member = memberRepository.save(new Member(new MemberName("포케리스웨트")));
         Coupon coupon = couponService.create(new Coupon(
                 new CouponName("쿠폰"),
                 new DiscountMount(1000),
@@ -83,5 +87,32 @@ class CouponServiceTest {
         assertThatThrownBy(() -> couponService.issueMemberCoupon(coupon.getId(), member))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("쿠폰을 더 발급할 수 없습니다.");
+    }
+
+    @DisplayName("멤버의 발급된 쿠폰과 쿠폰 정보를 조회할 수 있다.")
+    @Test
+    void findCouponAndMemberCouponByMember() {
+        Member otherMember = memberRepository.save(new Member(new MemberName("알파카프리썬")));
+        Coupon coupon = couponService.create(new Coupon(
+                new CouponName("쿠폰"),
+                new DiscountMount(1000),
+                new MinimumMount(5000),
+                Category.FASHION,
+                new Period(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1))
+        ));
+        MemberCoupon memberCoupon = couponService.issueMemberCoupon(coupon.getId(), member);
+        MemberCoupon otherMemberCoupon = couponService.issueMemberCoupon(coupon.getId(), otherMember);
+
+        CouponAndMemberCouponResponse actual = couponService.findCouponAndMemberCouponByMember(member);
+        assertAll(
+                () -> assertThat(actual.coupons().size())
+                        .isEqualTo(1),
+                () -> assertThat(actual.memberCoupons().size())
+                        .isEqualTo(1),
+                () -> assertThat(actual.coupons().get(0).getId())
+                        .isEqualTo(coupon.getId()),
+                () -> assertThat(actual.memberCoupons().get(0).getId())
+                        .isEqualTo(memberCoupon.getId())
+        );
     }
 }
