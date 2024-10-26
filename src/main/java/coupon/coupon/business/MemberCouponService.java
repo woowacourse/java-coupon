@@ -2,6 +2,7 @@ package coupon.coupon.business;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.MemberCoupon;
+import coupon.coupon.dto.MemberCouponResponse;
 import coupon.coupon.persistence.MemberCouponReader;
 import coupon.coupon.persistence.MemberCouponWriter;
 import coupon.member.domain.Member;
@@ -51,7 +52,11 @@ public class MemberCouponService {
         }
     }
 
-    public List<MemberCoupon> findAllByMemberId(long memberId) {
-        return memberCouponReader.findAllByMemberId(memberId);
+    public List<MemberCouponResponse> findAllByMemberId(long memberId) {
+        return memberCouponReader.findAllByMemberId(memberId).stream()
+                .map(memberCoupon ->
+                        MemberCouponResponse.of(memberCoupon, couponService.getCoupon(memberCoupon.getCouponId()))
+                )
+                .toList();
     }
 }
