@@ -1,6 +1,6 @@
 package coupon.domain.membercoupon;
 
-import coupon.domain.coupon.Coupon;
+import java.time.LocalDateTime;
 import coupon.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -38,8 +38,12 @@ public class MemberCoupon {
     @Embedded
     private UsagePeriod usagePeriod;
 
-    public MemberCoupon(Long couponId, Member member, boolean isActive, UsagePeriod usagePeriod) {
-        this(null, couponId, member, isActive, usagePeriod);
+    public MemberCoupon(Long couponId, Member member, LocalDateTime issueDate) {
+        this(null, couponId, member, true, new UsagePeriod(issueDate));
+    }
+
+    public MemberCoupon(Long couponId, Member member, UsagePeriod usagePeriod) {
+        this(null, couponId, member, true, usagePeriod);
     }
 
     public MemberCoupon(Long id, Long couponId, Member member, boolean isActive, UsagePeriod usagePeriod) {
