@@ -69,24 +69,4 @@ public class Coupon {
             throw new IllegalArgumentException("쿠폰 발급 기간이 아닙니다.");
         }
     }
-
-    public String getName() {
-        return name.getName();
-    }
-
-    public int getDiscountAmount() {
-        return discountAmount.getDiscountAmount();
-    }
-
-    public int getMinOrderAmount() {
-        return minOrderAmount.getMinOrderAmount();
-    }
-
-    public LocalDateTime getIssueStartedAt() {
-        return issuePeriod.getIssueStartedAt();
-    }
-
-    public LocalDateTime getIssueEndedAt() {
-        return issuePeriod.getIssueEndedAt();
-    }
 }

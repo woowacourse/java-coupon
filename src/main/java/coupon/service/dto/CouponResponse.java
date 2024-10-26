@@ -16,11 +16,11 @@ public record CouponResponse(
     public static CouponResponse from(Coupon coupon) {
         return new CouponResponse(
                 coupon.getId(),
-                coupon.getName(),
-                coupon.getDiscountAmount(),
-                coupon.getMinOrderAmount(),
-                coupon.getIssueStartedAt(),
-                coupon.getIssueEndedAt(),
+                coupon.getName().getName(),
+                coupon.getDiscountAmount().getDiscountAmount(),
+                coupon.getMinOrderAmount().getMinOrderAmount(),
+                coupon.getIssuePeriod().getIssueStartedAt(),
+                coupon.getIssuePeriod().getIssueEndedAt(),
                 coupon.getCategory().name()
         );
     }
