@@ -6,7 +6,9 @@ import coupon.coupon.domain.CouponName;
 import coupon.coupon.domain.DiscountAmount;
 import coupon.coupon.domain.DiscountRate;
 import coupon.coupon.domain.IssuePeriod;
+import coupon.coupon.domain.MemberCoupon;
 import coupon.coupon.domain.OrderPrice;
+import coupon.member.domain.Member;
 
 public class Fixture {
 
@@ -30,5 +32,24 @@ public class Fixture {
                 CouponCategory.FASHION,
                 issuePeriod
         );
+    }
+
+    public static Coupon generateCoupon(IssuePeriod issuePeriod) {
+        return new Coupon(
+                BIG_SALE_COUPON_NAME,
+                DISCOUNT_AMOUNT_2000,
+                DISCOUNT_RATE_20,
+                ORDER_PRICE_10000,
+                CouponCategory.FASHION,
+                issuePeriod
+        );
+    }
+
+    public static Member generateMember() {
+        return new Member("kaki");
+    }
+
+    public static MemberCoupon generateMemberCoupon(long memberId, long couponId) {
+        return new MemberCoupon(memberId, couponId);
     }
 }

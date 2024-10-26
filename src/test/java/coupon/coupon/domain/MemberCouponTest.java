@@ -2,25 +2,17 @@ package coupon.coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import coupon.member.domain.Member;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
 class MemberCouponTest {
 
-    @Mock
-    private Member member;
-
-    @Mock
-    private Coupon coupon;
-
-    @Test
     @DisplayName("만료일은 발급일로부터 7일 후 23:59:59.999999로 설정된다.")
+    @Test
     void checkExpirationDate() {
-        MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
+        MemberCoupon memberCoupon = new MemberCoupon(1L, 1L);
 
         LocalDateTime issueAt = memberCoupon.getIssueAt();
         LocalDateTime expiredAt = memberCoupon.getExpiredAt();

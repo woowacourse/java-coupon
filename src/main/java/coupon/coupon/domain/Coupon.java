@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -56,5 +57,12 @@ public class Coupon {
         this.orderPrice = orderPrice;
         this.category = category;
         this.issuePeriod = issuePeriod;
+    }
+
+    public boolean usable() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startAt = issuePeriod.getStartAt();
+        LocalDateTime endAt = issuePeriod.getEndAt();
+        return now.isAfter(startAt) && now.isBefore(endAt);
     }
 }
