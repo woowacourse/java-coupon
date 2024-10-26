@@ -26,11 +26,11 @@ public class MemberCoupon {
     private Long id;
 
     @JoinColumn(name = "member_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Member member;
 
     @JoinColumn(name = "coupon_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Coupon coupon;
 
     @Column(nullable = false)
@@ -41,10 +41,6 @@ public class MemberCoupon {
 
     @Column(nullable = false)
     private LocalDateTime expiredAt;
-
-    public MemberCoupon(Member member, Coupon coupon, boolean isUsed, LocalDateTime issuedAt, LocalDateTime expiredAt) {
-        this(null, member, coupon, isUsed, issuedAt, expiredAt);
-    }
 
     public MemberCoupon(Member member, Coupon coupon, LocalDateTime expiredAt) {
         this(null, member, coupon, false, LocalDateTime.now(), expiredAt);

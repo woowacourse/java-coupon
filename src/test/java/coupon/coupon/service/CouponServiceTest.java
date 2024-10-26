@@ -1,31 +1,29 @@
 package coupon.coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponCategory;
-import coupon.coupon.domain.MemberCoupon;
-import coupon.member.Member;
-import coupon.member.service.MemberService;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Objects;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.Cache.ValueWrapper;
+import org.springframework.cache.CacheManager;
 
 @SpringBootTest
 @DisplayName("쿠폰 서비스")
 class CouponServiceTest {
 
     private final CouponService couponService;
-    private final MemberService memberService;
+    private final CacheManager cacheManager;
 
     @Autowired
-    public CouponServiceTest(CouponService couponService, MemberService memberService) {
+    public CouponServiceTest(CouponService couponService, CacheManager cacheManager) {
         this.couponService = couponService;
-        this.memberService = memberService;
+        this.cacheManager = cacheManager;
     }
 
     @DisplayName("쿠폰 서비스 복제 지연 테스트")
@@ -45,11 +43,10 @@ class CouponServiceTest {
         assertThat(savedCoupon).isNotNull();
     }
 
-    @DisplayName("사용자 쿠폰을 발급한다.")
+    @DisplayName("쿠폰 서비스는 쿠폰을 생성할 때 RedisCache에 정보를 적재한다.")
     @Test
-    void issueMemberCoupon() {
+    void putCacheWhenCreateCoupon() {
         // given
-        Member member = new Member("사용자");
         Coupon coupon = new Coupon(
                 "쿠폰",
                 CouponCategory.FASHION,
@@ -59,23 +56,19 @@ class CouponServiceTest {
                 LocalDateTime.now().plusDays(3L)
         );
 
-        Member savedMember = memberService.createMember(member);
+        // when
         Coupon savedCoupon = couponService.createCoupon(coupon);
 
-        MemberCoupon memberCoupon = new MemberCoupon(savedMember, savedCoupon, LocalDateTime.now().plusDays(5L));
-
-        // when
-        MemberCoupon actual = couponService.issueMemberCoupon(memberCoupon);
-
         // then
-        assertThat(actual.getId()).isEqualTo(1L);
+        ValueWrapper actual = Objects.requireNonNull(cacheManager.getCache("coupons"))
+                .get(savedCoupon.getId());
+        assertThat(actual).isNotNull();
     }
 
-    @DisplayName("사용자 쿠폰은 5개 이상 발급될 수 없다.")
+    @DisplayName("쿠폰 서비스는 쿠폰을 읽을 때 RedisCache에서 정보를 꺼내온다.")
     @Test
-    void validateIssueMemberCoupon() {
+    void hitCacheWhenReadCoupon() {
         // given
-        Member member = new Member("사용자");
         Coupon coupon = new Coupon(
                 "쿠폰",
                 CouponCategory.FASHION,
@@ -84,46 +77,15 @@ class CouponServiceTest {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(3L)
         );
-
-        Member savedMember = memberService.createMember(member);
         Coupon savedCoupon = couponService.createCoupon(coupon);
 
         // when
-        for (int i = 0; i < 5; i++) {
-            MemberCoupon memberCoupon = new MemberCoupon(savedMember, savedCoupon, LocalDateTime.now().plusDays(5L));
-            couponService.issueMemberCoupon(memberCoupon);
-        }
+        Object actual = cacheManager.getCache("coupons")
+                .get(savedCoupon.getId())
+                .get();
+        Coupon readCoupon = couponService.readCoupon(savedCoupon.getId());
 
         // then
-        MemberCoupon memberCoupon = new MemberCoupon(savedMember, savedCoupon, LocalDateTime.now().plusDays(5L));
-        assertThatThrownBy(() -> couponService.issueMemberCoupon(memberCoupon))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @DisplayName("사용자는 발급된 쿠폰을 확인할 수 있다.")
-    @Test
-    void readMemberCoupons() {
-        // given
-        Member member = new Member("사용자");
-        Coupon coupon = new Coupon(
-                "쿠폰",
-                CouponCategory.FASHION,
-                1000,
-                30000,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusDays(3L)
-        );
-
-        Member savedMember = memberService.createMember(member);
-        Coupon savedCoupon = couponService.createCoupon(coupon);
-
-        MemberCoupon memberCoupon = new MemberCoupon(savedMember, savedCoupon, LocalDateTime.now().plusDays(5L));
-        couponService.issueMemberCoupon(memberCoupon);
-
-        // when
-        List<MemberCoupon> memberCoupons = couponService.readMemberCoupons(member);
-
-        // then
-        assertThat(memberCoupons).hasSize(1);
+        assertThat(actual).isEqualTo(readCoupon);
     }
 }
