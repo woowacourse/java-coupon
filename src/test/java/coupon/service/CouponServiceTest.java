@@ -14,14 +14,14 @@ public class CouponServiceTest extends BaseServiceTest {
     private CouponService couponService;
 
     @Test
-    void 복제지연테스트() {
+    void 복제_지연_테스트() {
         // given
         Coupon coupon = new Coupon("우테코치킨 첫주문 할인",
                 1_000,
                 5_000,
                 LocalDate.parse("2024-10-14"),
                 LocalDate.parse("2024-10-20"),
-                Category.FASHION);
+                Category.FOOD);
 
         // when
         couponService.create(coupon);
