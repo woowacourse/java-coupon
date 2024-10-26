@@ -10,6 +10,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import coupon.domain.coupon.Coupon;
+import coupon.service.db.CouponDBService;
+import coupon.service.db.reader.CouponReader;
+import coupon.service.db.writer.CouponWriter;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

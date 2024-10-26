@@ -1,22 +1,21 @@
-package coupon.service;
+package coupon.service.db.writer;
 
 import coupon.domain.coupon.Coupon;
 import coupon.repository.CouponRepository;
-import java.util.Optional;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-@Transactional(readOnly = true)
-public class CouponReader {
+@Transactional
+public class CouponWriter {
 
     private final CouponRepository couponRepository;
 
-    public CouponReader(CouponRepository couponRepository) {
+    public CouponWriter(CouponRepository couponRepository) {
         this.couponRepository = couponRepository;
     }
 
-    public Optional<Coupon> findCoupon(long couponId) {
-        return couponRepository.findById(couponId);
+    public Coupon save(Coupon coupon){
+        return couponRepository.save(coupon);
     }
 }

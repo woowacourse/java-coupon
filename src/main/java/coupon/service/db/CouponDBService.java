@@ -1,7 +1,9 @@
-package coupon.service;
+package coupon.service.db;
 
 import coupon.db.TransactionRouter;
 import coupon.domain.coupon.Coupon;
+import coupon.service.db.reader.CouponReader;
+import coupon.service.db.writer.CouponWriter;
 import java.util.NoSuchElementException;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
