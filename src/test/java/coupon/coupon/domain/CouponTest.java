@@ -64,7 +64,7 @@ class CouponTest {
     void cannotCreateIfCategoryNull() {
         // given
         String name = "coupon";
-        int discountAmount = 2500;
+        int discountAmount = 2000;
         int minimumOrderAmount = 10000;
         Category category = null;
         LocalDate startAt = LocalDate.now();

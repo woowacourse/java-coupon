@@ -16,9 +16,9 @@ import coupon.coupon.CouponException;
 @Entity
 public class Coupon {
 
+    public static final String CATEGORY_NON_NULL_MESSAGE = "카테고리를 선택해주세요.";
     private static final BigDecimal MINIMUM_DISCOUNT_RATE = BigDecimal.valueOf(3);
     private static final BigDecimal MAXIMUM_DISCOUNT_RATE = BigDecimal.valueOf(20);
-    public static final String CATEGORY_NON_NULL_MESSAGE = "카테고리를 선택해주세요";
     private static final String DISCOUNT_RATE_MESSAGE = String.format(
             "할인율은 %s%% 이상, %s%% 이하이어야 합니다.",
             MINIMUM_DISCOUNT_RATE.toPlainString(),
@@ -49,10 +49,11 @@ public class Coupon {
 
     public Coupon(CouponName name, DiscountAmount discountAmount, MinimumOrderAmount minimumOrderAmount, Category category, Term term) {
         validateDiscountRate(discountAmount, minimumOrderAmount);
+        validateCategoryNull(category);
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
-        this.category = Objects.requireNonNull(category, CATEGORY_NON_NULL_MESSAGE);
+        this.category = category;
         this.term = term;
     }
 
@@ -60,6 +61,12 @@ public class Coupon {
         BigDecimal discountRate = discountAmount.getDiscountRate(minimumOrderAmount);
         if (discountRate.compareTo(MINIMUM_DISCOUNT_RATE) < 0 || discountRate.compareTo(MAXIMUM_DISCOUNT_RATE) > 0) {
             throw new CouponException(DISCOUNT_RATE_MESSAGE);
+        }
+    }
+
+    private void validateCategoryNull(Category category) {
+        if (Objects.isNull(category)) {
+            throw new CouponException(CATEGORY_NON_NULL_MESSAGE);
         }
     }
 
