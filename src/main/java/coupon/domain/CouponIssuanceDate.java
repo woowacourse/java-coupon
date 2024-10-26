@@ -3,6 +3,7 @@ package coupon.domain;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 public class CouponIssuanceDate {
@@ -11,9 +12,9 @@ public class CouponIssuanceDate {
     private final LocalDateTime issuanceEndDate;
 
     public CouponIssuanceDate(LocalDateTime issuanceStartDate, LocalDateTime issuanceEndDate) {
-        validateIssuanceDate(issuanceStartDate, issuanceEndDate);
-        this.issuanceStartDate = issuanceStartDate;
-        this.issuanceEndDate = issuanceEndDate;
+        validateIssuanceDate(issuanceStartDate.with(LocalTime.MIN), issuanceEndDate.with(LocalTime.MAX));
+        this.issuanceStartDate = issuanceStartDate.with(LocalTime.MIN);
+        this.issuanceEndDate = issuanceEndDate.with(LocalTime.MAX);
     }
 
     private void validateIssuanceDate(LocalDateTime issuanceStartDate, LocalDateTime issuanceEndDate) {
