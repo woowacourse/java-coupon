@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,5 +65,9 @@ public class Coupon extends BaseTime {
         if (discountRate < DISCOUNT_RATE_MINIMUM || discountRate > DISCOUNT_RATE_MAXIMUM) {
             throw new GlobalCustomException(ErrorMessage.INVALID_DISCOUNT_RATE_RANGE);
         }
+    }
+
+    public boolean canIssue(LocalDateTime issueDateTime) {
+        return this.issuePeriod.isInIssuePeriod(issueDateTime);
     }
 }

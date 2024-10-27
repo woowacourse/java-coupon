@@ -4,6 +4,7 @@ import coupon.exception.ErrorMessage;
 import coupon.exception.GlobalCustomException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,5 +31,13 @@ public class IssuePeriod {
         if (issueStartedAt.isAfter(issueEndedAt)) {
             throw new GlobalCustomException(ErrorMessage.INVALID_ISSUE_PERIOD);
         }
+    }
+
+    public boolean isInIssuePeriod(LocalDateTime issueDateTime) {
+        LocalDate issueDate = issueDateTime.toLocalDate();
+        LocalDate startedAtDate = issueStartedAt.toLocalDate();
+        LocalDate endedAtDate = issueEndedAt.toLocalDate();
+        return startedAtDate.equals(issueDate) || endedAtDate.equals(issueDate) ||
+                (startedAtDate.isAfter(issueDate) && endedAtDate.isBefore(issueDate));
     }
 }

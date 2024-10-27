@@ -13,6 +13,7 @@ import coupon.repository.CachedCouponRepository;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.utill.WriterDbReader;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,10 +36,15 @@ public class MemberCouponService {
 
     @Transactional
     public MemberCoupon issue(Member member, Coupon coupon) {
+        if (!coupon.canIssue(LocalDateTime.now())) {
+            throw new GlobalCustomException(ErrorMessage.NOT_IN_COUPON_ISSUE_PERIOD);
+        }
+
         List<MemberCoupon> issuedMemberCoupons = memberCouponRepository.findAllByMemberAndCoupon(member, coupon);
         if (issuedMemberCoupons.size() >= ISSUE_LIMIT) {
             throw new GlobalCustomException(ErrorMessage.EXCEED_ISSUE_MEMBER_COUPON);
         }
+
         MemberCoupon memberCoupon = new MemberCoupon(coupon, member, false);
         return memberCouponRepository.save(memberCoupon);
     }

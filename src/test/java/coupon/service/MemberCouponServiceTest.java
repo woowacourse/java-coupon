@@ -72,6 +72,26 @@ class MemberCouponServiceTest {
     }
 
     @Test
+    @DisplayName("쿠폰 발급 기간이 아닐 경우 쿠폰 발급을 시도하면 예외가 발생한다.")
+    void issueInInvalidPeriod() {
+        // given
+        Coupon expiredCoupon = makeExpiredCoupon();
+
+        // when & then
+        assertThatThrownBy(() -> memberCouponService.issue(member, expiredCoupon))
+                .isInstanceOf(GlobalCustomException.class)
+                .hasMessage(ErrorMessage.NOT_IN_COUPON_ISSUE_PERIOD.getMessage());
+    }
+
+    private Coupon makeExpiredCoupon() {
+        Name name = new Name("쿠폰이름");
+        DiscountAmount discountAmount = new DiscountAmount(1_000);
+        MinimumOrderPrice minimumOrderPrice = new MinimumOrderPrice(30_000);
+        IssuePeriod issuePeriod = new IssuePeriod(LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(2));
+        return new Coupon(name, discountAmount, minimumOrderPrice, Category.FASHION, issuePeriod);
+    }
+
+    @Test
     @DisplayName("한 명의 회원은 동일한 쿠폰을 사용한 쿠폰을 포함하여 최대 5장까지 발급할 수 있다.")
     void issueUpTo5Coupons() {
         // given
