@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class CouponName {
 
+    private static final int MAX_NAME_LENGTH = 30;
     private String name;
 
     public CouponName(String name) {
@@ -19,7 +20,7 @@ public class CouponName {
     }
 
     private void validate() {
-        if (name == null || name.isEmpty() || name.length() > 30) {
+        if (name == null || name.isEmpty() || name.length() > MAX_NAME_LENGTH) {
             throw new CouponNameException(name);
         }
     }

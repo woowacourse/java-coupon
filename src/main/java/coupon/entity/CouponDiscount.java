@@ -15,6 +15,14 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class CouponDiscount {
 
+    private static final BigDecimal MIN_DISCOUNT_AMOUNT = BigDecimal.valueOf(1000);
+    private static final BigDecimal MAX_DISCOUNT_AMOUNT = BigDecimal.valueOf(10000);
+    private static final BigDecimal DISCOUNT_AMOUNT_INCREMENT = BigDecimal.valueOf(500);
+    private static final BigDecimal MIN_ORDER_AMOUNT = BigDecimal.valueOf(5000);
+    private static final BigDecimal MAX_ORDER_AMOUNT = BigDecimal.valueOf(100000);
+    private static final int MIN_DISCOUNT_RATE = 3;
+    private static final int MAX_DISCOUNT_RATE = 20;
+
     private BigDecimal discountAmount;
     private BigDecimal minimumOrderAmount;
 
@@ -31,16 +39,16 @@ public class CouponDiscount {
     }
 
     private void validateDiscountAmount() {
-        if (discountAmount.compareTo(BigDecimal.valueOf(1000)) < 0 ||
-                discountAmount.compareTo(BigDecimal.valueOf(10000)) > 0 ||
-                discountAmount.remainder(BigDecimal.valueOf(500)).compareTo(BigDecimal.ZERO) != 0) {
+        if (discountAmount.compareTo(MIN_DISCOUNT_AMOUNT) < 0 ||
+                discountAmount.compareTo(MAX_DISCOUNT_AMOUNT) > 0 ||
+                discountAmount.remainder(DISCOUNT_AMOUNT_INCREMENT).compareTo(BigDecimal.ZERO) != 0) {
             throw new CouponDiscountAmountException(discountAmount);
         }
     }
 
     private void validateMinimumOrderAmount() {
-        if (minimumOrderAmount.compareTo(BigDecimal.valueOf(5000)) < 0 ||
-                minimumOrderAmount.compareTo(BigDecimal.valueOf(100000)) > 0) {
+        if (minimumOrderAmount.compareTo(MIN_ORDER_AMOUNT) < 0 ||
+                minimumOrderAmount.compareTo(MAX_ORDER_AMOUNT) > 0) {
             throw new CouponMinimumOrderAmountException(minimumOrderAmount);
         }
     }
@@ -49,8 +57,9 @@ public class CouponDiscount {
         int discountRate = discountAmount.multiply(BigDecimal.valueOf(100))
                 .divide(minimumOrderAmount, 0, RoundingMode.DOWN)
                 .intValue();
-        if (discountRate < 3 || discountRate > 20) {
+        if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
             throw new CouponDiscountRateException(discountRate);
         }
     }
 }
+
