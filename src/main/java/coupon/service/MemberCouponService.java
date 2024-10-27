@@ -6,6 +6,7 @@ import coupon.domain.MemberCoupon;
 import coupon.repository.MemberCouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
@@ -15,6 +16,7 @@ public class MemberCouponService {
     private static final int COUPON_ISSUE_LIMIT = 5;
     private final MemberCouponRepository memberCouponRepository;
 
+    @Transactional
     public MemberCoupon issue(Member member, Coupon coupon) {
         validate(member, coupon);
         return MemberCoupon.issue(member, coupon);
@@ -26,6 +28,7 @@ public class MemberCouponService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<MemberCoupon> readAllMemberCoupons(Member member) {
         return memberCouponRepository.findByMember(member);
     }
