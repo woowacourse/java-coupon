@@ -1,7 +1,9 @@
 package coupon.service;
 
+import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import coupon.domain.Category;
 import coupon.domain.Coupon;
@@ -17,6 +19,7 @@ import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
 import coupon.utill.DatabaseCleaner;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -79,5 +82,24 @@ class MemberCouponServiceTest {
         assertThatThrownBy(() -> memberCouponService.issue(member, coupon))
                 .isInstanceOf(GlobalCustomException.class)
                 .hasMessage(ErrorMessage.EXCEED_ISSUE_MEMBER_COUPON.getMessage());
+    }
+
+    @Test
+    @DisplayName("회원의 쿠폰 목록을 조회할 때 회원에게 발급된 쿠폰 정보와 쿠폰 정보를 함께 조회한다.")
+    void findAllIssuedCoupons() {
+        // given
+        memberCouponService.issue(member, coupon);
+
+        // when
+        List<MemberCoupon> memberCoupons = memberCouponService.findAllIssuedCoupons(member);
+
+        // then
+        assertAll(() -> {
+            assertThat(memberCoupons).extracting(MemberCoupon::getIssuedAt)
+                    .doesNotContainNull();
+            assertThat(memberCoupons).extracting(MemberCoupon::getCoupon)
+                    .flatExtracting(Coupon::getCategory)
+                    .doesNotContainNull();
+        });
     }
 }
