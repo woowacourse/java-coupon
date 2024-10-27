@@ -60,6 +60,16 @@ public class Coupon extends BaseTime {
         this.issuePeriod = issuePeriod;
     }
 
+    public Coupon(Long id, Name name, DiscountAmount discountAmount, MinimumOrderPrice minimumOrderPrice,
+                  Category category, IssuePeriod issuePeriod) {
+        this.id = id;
+        this.name = name;
+        this.discountAmount = discountAmount;
+        this.minimumOrderPrice = minimumOrderPrice;
+        this.category = category;
+        this.issuePeriod = issuePeriod;
+    }
+
     private void validateDiscountRate(DiscountAmount discountAmount, MinimumOrderPrice minimumOrderPrice) {
         int discountRate = discountAmount.calculateDiscountRate(minimumOrderPrice.getValue());
         if (discountRate < DISCOUNT_RATE_MINIMUM || discountRate > DISCOUNT_RATE_MAXIMUM) {

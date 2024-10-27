@@ -127,7 +127,7 @@ class MemberCouponServiceTest {
     }
 
     @Test
-    @DisplayName("회원의 쿠폰 목록을 조회할 때 쿠폰 정보는 Read-Through Caching한다.")
+    @DisplayName("회원의 쿠폰 목록을 조회할 때 쿠폰 정보는 Look aside 캐시를 사용한다.")
     void findCouponInCache() {
         // given
         memberCouponService.issue(member, coupon);
