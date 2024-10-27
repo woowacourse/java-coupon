@@ -1,4 +1,4 @@
-package coupon;
+package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import coupon.domain.Category;
 import coupon.domain.Coupon;
-import coupon.service.CouponService;
 
 @SpringBootTest
 public class CouponServiceTest {
