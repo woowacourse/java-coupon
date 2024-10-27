@@ -16,6 +16,7 @@ public class MemberCouponService {
             "동일한 쿠폰을 %d장 이상 발급할 수 없어요.",
             MAX_MEMBER_COUPON_COUNT
     );
+
     private final MemberCouponRepository memberCouponRepository;
 
     public MemberCouponService(MemberCouponRepository memberCouponRepository) {
@@ -37,5 +38,9 @@ public class MemberCouponService {
         if (memberCoupons.size() >= MAX_MEMBER_COUPON_COUNT) {
             throw new CouponException(MAX_MEMBER_COUPON_COUNT_MESSAGE);
         }
+    }
+
+    public List<MemberCoupon> findAllCouponByMember(Member member) {
+        return memberCouponRepository.findAllByMemberId(member.getId());
     }
 }

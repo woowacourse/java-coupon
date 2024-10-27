@@ -7,4 +7,6 @@ import coupon.membercoupon.domain.MemberCoupon;
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
     List<MemberCoupon> findAllByMemberIdAndCouponId(long memberId, long couponId);
+
+    List<MemberCoupon> findAllByMemberId(long memberId);
 }

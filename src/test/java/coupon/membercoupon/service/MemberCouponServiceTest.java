@@ -1,6 +1,7 @@
 package coupon.membercoupon.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import coupon.fixture.CouponFixture;
 import coupon.fixture.MemberFixture;
 import coupon.member.domain.Member;
 import coupon.member.repository.MemberRepository;
+import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.repository.MemberCouponRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,12 +35,8 @@ class MemberCouponServiceTest {
     @Test
     void issueCoupon() {
         // given
-        LocalDate startAt = LocalDate.now();
-        LocalDate endAt = LocalDate.now().plusDays(6);
-        Coupon coupon = CouponFixture.create(startAt, endAt);
-        Member member = MemberFixture.create();
-        couponRepository.save(coupon);
-        memberRepository.save(member);
+        Coupon coupon = saveCoupon();
+        Member member = saveMember();
 
         // when
         memberCouponService.issue(member, coupon);
@@ -51,12 +49,8 @@ class MemberCouponServiceTest {
     @Test
     void cannotIssueCouponIfExceedCount() {
         // given
-        LocalDate startAt = LocalDate.now();
-        LocalDate endAt = LocalDate.now().plusDays(6);
-        Coupon coupon = CouponFixture.create(startAt, endAt);
-        Member member = MemberFixture.create();
-        couponRepository.save(coupon);
-        memberRepository.save(member);
+        Coupon coupon = saveCoupon();
+        Member member = saveMember();
         for (int count = 1; count <= 5; count++) {
             memberCouponService.issue(member, coupon);
         }
@@ -65,5 +59,34 @@ class MemberCouponServiceTest {
         assertThatThrownBy(() -> memberCouponService.issue(member, coupon))
                 .isInstanceOf(CouponException.class)
                 .hasMessage("동일한 쿠폰을 5장 이상 발급할 수 없어요.");
+    }
+
+    @DisplayName("사용자에게 발행된 모든 쿠폰 정보를 가져온다.")
+    @Test
+    void getCouponWithInvalidIdThrowsException() {
+        // given
+        Coupon coupon = saveCoupon();
+        Member member = saveMember();
+        memberCouponRepository.save(MemberCoupon.issue(member, coupon));
+
+        // when
+        List<MemberCoupon> result = memberCouponService.findAllCouponByMember(member);
+
+        // then
+        assertThat(result).hasSize(1);
+    }
+
+    private Coupon saveCoupon() {
+        LocalDate startAt = LocalDate.now();
+        LocalDate endAt = LocalDate.now().plusDays(6);
+        Coupon coupon = CouponFixture.create(startAt, endAt);
+        couponRepository.save(coupon);
+        return coupon;
+    }
+
+    private Member saveMember() {
+        Member member = MemberFixture.create();
+        memberRepository.save(member);
+        return member;
     }
 }
