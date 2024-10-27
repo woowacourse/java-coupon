@@ -2,6 +2,7 @@ package coupon.coupon.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class Discount {
     private static final int MAX = 10000;
     private static final int UNIT = 500;
 
+    @Column(nullable = false)
     private int discountValue;
 
     public Discount(int discountValue) {

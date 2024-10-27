@@ -2,6 +2,7 @@ package coupon.coupon.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,12 +15,13 @@ public class Order {
     private static final int MIN = 5000;
     private static final int MAX = 100_000;
 
-    private int leastPayment;
+    @Column(nullable = false)
+    private int amount;
     //TODO 자료형 수정
 
     public Order(int amount) {
         validateAmount(amount);
-        this.leastPayment = amount;
+        this.amount = amount;
     }
 
     private void validateAmount(int amount) {
