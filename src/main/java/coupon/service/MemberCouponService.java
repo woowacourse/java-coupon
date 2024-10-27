@@ -1,11 +1,10 @@
 package coupon.service;
 
 import coupon.domain.Coupon;
+import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
 import coupon.dto.MemberCouponInfo;
-import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
-import coupon.repository.MemberRepository;
 import coupon.util.FallbackExecutor;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,25 +19,17 @@ public class MemberCouponService {
     private static final int MAX_ISSUED_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
-    private final MemberRepository memberRepository;
-    private final CouponRepository couponRepository;
     private final CouponService couponService;
     private final FallbackExecutor fallbackExecutor;
 
     @Transactional
-    public MemberCoupon issue(long couponId, long memberId) {
-        validate(couponId, memberId);
-        MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId, LocalDateTime.now());
+    public MemberCoupon issue(Coupon coupon, Member member) {
+        validateMaxCount(member.getId());
+        MemberCoupon memberCoupon = new MemberCoupon(coupon.getId(), member.getId(), LocalDateTime.now());
         return memberCouponRepository.save(memberCoupon);
     }
 
-    private void validate(long couponId, long memberId) {
-        if (!couponRepository.existsById(couponId)) {
-            throw new IllegalArgumentException("존재하지 않는 couponId 입니다.");
-        }
-        if (!memberRepository.existsById(memberId)) {
-            throw new IllegalArgumentException("존재하지 않는 memberId 입니다.");
-        }
+    private void validateMaxCount(long memberId) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
         if (memberCoupons.size() >= MAX_ISSUED_COUNT) {
             throw new IllegalArgumentException("회원별 최대 " + MAX_ISSUED_COUNT + "장까지 발급이 가능합니다.");
@@ -46,8 +37,8 @@ public class MemberCouponService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemberCouponInfo> findAllByMemberId(long memberId) {
-        return findMemberCouponsByMemberId(memberId)
+    public List<MemberCouponInfo> findAllByMember(Member member) {
+        return findMemberCouponsByMemberId(member.getId())
                 .stream()
                 .map(this::createMemberCouponInfo)
                 .toList();

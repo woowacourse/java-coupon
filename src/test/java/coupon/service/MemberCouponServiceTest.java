@@ -33,6 +33,9 @@ class MemberCouponServiceTest {
     private MemberCouponService memberCouponService;
 
     @Autowired
+    private CouponService couponService;
+
+    @Autowired
     private MemberRepository memberRepository;
 
     @SpyBean
@@ -41,38 +44,15 @@ class MemberCouponServiceTest {
     @SpyBean
     private CacheManager cacheManager;
 
-    @Autowired
-    private CouponService couponService;
-
     @Nested
     class 회원_쿠폰_발급 {
-
-        @Test
-        void 존재하지_않는_coupon_이면_예외가_발생한다() {
-            long invalidCouponId = 0;
-            long validMemberId = memberRepository.save(Fixture.createMember()).getId();
-
-            assertThatThrownBy(() -> memberCouponService.issue(invalidCouponId, validMemberId))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("존재하지 않는 couponId 입니다.");
-        }
-
-        @Test
-        void 존재하지_않는_member_이면_예외가_발생한다() {
-            long validCouponId = couponRepository.save(Fixture.createCoupon()).getId();
-            long invalidMemberId = 0;
-
-            assertThatThrownBy(() -> memberCouponService.issue(validCouponId, invalidMemberId))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("존재하지 않는 memberId 입니다.");
-        }
 
         @Test
         void 회원의_쿠폰이_5개_미만이면_성공한다() {
             Coupon coupon = couponRepository.save(Fixture.createCoupon());
             Member member = memberRepository.save(Fixture.createMember());
 
-            MemberCoupon memberCoupon = memberCouponService.issue(coupon.getId(), member.getId());
+            MemberCoupon memberCoupon = memberCouponService.issue(coupon, member);
 
             assertAll(
                     () -> assertThat(memberCoupon.getCouponId()).isEqualTo(coupon.getId()),
@@ -86,14 +66,13 @@ class MemberCouponServiceTest {
             Member member = memberRepository.save(Fixture.createMember());
 
             for (int i = 0; i < 5; i++) {
-                memberCouponService.issue(coupon.getId(), member.getId());
+                memberCouponService.issue(coupon, member);
             }
 
-            assertThatThrownBy(() -> memberCouponService.issue(coupon.getId(), member.getId()))
+            assertThatThrownBy(() -> memberCouponService.issue(coupon, member))
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }
-
 
     @Nested
     class 회원_쿠폰_목록_조회 {
@@ -104,10 +83,10 @@ class MemberCouponServiceTest {
             Coupon specialCoupon = couponRepository.save(Fixture.createCoupon("특별 쿠폰"));
             Member member = memberRepository.save(Fixture.createMember());
 
-            memberCouponService.issue(luckyCoupon.getId(), member.getId());
-            memberCouponService.issue(specialCoupon.getId(), member.getId());
+            memberCouponService.issue(luckyCoupon, member);
+            memberCouponService.issue(specialCoupon, member);
 
-            List<MemberCouponInfo> memberCoupons = memberCouponService.findAllByMemberId(member.getId());
+            List<MemberCouponInfo> memberCoupons = memberCouponService.findAllByMember(member);
 
             assertAll(
                     () -> assertThat(memberCoupons).hasSize(2),
@@ -120,7 +99,7 @@ class MemberCouponServiceTest {
         void 발급한_회원_쿠폰이_없으면_빈_목록을_반환한다() {
             Member member = memberRepository.save(Fixture.createMember());
 
-            List<MemberCouponInfo> memberCoupons = memberCouponService.findAllByMemberId(member.getId());
+            List<MemberCouponInfo> memberCoupons = memberCouponService.findAllByMember(member);
 
             assertThat(memberCoupons).isEmpty();
         }
@@ -129,13 +108,12 @@ class MemberCouponServiceTest {
         void 쿠폰_조회는_캐시를_사용한다() {
             Coupon dbCoupon = couponService.save(Fixture.createCoupon()); // service 거쳐야 발행된 쿠폰을 캐싱함
             Member member = memberRepository.save(Fixture.createMember());
-
-            memberCouponService.issue(dbCoupon.getId(), member.getId());
+            memberCouponService.issue(dbCoupon, member);
 
             Cache spyCache = spy(requireNonNull(cacheManager.getCache("coupon")));
             when(cacheManager.getCache("coupon")).thenReturn(spyCache);
 
-            memberCouponService.findAllByMemberId(member.getId());
+            memberCouponService.findAllByMember(member);
 
             assertAll(
                     () -> verify(spyCache, times(1)).get(dbCoupon.getId()),
