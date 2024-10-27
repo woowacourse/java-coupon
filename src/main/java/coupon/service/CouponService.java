@@ -27,12 +27,10 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(long couponId) {
-        return couponRepository.findById(couponId)
-                .orElseGet(() -> {
-                    Callable<Coupon> callable = () -> couponRepository.findById(couponId)
-                            .orElseThrow(() -> new CouponException(CouponErrorMessage.COUPON_NOT_FOUND));
+        Callable<Coupon> callable = () -> couponRepository.findById(couponId)
+                .orElseThrow(() -> new CouponException(CouponErrorMessage.COUPON_NOT_FOUND));
 
-                    return fallbackReadService.read(callable);
-                });
+        return couponRepository.findById(couponId)
+                .orElseGet(() -> fallbackReadService.read(callable));
     }
 }
