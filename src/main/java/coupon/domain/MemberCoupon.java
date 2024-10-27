@@ -19,8 +19,7 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Coupon coupon;
+    private Long couponId;
 
     @ManyToOne
     private Member member;
@@ -31,8 +30,8 @@ public class MemberCoupon {
 
     private LocalDateTime expiredAt;
 
-    public MemberCoupon(Coupon coupon, Member member, boolean used, LocalDateTime issuedAt, LocalDateTime expiredAt) {
-        this.coupon = coupon;
+    public MemberCoupon(Long couponId, Member member, boolean used, LocalDateTime issuedAt, LocalDateTime expiredAt) {
+        this.couponId = couponId;
         this.member = member;
         this.used = used;
         this.issuedAt = issuedAt;
@@ -45,7 +44,7 @@ public class MemberCoupon {
         if (!coupon.issuable()) {
             throw new IllegalStateException("쿠폰을 발급할 수 없는 상태입니다: " + coupon);
         }
-        return new MemberCoupon(coupon, member, false, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
+        return new MemberCoupon(coupon.getId(), member, false, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
     }
 
     public void use() {
