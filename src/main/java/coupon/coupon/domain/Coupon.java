@@ -76,7 +76,7 @@ public class Coupon {
         }
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 }

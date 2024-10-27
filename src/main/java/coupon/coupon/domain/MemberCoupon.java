@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class MemberCoupon {
@@ -17,13 +15,11 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "member_id")
-    private Member member;
+    @Column(nullable = false)
+    private Long memberId;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "coupon_id")
-    private Coupon coupon;
+    @Column(nullable = false)
+    private Long couponId;
 
     @Column(nullable = false)
     private boolean used;
@@ -41,9 +37,9 @@ public class MemberCoupon {
         return new MemberCoupon(member, coupon);
     }
 
-    public MemberCoupon(Member member, Coupon coupon) {
-        this.member = member;
-        this.coupon = coupon;
+    private MemberCoupon(Member member, Coupon coupon) {
+        this.memberId = member.getId();
+        this.couponId = coupon.getId();
         this.used = false;
         this.issuedAt = LocalDateTime.now();
         this.expiredAt = calculateExpiredAt(this.issuedAt);
@@ -51,10 +47,6 @@ public class MemberCoupon {
 
     private LocalDateTime calculateExpiredAt(LocalDateTime issuedAt) {
         return issuedAt.plusDays(7).with(LocalTime.of(23, 59, 59, 999_999_000));
-    }
-
-    public Coupon getCoupon() {
-        return coupon;
     }
 
     public LocalDateTime getIssuedAt() {

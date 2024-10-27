@@ -27,7 +27,7 @@ public class Member {
         this.nickname = nickname;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 }

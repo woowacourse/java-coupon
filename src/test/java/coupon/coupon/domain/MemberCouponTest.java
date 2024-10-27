@@ -17,7 +17,7 @@ class MemberCouponTest {
         Member member = new Member("Prin?");
 
         // when
-        MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
+        MemberCoupon memberCoupon = MemberCoupon.issue(member, coupon);
 
         //then
         assertThat(memberCoupon.getIssuedAt().plusDays(7)).isBeforeOrEqualTo(memberCoupon.getExpiredAt());

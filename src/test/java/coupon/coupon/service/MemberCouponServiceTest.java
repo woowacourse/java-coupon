@@ -43,7 +43,7 @@ class MemberCouponServiceTest {
         memberCouponService.issue(member, coupon);
 
         // then
-        assertThat(memberCouponRepository.findAllByMemberAndCoupon(member, coupon)).hasSize(1);
+        assertThat(memberCouponRepository.findAllByMemberIdAndCouponId(member.getId(), coupon.getId())).hasSize(1);
     }
 
     @DisplayName("한 회원이 5장 초과로 쿠폰 발급을 시도하면 예외가 발생한다.")

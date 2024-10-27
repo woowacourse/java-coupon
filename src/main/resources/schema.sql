@@ -25,7 +25,5 @@ create table if not exists member_coupon
     member_id  BIGINT    NOT NULL,
     used       BOOLEAN   NOT NULL,
     issued_at  TIMESTAMP NOT NULL,
-    expired_at TIMESTAMP NOT NULL,
-    FOREIGN KEY (member_id) REFERENCES member (id) ON DELETE CASCADE,
-    FOREIGN KEY (coupon_id) REFERENCES coupon (id) ON DELETE CASCADE
+    expired_at TIMESTAMP NOT NULL
 );

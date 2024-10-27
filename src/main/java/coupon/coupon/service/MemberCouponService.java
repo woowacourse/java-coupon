@@ -30,7 +30,7 @@ public class MemberCouponService {
     }
 
     private List<MemberCoupon> getMemberCoupons(Member member, Coupon coupon) {
-        return memberCouponRepository.findAllByMemberAndCoupon(member, coupon).stream().toList();
+        return memberCouponRepository.findAllByMemberIdAndCouponId(member.getId(), coupon.getId()).stream().toList();
     }
 
     private void validate(List<MemberCoupon> memberCoupons) {
