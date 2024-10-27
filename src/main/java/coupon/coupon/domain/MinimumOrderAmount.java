@@ -2,6 +2,7 @@ package coupon.coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.text.NumberFormat;
 import lombok.Getter;
 
 @Embeddable
@@ -24,10 +25,12 @@ public class MinimumOrderAmount {
 
     private void validateAmount(int value) {
         if (value < MIN_AMOUNT) {
-            throw new IllegalArgumentException("최소 주문 금액은 5,000원 이상이어야 합니다.");
+            throw new IllegalArgumentException(
+                    "최소 주문 금액은 %s원 이상이어야 합니다.".formatted(NumberFormat.getInstance().format(MIN_AMOUNT)));
         }
         if (value > MAX_AMOUNT) {
-            throw new IllegalArgumentException("최소 주문 금액은 100,000원 이하여야 합니다.");
+            throw new IllegalArgumentException(
+                    "최소 주문 금액은 %s원 이하여야 합니다.".formatted(NumberFormat.getInstance().format(MAX_AMOUNT)));
         }
     }
 }

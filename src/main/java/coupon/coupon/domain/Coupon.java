@@ -62,10 +62,10 @@ public class Coupon {
     private void validateDiscountRate(DiscountAmount discountAmount, MinimumOrderAmount minimumOrderAmount) {
         int discountRate = discountAmount.getValue() * 100 / minimumOrderAmount.getValue();
         if (discountRate < MIN_DISCOUNT_RATE) {
-            throw new IllegalArgumentException("할인율은 3% 이상이어야 합니다.");
+            throw new IllegalArgumentException("할인율은 %d%% 이상이어야 합니다.".formatted(MIN_DISCOUNT_RATE));
         }
         if (discountRate > MAX_DISCOUNT_RATE) {
-            throw new IllegalArgumentException("할인율은 20% 이하여야 합니다.");
+            throw new IllegalArgumentException("할인율은 %d%% 이하여야 합니다.".formatted(MAX_DISCOUNT_RATE));
         }
     }
 
