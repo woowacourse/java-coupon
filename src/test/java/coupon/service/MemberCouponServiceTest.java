@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import coupon.Fixtures;
-import coupon.domain.Coupon;
 import coupon.domain.MemberCoupon;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
@@ -86,30 +84,12 @@ class MemberCouponServiceTest {
         memberCouponRepository.saveAll(memberCoupons);
 
         // when
-        var actualCoupons = sut.findAllCouponByMember(member);
-        var actualCoupon1 = actualCoupons.get(0);
-        var actualCoupon2 = actualCoupons.get(1);
-        var actualCoupon3 = actualCoupons.get(2);
-        var actualCoupon4 = actualCoupons.get(3);
+        var actual = sut.findAllCouponByMember(member);
 
         // then
         assertAll(
-                () -> assertThat(actualCoupons).hasSize(4),
-                () -> assertThat(actualCoupons).containsExactlyInAnyOrder(coupon1, coupon2, coupon3, coupon4),
-                () -> assertThat(actualCoupon1).matches(actual -> matchCoupon(actual, coupon1)),
-                () -> assertThat(actualCoupon2).matches(actual -> matchCoupon(actual, coupon2)),
-                () -> assertThat(actualCoupon3).matches(actual -> matchCoupon(actual, coupon3)),
-                () -> assertThat(actualCoupon4).matches(actual -> matchCoupon(actual, coupon4))
+                () -> assertThat(actual).hasSize(4),
+                () -> assertThat(actual).containsExactlyInAnyOrder(coupon1, coupon2, coupon3, coupon4)
         );
-    }
-
-    private static boolean matchCoupon(Coupon actual, Coupon expected) {
-        return Objects.equals(actual.getId(), expected.getId())
-                && Objects.equals(actual.getName(), expected.getName())
-                && Objects.equals(actual.getDiscountAmount(), expected.getDiscountAmount())
-                && Objects.equals(actual.getCategory(), expected.getCategory())
-                && Objects.equals(actual.getMinimumOrderPrice(), expected.getMinimumOrderPrice())
-                && Objects.equals(actual.getIssuePeriod(), expected.getIssuePeriod())
-                && Objects.equals(actual.getDiscountPolicy(), expected.getDiscountPolicy());
     }
 }
