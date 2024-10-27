@@ -16,6 +16,8 @@ query="change master to master_host='172.20.0.10', master_user='replUser', maste
 /usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "${query}"
 /usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "start slave"
 
+/usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock < /docker-entrypoint-initdb.d/schema.sql
+
 echo "Slave started"
 
 /bin/bash
