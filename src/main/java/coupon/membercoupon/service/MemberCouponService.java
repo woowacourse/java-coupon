@@ -1,12 +1,12 @@
-package coupon.coupon.service;
+package coupon.membercoupon.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import coupon.coupon.CouponException;
+import coupon.CouponException;
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.domain.Member;
-import coupon.coupon.domain.MemberCoupon;
-import coupon.coupon.repository.MemberCouponRepository;
+import coupon.member.domain.Member;
+import coupon.membercoupon.domain.MemberCoupon;
+import coupon.membercoupon.repository.MemberCouponRepository;
 
 @Service
 public class MemberCouponService {

@@ -1,8 +1,8 @@
-package coupon.coupon.repository;
+package coupon.membercoupon.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import coupon.coupon.domain.MemberCoupon;
+import coupon.membercoupon.domain.MemberCoupon;
 
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 

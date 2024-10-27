@@ -1,4 +1,4 @@
-package coupon.coupon.domain;
+package coupon.membercoupon.domain;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -7,7 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import coupon.coupon.CouponException;
+import coupon.CouponException;
+import coupon.coupon.domain.Coupon;
+import coupon.member.domain.Member;
 
 @Entity
 public class MemberCoupon {
@@ -35,6 +37,14 @@ public class MemberCoupon {
     protected MemberCoupon() {
     }
 
+    private MemberCoupon(Member member, Coupon coupon, LocalDateTime issuedAt) {
+        this.memberId = member.getId();
+        this.couponId = coupon.getId();
+        this.used = false;
+        this.issuedAt = issuedAt;
+        this.expiredAt = calculateExpiredAt(this.issuedAt);
+    }
+
     public static MemberCoupon issue(Member member, Coupon coupon) {
         LocalDateTime issuedAt = LocalDateTime.now();
         validate(coupon, issuedAt);
@@ -45,14 +55,6 @@ public class MemberCoupon {
         if (coupon.isUnableToIssue(issuedAt)) {
             throw new CouponException(COUPON_ISSUE_MESSAGE);
         }
-    }
-
-    private MemberCoupon(Member member, Coupon coupon, LocalDateTime issuedAt) {
-        this.memberId = member.getId();
-        this.couponId = coupon.getId();
-        this.used = false;
-        this.issuedAt = issuedAt;
-        this.expiredAt = calculateExpiredAt(this.issuedAt);
     }
 
     private LocalDateTime calculateExpiredAt(LocalDateTime issuedAt) {

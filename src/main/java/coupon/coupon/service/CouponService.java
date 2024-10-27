@@ -2,7 +2,7 @@ package coupon.coupon.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import coupon.coupon.CouponException;
+import coupon.CouponException;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.repository.CouponRepository;
 

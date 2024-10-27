@@ -3,7 +3,7 @@ package coupon.coupon.domain;
 import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import coupon.coupon.CouponException;
+import coupon.CouponException;
 
 @Embeddable
 public class CouponName {

@@ -1,17 +1,17 @@
-package coupon.coupon.service;
+package coupon.membercoupon.service;
 
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import coupon.coupon.CouponException;
+import coupon.CouponException;
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.domain.Member;
 import coupon.coupon.repository.CouponRepository;
-import coupon.coupon.repository.MemberCouponRepository;
-import coupon.coupon.repository.MemberRepository;
+import coupon.member.domain.Member;
+import coupon.member.repository.MemberRepository;
+import coupon.membercoupon.repository.MemberCouponRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;

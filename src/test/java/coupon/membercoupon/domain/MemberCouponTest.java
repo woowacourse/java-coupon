@@ -1,9 +1,12 @@
-package coupon.coupon.domain;
+package coupon.membercoupon.domain;
 
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import coupon.coupon.CouponException;
+import coupon.CouponException;
+import coupon.coupon.domain.Category;
+import coupon.coupon.domain.Coupon;
+import coupon.member.domain.Member;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
