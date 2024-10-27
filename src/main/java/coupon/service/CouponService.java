@@ -15,12 +15,12 @@ public class CouponService {
     private final TransactionService transactionService;
 
     @Transactional
-    public Coupon create(final Coupon coupon) {
+    public Coupon create(Coupon coupon) {
         return couponRepository.save(coupon);
     }
 
     @Transactional(readOnly = true)
-    public Coupon getCoupon(final long id) {
+    public Coupon getCoupon(long id) {
         return couponRepository.findById(id)
                 .orElseGet(() -> transactionService.run(() -> couponRepository.findById(id))
                 .orElseThrow(() -> new IllegalArgumentException("ID가 %d인 쿠폰이 없습니다.")));
