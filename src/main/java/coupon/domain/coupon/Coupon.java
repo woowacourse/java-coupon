@@ -1,7 +1,5 @@
 package coupon.domain.coupon;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -16,7 +14,6 @@ import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
-@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Coupon {
 
     @Id
