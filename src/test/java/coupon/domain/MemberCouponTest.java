@@ -18,7 +18,7 @@ class MemberCouponTest {
         var issuedAt = LocalDateTime.now();
 
         // when
-        var sut = new MemberCoupon(coupon, member, issuedAt);
+        var sut = new MemberCoupon(member, coupon, issuedAt);
         var actual = sut.getExpireAt();
 
         // then
