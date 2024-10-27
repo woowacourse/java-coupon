@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor
 @Getter
-public class Name {
+public final class CouponName {
 
     private static final int MAX_LENGTH = 30;
 
     @Column(nullable = false)
     private String name;
 
-    public Name(String name) {
+    public CouponName(String name) {
         this.name = validate(name);
     }
 

@@ -35,7 +35,7 @@ class CouponTest {
 
     @Nested
     @DisplayName("쿠폰 이름 검증")
-    class NameTest {
+    class CouponNameTest {
 
         @Test
         void nonNull() {

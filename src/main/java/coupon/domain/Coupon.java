@@ -33,7 +33,7 @@ public class Coupon {
     private Long id;
 
     @Embedded
-    private Name name;
+    private CouponName name;
 
     @Column(name = "discount_amount", nullable = false)
     private long discountAmount;
@@ -60,7 +60,7 @@ public class Coupon {
     ) {
         this(
                 null,
-                new Name(name),
+                new CouponName(name),
                 discountAmount,
                 category,
                 minimumOrderPrice,
