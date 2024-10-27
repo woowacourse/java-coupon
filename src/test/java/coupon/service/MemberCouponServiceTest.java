@@ -13,12 +13,10 @@ import static org.mockito.Mockito.when;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
-import coupon.dto.request.CouponSaveRequest;
-import coupon.dto.response.MemberCouponInfo;
+import coupon.dto.MemberCouponInfo;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
 import coupon.support.Fixture;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -129,9 +127,7 @@ class MemberCouponServiceTest {
 
         @Test
         void 쿠폰_조회는_캐시를_사용한다() {
-            CouponSaveRequest request = new CouponSaveRequest("반짝 쿠폰", 1000L, 30000L, "가전", LocalDateTime.now(),
-                    LocalDateTime.now().plusDays(1));
-            Coupon dbCoupon = couponService.save(request);
+            Coupon dbCoupon = couponService.save(Fixture.createCoupon()); // service 거쳐야 발행된 쿠폰을 캐싱함
             Member member = memberRepository.save(Fixture.createMember());
 
             memberCouponService.issue(dbCoupon.getId(), member.getId());

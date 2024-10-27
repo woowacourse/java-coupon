@@ -1,7 +1,6 @@
 package coupon.service;
 
 import coupon.domain.Coupon;
-import coupon.dto.request.CouponSaveRequest;
 import coupon.repository.CouponRepository;
 import coupon.util.FallbackExecutor;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +18,7 @@ public class CouponService {
 
     @Transactional
     @CachePut(value = "coupon", key = "#result.id", condition = "#result != null")
-    public Coupon save(CouponSaveRequest couponSaveRequest) {
-        Coupon coupon = couponSaveRequest.toCoupon();
+    public Coupon save(Coupon coupon) {
         return couponRepository.save(coupon);
     }
 

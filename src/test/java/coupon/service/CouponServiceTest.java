@@ -11,9 +11,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import coupon.domain.Coupon;
-import coupon.dto.request.CouponSaveRequest;
 import coupon.repository.CouponRepository;
-import java.time.LocalDateTime;
+import coupon.support.Fixture;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +22,8 @@ import org.springframework.cache.CacheManager;
 
 @SpringBootTest
 class CouponServiceTest {
+
+    private static final String COUPON_CACHE_NAME = "coupon";
 
     @Autowired
     private CouponService couponService;
@@ -35,9 +36,7 @@ class CouponServiceTest {
 
     @Test
     void 복제지연테스트() {
-        CouponSaveRequest request = new CouponSaveRequest("행운쿠폰", 1000L, 30000L, "패션", LocalDateTime.now(),
-                LocalDateTime.now().plusDays(1));
-        Coupon saved = couponService.save(request);
+        Coupon saved = couponService.save(Fixture.createCoupon());
 
         assertThatCode(() -> couponService.findById(saved.getId()))
                 .doesNotThrowAnyException();
@@ -45,27 +44,19 @@ class CouponServiceTest {
 
     @Test
     void 쿠폰_발행_시_캐시에_저장한다() {
-        CouponSaveRequest request = new CouponSaveRequest("반짝 쿠폰", 1000L, 30000L, "가전", LocalDateTime.now(),
-                LocalDateTime.now().plusDays(1));
+        Coupon dbCoupon = couponService.save(Fixture.createCoupon());
+        Cache couponCache = requireNonNull(cacheManager.getCache(COUPON_CACHE_NAME));
 
-        Coupon dbCoupon = couponService.save(request);
-        Cache couponCache = cacheManager.getCache("coupon");
-
-        assertAll(
-                () -> assertThat(couponCache).isNotNull(),
-                () -> assertThat(requireNonNull(couponCache).get(dbCoupon.getId(), Coupon.class))
-                        .extracting(Coupon::getId)
-                        .isEqualTo(dbCoupon.getId())
-        );
+        assertThat(couponCache.get(dbCoupon.getId(), Coupon.class)) // 캐시 조회
+                .extracting(Coupon::getId)
+                .isEqualTo(dbCoupon.getId());
     }
 
     @Test
     void 쿠폰_조회_시_캐시를_사용한다() {
-        CouponSaveRequest request = new CouponSaveRequest("반짝 쿠폰", 1000L, 30000L, "가전", LocalDateTime.now(),
-                LocalDateTime.now().plusDays(1));
-        Coupon dbCoupon = couponService.save(request);
+        Coupon dbCoupon = couponService.save(Fixture.createCoupon());
 
-        Cache spyCache = spy(requireNonNull(cacheManager.getCache("coupon")));
+        Cache spyCache = spy(requireNonNull(cacheManager.getCache(COUPON_CACHE_NAME)));
         when(cacheManager.getCache("coupon")).thenReturn(spyCache);
 
         Coupon coupon = couponService.findById(dbCoupon.getId());

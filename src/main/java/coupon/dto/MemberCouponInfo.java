@@ -1,4 +1,4 @@
-package coupon.dto.response;
+package coupon.dto;
 
 import coupon.domain.Coupon;
 import coupon.domain.MemberCoupon;

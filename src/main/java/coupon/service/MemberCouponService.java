@@ -2,7 +2,7 @@ package coupon.service;
 
 import coupon.domain.Coupon;
 import coupon.domain.MemberCoupon;
-import coupon.dto.response.MemberCouponInfo;
+import coupon.dto.MemberCouponInfo;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
