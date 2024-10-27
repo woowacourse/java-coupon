@@ -40,10 +40,10 @@ public class MemberCoupon {
     @Column(nullable = false)
     private boolean used;
 
-    @Column(nullable = false)
+    @Column(name = "issued_at", nullable = false)
     private LocalDateTime issuedAt;
 
-    @Column(nullable = false)
+    @Column(name = "expire_at", nullable = false)
     private LocalDateTime expireAt;
 
     public MemberCoupon(
