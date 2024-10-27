@@ -1,9 +1,7 @@
 package coupon.config.dataSource;
 
-import com.zaxxer.hikari.HikariDataSource;
 import java.util.Map;
 import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -46,16 +44,12 @@ public class DataSourceConfig {
     @Bean(name = "readerDataSource")
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
     public DataSource readerDataSource() {
-        return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
-                .build();
+        return DataSourceBuilder.create().build();
     }
 
     @Bean(name = "writerDataSource")
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writerDataSource() {
-        return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
-                .build();
+        return DataSourceBuilder.create().build();
     }
 }
