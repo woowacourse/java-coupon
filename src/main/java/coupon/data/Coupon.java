@@ -5,10 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.springframework.lang.NonNull;
 
 @Data
 @Entity(name = "coupon")
@@ -19,10 +22,32 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
-    public Coupon(String name) {
+    @Column(name = "discount_amount")
+    private int discountAmount;
+
+    @Column(name = "minimum_order_amount")
+    private int minimumOrderAmount;
+
+    @Column(name = "category")
+    private String category;
+
+    @Column(name = "begin_at")
+    private LocalDateTime beginAt;
+
+    @Column(name = "end_at")
+    private LocalDateTime endAt;
+
+    public Coupon(String name, int discountAmount, int minimumOrderAmount, String category, LocalDateTime beginAt,
+                  LocalDateTime endAt) {
         this.name = name;
+        this.discountAmount = discountAmount;
+        this.minimumOrderAmount = minimumOrderAmount;
+        this.category = category;
+        this.beginAt = beginAt;
+        this.endAt = endAt;
     }
+
 }
