@@ -31,4 +31,12 @@ public class IssueDuration {
             throw new IllegalArgumentException("시작 시점은 종료 시점보다 이전이어야 합니다");
         }
     }
+
+    public LocalDateTime getStartAt() {
+        return startAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
+    }
 }
