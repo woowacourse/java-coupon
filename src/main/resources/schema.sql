@@ -3,7 +3,8 @@ use coupon;
 
 create table if not exists member
 (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY
+    id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nickname VARCHAR(10) NOT NULL
 );
 
 create table if not exists coupon

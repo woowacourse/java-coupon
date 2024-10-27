@@ -2,8 +2,10 @@ package coupon.coupon.domain;
 
 import java.util.Objects;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import coupon.coupon.CouponException;
 
+@Embeddable
 public class Nickname {
 
     private static final int MAX_LENGTH = 10;
@@ -11,7 +13,10 @@ public class Nickname {
     private static final String NAME_LENGTH_MESSAGE = String.format("회원명은 %d자 이하로 설정해주세요.", MAX_LENGTH);
 
     @Column(nullable = false, length = MAX_LENGTH)
-    private final String nickname;
+    private String nickname;
+
+    protected Nickname() {
+    }
 
     public Nickname(String nickname) {
         validate(nickname);
