@@ -44,7 +44,7 @@ public class Coupon {
     private LocalDateTime endDate;
 
     @Column(nullable = false)
-    private int availableCount; // 발급 가능한 쿠폰 수량
+    private int availableCount;
 
     @OneToMany(mappedBy = "coupon")
     private List<MemberCoupon> memberCoupons;
@@ -142,5 +142,12 @@ public class Coupon {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작일은 종료일 이전일 수 없습니다.");
         }
+    }
+
+    public void decrementAvailableCount() {
+        if (availableCount <= 0) {
+            throw new IllegalArgumentException("발급 가능한 쿠폰 수량이 부족합니다.");
+        }
+        availableCount--;
     }
 }
