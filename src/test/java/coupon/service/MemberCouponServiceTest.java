@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -31,9 +32,6 @@ class MemberCouponServiceTest {
 
     @Autowired
     private MemberCouponService memberCouponService;
-
-    @Autowired
-    private CouponService couponService;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -106,14 +104,16 @@ class MemberCouponServiceTest {
 
         @Test
         void 쿠폰_조회는_캐시를_사용한다() {
-            Coupon dbCoupon = couponService.save(Fixture.createCoupon()); // service 거쳐야 발행된 쿠폰을 캐싱함
+            Coupon dbCoupon = couponRepository.save(Fixture.createCoupon());
             Member member = memberRepository.save(Fixture.createMember());
             memberCouponService.issue(dbCoupon, member);
+            memberCouponService.findAllByMember(member); // 캐시 쓰기
 
+            clearInvocations(couponRepository);
             Cache spyCache = spy(requireNonNull(cacheManager.getCache("coupon")));
             when(cacheManager.getCache("coupon")).thenReturn(spyCache);
 
-            memberCouponService.findAllByMember(member);
+            memberCouponService.findAllByMember(member); // 캐시 히트
 
             assertAll(
                     () -> verify(spyCache, times(1)).get(dbCoupon.getId()),

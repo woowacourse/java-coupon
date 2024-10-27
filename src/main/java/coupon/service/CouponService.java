@@ -5,7 +5,6 @@ import coupon.repository.CouponRepository;
 import coupon.util.FallbackExecutor;
 import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,6 @@ public class CouponService {
     private final FallbackExecutor fallbackExecutor;
 
     @Transactional
-    @CachePut(value = "coupon", key = "#result.id", condition = "#result != null")
     public Coupon save(Coupon coupon) {
         return couponRepository.save(coupon);
     }

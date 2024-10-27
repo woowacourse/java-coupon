@@ -4,11 +4,10 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import coupon.domain.Coupon;
 import coupon.repository.CouponRepository;
@@ -43,27 +42,33 @@ class CouponServiceTest {
     }
 
     @Test
-    void 쿠폰_발행_시_캐시에_저장한다() {
+    void 조회_시_캐시에_없으면_DB_조회_후_캐시_쓰기한다() {
         Coupon dbCoupon = couponService.save(Fixture.createCoupon());
+
+        Coupon firstSearch = couponService.findById(dbCoupon.getId());
+
         Cache couponCache = requireNonNull(cacheManager.getCache(COUPON_CACHE_NAME));
 
-        assertThat(couponCache.get(dbCoupon.getId(), Coupon.class)) // 캐시 조회
-                .extracting(Coupon::getId)
-                .isEqualTo(dbCoupon.getId());
+        assertAll(
+                () -> assertThat(firstSearch.getId()).isEqualTo(dbCoupon.getId()),
+                () -> verify(couponRepository, times(2)).findById(dbCoupon.getId()), // 복제지연으로 2회 DB 조회
+                () -> assertThat(couponCache.get(dbCoupon.getId(), Coupon.class)) // 캐시 조회
+                        .extracting(Coupon::getId)
+                        .isEqualTo(dbCoupon.getId())
+        );
     }
 
     @Test
-    void 쿠폰_조회_시_캐시를_사용한다() {
+    void 조회_시_캐시에_있으면_DB를_조회하지_않는다() {
         Coupon dbCoupon = couponService.save(Fixture.createCoupon());
+        couponService.findById(dbCoupon.getId()); // 캐시 쓰기
 
-        Cache spyCache = spy(requireNonNull(cacheManager.getCache(COUPON_CACHE_NAME)));
-        when(cacheManager.getCache("coupon")).thenReturn(spyCache);
+        clearInvocations(couponRepository);
 
-        Coupon coupon = couponService.findById(dbCoupon.getId());
+        Coupon secondSearch = couponService.findById(dbCoupon.getId()); // 캐시 히트
 
         assertAll(
-                () -> assertThat(coupon.getId()).isEqualTo(dbCoupon.getId()),
-                () -> verify(spyCache, times(1)).get(dbCoupon.getId()),
+                () -> assertThat(secondSearch.getId()).isEqualTo(dbCoupon.getId()),
                 () -> verify(couponRepository, never()).findById(dbCoupon.getId())
         );
     }
