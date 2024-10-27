@@ -1,12 +1,8 @@
 package coupon.utill;
 
-import coupon.repository.CouponRepository;
-import coupon.repository.MemberCouponRepository;
-import coupon.repository.MemberRepository;
+import coupon.repository.CachedCouponRepository;
 import jakarta.persistence.EntityManager;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,15 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class DatabaseCleaner {
 
     private final EntityManager entityManager;
+    private final CachedCouponRepository cachedCouponRepository;
 
-    public DatabaseCleaner(EntityManager entityManager) {
+    public DatabaseCleaner(EntityManager entityManager, CachedCouponRepository couponRepository) {
         this.entityManager = entityManager;
+        this.cachedCouponRepository = couponRepository;
     }
 
     @Transactional
     public void clear() {
         entityManager.clear();
         truncate();
+        cachedCouponRepository.deleteAll();
     }
 
     private void truncate() {

@@ -1,9 +1,11 @@
 package coupon.service;
 
-import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.anySet;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import coupon.domain.Category;
 import coupon.domain.Coupon;
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class MemberCouponServiceTest {
@@ -35,7 +38,7 @@ class MemberCouponServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
+    @SpyBean
     private CouponRepository couponRepository;
 
     @Autowired
@@ -101,5 +104,19 @@ class MemberCouponServiceTest {
                     .flatExtracting(Coupon::getCategory)
                     .doesNotContainNull();
         });
+    }
+
+    @Test
+    @DisplayName("회원의 쿠폰 목록을 조회할 때 쿠폰 정보는 Read-Through Caching한다.")
+    void findCouponInCache() {
+        // given
+        memberCouponService.issue(member, coupon);
+        memberCouponService.findAllIssuedCoupons(member); // 이미 한 번 조회됨
+
+        // when
+        memberCouponService.findAllIssuedCoupons(member);
+
+        // then
+        verify(couponRepository, times(1)).findAllByIdIn(anySet());
     }
 }
