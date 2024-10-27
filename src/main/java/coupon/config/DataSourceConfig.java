@@ -15,8 +15,8 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 @Configuration
 public class DataSourceConfig {
 
-    private static final String READ_DATASOURCE = "readDataSource";
-    private static final String WRITE_DATASOURCE = "writeDataSource";
+    public static final String READ_DATASOURCE = "readDataSource";
+    public static final String WRITE_DATASOURCE = "writeDataSource";
 
     @Bean
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
