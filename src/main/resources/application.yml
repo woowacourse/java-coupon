@@ -1,4 +1,10 @@
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 36379
+      timeout: 60000
+
   jpa:
     hibernate:
       naming:
@@ -12,7 +18,7 @@ spring:
         format_sql: true
         show_sql: false
         use_sql_comments: true
-        hbm2ddl.auto: validate
+        hbm2ddl.auto: none
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
