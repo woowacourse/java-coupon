@@ -6,6 +6,7 @@ import coupon.domain.MemberCoupon;
 import coupon.repository.MemberCouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,5 +24,9 @@ public class MemberCouponService {
         if (memberCouponRepository.countByMemberAndCoupon(member, coupon) > COUPON_ISSUE_LIMIT) {
             throw new IllegalArgumentException("발급 수량 제한을 초과하였습니다.");
         }
+    }
+
+    public List<MemberCoupon> readAllMemberCoupons(Member member) {
+        return memberCouponRepository.findByMember(member);
     }
 }
