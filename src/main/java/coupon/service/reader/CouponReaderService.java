@@ -1,4 +1,4 @@
-package coupon.service;
+package coupon.service.reader;
 
 import coupon.domain.Coupon;
 import coupon.repository.CouponRepository;
@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponReaderService {
 
     private static final Logger log = LoggerFactory.getLogger(CouponReaderService.class);
+
     private final CouponRepository couponRepository;
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "coupon", key = "#id")
     public Coupon getCoupon(Long id, Supplier<Coupon> couponWriter) {
         log.info("Find coupon by id: {}", id);
 
