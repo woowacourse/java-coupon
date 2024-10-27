@@ -54,6 +54,9 @@ public class Coupon extends BaseEntity {
     }
 
     public String validateName(String name) {
+        if (name == null) {
+            throw new CouponException("쿠폰 이름이 null 값입니다.");
+        }
         if (!name.isBlank() && name.length() <= MIN_NAME_LENGTH) {
             return name;
         }

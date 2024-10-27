@@ -20,6 +20,14 @@ class CouponTest {
                 .hasMessageContaining("쿠폰 이름");
     }
 
+    @Test
+    @DisplayName("쿠폰 이름이 null이면 예외를 발생시킨다.")
+    void givenNullCouponNameThrowException() {
+        assertThatThrownBy(() -> createInvalidIssuedDate(null, 1000, 10000))
+                .isInstanceOf(CouponException.class)
+                .hasMessageContaining("쿠폰 이름");
+    }
+
     @ParameterizedTest
     @ValueSource(ints = {1, 100000, 10001})
     @DisplayName("할인 금액이 1000원 미만이거나 10000원 초과면 예외가 발생한다.")
