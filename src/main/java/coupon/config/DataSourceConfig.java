@@ -18,13 +18,13 @@ public class DataSourceConfig {
     public static final String READ_DATASOURCE = "readDataSource";
     public static final String WRITE_DATASOURCE = "writeDataSource";
 
-    @Bean
+    @Bean(READ_DATASOURCE)
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
     public DataSource readDataSource() {
         return createDataSource();
     }
 
-    @Bean
+    @Bean(WRITE_DATASOURCE)
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writeDataSource() {
         return createDataSource();
