@@ -66,4 +66,8 @@ public class MemberCoupon {
     public boolean isUsed() {
         return isUsed;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
