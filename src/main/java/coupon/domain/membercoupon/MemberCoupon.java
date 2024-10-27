@@ -47,6 +47,6 @@ public class MemberCoupon extends BaseEntity {
                 .withHour(23)
                 .withMinute(59)
                 .withSecond(59)
-                .withNano(999999);
+                .withNano(999999000);
     }
 }
