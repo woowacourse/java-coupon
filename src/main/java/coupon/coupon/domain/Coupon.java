@@ -76,6 +76,10 @@ public class Coupon {
         }
     }
 
+    public boolean isUnableToIssue(LocalDateTime issuedAt) {
+        return term.doesNotContain(issuedAt);
+    }
+
     public Long getId() {
         return id;
     }

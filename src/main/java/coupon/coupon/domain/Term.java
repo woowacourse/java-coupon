@@ -40,4 +40,8 @@ public class Term {
             throw new CouponException(TERM_MESSAGE);
         }
     }
+
+    public boolean doesNotContain(LocalDateTime now) {
+        return startAt.isAfter(now) || endAt.isBefore(now);
+    }
 }

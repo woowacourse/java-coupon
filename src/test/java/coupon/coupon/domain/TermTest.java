@@ -64,4 +64,36 @@ class TermTest {
                 .isInstanceOf(CouponException.class)
                 .hasMessage("시작 날짜와 끝 날짜를 설정해주세요");
     }
+
+    @DisplayName("주어진 날짜를 포함하지 않으면 참을 반환한다.")
+    @Test
+    void doesNotContainDateTime() {
+        // given
+        LocalDateTime target = LocalDateTime.of(2024, 10, 3, 0, 0, 0);
+        LocalDate startAt = LocalDate.of(2024, 10, 1);
+        LocalDate endAt = LocalDate.of(2024, 10, 2);
+        Term term = new Term(startAt, endAt);
+
+        // when
+        boolean result = term.doesNotContain(target);
+
+        // then
+        assertThat(result).isTrue();
+    }
+
+    @DisplayName("주어진 날짜를 포함하면 거짓을 반환한다.")
+    @Test
+    void containDateTime() {
+        // given
+        LocalDateTime target = LocalDateTime.of(2024, 10, 1, 0, 0, 0);
+        LocalDate startAt = LocalDate.of(2024, 10, 1);
+        LocalDate endAt = LocalDate.of(2024, 10, 2);
+        Term term = new Term(startAt, endAt);
+
+        // when
+        boolean result = term.doesNotContain(target);
+
+        // then
+        assertThat(result).isFalse();
+    }
 }
