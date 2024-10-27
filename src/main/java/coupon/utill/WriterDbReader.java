@@ -1,4 +1,4 @@
-package coupon.util;
+package coupon.utill;
 
 import java.util.function.Supplier;
 import org.springframework.stereotype.Component;
