@@ -19,7 +19,8 @@ public class MemberCouponService {
     @Transactional
     public MemberCoupon issue(Member member, Coupon coupon) {
         validate(member, coupon);
-        return MemberCoupon.issue(member, coupon);
+        MemberCoupon issued = MemberCoupon.issue(member, coupon);
+        return memberCouponRepository.save(issued);
     }
 
     private void validate(Member member, Coupon coupon) {
