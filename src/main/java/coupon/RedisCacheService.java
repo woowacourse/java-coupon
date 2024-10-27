@@ -1,10 +1,12 @@
 package coupon;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -69,12 +71,13 @@ public class RedisCacheService {
         redisTemplate.opsForValue().set(redisKey, coupon, timeToLiveSeconds, TimeUnit.SECONDS);
     }
 
+    @Async
     public void extendCacheTTL(Coupon coupon) {
         Long id = coupon.getId();
         String redisKey = COUPON_CACHE_KEY_PREFIX + id;
-        Long ttl = redisTemplate.getExpire(redisKey, TimeUnit.SECONDS);
-        if (10L < ttl) {
-            log.info("Coupon with ID {} not extends TTL", id);
+        Long ttl = Objects.requireNonNull(redisTemplate.getExpire(redisKey, TimeUnit.SECONDS));
+        if (INITIAL_TIME_TO_LIVE_SECONDS < ttl) {
+            log.info("Coupon with ID {} TTL remains {} seconds", id, ttl);
             return;
         }
         cacheWithTTL(redisKey, coupon, EXTEND_TIME_TO_LIVE_SECONDS);
