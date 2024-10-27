@@ -2,6 +2,7 @@ package coupon.coupon.service;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.repository.CouponRepository;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final CouponServiceWithWriter couponServiceWithWriter;
 
     public void create(Coupon coupon) {
         couponRepository.save(coupon);
@@ -19,7 +21,10 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) throws InterruptedException {
-        Thread.sleep(2000);
-        return couponRepository.findById(id).orElseThrow();
+        try {
+            return couponRepository.findById(id).orElseThrow();
+        } catch (NoSuchElementException e) {
+            return couponServiceWithWriter.getCoupon(id);
+        }
     }
 }
