@@ -12,8 +12,16 @@ public class DefaultDiscountPolicy implements DiscountPolicy {
     private static final long DISCOUNT_RATE_MIN = 3L;
     private static final long DISCOUNT_RATE_MAX = 20L;
 
+    private final long discountAmount;
+    private final long minimumOrderPrice;
+
+    public DefaultDiscountPolicy(long discountAmount, long minimumOrderPrice) {
+        this.discountAmount = discountAmount;
+        this.minimumOrderPrice = minimumOrderPrice;
+    }
+
     @Override
-    public void validate(long discountAmount, long minimumOrderPrice) {
+    public void validate() {
         requireDiscountAmountInBound(discountAmount);
         requireDiscountAmountUnitMatch(discountAmount);
         requireMinimumOrderPriceInBound(minimumOrderPrice);

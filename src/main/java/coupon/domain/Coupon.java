@@ -65,8 +65,8 @@ public class Coupon {
                 category,
                 minimumOrderPrice,
                 new IssuePeriod(issueStartAt, issueEndAt),
-                new DefaultDiscountPolicy());
+                new DefaultDiscountPolicy(discountAmount, minimumOrderPrice));
         Objects.requireNonNull(category, "카테고리를 입력해야 합니다.");
-        discountPolicy.validate(discountAmount, minimumOrderPrice);
+        discountPolicy.validate();
     }
 }
