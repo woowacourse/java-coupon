@@ -1,6 +1,7 @@
 package coupon.member.domain;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,7 +45,13 @@ public class MemberCoupon {
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
 
-    public MemberCoupon(Member member, CouponEntity couponEntity, LocalDateTime expiresAt) {
-        this(null, member, couponEntity, false, expiresAt);
+    public MemberCoupon(Member member, CouponEntity couponEntity) {
+        this(null,
+                member,
+                couponEntity,
+                false,
+                LocalDateTime.now()
+                        .plusDays(7)
+                        .with(LocalTime.MAX));
     }
 }
