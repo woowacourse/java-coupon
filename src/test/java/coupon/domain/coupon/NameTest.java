@@ -1,12 +1,11 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import coupon.exception.NameLengthExceedException;
-import coupon.exception.NameNotExistException;
+import coupon.exception.EmptyNameException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,9 +16,9 @@ class NameTest {
     @Test
     void nameEmpty() {
         Assertions.assertAll(
-                () -> assertThatThrownBy(() -> new Name(null)).isInstanceOf(NameNotExistException.class),
-                () -> assertThatThrownBy(() -> new Name("")).isInstanceOf(NameNotExistException.class),
-                () -> assertThatThrownBy(() -> new Name(" ")).isInstanceOf(NameNotExistException.class)
+                () -> assertThatThrownBy(() -> new Name(null)).isInstanceOf(EmptyNameException.class),
+                () -> assertThatThrownBy(() -> new Name("")).isInstanceOf(EmptyNameException.class),
+                () -> assertThatThrownBy(() -> new Name(" ")).isInstanceOf(EmptyNameException.class)
         );
     }
 
