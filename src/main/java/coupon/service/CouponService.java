@@ -22,7 +22,13 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
-    public Coupon getCoupon(Long id) {
+    public Coupon getCouponWithReplicaLag(Long id) {
+        return couponRepository.findById(id)
+                .orElseThrow(() -> new CouponNotFoundException(id));
+    }
+
+    @Transactional(readOnly = true)
+    public Coupon getCouponWithoutReplicaLag(Long id) {
         return couponRepository.findById(id)
                 .orElseGet(() -> getCouponFromWriterDatabase(id));
     }
