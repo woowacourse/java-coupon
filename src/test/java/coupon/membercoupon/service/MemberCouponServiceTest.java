@@ -6,9 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import coupon.CouponException;
-import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.repository.CouponRepository;
+import coupon.fixture.CouponFixture;
+import coupon.fixture.MemberFixture;
 import coupon.member.domain.Member;
 import coupon.member.repository.MemberRepository;
 import coupon.membercoupon.repository.MemberCouponRepository;
@@ -34,8 +35,8 @@ class MemberCouponServiceTest {
         // given
         LocalDate startAt = LocalDate.now();
         LocalDate endAt = LocalDate.now().plusDays(6);
-        Coupon coupon = new Coupon("coupon", 1000, 10000, Category.FASHION, startAt, endAt);
-        Member member = new Member("Prin!");
+        Coupon coupon = CouponFixture.create(startAt, endAt);
+        Member member = MemberFixture.create();
         couponRepository.save(coupon);
         memberRepository.save(member);
 
@@ -52,8 +53,8 @@ class MemberCouponServiceTest {
         // given
         LocalDate startAt = LocalDate.now();
         LocalDate endAt = LocalDate.now().plusDays(6);
-        Coupon coupon = new Coupon("coupon", 1000, 10000, Category.FASHION, startAt, endAt);
-        Member member = new Member("Prin?!");
+        Coupon coupon = CouponFixture.create(startAt, endAt);
+        Member member = MemberFixture.create();
         couponRepository.save(coupon);
         memberRepository.save(member);
         for (int count = 1; count <= 5; count++) {

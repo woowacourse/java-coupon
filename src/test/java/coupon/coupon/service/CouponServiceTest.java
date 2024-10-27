@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import coupon.CouponException;
-import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.repository.CouponRepository;
+import coupon.fixture.CouponFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -26,19 +26,13 @@ public class CouponServiceTest {
     @Test
     void getCoupon() {
         // given
-        Coupon coupon = new Coupon(
-                "linirini",
-                1000,
-                10000,
-                Category.FASHION,
-                LocalDate.now(),
-                LocalDate.now().plusDays(7));
+        Coupon coupon = CouponFixture.create(LocalDate.now(), LocalDate.now().plusDays(7));
+        couponRepository.save(coupon);
 
         // when
-        couponService.create(coupon);
+        Coupon savedCoupon = couponService.getCouponByAdmin(coupon.getId());
 
         // then
-        Coupon savedCoupon = couponService.getCouponByAdmin(coupon.getId());
         assertThat(savedCoupon).isNotNull();
     }
 
@@ -58,13 +52,7 @@ public class CouponServiceTest {
     @DisplayName("쿠폰을 생성한다.")
     void createCoupon() {
         // given
-        Coupon coupon = new Coupon(
-                "linirini",
-                1000,
-                10000,
-                Category.FASHION,
-                LocalDate.now(),
-                LocalDate.now().plusDays(7));
+        Coupon coupon = CouponFixture.create(LocalDate.now(), LocalDate.now().plusDays(7));
 
         // when
         couponService.create(coupon);

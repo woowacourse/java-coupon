@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import coupon.CouponException;
+import coupon.fixture.CouponFixture;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
@@ -82,14 +83,10 @@ class CouponTest {
     @Test
     void unableToIssue() {
         // given
-        String name = "coupon";
-        int discountAmount = 2000;
-        int minimumOrderAmount = 10000;
-        Category category = Category.FASHION;
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDate startAt = LocalDate.now().plusDays(1);
         LocalDate endAt = LocalDate.now().plusDays(2);
-        Coupon coupon = new Coupon(name, discountAmount, minimumOrderAmount, category, startAt, endAt);
+        Coupon coupon = CouponFixture.create(startAt, endAt);
 
         // when
         boolean result = coupon.isUnableToIssue(issuedAt);
@@ -102,14 +99,10 @@ class CouponTest {
     @Test
     void ableToIssue() {
         // given
-        String name = "coupon";
-        int discountAmount = 2000;
-        int minimumOrderAmount = 10000;
-        Category category = Category.FASHION;
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDate startAt = LocalDate.now();
         LocalDate endAt = LocalDate.now().plusDays(2);
-        Coupon coupon = new Coupon(name, discountAmount, minimumOrderAmount, category, startAt, endAt);
+        Coupon coupon = CouponFixture.create(startAt, endAt);
 
         // when
         boolean result = coupon.isUnableToIssue(issuedAt);

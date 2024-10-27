@@ -4,8 +4,9 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import coupon.CouponException;
-import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
+import coupon.fixture.CouponFixture;
+import coupon.fixture.MemberFixture;
 import coupon.member.domain.Member;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -17,9 +18,8 @@ class MemberCouponTest {
     @Test
     void calculateExpiredAt() {
         // given
-        Coupon coupon = new Coupon("name", 1000, 30000, Category.FASHION, LocalDate.now(), LocalDate.now()
-                .plusDays(10));
-        Member member = new Member("Prin?");
+        Coupon coupon = CouponFixture.create(LocalDate.now(), LocalDate.now().plusDays(10));
+        Member member = MemberFixture.create();
 
         // when
         MemberCoupon memberCoupon = MemberCoupon.issue(member, coupon);
@@ -34,8 +34,8 @@ class MemberCouponTest {
         // given
         LocalDate startAt = LocalDate.now().plusDays(1);
         LocalDate endAt = LocalDate.now().plusDays(10);
-        Coupon coupon = new Coupon("name", 1000, 30000, Category.FASHION, startAt, endAt);
-        Member member = new Member("Prin~");
+        Coupon coupon = CouponFixture.create(startAt, endAt);
+        Member member = MemberFixture.create();
 
         // when
         assertThatThrownBy(() -> MemberCoupon.issue(member, coupon))
