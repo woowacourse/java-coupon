@@ -6,6 +6,7 @@ import coupon.exception.CouponException;
 import coupon.support.TransactionSupport;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
 public class CouponService {
@@ -20,6 +21,9 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) {
+        if (TransactionSynchronizationManager.isActualTransactionActive()) {
+            return findCouponInWriteDataSource(id);
+        }
         return couponRepository.findById(id)
                 .orElseGet(() -> findCouponInWriteDataSource(id));
     }
