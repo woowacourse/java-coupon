@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-class ReadOnlyDataSourceRouterTest {
+class TransactionalDataSourceRouterTest {
 
     private MockedStatic<TransactionSynchronizationManager> mockedTransactionSynchronizationManager;
 
@@ -27,7 +27,7 @@ class ReadOnlyDataSourceRouterTest {
     void 트랜잭션_read_only_설정이면_읽기_데이터_소스_타입을_반환한다() {
         mockedTransactionSynchronizationManager.when(TransactionSynchronizationManager::isCurrentTransactionReadOnly)
                 .thenReturn(true);
-        ReadOnlyDataSourceRouter router = new ReadOnlyDataSourceRouter();
+        TransactionalDataSourceRouter router = new TransactionalDataSourceRouter();
         assertThat(router.determineCurrentLookupKey()).isEqualTo(DataSourceType.READER);
     }
 
@@ -35,7 +35,7 @@ class ReadOnlyDataSourceRouterTest {
     void 트랜잭션_read_only_설정이_아니면_쓰기_데이터_소스_타입을_반환한다() {
         mockedTransactionSynchronizationManager.when(TransactionSynchronizationManager::isCurrentTransactionReadOnly)
                 .thenReturn(false);
-        ReadOnlyDataSourceRouter router = new ReadOnlyDataSourceRouter();
+        TransactionalDataSourceRouter router = new TransactionalDataSourceRouter();
         assertThat(router.determineCurrentLookupKey()).isEqualTo(DataSourceType.WRITER);
     }
 }

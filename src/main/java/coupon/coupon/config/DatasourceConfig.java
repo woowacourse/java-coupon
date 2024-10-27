@@ -35,7 +35,7 @@ public class DatasourceConfig {
     DataSource routingDataSource(
             @Qualifier(WRITE_DATA_SOURCE_NAME) DataSource writeDataSource,
             @Qualifier(READ_DATA_SOURCE_NAME) DataSource readDataSource) {
-        AbstractRoutingDataSource routingDataSource = new ReadOnlyDataSourceRouter();
+        AbstractRoutingDataSource routingDataSource = new TransactionalDataSourceRouter();
         Map<Object, Object> dataSourceMap = new HashMap<>();
         dataSourceMap.put(DataSourceType.WRITER, writeDataSource);
         dataSourceMap.put(DataSourceType.READER, readDataSource);
