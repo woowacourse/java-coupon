@@ -23,7 +23,7 @@ public class MemberCouponService {
     }
 
     private void validate(Member member, Coupon coupon) {
-        if (memberCouponRepository.countByMemberAndCoupon(member, coupon) > COUPON_ISSUE_LIMIT) {
+        if (memberCouponRepository.countByMemberAndCouponId(member, coupon.getId()) > COUPON_ISSUE_LIMIT) {
             throw new IllegalArgumentException("발급 수량 제한을 초과하였습니다.");
         }
     }
