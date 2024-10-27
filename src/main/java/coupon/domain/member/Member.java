@@ -20,12 +20,7 @@ public class Member extends BaseEntity {
 
     private String name;
 
-    public Member(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public Member(String name) {
-        this(null, name);
+        this.name = name;
     }
 }
