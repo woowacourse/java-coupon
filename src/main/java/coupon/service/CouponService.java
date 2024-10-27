@@ -3,6 +3,7 @@ package coupon.service;
 import coupon.domain.Coupon;
 import coupon.repository.CouponRepository;
 import coupon.util.FallbackExecutor;
+import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,12 +26,10 @@ public class CouponService {
     @Transactional(readOnly = true)
     @Cacheable(value = "coupon", key = "#couponId")
     public Coupon findById(long couponId) {
-        return couponRepository.findById(couponId)
-                .orElse(retryFindById(couponId));
-    }
-
-    private Coupon retryFindById(long couponId) {
-        return fallbackExecutor.execute(() -> couponRepository.findById(couponId))
+        Supplier<Coupon> retryFindById = () -> couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
+
+        return couponRepository.findById(couponId)
+                .orElse(fallbackExecutor.execute(retryFindById));
     }
 }
