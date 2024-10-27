@@ -1,5 +1,9 @@
 package coupon.config.cache.redis;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -46,7 +50,21 @@ public class RedisConfig {
                 .entryTtl(Duration.ofMinutes(10L))
                 .disableCachingNullValues()
                 .serializeKeysWith(SerializationPair.fromSerializer(new StringRedisSerializer())) //키는 string으로 직렬화
-                .serializeValuesWith(
-                        SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())); //값은 json으로 직렬화
+                .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(getRedisObjectMapper()))); //값은 json으로 직렬화
+    }
+
+    private ObjectMapper getRedisObjectMapper() {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            //localDateTime 호환을 위한 모듈 추가
+            objectMapper.registerModule(new JavaTimeModule());
+
+            //직렬화 시 type 정보를 저장할 scope 지정
+            objectMapper.activateDefaultTyping(
+                    BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build(), //커스텀 objectmapper에게 클래스 정보도 함께 저장
+                    DefaultTyping.NON_FINAL
+            );
+
+            return objectMapper;
     }
 }
