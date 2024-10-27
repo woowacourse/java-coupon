@@ -1,5 +1,8 @@
 package coupon.domain.coupon;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -11,11 +14,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import org.springframework.data.redis.core.RedisHash;
 
 @Entity
-@RedisHash(value = "coupon")
+@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class Coupon {
 
     @Id
@@ -45,6 +46,22 @@ public class Coupon {
     })
     private IssueDuration duration;
 
+    public Coupon(Long id,
+                  CouponName name,
+                  DiscountPrice discountPrice,
+                  Category category,
+                  SaleOrderPrice saleOrderPrice,
+                  IssueDuration duration
+    ) {
+        DiscountRatio.validateDiscountRatio(100 * discountPrice.getPrice() / saleOrderPrice.getPrice());
+        this.id = id;
+        this.name = name;
+        this.discountPrice = discountPrice;
+        this.category = category;
+        this.saleOrderPrice = saleOrderPrice;
+        this.duration = duration;
+    }
+
     public Coupon(
             String name,
             int salePrice,
@@ -53,13 +70,7 @@ public class Coupon {
             LocalDateTime startTime,
             LocalDateTime endTime
     ) {
-        this.id = null;
-        this.name = new CouponName(name);
-        this.discountPrice = new DiscountPrice(salePrice);
-        this.category = category;
-        this.saleOrderPrice = new SaleOrderPrice(orderPrice);
-        this.duration = new IssueDuration(startTime, endTime);
-        DiscountRatio.validateDiscountRatio(100 * salePrice / orderPrice);
+        this(null, new CouponName(name), new DiscountPrice(salePrice), category, new SaleOrderPrice(orderPrice), new IssueDuration(startTime, endTime));
     }
 
     protected Coupon() {
@@ -73,6 +84,7 @@ public class Coupon {
         return id;
     }
 
+    @JsonIgnore
     public DiscountRatio getDiscountRatio() {
         return new DiscountRatio(100 * discountPrice.getPrice() / saleOrderPrice.getPrice());
     }
