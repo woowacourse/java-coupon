@@ -5,6 +5,8 @@ import coupon.dto.request.CouponSaveRequest;
 import coupon.repository.CouponRepository;
 import coupon.util.FallbackExecutor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +18,14 @@ public class CouponService {
     private final FallbackExecutor fallbackExecutor;
 
     @Transactional
+    @CachePut(value = "coupon", key = "#result.id", condition = "#result != null")
     public Coupon save(CouponSaveRequest couponSaveRequest) {
         Coupon coupon = couponSaveRequest.toCoupon();
         return couponRepository.save(coupon);
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "coupon", key = "#couponId")
     public Coupon findById(long couponId) {
         return couponRepository.findById(couponId)
                 .orElse(retryFindById(couponId));
