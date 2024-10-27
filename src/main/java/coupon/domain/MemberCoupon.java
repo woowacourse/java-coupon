@@ -12,8 +12,10 @@ import jakarta.persistence.ManyToOne;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import org.springframework.data.redis.core.RedisHash;
 
 @Entity
+@RedisHash(value = "member_coupon")
 public class MemberCoupon {
 
     private static final long COUPON_AVAILABLE_DURATION = 7;

@@ -12,8 +12,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import org.springframework.data.redis.core.RedisHash;
 
 @Entity
+@RedisHash(value = "coupon")
 public class Coupon {
 
     @Id
@@ -73,22 +75,5 @@ public class Coupon {
 
     public DiscountRatio getDiscountRatio() {
         return new DiscountRatio(100 * discountPrice.getPrice() / saleOrderPrice.getPrice());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Coupon coupon = (Coupon) o;
-        return Objects.equals(getId(), coupon.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
     }
 }
