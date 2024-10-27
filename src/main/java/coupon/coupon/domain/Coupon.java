@@ -2,7 +2,6 @@ package coupon.coupon.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,9 +23,8 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,
-            length = 30)
-    private String name;
+    @Embedded
+    private Name name;
 
     @Embedded
     private Discount discount;
@@ -42,7 +40,7 @@ public class Coupon {
 
     public Coupon(String name, int discount, int order, Category category, LocalDate startDate, LocalDate endDate) {
         validate(discount, order);
-        this.name = name;
+        this.name = new Name(name);
         this.discount = new Discount(discount);
         this.order = new Order(order);
         this.category = category;
