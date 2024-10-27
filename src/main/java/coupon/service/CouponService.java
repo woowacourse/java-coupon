@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CouponService {
 
+    private final UserCouponService userCouponService;
     private final CouponWriteService couponWriteService;
     private final CouponReadService couponReadService;
     private final CouponRepository couponRepository;
@@ -22,5 +23,10 @@ public class CouponService {
     public Coupon getCoupon(Long couponId) {
         return couponReadService.getCoupon(couponId)
                 .orElseGet(() -> couponWriteService.getCoupon(couponId));
+    }
+
+    @Transactional
+    public void issueCoupon(Long couponId) {
+        userCouponService.createUserCoupon(couponId);
     }
 }
