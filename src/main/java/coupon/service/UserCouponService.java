@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 public class UserCouponService {
 
+    private final int ISSUEABLE_COUPON_MAX_COUNT = 5;
     private final UserRepository userRepository;
     private final UserCouponRepository userCouponRepository;
 
@@ -21,8 +22,9 @@ public class UserCouponService {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime expiredDate = now.plusDays(7);
 
-        List<UserCoupon> userCoupons = userRepository.findAll().stream()
-                .map(user -> new UserCoupon(couponId, user, false, now, expiredDate))
+        List<UserCoupon> userCoupons = userRepository.findAllByCouponCount(ISSUEABLE_COUPON_MAX_COUNT)
+                .stream()
+                .map(user -> new UserCoupon(couponId, user, true, now, expiredDate))
                 .toList();
 
         userCouponRepository.saveAll(userCoupons);
