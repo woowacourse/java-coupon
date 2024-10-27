@@ -11,9 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import coupon.domain.Member;
-import coupon.domain.MemberCoupon;
-
 @Entity
 public class Coupon {
 
@@ -73,11 +70,8 @@ public class Coupon {
         this.category = category;
     }
 
-    public MemberCoupon issueMemberCoupon(Member member, LocalDate date) {
-        if (issuancePeriod.isInRange(date)) {
-            return new MemberCoupon(member, this, date);
-        }
-        throw new IllegalArgumentException("쿠폰의 발급 가능 기한에 포함되지 않습니다.");
+    public boolean isIssuableDate(LocalDate date) {
+        return issuancePeriod.isInRange(date);
     }
 
     public Long getId() {

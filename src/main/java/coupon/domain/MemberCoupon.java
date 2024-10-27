@@ -40,10 +40,17 @@ public class MemberCoupon {
     }
 
     public MemberCoupon(Member member, Coupon coupon, LocalDate issuedAt) {
+        validateIssuableDate(coupon, issuedAt);
         this.member = member;
         this.coupon = coupon;
         this.isUsed = false;
         this.issuedAt = issuedAt;
+    }
+
+    private void validateIssuableDate(Coupon coupon, LocalDate issuedAt) {
+        if (!coupon.isIssuableDate(issuedAt)) {
+            throw new IllegalArgumentException("쿠폰의 발급 가능 기한에 포함되지 않습니다.");
+        }
     }
 
     public void use(LocalDate date) {
