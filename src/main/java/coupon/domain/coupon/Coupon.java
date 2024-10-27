@@ -101,4 +101,12 @@ public class Coupon {
     public Category getCategory() {
         return category;
     }
+
+    @Override
+    public String toString() {
+        return "Coupon{" +
+                "id=" + id +
+                ", name=" + name.getName() +
+                '}';
+    }
 }

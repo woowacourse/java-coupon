@@ -67,7 +67,19 @@ public class MemberCoupon {
         return isUsed;
     }
 
+    public Coupon getCoupon() {
+        return coupon;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "MemberCoupon{" +
+                "id=" + id +
+                ", coupon=" + coupon +
+                '}';
     }
 }

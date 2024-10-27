@@ -11,5 +11,8 @@ import coupon.domain.coupon.Coupon;
 
 @Repository
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
-    List<MemberCoupon> findByMemberAndCoupon(Member member, Coupon coupon);
+
+    List<MemberCoupon> findAllByMember(Member member);
+
+    List<MemberCoupon> findAllByMemberAndCoupon(Member member, Coupon coupon);
 }
