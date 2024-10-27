@@ -1,19 +1,18 @@
 package coupon.service;
 
 import coupon.domain.Coupon;
+import coupon.repository.CouponInMemoryRepository;
 import coupon.repository.CouponRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class CouponService {
 
     private final CouponRepository couponRepository;
-
-    public CouponService(CouponRepository couponRepository) {
-        this.couponRepository = couponRepository;
-    }
+    private final CouponInMemoryRepository couponInMemoryRepository;
 
     @Transactional
     public Coupon createCoupon(Coupon coupon) {
@@ -22,7 +21,6 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) {
-        return couponRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당 쿠폰이 존재 하지 않습니다. id = " + id));
+        return couponInMemoryRepository.getCoupon(id);
     }
 }
