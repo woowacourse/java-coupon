@@ -7,7 +7,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,6 +43,12 @@ public class Coupon {
     @Column(nullable = false)
     private LocalDateTime endDate;
 
+    @Column(nullable = false)
+    private int availableCount; // 발급 가능한 쿠폰 수량
+
+    @OneToMany(mappedBy = "coupon")
+    private List<MemberCoupon> memberCoupons;
+
     public Coupon(
             Long id,
             String name,
@@ -48,9 +56,10 @@ public class Coupon {
             int minimumOrderAmount,
             Category category,
             LocalDateTime startDate,
-            LocalDateTime endDate
+            LocalDateTime endDate,
+            int availableCount
     ) {
-        validateCoupon(name, discountAmount, minimumOrderAmount, category, startDate, endDate);
+        validateCoupon(name, discountAmount, minimumOrderAmount, category, startDate, endDate, availableCount);
         this.id = id;
         this.name = name;
         this.discountAmount = discountAmount;
@@ -58,6 +67,7 @@ public class Coupon {
         this.category = category;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.availableCount = availableCount;
     }
 
     public Coupon(
@@ -66,9 +76,10 @@ public class Coupon {
             int minimumOrderAmount,
             Category category,
             LocalDateTime startDate,
-            LocalDateTime endDate
+            LocalDateTime endDate,
+            int availableCount
     ) {
-        this(null, name, discountAmount, minimumOrderAmount, category, startDate, endDate);
+        this(null, name, discountAmount, minimumOrderAmount, category, startDate, endDate, availableCount);
     }
 
     private void validateCoupon(
@@ -77,12 +88,20 @@ public class Coupon {
             int minimumOrderAmount,
             Category category,
             LocalDateTime startDate,
-            LocalDateTime endDate
+            LocalDateTime endDate,
+            int availableCount
     ) {
         validateName(name);
         validateDiscount(discountAmount, minimumOrderAmount);
         validateCategory(category);
         validateDate(startDate, endDate);
+        validateAvailableCount(availableCount);
+    }
+
+    private void validateAvailableCount(int availableCount) {
+        if (availableCount < 0) {
+            throw new IllegalArgumentException("발급 가능한 쿠폰 수량은 0 이상이어야 합니다.");
+        }
     }
 
     private void validateName(String name) {

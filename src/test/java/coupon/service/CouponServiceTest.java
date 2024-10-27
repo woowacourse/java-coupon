@@ -24,7 +24,8 @@ class CouponServiceTest {
                 30000,
                 Category.FASHION,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusDays(7)
+                LocalDateTime.now().plusDays(7),
+                5
         );
         couponService.createCoupon(coupon);
 
