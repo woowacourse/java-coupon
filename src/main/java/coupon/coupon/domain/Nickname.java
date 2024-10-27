@@ -8,7 +8,7 @@ public class Nickname {
 
     private static final int MAX_LENGTH = 10;
     public static final String NO_NICKNAME_MESSAGE = "회원명이 누락되었습니다.";
-    private static final String NAME_LENGTH_MESSAGE = "회원명은 10자 이하로 설정해주세요.";
+    private static final String NAME_LENGTH_MESSAGE = String.format("회원명은 %d자 이하로 설정해주세요.", MAX_LENGTH);
 
     @Column(nullable = false, length = MAX_LENGTH)
     private final String nickname;
