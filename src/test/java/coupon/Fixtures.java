@@ -8,7 +8,15 @@ import coupon.domain.Member;
 
 public final class Fixtures {
 
-    public static final Coupon coupon = new Coupon(
+    public static final Coupon coupon_1 = new Coupon(
+            "쿠폰1",
+            1000L,
+            10000L,
+            Category.FASHION,
+            LocalDate.now(),
+            LocalDate.now().plusDays(1L));
+
+    public static final Coupon coupon_2 = new Coupon(
             "쿠폰1",
             1000L,
             10000L,
