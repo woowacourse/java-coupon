@@ -20,6 +20,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'redis.clients:jedis'
     implementation 'org.projectlombok:lombok'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
