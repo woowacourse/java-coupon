@@ -22,7 +22,10 @@ public class CouponService {
     @Transactional(readOnly = true)
     public Coupon getCoupon(long id) {
         return couponRepository.findById(id)
-                .orElseGet(() -> transactionService.run(() -> couponRepository.findById(id))
-                .orElseThrow(() -> new IllegalArgumentException("ID가 %d인 쿠폰이 없습니다.")));
+                .orElseGet(() -> getCouponFromWriter(id));
+    }
+
+    public Coupon getCouponFromWriter(long id) {
+        return transactionService.run(() -> couponRepository.fetchCouponById(id));
     }
 }
