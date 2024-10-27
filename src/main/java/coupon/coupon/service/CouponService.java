@@ -15,12 +15,12 @@ public class CouponService {
         this.couponRepository = couponRepository;
     }
 
-    @Transactional
+    @WriterDatabase
     public void create(Coupon coupon) {
         couponRepository.save(coupon);
     }
 
-    @WriterDatabase
+    @Transactional
     public Coupon getCoupon(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다. 쿠폰 ID : " + couponId));
