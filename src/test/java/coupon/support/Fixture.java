@@ -20,8 +20,12 @@ public class Fixture {
     }
 
     public static Coupon createCoupon() {
+        return createCoupon("반짝 쿠폰");
+    }
+
+    public static Coupon createCoupon(String couponName) {
         return new Coupon(
-                new CouponName("반짝 쿠폰"),
+                new CouponName(couponName),
                 new DiscountAmount(1000),
                 new MinOrderAmount(30000),
                 Category.FOOD,

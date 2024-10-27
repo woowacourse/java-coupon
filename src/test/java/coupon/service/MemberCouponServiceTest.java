@@ -7,9 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
+import coupon.dto.response.MemberCouponInfo;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
 import coupon.support.Fixture;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +76,38 @@ class MemberCouponServiceTest {
 
             assertThatThrownBy(() -> memberCouponService.issue(coupon.getId(), member.getId()))
                     .isInstanceOf(IllegalArgumentException.class);
+        }
+    }
+
+
+    @Nested
+    class 회원_쿠폰_목록_조회 {
+
+        @Test
+        void 회원_쿠폰_조회시_발급된_쿠폰_정보를_포함한다() {
+            Coupon luckyCoupon = couponRepository.save(Fixture.createCoupon("행운 쿠폰"));
+            Coupon specialCoupon = couponRepository.save(Fixture.createCoupon("특별 쿠폰"));
+            Member member = memberRepository.save(Fixture.createMember());
+
+            memberCouponService.issue(luckyCoupon.getId(), member.getId());
+            memberCouponService.issue(specialCoupon.getId(), member.getId());
+
+            List<MemberCouponInfo> memberCoupons = memberCouponService.findAllByMemberId(member.getId());
+
+            assertAll(
+                    () -> assertThat(memberCoupons).hasSize(2),
+                    () -> assertThat(memberCoupons).extracting(MemberCouponInfo::couponName)
+                            .containsExactlyInAnyOrder("행운 쿠폰", "특별 쿠폰")
+            );
+        }
+
+        @Test
+        void 발급한_회원_쿠폰이_없으면_빈_목록을_반환한다() {
+            Member member = memberRepository.save(Fixture.createMember());
+
+            List<MemberCouponInfo> memberCoupons = memberCouponService.findAllByMemberId(member.getId());
+
+            assertThat(memberCoupons).isEmpty();
         }
     }
 }
