@@ -3,6 +3,7 @@ package coupon.service;
 import coupon.domain.MemberCoupon;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
+import coupon.dto.MemberCouponResponse;
 import coupon.repository.MemberCouponRepository;
 import coupon.service.db.CouponDBService;
 import java.util.List;
@@ -26,7 +27,6 @@ public class MemberCouponService {
     }
 
     @Transactional
-    @CachePut(value = "member_coupon", key = "#result.id")
     public MemberCoupon issue(Member member, Coupon coupon) {
         MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
         validateIssuedCount(member, coupon);
@@ -40,11 +40,15 @@ public class MemberCouponService {
         }
     }
 
-    @Cacheable(value = "member_coupon", key = "#member.id.toString().concat('memberId')")
-    public List<Coupon> findAllMemberCoupon(Member member) {
+    @Cacheable(value = "member_coupon", key = "#member.id")
+    public List<MemberCouponResponse> findAllMemberCoupon(Member member) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(member.getId());
         return memberCoupons.stream()
-                .map(memberCoupon -> couponDBService.findById(memberCoupon.getCouponId()))
+                .map(this::resolveMemberCouponResponse)
                 .toList();
+    }
+
+    private MemberCouponResponse resolveMemberCouponResponse(MemberCoupon memberCoupon) {
+        return new MemberCouponResponse(memberCoupon, couponDBService.findById(memberCoupon.getCouponId()));
     }
 }

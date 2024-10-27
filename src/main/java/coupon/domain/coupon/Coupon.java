@@ -80,12 +80,32 @@ public class Coupon {
         return duration.isBetween(issuedAt);
     }
 
+    @JsonIgnore
+    public DiscountRatio getDiscountRatio() {
+        return new DiscountRatio(100 * discountPrice.getPrice() / saleOrderPrice.getPrice());
+    }
+
     public Long getId() {
         return id;
     }
 
-    @JsonIgnore
-    public DiscountRatio getDiscountRatio() {
-        return new DiscountRatio(100 * discountPrice.getPrice() / saleOrderPrice.getPrice());
+    public CouponName getName() {
+        return name;
+    }
+
+    public DiscountPrice getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public SaleOrderPrice getSaleOrderPrice() {
+        return saleOrderPrice;
+    }
+
+    public IssueDuration getDuration() {
+        return duration;
     }
 }

@@ -74,4 +74,16 @@ public class MemberCoupon {
     public long getCouponId() {
         return couponId;
     }
+
+    public boolean isUsed() {
+        return isUsed;
+    }
+
+    public LocalDateTime getIssuedAt() {
+        return issuedAt;
+    }
+
+    public LocalDateTime getExpiredAt() {
+        return expiredAt;
+    }
 }
