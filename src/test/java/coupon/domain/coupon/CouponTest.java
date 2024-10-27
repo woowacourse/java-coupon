@@ -57,7 +57,6 @@ class CouponTest {
 
     public Coupon createCoupon(String name, int discountAmount, int minimumOrderPrice) {
         return new Coupon(
-                null,
                 name,
                 discountAmount,
                 minimumOrderPrice,
@@ -69,7 +68,6 @@ class CouponTest {
 
     public Coupon createInvalidIssuedDate(String name, int discountAmount, int minimumOrderPrice) {
         return new Coupon(
-                null,
                 name,
                 discountAmount,
                 minimumOrderPrice,

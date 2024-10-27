@@ -39,7 +39,6 @@ public class Coupon extends BaseEntity {
     private CouponCategory couponCategory;
 
     public Coupon(
-            Long id,
             String name,
             int discountAmount,
             int minimumOrderPrice,
@@ -47,7 +46,6 @@ public class Coupon extends BaseEntity {
             LocalDateTime issueStartDate,
             LocalDateTime issueEndDate
     ) {
-        this.id = id;
         this.name = validateName(name);
         this.discountAmount = validateDiscountAmount(discountAmount);
         this.minimumOrderPrice = validateMinimumOrderPrice(minimumOrderPrice);

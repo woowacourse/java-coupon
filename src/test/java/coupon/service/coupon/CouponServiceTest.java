@@ -20,7 +20,6 @@ class CouponServiceTest {
     @Test
     void replicaDelay() {
         Coupon coupon = new Coupon(
-                null,
                 "쿠폰",
                 1000,
                 10000,
