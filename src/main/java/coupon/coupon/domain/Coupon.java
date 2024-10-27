@@ -2,6 +2,7 @@ package coupon.coupon.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -28,15 +29,20 @@ public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Embedded
     private CouponName name;
+
     @Embedded
     private DiscountAmount discountAmount;
+
     @Embedded
     private MinimumOrderAmount minimumOrderAmount;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Category category;
+
     @Embedded
     private Term term;
 

@@ -12,6 +12,7 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Embedded
     private Nickname nickname;
 
@@ -24,5 +25,9 @@ public class Member {
 
     private Member(Nickname nickname) {
         this.nickname = nickname;
+    }
+
+    public long getId() {
+        return id;
     }
 }
