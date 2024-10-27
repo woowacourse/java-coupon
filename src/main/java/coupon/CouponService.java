@@ -1,6 +1,9 @@
 package coupon;
 
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,33 +17,35 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final RedisCacheService redisCacheService;
     private final NewTransactionExecutor<Coupon> newTransactionExecutor;
+    private final LockService lockService;
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) {
-        Optional<Coupon> coupon = redisCacheService.getCouponFromCache(id);
+        return redisCacheService.getCouponFromCache(id)
+                .map(this::extendTTLAndGetCoupon)
+                .orElseGet(() -> getCouponFromDB(id));
+    }
 
-        if (coupon.isPresent()) {
-            log.info("Coupon with ID {} found in cache", id);
-            Coupon cacheCoupon = coupon.get();
-            redisCacheService.extendCacheTTL(cacheCoupon);
-            return cacheCoupon;
-        }
-
-        return getCouponFromDB(id);
+    private Coupon extendTTLAndGetCoupon(Coupon coupon) {
+        log.info("Coupon with ID {} found in cache", coupon.getId());
+        lockService.executeWithLock(coupon.getId(), () -> redisCacheService.extendCacheTTL(coupon));
+        return coupon;
     }
 
     private Coupon getCouponFromDB(Long id) {
         log.info("Coupon with ID {} not found in cache. Fetching from DB.", id);
         Coupon findCoupon = couponRepository.findById(id)
                 .orElseGet(() -> getCouponWithNewTransaction(id));
-
-        try {
-            redisCacheService.cache(findCoupon);
-        } catch (Exception e) {
-            log.error("Failed to cache coupon with ID {}: {}", id, e.getMessage());
-        }
-
+        executeWithLock(findCoupon, () -> redisCacheService.cache(findCoupon));
         return findCoupon;
+    }
+
+    private void executeWithLock(Coupon findCoupon, Runnable runnable) {
+        try {
+            lockService.executeWithLock(findCoupon.getId(), runnable);
+        } catch (Exception e) {
+            log.error("Failed to cache coupon with ID {}: {}", findCoupon.getId(), e.getMessage());
+        }
     }
 
     private Coupon getCouponWithNewTransaction(Long id) {
@@ -50,6 +55,6 @@ public class CouponService {
     @Transactional
     public void create(Coupon coupon) {
         couponRepository.save(coupon);
-        redisCacheService.cache(coupon);
+        lockService.executeWithLock(coupon.getId(), () -> redisCacheService.cache(coupon));
     }
 }

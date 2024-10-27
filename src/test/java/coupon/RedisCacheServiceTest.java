@@ -3,7 +3,10 @@ package coupon;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import coupon.cleaner.DatabaseCleanerExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -87,12 +90,13 @@ class RedisCacheServiceTest {
 
     @DisplayName("캐시에 저장되어 있는 쿠폰을 조회하여 캐시 히트할 경우 TTL을 60초로 연장한다.")
     @Test
-    void extendCacheTTL() {
-        redisCacheService.extendCacheTTL(testCoupon);
+    void extendCacheTTL() throws Exception {
+        CompletableFuture<Coupon> completableFuture = redisCacheService.extendCacheTTL(testCoupon);
+        completableFuture.get(500, TimeUnit.MILLISECONDS);
 
         String redisKey = COUPON_CACHE_KEY_PREFIX + testCoupon.getId();
-        Long ttl = redisTemplate.getExpire(redisKey, TimeUnit.SECONDS);
         Optional<Coupon> couponFromCache = redisCacheService.getCouponFromCache(testCoupon.getId());
+        Long ttl = redisTemplate.getExpire(redisKey, TimeUnit.SECONDS);
 
         assertThat(ttl).isBetween(EXTEND_TIME_TO_LIVE_SECONDS - 1, EXTEND_TIME_TO_LIVE_SECONDS);
         assertThat(couponFromCache).isNotEmpty();
@@ -100,15 +104,17 @@ class RedisCacheServiceTest {
 
     @DisplayName("쿠폰의 잔여 TTL이 10초 초과면, 캐시 메모리에서 조회되어도 다시 연장하지 않는다.")
     @Test
-    void doNotExtendCacheTTLWhenCouponTtlExceeded10Seconds() {
+    void doNotExtendCacheTTLWhenCouponTtlExceeded10Seconds() throws ExecutionException, InterruptedException, TimeoutException {
         // 10초 초과인 TTL 쿠폰을 캐싱해두고, 캐시 히트되어 CouponService에서 캐싱 요청시
         // 연장하지 않고 그대로 메서드를 종료한다.
         String redisKey = COUPON_CACHE_KEY_PREFIX + testCoupon.getId();
 
-        redisCacheService.extendCacheTTL(testCoupon);
+        CompletableFuture<Coupon> completableFuture1 = redisCacheService.extendCacheTTL(testCoupon);
+        completableFuture1.get(500, TimeUnit.MILLISECONDS);
         Long firstTtl = redisTemplate.getExpire(redisKey, TimeUnit.MICROSECONDS);
 
-        redisCacheService.extendCacheTTL(testCoupon);
+        CompletableFuture<Coupon> completableFuture2 = redisCacheService.extendCacheTTL(testCoupon);
+        completableFuture2.get(500, TimeUnit.MILLISECONDS);
         Long secondTtl = redisTemplate.getExpire(redisKey, TimeUnit.MICROSECONDS);
 
         assertThat(firstTtl).isGreaterThan(secondTtl);

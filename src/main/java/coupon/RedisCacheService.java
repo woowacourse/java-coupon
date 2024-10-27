@@ -2,6 +2,7 @@ package coupon;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,15 +73,16 @@ public class RedisCacheService {
     }
 
     @Async
-    public void extendCacheTTL(Coupon coupon) {
+    public CompletableFuture<Coupon> extendCacheTTL(Coupon coupon) {
         Long id = coupon.getId();
         String redisKey = COUPON_CACHE_KEY_PREFIX + id;
         Long ttl = Objects.requireNonNull(redisTemplate.getExpire(redisKey, TimeUnit.SECONDS));
         if (INITIAL_TIME_TO_LIVE_SECONDS < ttl) {
             log.info("Coupon with ID {} TTL remains {} seconds", id, ttl);
-            return;
+            return CompletableFuture.completedFuture(coupon);
         }
         cacheWithTTL(redisKey, coupon, EXTEND_TIME_TO_LIVE_SECONDS);
         log.info("Coupon with ID {} extends TTL", id);
+        return CompletableFuture.completedFuture(coupon);
     }
 }
