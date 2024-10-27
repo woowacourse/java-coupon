@@ -4,6 +4,7 @@ import coupon.domain.MemberCoupon;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
 import coupon.repository.MemberCouponRepository;
+import coupon.service.db.CouponDBService;
 import java.util.List;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -17,15 +18,15 @@ public class MemberCouponService {
     private static final int MAX_MEMBER_COUPON_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponService couponService;
+    private final CouponDBService couponDBService;
 
-    public MemberCouponService(MemberCouponRepository memberCouponRepository, CouponService couponService) {
+    public MemberCouponService(MemberCouponRepository memberCouponRepository, CouponDBService couponDBService) {
         this.memberCouponRepository = memberCouponRepository;
-        this.couponService = couponService;
+        this.couponDBService = couponDBService;
     }
 
     @Transactional
-    @CachePut(value = "member_coupon")
+    @CachePut(value = "member_coupon", key = "#result.id")
     public MemberCoupon issue(Member member, Coupon coupon) {
         MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
         validateIssuedCount(member, coupon);
@@ -39,11 +40,11 @@ public class MemberCouponService {
         }
     }
 
-    @Cacheable(value = "member_coupon")
+    @Cacheable(value = "member_coupon", key = "#member.id.toString().concat('memberId')")
     public List<Coupon> findAllMemberCoupon(Member member) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(member.getId());
         return memberCoupons.stream()
-                .map(memberCoupon -> couponService.findCoupon(memberCoupon.getCouponId()))
+                .map(memberCoupon -> couponDBService.findById(memberCoupon.getCouponId()))
                 .toList();
     }
 }
