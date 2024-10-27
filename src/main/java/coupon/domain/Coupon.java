@@ -1,5 +1,11 @@
 package coupon.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -34,8 +40,14 @@ public class Coupon {
     @Column(columnDefinition = "VARCHAR")
     private Category category;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime issuableFrom;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime issuableTo;
 
     public Coupon(String name, Integer discount, Integer discountRate, Integer minOrderPrice, Category category,
@@ -95,6 +107,7 @@ public class Coupon {
         }
     }
 
+    @JsonIgnore
     public boolean issuable() {
         LocalDate today = LocalDate.now();
         LocalDate issuableDateFrom = issuableFrom.toLocalDate();

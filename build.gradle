@@ -22,12 +22,19 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'redis.clients:jedis'
     implementation 'org.projectlombok:lombok'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     annotationProcessor 'org.projectlombok:lombok'
+}
+
+configurations {
+    configureEach {
+        exclude group: 'com.vaadin.external.google', module: 'android-json'
+    }
 }
 
 tasks.named('test') {
