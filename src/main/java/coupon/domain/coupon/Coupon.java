@@ -25,7 +25,6 @@ public class Coupon extends BaseEntity {
     private static final int MIN_MINIMUM_ORDER_PRICE = 5000;
     private static final int MAX_MINIMUM_ORDER_PRICE = 100000;
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

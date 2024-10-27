@@ -4,5 +4,3 @@ public enum DataSourceType {
     READER,
     WRITER
 }
-
-
