@@ -17,5 +17,5 @@ query="change master to master_host='172.20.0.10', master_user='replUser', maste
 /usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "start slave"
 
 echo "Slave started"
-
+/usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "create database coupon"
 /bin/bash
