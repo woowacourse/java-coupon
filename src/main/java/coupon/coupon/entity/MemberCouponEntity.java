@@ -1,7 +1,6 @@
 package coupon.coupon.entity;
 
 import coupon.BaseEntity;
-import coupon.member.entity.MemberEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,13 +20,11 @@ public class MemberCouponEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private CouponEntity coupon;
+    @Column(name = "coupon_id", nullable = false)
+    private Long coupon_id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private MemberEntity member;
+    @Column(name = "member_id", nullable = false)
+    private Long member_id;
 
     @Column(name = "used", nullable = false)
     private boolean used;

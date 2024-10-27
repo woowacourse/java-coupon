@@ -1,13 +1,10 @@
 package coupon.member.entity;
 
 import coupon.BaseEntity;
-import coupon.coupon.entity.MemberCouponEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -21,7 +18,4 @@ public class MemberEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
-
-    @OneToMany(mappedBy = "member")
-    private List<MemberCouponEntity> memberCoupons;
 }
