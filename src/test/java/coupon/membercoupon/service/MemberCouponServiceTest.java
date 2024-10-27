@@ -1,8 +1,10 @@
 package coupon.membercoupon.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +16,7 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.service.CouponService;
 import coupon.member.domain.Member;
 import coupon.member.service.MemberService;
+import coupon.membercoupon.domain.MemberCoupon;
 
 @SpringBootTest
 public class MemberCouponServiceTest {
@@ -67,5 +70,21 @@ public class MemberCouponServiceTest {
         assertThatThrownBy(() -> memberCouponService.create(member.getId(), coupon.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("한 명의 회원이 동일한 쿠폰을 사용한 쿠폰을 포함하여 5장 초과로 발급할 수 없습니다.");
+    }
+
+    @DisplayName("멤버 ID에 해당하는 멤버 쿠폰만 불러올 수 있다.")
+    @Test
+    void testReadAllByMemberId() {
+        // given
+        Member anotherMember = new Member("another_member_name");
+        memberService.createWithCache(anotherMember);
+        memberCouponService.create(member.getId(), coupon.getId());
+        memberCouponService.create(anotherMember.getId(), coupon.getId());
+
+        // when
+        List<MemberCoupon> memberCoupons = memberCouponService.readAllByMemberId(member.getId());
+
+        // then
+        assertThat(memberCoupons).hasSize(1);
     }
 }

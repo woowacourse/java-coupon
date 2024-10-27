@@ -46,4 +46,9 @@ public class MemberCouponService {
             throw new IllegalArgumentException("한 명의 회원이 동일한 쿠폰을 사용한 쿠폰을 포함하여 5장 초과로 발급할 수 없습니다.");
         }
     }
+
+    @Transactional
+    public List<MemberCoupon> readAllByMemberId(Long memberId) {
+        return memberCouponRepository.findAllByMemberId(memberId);
+    }
 }

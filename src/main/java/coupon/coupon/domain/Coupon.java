@@ -50,6 +50,19 @@ public class Coupon {
     private CouponIssuancePeriod issuancePeriod;
 
     public Coupon(
+            Long id,
+            String name,
+            Long discountAmount,
+            Long minimumOrderAmount,
+            String category,
+            LocalDateTime startDate,
+            LocalDateTime endDate
+    ) {
+        this(name, discountAmount, minimumOrderAmount, category, startDate, endDate);
+        this.id = id;
+    }
+
+    public Coupon(
             String name,
             Long discountAmount,
             Long minimumOrderAmount,
