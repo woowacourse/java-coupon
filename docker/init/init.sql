@@ -22,3 +22,8 @@ CREATE TABLE IF NOT EXISTS member_coupon
     issued_at        DATETIME     NOT NULL,
     expired_at       DATEITME     NOT NULL
 )
+
+CREATE TABLE IF NOT EXISTS member
+(
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+)

@@ -7,7 +7,6 @@ import coupon.dto.MemberCouponResponse;
 import coupon.repository.MemberCouponRepository;
 import coupon.service.db.CouponDBService;
 import java.util.List;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
