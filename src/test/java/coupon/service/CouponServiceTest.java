@@ -2,6 +2,7 @@ package coupon.service;
 
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
+import coupon.coupon.dto.CouponResponse;
 import coupon.coupon.entity.CouponEntity;
 import coupon.coupon.service.CouponService;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class CouponServiceTest {
                 LocalDateTime.now().plusDays(8)
         );
         CouponEntity couponEntity = couponService.create(coupon);
-        CouponEntity savedCoupon = couponService.getCoupon(couponEntity.getId());
-        assertThat(savedCoupon).isNotNull();
+        CouponResponse couponResponse = couponService.getCoupon(couponEntity.getId());
+        assertThat(couponResponse).isNotNull();
     }
 }

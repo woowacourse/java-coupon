@@ -1,6 +1,7 @@
 package coupon.coupon.service;
 
 import coupon.coupon.domain.Coupon;
+import coupon.coupon.dto.CouponResponse;
 import coupon.coupon.entity.CouponEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,9 @@ public class CouponService {
         return couponWriterService.create(new CouponEntity(coupon));
     }
 
-    public CouponEntity getCoupon(long couponId) {
+    public CouponResponse getCoupon(long couponId) {
         Optional<CouponEntity> coupon = couponReaderService.getCoupon(couponId);
-        return coupon.orElseGet(() -> couponWriterService.getCoupon(couponId));
+        CouponEntity couponEntity = coupon.orElseGet(() -> couponWriterService.getCoupon(couponId));
+        return CouponResponse.from(couponEntity);
     }
 }
