@@ -14,8 +14,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void createMember() {
-        memberRepository.save(new Member());
+    public Member createMember() {
+        return memberRepository.save(new Member());
     }
 
     @Transactional(readOnly = true)
