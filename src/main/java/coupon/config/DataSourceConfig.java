@@ -17,21 +17,20 @@ public class DataSourceConfig {
 
     private static final String READ_DATASOURCE = "readDataSource";
     private static final String WRITE_DATASOURCE = "writeDataSource";
-    private static final String ROUTE_DATASOURCE = "routeDataSource";
 
-    @Bean(READ_DATASOURCE)
+    @Bean
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
     public DataSource readDataSource() {
         return createDataSource();
     }
 
-    @Bean(WRITE_DATASOURCE)
+    @Bean
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writeDataSource() {
         return createDataSource();
     }
 
-    @Bean(name = ROUTE_DATASOURCE)
+    @Bean
     public DataSourceRouter routeDataSource(
             @Qualifier(READ_DATASOURCE) DataSource readDataSource,
             @Qualifier(WRITE_DATASOURCE) DataSource writeDataSource) {
