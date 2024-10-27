@@ -41,7 +41,6 @@ public class DefaultDiscountPolicy implements DiscountPolicy {
 
     private void requireMinimumOrderPriceInBound(long minimumOrderPrice) {
         boolean isInBound = MIN_ORDER_PRICE_MIN <= minimumOrderPrice && minimumOrderPrice <= MIN_ORDER_PRICE_MAX;
-        System.out.printf("minimumOrderPrice: %d", minimumOrderPrice);
         if (!isInBound) {
             throw new IllegalArgumentException(String.format(
                     "최소 주문 금액은 %d원 이상, %d원 이하여야 합니다.",
