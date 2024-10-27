@@ -2,10 +2,12 @@ package coupon.domain.coupon;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Name {
 
     private static final int MAXIMUM_LENGTH = 30;

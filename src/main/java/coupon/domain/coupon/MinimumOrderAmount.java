@@ -2,10 +2,12 @@ package coupon.domain.coupon;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class MinimumOrderAmount {
 
     private static final int MINIMUM_OF_AMOUNT = 5000;
