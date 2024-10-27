@@ -14,7 +14,7 @@ class MemberCouponTest {
         // given
         Coupon coupon = new Coupon("name", 1000, 30000, Category.FASHION, LocalDate.now(), LocalDate.now()
                 .plusDays(10));
-        Member member = new Member();
+        Member member = new Member("Prin?");
 
         // when
         MemberCoupon memberCoupon = new MemberCoupon(coupon, member);
