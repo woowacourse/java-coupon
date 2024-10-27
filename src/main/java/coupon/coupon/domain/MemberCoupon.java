@@ -37,6 +37,10 @@ public class MemberCoupon {
     protected MemberCoupon() {
     }
 
+    public static MemberCoupon issue(Member member, Coupon coupon) {
+        return new MemberCoupon(member, coupon);
+    }
+
     public MemberCoupon(Member member, Coupon coupon) {
         this.member = member;
         this.coupon = coupon;
