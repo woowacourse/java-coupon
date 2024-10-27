@@ -12,6 +12,9 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+import static coupon.config.DataSourceRouter.READER_DB_KEY;
+import static coupon.config.DataSourceRouter.WRITER_DB_KEY;
+
 @Configuration
 public class DataSourceConfig {
 
@@ -35,8 +38,8 @@ public class DataSourceConfig {
         Map<Object, Object> dataSources = new HashMap<>();
         DataSource reader = readDataSource();
         DataSource writer = writeDataSource();
-        dataSources.put("reader", reader);
-        dataSources.put("writer", writer);
+        dataSources.put(READER_DB_KEY, reader);
+        dataSources.put(WRITER_DB_KEY, writer);
         router.setTargetDataSources(dataSources);
         router.setDefaultTargetDataSource(writer);
 
