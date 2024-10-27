@@ -25,7 +25,7 @@ public class CouponService {
                 .orElseGet(() -> getCouponFromWriter(id));
     }
 
-    public Coupon getCouponFromWriter(long id) {
+    private Coupon getCouponFromWriter(long id) {
         return transactionService.run(() -> couponRepository.fetchCouponById(id));
     }
 }
