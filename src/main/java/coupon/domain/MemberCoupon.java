@@ -1,12 +1,9 @@
 package coupon.domain;
 
-import coupon.domain.coupon.Coupon;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,43 +15,31 @@ public class MemberCoupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    private Long couponId;
+    private Long memberId;
     private boolean isUsed;
     private LocalDate issueDate;
     private LocalDate expirationDate;
 
-    protected MemberCoupon(Long id, Coupon coupon, Member member, boolean isUsed, LocalDate issueDate,
+    protected MemberCoupon(Long id, Long couponId, Long memberId, boolean isUsed, LocalDate issueDate,
                            LocalDate expirationDate) {
         this.id = id;
-        this.coupon = coupon;
-        this.member = member;
+        this.couponId = couponId;
+        this.memberId = memberId;
         this.isUsed = isUsed;
         this.issueDate = issueDate;
         this.expirationDate = expirationDate;
     }
 
-    public static MemberCoupon issue(Coupon coupon, Member member) {
+    public static MemberCoupon issue(Long couponId, Long memberId) {
         LocalDate today = LocalDate.now();
-        validateCouponCanIssue(coupon, today);
-        return new MemberCoupon(null, coupon, member, false, today, today.plusDays(6));
+        return new MemberCoupon(null, couponId, memberId, false, today, today.plusDays(6));
     }
 
     public void use() {
         validatePeriodOfUse();
         validateAlreadyUsed();
         isUsed = true;
-    }
-
-    private static void validateCouponCanIssue(Coupon coupon, LocalDate date) {
-        if (coupon.canIssueAt(date)) {
-            return;
-        }
-        throw new IllegalStateException("쿠폰 발급 가능 기간이 아닙니다.");
     }
 
     private void validateAlreadyUsed() {
