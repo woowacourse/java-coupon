@@ -19,10 +19,10 @@ public class MinimumOrderPriceValidator {
 
     public void validate(final Money money) {
         if (money.isLessThan(lowerPrice)) {
-            throw new IllegalArgumentException(String.format("%s 는 %s 보다 작습니다.", money, lowerPrice));
+            throw new IllegalArgumentException(String.format("최소 주문 금액이 %s 이상 이어야 한다. ( 현재 금액 : %s )", lowerPrice, money));
         }
         if (money.isGreaterThan(upperPrice)) {
-            throw new IllegalArgumentException(String.format("%s 는 %s 보다 큽니다.", money, upperPrice));
+            throw new IllegalArgumentException(String.format("최대 주문 금액이 %s 이하여야 한다. ( 현재 금액 : %s )", upperPrice, money));
         }
     }
 }

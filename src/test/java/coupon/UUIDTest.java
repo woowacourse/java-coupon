@@ -17,7 +17,7 @@ public class UUIDTest {
     // REPEAT TEST 를 통해 1000번 실행해도 전부 통과
     @Test
     @DisplayName("여러 개를 생성해도 무작위를 보장한다.")
-    void some() {
+    void assure_randomness_with_multiple() {
         final int numberOfUUIDs = 1_000_000;
 
         final Set<UUID> uuidSet = new HashSet<>();
