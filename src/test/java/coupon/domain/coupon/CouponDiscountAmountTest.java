@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import coupon.coupon.domain.CouponDiscountAmount;
+import coupon.coupon.domain.CouponMinimumOrderAmount;
+
 class CouponDiscountAmountTest {
 
     @DisplayName("유효한 할인 금액이 입력되면 객체를 생성한다.")

@@ -1,12 +1,12 @@
-package coupon.infrastructure.repository;
+package coupon.coupon.infrastructure.repository;
 
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import coupon.domain.coupon.Coupon;
-import coupon.domain.coupon.CouponName;
-import coupon.service.port.CouponRepository;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.CouponName;
+import coupon.coupon.service.port.CouponRepository;
 
 @Repository
 public class CouponRepositoryImpl implements CouponRepository {

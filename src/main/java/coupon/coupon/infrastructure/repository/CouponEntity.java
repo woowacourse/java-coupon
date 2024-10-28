@@ -1,4 +1,4 @@
-package coupon.infrastructure.repository;
+package coupon.coupon.infrastructure.repository;
 
 import java.time.LocalDateTime;
 
@@ -11,8 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import coupon.domain.coupon.Coupon;
-import coupon.domain.coupon.ProductionCategory;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.ProductionCategory;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,7 +48,7 @@ public class CouponEntity {
 
     public CouponEntity(final Coupon coupon) {
         this(
-                null,
+                coupon.getId(),
                 coupon.getNameValue(),
                 coupon.getMinimumOrderAmountValue(),
                 coupon.getDiscountAmountValue(),

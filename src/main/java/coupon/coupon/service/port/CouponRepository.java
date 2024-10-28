@@ -1,9 +1,9 @@
-package coupon.service.port;
+package coupon.coupon.service.port;
 
 import java.util.Optional;
 
-import coupon.domain.coupon.Coupon;
-import coupon.domain.coupon.CouponName;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.CouponName;
 
 public interface CouponRepository {
 

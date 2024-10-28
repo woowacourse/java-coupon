@@ -1,4 +1,4 @@
-package coupon.infrastructure.repository;
+package coupon.coupon.infrastructure.repository;
 
 import java.util.Optional;
 

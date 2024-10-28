@@ -1,8 +1,8 @@
-package coupon.service.dto.request;
+package coupon.coupon.service.dto.request;
 
 import java.time.LocalDateTime;
 
-import coupon.domain.coupon.ProductionCategory;
+import coupon.coupon.domain.ProductionCategory;
 
 public record CouponCreateRequest(
         String name,

@@ -1,4 +1,4 @@
-package coupon.service;
+package coupon.coupon.service;
 
 import java.util.NoSuchElementException;
 import java.util.function.Supplier;
@@ -6,10 +6,10 @@ import java.util.function.Supplier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import coupon.domain.coupon.Coupon;
-import coupon.domain.coupon.CouponName;
-import coupon.service.dto.request.CouponCreateRequest;
-import coupon.service.port.CouponRepository;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.CouponName;
+import coupon.coupon.service.dto.request.CouponCreateRequest;
+import coupon.coupon.service.port.CouponRepository;
 import coupon.util.TransactionExecutor;
 
 @Transactional(readOnly = true)

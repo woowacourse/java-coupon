@@ -12,10 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import coupon.domain.coupon.Coupon;
-import coupon.domain.coupon.CouponName;
-import coupon.domain.coupon.ProductionCategory;
-import coupon.service.port.CouponRepository;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.CouponName;
+import coupon.coupon.domain.ProductionCategory;
+import coupon.coupon.infrastructure.repository.CouponEntity;
+import coupon.coupon.infrastructure.repository.CouponJpaRepository;
+import coupon.coupon.service.port.CouponRepository;
 
 @SpringBootTest
 class CouponRepositoryTest {

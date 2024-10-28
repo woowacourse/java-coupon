@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import coupon.domain.coupon.Coupon;
-import coupon.domain.coupon.CouponName;
-import coupon.service.port.CouponRepository;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.CouponName;
+import coupon.coupon.service.port.CouponRepository;
 
 public class FakeCouponRepository implements CouponRepository {
 
