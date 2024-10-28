@@ -12,14 +12,13 @@ import coupon.domain.Coupon;
 import coupon.domain.CouponCategory;
 import coupon.domain.CouponIssuableDuration;
 import coupon.domain.CouponName;
+import coupon.support.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-class MemberCouponServiceTest {
+class MemberCouponServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private CouponService couponService;

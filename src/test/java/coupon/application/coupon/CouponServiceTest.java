@@ -11,16 +11,15 @@ import coupon.domain.CouponIssuableDuration;
 import coupon.domain.CouponName;
 import coupon.domain.MemberCoupon;
 import coupon.domain.MemberCouponRepository;
+import coupon.support.IntegrationTestSupport;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
-class CouponServiceTest {
+class CouponServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private CouponService couponService;
@@ -32,7 +31,6 @@ class CouponServiceTest {
     private EntityManager entityManager;
 
     @Test
-    @Transactional
     @DisplayName("존재하지 않는 쿠폰은 발급할 수 없다.")
     void cantIssue() {
         long unknownCouponId = -1L;
@@ -56,7 +54,7 @@ class CouponServiceTest {
     }
 
     /**
-     * 복제 지연 테스트, Transactional이 없기 때문에 실제로 데이터가 저장된다.
+     * 복제 지연 테스트
      */
     @Test
     @DisplayName("쿠폰을 생성할 수 있다.")
@@ -70,7 +68,6 @@ class CouponServiceTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("한 명의 회원은 동일한 쿠폰을 사용한 쿠폰을 포함하여 최대 5장까지 발급할 수 있다.")
     void validateIssuable() {
         Long memberId = 1L;
