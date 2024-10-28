@@ -24,10 +24,4 @@ public interface CouponRepository extends Repository<CouponEntity, Long> {
             AND :currentDate < c.issuableEndDate
             """)
     List<CouponEntity> findAllIssuableCoupons(LocalDate currentDate);
-
-    @Query("""
-            SELECT c FROM CouponEntity c
-            WHERE c.id IN :couponIds
-            """)
-    List<CouponEntity> findAllById(List<Long> couponIds);
 }
