@@ -3,6 +3,7 @@ package coupon.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -45,7 +46,7 @@ public class IssuePeriod {
     }
 
     private void requireNonnull(LocalDate issueStartAt, LocalDate issueEndAt) {
-        if (issueStartAt == null || issueEndAt == null) {
+        if (Objects.isNull(issueStartAt) || Objects.isNull(issueEndAt)) {
             throw new NullPointerException("발급 시작일과 종료일을 입력해야 합니다.");
         }
     }
