@@ -1,33 +1,32 @@
 package coupon;
 
+import static org.springframework.data.redis.cache.RedisCacheConfiguration.defaultCacheConfig;
+
 import java.time.Duration;
+import java.util.Collections;
+import java.util.Map;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 
+@EnableCaching
 @Configuration
-class RedisConfig {
+public class RedisConfig {
 
     @Bean
-    LettuceConnectionFactory connectionFactory() {
-        LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-                .useSsl().and()
-                .commandTimeout(Duration.ofSeconds(2))
-                .shutdownTimeout(Duration.ZERO)
+    public RedisCacheManager couponCacheManager(RedisConnectionFactory connectionFactory) {
+        Map<String, RedisCacheConfiguration> initialCacheConfig = Collections.singletonMap(
+                "coupon",
+                defaultCacheConfig().entryTtl(Duration.ofSeconds(30L))
+        );
+
+        return RedisCacheManager.builder(connectionFactory)
+                .cacheDefaults(defaultCacheConfig())
+                .transactionAware()
+                .withInitialCacheConfigurations(initialCacheConfig)
                 .build();
-
-        RedisStandaloneConfiguration connectionConfig = new RedisStandaloneConfiguration("localhost", 6379);
-        return new LettuceConnectionFactory(connectionConfig, clientConfig);
-    }
-
-    @Bean
-    RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, String> template = new RedisTemplate<>();
-        template.setConnectionFactory(connectionFactory);
-        return template;
     }
 }
