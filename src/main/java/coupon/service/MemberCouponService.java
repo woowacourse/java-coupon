@@ -6,8 +6,10 @@ import coupon.domain.MemberCoupon;
 import coupon.domain.MemberCouponDetails;
 import coupon.entity.CouponEntity;
 import coupon.entity.MemberCouponEntity;
+import coupon.entity.cache.CachedCouponEntity;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
+import coupon.repository.cache.CachedCouponRepository;
 import coupon.support.TransactionSupporter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class MemberCouponService {
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
     private final TransactionSupporter transactionSupporter;
+    private final CachedCouponRepository cachedCouponRepository;
 
     @Transactional
     public MemberCoupon issue(Long couponId, Member member) {
@@ -62,6 +65,15 @@ public class MemberCouponService {
     }
 
     private MemberCouponDetails toMemberCouponDetails(MemberCoupon memberCoupon) {
+        Optional<CachedCouponEntity> optionalCachedCouponEntity = cachedCouponRepository.findById(memberCoupon.getCouponId());
+        if (optionalCachedCouponEntity.isEmpty()) {
+            return getMemberCouponDetails(memberCoupon);
+        }
+        CachedCouponEntity cachedCouponEntity = optionalCachedCouponEntity.get();
+        return new MemberCouponDetails(memberCoupon, cachedCouponEntity.toCoupon());
+    }
+
+    private MemberCouponDetails getMemberCouponDetails(MemberCoupon memberCoupon) {
         Optional<CouponEntity> optionalCouponEntity = couponRepository.findById(memberCoupon.getCouponId());
         if (optionalCouponEntity.isEmpty()) {
             optionalCouponEntity = getCouponRetry(memberCoupon.getCouponId());

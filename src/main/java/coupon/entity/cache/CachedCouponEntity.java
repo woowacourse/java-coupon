@@ -2,6 +2,7 @@ package coupon.entity.cache;
 
 import coupon.domain.Coupon;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @RedisHash(value = "cached_coupon")
 public class CachedCouponEntity implements Serializable {
 
@@ -23,5 +25,9 @@ public class CachedCouponEntity implements Serializable {
         this.id = coupon.getId();
         this.discountAmount = coupon.getDiscountAmount();
         this.minimumOrderPrice = coupon.getMinimumOrderPrice();
+    }
+
+    public Coupon toCoupon() {
+        return new Coupon(id, discountAmount, minimumOrderPrice);
     }
 }
