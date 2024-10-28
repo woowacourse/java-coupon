@@ -1,4 +1,9 @@
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 36379
+      timeout: 2s
   jpa:
     hibernate:
       naming:
@@ -16,6 +21,12 @@ spring:
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
+
+logging:
+  level:
+    org:
+      springframework:
+        cache: TRACE
 
 coupon.datasource:
   writer:

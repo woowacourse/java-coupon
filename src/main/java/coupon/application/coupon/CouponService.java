@@ -7,6 +7,7 @@ import coupon.domain.MemberCouponRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,15 @@ public class CouponService {
 
     @Transactional
     public Coupon getCoupon(Long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 쿠폰입니다."));
+    }
+
+    @Cacheable(key = "#couponId", value = "coupon", cacheManager = "couponCacheManager")
+    @Transactional(readOnly = true)
+    public Coupon getReadCoupon(Long couponId) {
+        log.info("쿠폰 캐시 미스 발생 = {}", couponId);
+
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 쿠폰입니다."));
     }

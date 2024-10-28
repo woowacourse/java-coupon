@@ -11,7 +11,6 @@ import coupon.application.membercoupon.MemberCouponResponse;
 import coupon.domain.Coupon;
 import coupon.domain.CouponDiscountApply;
 import coupon.domain.CouponIssuableDuration;
-import coupon.domain.CouponRepository;
 import coupon.domain.MemberCoupon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 class MemberCouponMapperImpl implements MemberCouponMapper {
 
-    private final CouponRepository couponRepository;
+    private final CouponService couponService;
 
     @Override
     public List<MemberCouponResponse> map(List<MemberCoupon> memberCoupons) {
@@ -37,7 +36,9 @@ class MemberCouponMapperImpl implements MemberCouponMapper {
                 .map(MemberCoupon::getCouponId)
                 .collect(Collectors.toSet());
 
-        return couponRepository.findByIdIn(ids);
+        return ids.stream()
+                .map(couponService::getReadCoupon)
+                .toList();
     }
 
     private Map<Long, IssuedCouponResponse> createIssuedCouponMap(List<Coupon> coupons) {
