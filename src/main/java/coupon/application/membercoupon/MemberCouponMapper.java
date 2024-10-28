@@ -1,4 +1,4 @@
-package coupon.application.member;
+package coupon.application.membercoupon;
 
 import java.util.List;
 import coupon.domain.MemberCoupon;

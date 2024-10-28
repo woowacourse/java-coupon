@@ -1,4 +1,4 @@
-package coupon.application.member;
+package coupon.application.membercoupon;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
