@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
 import java.util.Objects;
 
@@ -16,7 +16,7 @@ public class CouponName {
 
     private static final int MAX_LENGTH = 30;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "COUPON_NAME", nullable = false, unique = true)
     private String name;
 
     public CouponName(final String name) {

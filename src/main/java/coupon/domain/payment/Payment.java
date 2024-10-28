@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.domain.payment;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

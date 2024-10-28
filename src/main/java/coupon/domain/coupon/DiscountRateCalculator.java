@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
 public class DiscountRateCalculator {
 

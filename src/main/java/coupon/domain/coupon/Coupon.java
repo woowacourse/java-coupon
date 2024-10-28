@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
+import coupon.domain.payment.Payment;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +30,7 @@ public class Coupon {
     private Long id;
 
     @Embedded
-    private CouponName name;
+    private CouponName couponName;
 
     @Embedded
     private Discount discount;
@@ -36,19 +38,28 @@ public class Coupon {
     @Embedded
     private Period period;
 
+    @Transient
+    private long memberId;
+
     @ManyToOne
     @JoinColumn(name = "PAYMENT_ID", referencedColumnName = "ID")
     private Payment payment;
 
-    public Coupon(final CouponName name, final Discount discount, final Period period, final Payment payment) {
-        this.name = name;
+    public Coupon(final long id, final Coupon coupon, final long memberId) {
+        this(coupon.couponName, coupon.discount, coupon.period, coupon.payment);
+        this.id = id;
+        this.memberId = memberId;
+    }
+
+    public Coupon(final CouponName couponName, final Discount discount, final Period period, final Payment payment) {
+        this.couponName = couponName;
         this.discount = discount;
         this.period = period;
         this.payment = payment;
     }
 
     public String getCouponName() {
-        return name.getName();
+        return couponName.getName();
     }
 
     public long getDiscountAmount() {
@@ -61,5 +72,13 @@ public class Coupon {
 
     public LocalDateTime getEndAt() {
         return period.getEndAt();
+    }
+
+    public boolean isSameMemberId(final long memberId) {
+        return this.memberId == memberId;
+    }
+
+    public boolean isSameName(final String couponName) {
+        return getCouponName().equals(couponName);
     }
 }
