@@ -13,7 +13,6 @@ public class DiscountAmount {
     private static final int MAX_DISCOUNT_AMOUNT = 10000;
     private static final int DISCOUNT_UNIT = 500;
 
-
     @Column(name = "discount_amount")
     private int value;
 
