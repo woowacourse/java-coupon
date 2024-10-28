@@ -3,6 +3,7 @@ package coupon.service;
 import coupon.domain.Coupon;
 import coupon.dto.CouponRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ public class CouponService {
         return couponCommandService.create(request);
     }
 
+    @Cacheable(key = "#id", value = "coupon")
     public Coupon getCoupon(Long id) {
         try {
             return couponQueryService.getCoupon(id);
