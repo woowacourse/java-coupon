@@ -9,6 +9,8 @@ import coupon.domain.membercounpon.MemberCouponRepository;
 import coupon.executor.TransactionExecutor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CouponService {
 
+    public static final String COUPON_CACHE_NAME = "couponsCache";
     private static final int MAXIMUM_COUPON_PER_MEMBER = 5;
 
     private final CouponRepository couponRepository;
@@ -23,6 +26,7 @@ public class CouponService {
     private final MemberRepository memberRepository;
     private final TransactionExecutor transactionExecutor;
 
+    @CacheEvict(value = COUPON_CACHE_NAME, key = "#p0")
     @Transactional
     public Coupon create(Long memberId, Coupon coupon) {
         Member member = memberRepository.findById(memberId)
@@ -38,6 +42,7 @@ public class CouponService {
         return savedCoupon;
     }
 
+    @Cacheable(value = COUPON_CACHE_NAME, key = "#p0")
     @Transactional(readOnly = true)
     public List<Coupon> findAllCoupons(Long memberId) {
         Member member = memberRepository.findById(memberId)
