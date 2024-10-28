@@ -21,8 +21,8 @@ public class CouponServiceTest {
 
     private static final Coupon entity = new Coupon(
             "potato",
-            100,
-            100,
+            1000,
+            5000,
             "FOOD",
             LocalDateTime.of(2024, 11, 8, 9, 10),
             LocalDateTime.of(2024, 11, 8, 9, 10)

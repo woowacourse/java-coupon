@@ -2,8 +2,12 @@ package coupon.service;
 
 import coupon.data.repository.CouponRepository;
 import coupon.data.Coupon;
+import coupon.data.repository.MemberCouponRepository;
 import coupon.domain.coupon.CouponMapper;
+import coupon.domain.member.MemberCoupon;
+import coupon.domain.member.MemberCouponMapper;
 import coupon.exception.CouponNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
