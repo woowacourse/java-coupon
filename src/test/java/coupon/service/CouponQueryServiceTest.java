@@ -9,12 +9,10 @@ import coupon.dto.SaveCouponRequest;
 import coupon.exception.CouponException;
 import coupon.repository.MemberRepository;
 import java.time.LocalDate;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.CacheManager;
 
 @SpringBootTest
 class CouponQueryServiceTest {
@@ -26,16 +24,7 @@ class CouponQueryServiceTest {
     private CouponCommandService couponCommandService;
 
     @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
     private MemberRepository memberRepository;
-
-    @AfterEach
-    void tearDown() {
-        cacheManager.getCacheNames()
-                .forEach(name -> cacheManager.getCache(name).clear());
-    }
 
     @DisplayName("성공: 존재하는 ID로 조회, 복제 지연 해결")
     @Test

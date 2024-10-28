@@ -10,12 +10,10 @@ import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
 import java.time.LocalDate;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.CacheManager;
 
 @SpringBootTest
 class CouponCommandServiceTest {
@@ -31,15 +29,6 @@ class CouponCommandServiceTest {
 
     @Autowired
     private CouponRepository couponRepository;
-
-    @Autowired
-    private CacheManager cacheManager;
-
-    @AfterEach
-    void tearDown() {
-        cacheManager.getCacheNames()
-                .forEach(name -> cacheManager.getCache(name).clear());
-    }
 
     @DisplayName("성공: 쿠폰을 저장한다.")
     @Test
