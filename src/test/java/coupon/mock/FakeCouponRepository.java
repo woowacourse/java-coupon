@@ -10,7 +10,7 @@ import coupon.coupon.service.port.CouponRepository;
 
 public class FakeCouponRepository implements CouponRepository {
 
-    private final List<Coupon> storage = new ArrayList<>();
+    public final List<Coupon> storage = new ArrayList<>();
 
     @Override
     public Optional<Coupon> findByName(final CouponName name) {
