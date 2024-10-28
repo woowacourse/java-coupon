@@ -1,12 +1,12 @@
 package coupon.domain;
 
-import lombok.EqualsAndHashCode;
+import java.util.Objects;
+
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
-@EqualsAndHashCode
 public class DiscountAmount {
 
     private static final int MIN_VALUE = 1_000;
@@ -29,5 +29,21 @@ public class DiscountAmount {
         if (value % UNIT != 0) {
             throw new IllegalArgumentException(String.format("할인 금액 단위는 %s여야 합니다. 요청 값: %s", UNIT, value));
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof final DiscountAmount that)) {
+            return false;
+        }
+        return getValue() == that.getValue();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getValue());
     }
 }

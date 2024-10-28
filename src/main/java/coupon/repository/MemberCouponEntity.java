@@ -50,8 +50,6 @@ public class MemberCouponEntity extends BaseTimeEntity {
         this.expiresAt = issuedAt.plusDays(7).toLocalDate().atTime(LocalTime.MAX);
     }
 
-    // TODO 롬복 사용해서 이퀄 앤 해시 코드 생각하기
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
