@@ -2,6 +2,11 @@ package coupon.coupon.repository;
 
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.DiscountMoney;
+import coupon.coupon.domain.DiscountRate;
+import coupon.coupon.domain.IssuedPeriod;
+import coupon.coupon.domain.Name;
+import coupon.coupon.domain.OrderPrice;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -52,5 +57,16 @@ public class CouponEntity {
         this(null, coupon.getName(),
                 coupon.getDiscountMoney(), coupon.getDiscountRate(), coupon.getOrderPrice(), coupon.getCategory(),
                 coupon.getStart(), coupon.getEnd());
+    }
+
+    public Coupon toDomain() {
+        return new Coupon(
+                new Name(name),
+                new DiscountMoney(discountMoney),
+                new DiscountRate(discountRate),
+                new OrderPrice(orderPrice),
+                category,
+                new IssuedPeriod(start, end)
+        );
     }
 }

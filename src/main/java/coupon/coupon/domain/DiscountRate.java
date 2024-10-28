@@ -11,15 +11,19 @@ public class DiscountRate {
 
     private final Long discountRate;
 
-    public DiscountRate(DiscountMoney discountMoney, OrderPrice orderPrice) {
-        Long discountRate = (discountMoney.getDiscountAmount() * 100) / orderPrice.getPrice();
+    public DiscountRate(Long discountRate) {
         validateDiscountRateRange(discountRate);
         this.discountRate = discountRate;
+    }
+
+    public DiscountRate(DiscountMoney discountMoney, OrderPrice orderPrice) {
+        this((discountMoney.getDiscountAmount() * 100) / orderPrice.getPrice());
     }
 
     public DiscountRate(Long discountMoney, Long orderPrice) {
         this(new DiscountMoney(discountMoney), new OrderPrice(orderPrice));
     }
+
 
     private void validateDiscountRateRange(Long discountRate) {
         if (discountRate < MINIMUM_DISCOUNT_RATE) {
