@@ -20,10 +20,10 @@ CREATE TABLE IF NOT EXISTS member_coupon
     coupon_id        BIGINT,
     used             TINYINT(1)    NOT NULL,
     issued_at        DATETIME     NOT NULL,
-    expired_at       DATEITME     NOT NULL
-)
+    expired_at       DATETIME     NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS member
 (
-    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
-)
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY
+);
