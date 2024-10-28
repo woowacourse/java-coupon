@@ -22,6 +22,7 @@ public class CouponCache {
     public Optional<CouponEntity> findById(Long id) {
         try {
             CouponEntity couponEntity = redisTemplate.opsForValue().get(COUPON_KEY_NAME + id);
+            log.info("cache read success: coupon_id : {}", couponEntity.getId());
             return Optional.ofNullable(couponEntity);
         } catch (Exception e) {
             log.info("cache read fail");
