@@ -1,4 +1,4 @@
-package coupon.coupon.service;
+package coupon.coupon.support;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -9,6 +9,11 @@ import org.springframework.context.annotation.Primary;
 
 @TestConfiguration
 public class TestConfig {
+
+    @Bean
+    public DatabaseCleaner databaseCleaner() {
+        return new DatabaseCleaner();
+    }
 
     @Bean
     @Primary
