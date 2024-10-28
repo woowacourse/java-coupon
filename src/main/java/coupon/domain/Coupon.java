@@ -13,8 +13,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Range;
 
@@ -22,6 +24,7 @@ import org.hibernate.validator.constraints.Range;
 @Getter
 @EqualsAndHashCode
 @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
 
     private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -59,9 +62,6 @@ public class Coupon {
 
     @Column(nullable = false)
     private LocalDateTime issueEndDate;
-
-    protected Coupon() {
-    }
 
     public Coupon(String name, Long discountAmount, Long minimumOrderAmount, Category category,
                   LocalDateTime issueStartDate, LocalDateTime issueEndDate) {

@@ -5,11 +5,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import java.util.Set;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
-    private static final int MAX_NAME_LENGTH = 30;
+    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,20 +26,20 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
-    protected Member() {
-    }
-
     public Member(String name) {
-        validateName(name);
         this.name = name;
+        validate();
     }
 
-    private void validateName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Member name cannot be null or empty");
-        }
-        if (name.length() > MAX_NAME_LENGTH) {
-            throw new IllegalArgumentException("Member name cannot be longer than 30 characters");
+    private void validate() {
+        Set<ConstraintViolation<Member>> violations = validator.validate(this);
+
+        if (!violations.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (ConstraintViolation<Member> violation : violations) {
+                sb.append(violation.getMessage()).append("\n");
+            }
+            throw new IllegalArgumentException(sb.toString());
         }
     }
 }
