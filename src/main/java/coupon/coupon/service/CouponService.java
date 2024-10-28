@@ -4,11 +4,14 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponCategory;
 import coupon.coupon.domain.CouponEntity;
 import coupon.coupon.domain.MemberCoupon;
+import coupon.coupon.dto.MemberCouponResponse;
 import coupon.coupon.repository.CouponRepository;
 import coupon.coupon.repository.MemberCouponRepository;
 import coupon.coupon.service.validator.CouponDiscountAmountValidator;
 import coupon.coupon.service.validator.CouponMinOrderAmountValidator;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +56,25 @@ public class CouponService {
         }
         MemberCoupon issuedMemberCoupon = memberCouponRepository.save(memberCoupon);
         return issuedMemberCoupon.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberCouponResponse> getCouponByMember(long memberId) {
+        List<MemberCouponResponse> memberCouponResponses = new ArrayList<>();
+        for (MemberCoupon memberCoupon : memberCouponRepository.findAllByMemberId(memberId)) {
+            CouponEntity coupon = couponRepository.findById(memberCoupon.getCouponId())
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
+            MemberCouponResponse memberCouponResponse = new MemberCouponResponse(
+                    coupon.getCouponName(),
+                    coupon.getCouponDiscountAmount(),
+                    coupon.getCouponMinOrderAmount(),
+                    coupon.getCouponCategory().name(),
+                    coupon.getStartAt(),
+                    coupon.getEndAt(),
+                    memberCoupon.isUsed()
+            );
+            memberCouponResponses.add(memberCouponResponse);
+        }
+        return memberCouponResponses;
     }
 }
