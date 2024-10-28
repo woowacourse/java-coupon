@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "Coupon")
 public class Coupon implements Serializable {
 
+    public static final String CACHE_NAME = "CouponCache";
     private static final int MIN_DISCOUNT_PERCENT = 3;
     private static final int MAX_DISCOUNT_PERCENT = 20;
 
