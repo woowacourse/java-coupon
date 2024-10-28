@@ -6,6 +6,7 @@ import coupon.coupon.entity.MemberCouponEntity;
 import coupon.coupon.repository.MemberCouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,7 @@ public class MemberCouponService {
     private final MemberCouponRepository memberCouponRepository;
     private final CouponService couponService;
 
+    @Transactional
     public MemberCouponEntity create(MemberCouponRequest memberCouponRequest) {
         validateIssueDate(memberCouponRequest);
         List<MemberCouponEntity> memberCouponEntities = memberCouponRepository.findByCouponIdAndMemberId(memberCouponRequest.couponId(), memberCouponRequest.memberId());
@@ -39,6 +41,7 @@ public class MemberCouponService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<MemberCouponEntity> findByMemberId(Long memberId) {
         return memberCouponRepository.findByMemberId(memberId);
     }
