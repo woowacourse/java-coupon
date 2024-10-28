@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
-    private final CouponBackupService couponBackupService;
 
     private final CouponDiscountAmountValidator couponDiscountAmountValidator;
     private final CouponMinOrderAmountValidator couponMinOrderAmountValidator;
