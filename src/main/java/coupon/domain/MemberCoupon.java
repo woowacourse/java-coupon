@@ -26,4 +26,10 @@ public class MemberCoupon {
     private Member member;
 
     private boolean used;
+
+    public MemberCoupon(Coupon coupon, Member member) {
+        this.coupon = coupon;
+        this.member = member;
+        this.used = false;
+    }
 }
