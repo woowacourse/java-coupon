@@ -17,7 +17,7 @@ public class CouponMapper {
     public static coupon.data.Coupon toEntity(Coupon coupon) {
         return new coupon.data.Coupon(
                 coupon.getName().getValue(),
-                coupon.getAccounting().getDiscountRate(),
+                coupon.getAccounting().getDiscountAmount(),
                 coupon.getAccounting().getMinimumOrderCost(),
                 coupon.getCategory().toString(),
                 coupon.getDuration().getBeginAt(),

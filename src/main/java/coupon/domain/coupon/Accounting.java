@@ -5,8 +5,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.function.BiFunction;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 class Accounting {
     private static final int DISCOUNT_AMOUNT_LOWER_BOUND = 1_000;
     private static final int DISCOUNT_AMOUNT_UPPER_BOUND = 10_000;
