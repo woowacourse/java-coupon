@@ -1,11 +1,15 @@
 package coupon.service;
 
+import static coupon.service.CouponQueryService.CACHE_MANAGER;
+
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,10 +34,12 @@ public class CouponCommandService {
         return couponRepository.save(coupon);
     }
 
+    @Cacheable(value = "coupon", key = "#id", cacheManager = CACHE_MANAGER)
     public Coupon getCoupon(Long id) {
         return couponRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
     }
 
+    @CacheEvict(value = "private_coupons", key = "#memberId")
     public MemberCoupon issueCoupon(Long memberId, Long couponId) {
         validateIssuedCouponCount(memberId, couponId);
 

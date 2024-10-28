@@ -7,13 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.mapping.ToOne;
 
 @Entity
 @Getter
@@ -29,9 +27,8 @@ public class MemberCoupon {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
     @JoinColumn(name = "coupon_id")
-    private Coupon coupon;
+    private Long couponId;
 
     @Column(name = "issued_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issuedAt;
@@ -49,7 +46,7 @@ public class MemberCoupon {
         this(
                 null,
                 member,
-                coupon,
+                coupon.getId(),
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7).withHour(0).withMinute(0).withSecond(0),
                 false,

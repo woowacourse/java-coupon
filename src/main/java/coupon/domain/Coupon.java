@@ -3,17 +3,20 @@ package coupon.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Coupon {
 
     public static final int MIN_DISCOUNT_RATE = 3;
@@ -28,8 +31,8 @@ public class Coupon {
     @Column(name = "name", columnDefinition = "varchar(30)", nullable = false)
     private String name;
 
-    @Column(name = "cateory", nullable = false)
-    @Enumerated
+    @Column(name = "category", nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private Category category;
 
     @Column(name = "discount_amount")
@@ -44,7 +47,6 @@ public class Coupon {
 
     @Column(name = "issue_ended_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueEndedAt;
-
 
     public Coupon(String name, Category category, int discountAmount, int minimumOrderPrice,
                   LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
