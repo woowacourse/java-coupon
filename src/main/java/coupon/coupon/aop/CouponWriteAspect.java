@@ -16,7 +16,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 @RequiredArgsConstructor
 public class CouponWriteAspect {
 
-    private static final String COUPON_SERVICE_POINTCUT = "execution(* coupon.coupon.service.CouponService.*(..))";
+    private static final String COUPON_SERVICE_POINTCUT = "execution(* coupon.coupon.service..*Service.*(..))";
     private static final String TABLE_NAME = "coupon";
 
     private final ApplicationEventPublisher applicationEventPublisher;

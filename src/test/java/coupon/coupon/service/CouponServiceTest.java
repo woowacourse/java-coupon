@@ -19,6 +19,9 @@ class CouponServiceTest {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private CouponLookupService couponLookupService;
+
     @Test
     void 쿠폰을_생성한_뒤_곧바로_조회하면_쓰기_DB에서_불러온다(CapturedOutput output) {
         // given
@@ -31,7 +34,7 @@ class CouponServiceTest {
         CouponEntity created = couponService.create(request);
 
         // then
-        assertThatCode(() -> couponService.getCoupon(created.getId()))
+        assertThatCode(() -> couponLookupService.getCoupon(created.getId()))
                 .doesNotThrowAnyException();
         assertThat(output).doesNotContain("read");
     }
@@ -49,7 +52,7 @@ class CouponServiceTest {
         Thread.sleep(3000);
 
         // then
-        assertThatCode(() -> couponService.getCoupon(created.getId()))
+        assertThatCode(() -> couponLookupService.getCoupon(created.getId()))
                 .doesNotThrowAnyException();
         assertThat(output).contains("read");
     }

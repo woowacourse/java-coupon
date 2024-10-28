@@ -25,9 +25,4 @@ public class CouponService {
         );
         return couponRepository.save(CouponEntity.from(coupon));
     }
-
-    @Transactional(readOnly = true)
-    public CouponEntity getCoupon(long id) {
-        return couponRepository.findByIdOrThrow(id);
-    }
 }

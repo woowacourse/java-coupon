@@ -1,5 +1,6 @@
 package coupon.coupon.service;
 
+import coupon.coupon.repository.CouponEntity;
 import coupon.coupon.repository.CouponRepository;
 import java.time.Clock;
 import java.time.LocalDate;
@@ -8,19 +9,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-@Service
 public class CouponLookupService {
 
     private final CouponRepository couponRepository;
     private final Clock clock;
 
-    public List<CouponResponse> getAllIssuableCoupons() {
+    public List<CouponEntity> getAllIssuableCoupons() {
         LocalDate currentDate = LocalDate.now(clock);
         return couponRepository.findAllIssuableCoupons(currentDate)
                 .stream()
-                .map(CouponResponse::from)
                 .toList();
+    }
+
+    public CouponEntity getCoupon(long id) {
+        return couponRepository.findByIdOrThrow(id);
     }
 }
