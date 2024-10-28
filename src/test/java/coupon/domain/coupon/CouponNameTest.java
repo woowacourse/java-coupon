@@ -19,7 +19,7 @@ class CouponNameTest {
     @DisplayName("쿠폰 이름은 null이면 예외가 발생한다.")
     @Test
     void createNullName() {
-        assertThrows(CouponException.class, () -> new CouponName(null));
+        assertThrows(IllegalArgumentException.class, () -> new CouponName(null));
     }
 
     @DisplayName("쿠폰 이름이 1자 미만이라면 예외가 발생한다.")

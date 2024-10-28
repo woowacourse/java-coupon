@@ -12,17 +12,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CouponName {
 
+    private static final int MIN_NAME_LENGTH = 1;
+    private static final int MAX_NAME_LENGTH = 30;
+
     @Column(nullable = false)
     private String name;
 
     public CouponName(String name) {
-        validateLength(name);
+        validateName(name);
         this.name = name;
     }
 
-    private void validateLength(String name) {
-        if (name == null || name.isBlank() || name.length() > 30) {
-            throw new CouponException("쿠폰 이름은 1자 이상 30자 이하여야 합니다.");
+    private void validateName(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("쿠폰 이름이 null 입니다.");
+        }
+        if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH) {
+            throw new CouponException("쿠폰 이름은 %d자 이상 %d자 이하여야 합니다.".formatted(MIN_NAME_LENGTH, MAX_NAME_LENGTH));
         }
     }
 }
