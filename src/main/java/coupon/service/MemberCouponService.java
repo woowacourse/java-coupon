@@ -5,9 +5,12 @@ import coupon.domain.MemberCoupon;
 import coupon.entity.MemberCouponEntity;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
+import coupon.support.TransactionSupporter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +18,7 @@ public class MemberCouponService {
 
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
+    private final TransactionSupporter transactionSupporter;
 
     @Transactional
     public MemberCoupon issue(Long couponId, Member member) {
@@ -28,5 +32,22 @@ public class MemberCouponService {
         MemberCouponEntity memberCouponEntity = memberCouponRepository.save(MemberCouponEntity.from(memberCoupon));
 
         return memberCouponEntity.toMemberCoupon();
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberCoupon> getCoupons(Member member) {
+        List<MemberCouponEntity> memberCoupons = getMemberCoupon(member.getId());
+
+        return memberCoupons.stream()
+                .map(MemberCouponEntity::toMemberCoupon)
+                .toList();
+    }
+
+    private List<MemberCouponEntity> getMemberCoupon(long memberId) {
+        List<MemberCouponEntity> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
+        if (memberCoupons.isEmpty()) {
+            return transactionSupporter.executeNewTransaction(() -> memberCouponRepository.findAllByMemberId(memberId));
+        }
+        return memberCoupons;
     }
 }

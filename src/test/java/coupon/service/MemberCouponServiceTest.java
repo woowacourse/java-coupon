@@ -74,4 +74,13 @@ class MemberCouponServiceTest {
         assertThatThrownBy(() -> memberCouponService.issue(coupon.toCoupon().getId(), member.toMember()));
     }
 
+    @DisplayName("발급 쿠폰을 조회한다.")
+    @Test
+    void getMemberCoupons() {
+        memberCouponService.issue(coupon.toCoupon().getId(), member.toMember());
+
+        List<MemberCoupon> memberCoupons = memberCouponService.getCoupons(member.toMember());
+
+        assertThat(memberCoupons).hasSize(1);
+    }
 }
