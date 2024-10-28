@@ -9,6 +9,7 @@ import coupon.repository.MemberCouponRepository;
 import coupon.service.support.DataSourceSupport;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "coupon", key = "#couponId")
     public Coupon getCoupon(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElse(getCouponFromWriter(couponId));
@@ -60,8 +62,7 @@ public class CouponService {
         List<Coupon> coupons = memberCoupons.stream()
                 .map(MemberCoupon::getCouponId)
                 .distinct()
-                .map(couponId -> couponRepository.findById(couponId)
-                        .orElseThrow(() -> new IllegalArgumentException("쿠폰을 조회하던 중 예외가 발생했습니다.")))
+                .map(this::getCoupon)
                 .toList();
         return new CouponAndMemberCouponResponse(coupons, memberCoupons);
     }
