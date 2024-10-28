@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -41,5 +42,27 @@ public class MemberCoupon {
 
     @Column(name = "used_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime usedAt;
+
+    public MemberCoupon(
+            Member member,
+            Coupon coupon,
+            LocalDateTime now,
+            LocalDateTime localDateTime,
+            boolean used,
+            LocalDateTime usedAt
+    ) {
+
+    }
+
+    public MemberCoupon(Member member, Coupon coupon) {
+        this(
+                member,
+                coupon,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(7).withHour(0).withMinute(0).withSecond(0),
+                false,
+                null
+        );
+    }
 }
 
