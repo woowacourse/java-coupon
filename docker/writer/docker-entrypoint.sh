@@ -10,5 +10,4 @@ done
 /usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "grant replication slave on *.* to 'replUser'@'%'"
 
 /usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "flush privileges"
-
 /bin/bash
