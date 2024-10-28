@@ -5,12 +5,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-record CouponApplicableAmount(@Column(name = "coupon_applicable_amount", nullable = false) BigDecimal value) {
+public record CouponApplicableAmount(@Column(name = "coupon_applicable_amount", nullable = false) BigDecimal value) {
 
     private static final BigDecimal MAXIMUM_APPLICABLE_MONEY = new BigDecimal("100000");
     private static final BigDecimal MINIMUM_APPLICABLE_MONEY = new BigDecimal("5000");
 
-    CouponApplicableAmount {
+    public CouponApplicableAmount {
         validateMinimumAmount(value);
         validateMaximumAmount(value);
     }

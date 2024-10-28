@@ -5,11 +5,13 @@ import java.math.RoundingMode;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-class CouponDiscountApply {
+public class CouponDiscountApply {
 
     private static final BigDecimal PERCENT_MULTIPLIER = new BigDecimal(100);
     private static final BigDecimal MAXIMUM_DISCOUNT_PERCENT = new BigDecimal("20");
