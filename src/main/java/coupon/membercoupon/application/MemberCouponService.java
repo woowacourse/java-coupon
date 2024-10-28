@@ -1,6 +1,8 @@
 package coupon.membercoupon.application;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -33,16 +35,9 @@ public class MemberCouponService {
 
     public FindAllMemberCouponResponse getMemberCouponsByMemberId(Long memberId) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findByMemberId(memberId);
-        List<Coupon> coupons = getCouponsInMemberCoupons(memberCoupons);
+        Map<MemberCoupon, Coupon> memberCouponWithCoupons = memberCoupons.stream()
+                .collect(Collectors.toMap(mc -> mc, mc -> couponService.getCoupon(mc.getCouponId())));
 
-        return FindAllMemberCouponResponse.of(memberCoupons, coupons);
-    }
-
-    private List<Coupon> getCouponsInMemberCoupons(List<MemberCoupon> memberCoupons) {
-        List<Long> couponId = memberCoupons.stream()
-                .map(MemberCoupon::getCouponId)
-                .toList();
-
-        return couponService.getAllByIdIn(couponId);
+        return FindAllMemberCouponResponse.of(memberCouponWithCoupons);
     }
 }
