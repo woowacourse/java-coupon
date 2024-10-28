@@ -8,7 +8,6 @@ import coupon.member.domain.Member;
 import coupon.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +34,6 @@ public class CouponService {
     }
 
     @Transactional
-    @CachePut(value = "coupons", key = "#result.id") // 생성된 쿠폰을 개별 캐시에 추가
     public Coupon createCoupon(final CouponCreateRequest couponRequest) {
         final var issuer = findIssuer(couponRequest.issuerId());
         return couponRepository.save(couponRequest.toCouponEntity(issuer));
