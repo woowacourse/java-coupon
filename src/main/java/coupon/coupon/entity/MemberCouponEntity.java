@@ -30,16 +30,12 @@ public class MemberCouponEntity extends BaseEntity {
     private boolean used;
 
     @Column(name = "issued_date", nullable = false)
-    private LocalDate issedDate;
+    private LocalDate issuedDate;
 
     @Column(name = "expiry_date", nullable = false)
     private LocalDate expiryDate;
 
-    public MemberCouponEntity(Long memberId, Long couponId, boolean used, LocalDate issedDate) {
-        this.memberId = memberId;
-        this.couponId = couponId;
-        this.used = used;
-        this.issedDate = issedDate;
-        this.expiryDate = issedDate.plusDays(7);
+    public MemberCouponEntity(Long couponId, Long memberId, boolean used, LocalDate issuedDate) {
+        this(null, couponId, memberId, used, issuedDate, issuedDate.plusDays(7));
     }
 }

@@ -23,7 +23,7 @@ public class MemberCouponService {
         validateIssueDate(memberCouponRequest);
         List<MemberCouponEntity> memberCouponEntities = memberCouponRepository.findByCouponIdAndMemberId(memberCouponRequest.couponId(), memberCouponRequest.memberId());
         validateMemberCouponSize(memberCouponEntities);
-        MemberCouponEntity memberCouponEntity = new MemberCouponEntity(memberCouponRequest.memberId(), memberCouponRequest.couponId(), false, memberCouponRequest.issueDate());
+        MemberCouponEntity memberCouponEntity = new MemberCouponEntity(memberCouponRequest.couponId(), memberCouponRequest.memberId(), false, memberCouponRequest.issueDate());
         return memberCouponRepository.save(memberCouponEntity);
     }
 
@@ -41,7 +41,7 @@ public class MemberCouponService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<MemberCouponEntity> findByMemberId(Long memberId) {
         return memberCouponRepository.findByMemberId(memberId);
     }

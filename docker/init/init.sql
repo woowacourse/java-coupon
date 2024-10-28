@@ -29,7 +29,5 @@ CREATE TABLE IF NOT EXISTS member_coupon (
     issued_date DATE NOT NULL,
     expiry_date DATE NOT NULL,
     created_at DATETIME NOT NULL,
-    modified_at DATETIME NOT NULL,
-    FOREIGN KEY (coupon_id) REFERENCES coupon(id),
-    FOREIGN KEY (member_id) REFERENCES member(id)
+    modified_at DATETIME NOT NULL
 );
