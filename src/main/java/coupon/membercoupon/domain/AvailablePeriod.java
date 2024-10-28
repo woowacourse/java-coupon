@@ -13,8 +13,17 @@ public class AvailablePeriod {
     private final LocalDateTime endDateTime;
 
     public AvailablePeriod(IssuedPeriod issuedPeriod) {
-        this.startDateTime = calculateStartDate(issuedPeriod);
-        this.endDateTime = calculateEndDate(issuedPeriod);
+        LocalDateTime startDateTime = calculateStartDate(issuedPeriod);
+        LocalDateTime endDateTime = calculateEndDate(issuedPeriod);
+        validateAvailablePeriod(startDateTime, endDateTime);
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+    }
+
+    private void validateAvailablePeriod(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        if (endDateTime.isBefore(startDateTime)) {
+            throw new IllegalArgumentException("사용 가능일[%s]과 사용 만료일[%s]이 부적절합니다.".formatted(startDateTime, endDateTime));
+        }
     }
 
     private LocalDateTime calculateStartDate(IssuedPeriod issuedPeriod) {

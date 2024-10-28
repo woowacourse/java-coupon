@@ -1,6 +1,7 @@
 package coupon.membercoupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.coupon.domain.IssuedPeriod;
 import java.time.LocalDate;
@@ -45,5 +46,18 @@ class AvailablePeriodTest {
 
         // then
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("이미 발급일이 지난 쿠폰은 사용이 불가능하다.")
+    @Test
+    void canNotAvailablePeriod() {
+        // given
+        LocalDateTime start = LocalDateTime.now().minusDays(7);
+        LocalDateTime end = LocalDateTime.now().minusDays(1);
+        IssuedPeriod issuedPeriod = new IssuedPeriod(start, end);
+
+        // when & then
+        assertThatThrownBy(() -> new AvailablePeriod(issuedPeriod))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
