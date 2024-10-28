@@ -5,6 +5,7 @@ import coupon.dto.CouponCreateRequest;
 import coupon.entity.Coupon;
 import coupon.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
+    @CachePut(key = "#result.id", value = "coupon", cacheManager = "replicationLagCacheManager")
     @Transactional
     public Coupon create(CouponCreateRequest request) {
         Coupon coupon = new Coupon(

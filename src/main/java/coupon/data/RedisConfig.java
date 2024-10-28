@@ -6,6 +6,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -34,12 +35,27 @@ public class RedisConfig {
         return new LettuceConnectionFactory(host, port);
     }
 
+    @Primary
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {
         RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(KEY_SERIALIZATION_PAIR)
                 .serializeValuesWith(VALUE_SERIALIZATION_PAIR)
                 .entryTtl(Duration.ofDays(30));
+
+        return RedisCacheManager
+                .RedisCacheManagerBuilder
+                .fromConnectionFactory(factory)
+                .cacheDefaults(cacheConfig)
+                .build();
+    }
+
+    @Bean
+    public CacheManager replicationLagCacheManager(RedisConnectionFactory factory) {
+        RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(KEY_SERIALIZATION_PAIR)
+                .serializeValuesWith(VALUE_SERIALIZATION_PAIR)
+                .entryTtl(Duration.ofMinutes(5));
 
         return RedisCacheManager
                 .RedisCacheManagerBuilder
