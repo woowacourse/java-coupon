@@ -9,6 +9,7 @@ import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
 import coupon.repository.PublishedCouponRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +31,7 @@ public class MemberCouponService {
         this.couponCache = couponCache;
     }
 
+    @Transactional
     public PublishedCoupon publishCoupon(Long memberId, Long couponId) {
         validatePublishedCount(memberId, couponId);
 
@@ -46,6 +48,7 @@ public class MemberCouponService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<MemberCouponDto> findMemberCoupon(Long memberId) {
         List<PublishedCoupon> publishedCoupons = publishedCouponRepository.findAllByMemberId(memberId);
         return publishedCoupons.stream()
