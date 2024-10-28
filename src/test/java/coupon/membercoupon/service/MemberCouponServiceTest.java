@@ -71,9 +71,7 @@ class MemberCouponServiceTest {
         }
 
         // then
-        assertDoesNotThrow(() -> {
-            memberCouponService.create(coupon.getId(), member.getId());
-        });
+        assertDoesNotThrow(() -> memberCouponService.create(coupon.getId(), member.getId()));
     }
 
     @Test

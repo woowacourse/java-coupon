@@ -6,16 +6,11 @@ import coupon.coupon.domain.CouponName;
 import coupon.coupon.domain.DiscountAmount;
 import coupon.coupon.domain.IssuablePeriod;
 import coupon.coupon.domain.MinimumOrderAmount;
-import coupon.coupon.repository.CouponRepository;
 import java.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CouponFixture {
-
-    @Autowired
-    private CouponRepository couponRepository;
 
     public static Coupon createCoupon() {
         return new Coupon(new CouponName("coupon"),
