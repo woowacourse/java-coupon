@@ -65,6 +65,11 @@ public class Coupon {
         this.endDate = endDate;
     }
 
+    public boolean isCouponIssuable() {
+        LocalDate today = LocalDate.now();
+        return today.equals(endDate.toLocalDate()) || today.isBefore(endDate.toLocalDate());
+    }
+
     private void validateCouponName(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("이름을 입력해주세요");
