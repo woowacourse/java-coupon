@@ -5,18 +5,22 @@ import coupon.domain.member.Member;
 import coupon.domain.membercoupon.MemberCoupon;
 import coupon.domain.membercoupon.MemberCouponRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberCouponService {
+public class MemberCouponWriteService {
 
     private static final int MAX_ISSUANCE_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
 
+    @CachePut(cacheNames = "member_coupon", key = "#memberCoupon.id")
+    @CacheEvict(cacheNames = "member_coupon", key = "'all'")
     public MemberCoupon create(MemberCoupon memberCoupon) {
         validate(memberCoupon);
         return memberCouponRepository.save(memberCoupon);

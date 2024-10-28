@@ -68,4 +68,9 @@ public class MemberCoupon {
     private LocalDateTime getExpiresAt(LocalDateTime createdAt) {
         return createdAt.plusDays(7).with(LocalTime.MAX);
     }
+
+    public boolean isAvailable() {
+        LocalDateTime now = LocalDateTime.now();
+        return !now.isAfter(expiresAt);
+    }
 }
