@@ -1,8 +1,10 @@
 package coupon.membercoupon.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponName;
@@ -12,6 +14,7 @@ import coupon.member.service.port.MemberRepository;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.service.port.MemberCouponRepository;
 
+@Transactional(readOnly = true)
 @Service
 public class MemberCouponService {
 
@@ -29,6 +32,7 @@ public class MemberCouponService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public void issueCoupon(final Long memberId, final String couponNameValue) {
         final Member member = getMember(memberId);
         final Coupon coupon = getCoupon(couponNameValue);
@@ -57,5 +61,10 @@ public class MemberCouponService {
         if (MemberCoupon.isCouponLimitReached(issuedCouponCount)) {
             throw new IllegalStateException("이미 쿠폰 발급 가능 횟수에 도달하였습니다.");
         }
+    }
+
+    public List<MemberCoupon> getMemberCoupons(final Long memberId) {
+        final Member member = getMember(memberId);
+        return memberCouponRepository.findAllByMember(member);
     }
 }

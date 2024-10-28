@@ -33,4 +33,11 @@ public class FakeMemberCouponRepository implements MemberCouponRepository {
             storage.add(memberCoupon);
         }
     }
+
+    @Override
+    public List<MemberCoupon> findAllByMember(final Member member) {
+        return storage.stream()
+                .filter(memberCoupon -> memberCoupon.getMember().equals(member))
+                .toList();
+    }
 }
