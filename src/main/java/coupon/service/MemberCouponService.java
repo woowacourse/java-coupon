@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberCouponService {
 
     private static final int MAX_MEMBER_COUPON_COUNT = 5;
+    private static final String CACHE_NAME = "member_coupon";
 
     private final MemberCouponRepository memberCouponRepository;
     private final CouponDBService couponDBService;
@@ -39,7 +40,7 @@ public class MemberCouponService {
         }
     }
 
-    @Cacheable(value = "member_coupon", key = "#member.id")
+    @Cacheable(value = CACHE_NAME, key = "#member.id")
     public List<MemberCouponResponse> findAllMemberCoupon(Member member) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(member.getId());
         return memberCoupons.stream()
