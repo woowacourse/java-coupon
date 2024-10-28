@@ -3,7 +3,6 @@ package coupon.service;
 import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.dto.CouponRequest;
-import coupon.dto.CouponResponse;
 import coupon.global.ReplicationLagFallback;
 import coupon.repository.CategoryRepository;
 import coupon.repository.CouponRepository;
@@ -26,20 +25,17 @@ public class CouponService {
     }
 
     @Transactional
-    public CouponResponse create(CouponRequest couponRequest) {
+    public Coupon create(CouponRequest couponRequest) {
         Category category = categoryRepository.findById(couponRequest.categoryId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
 
-        Coupon newCoupon = couponRepository.save(couponRequest.toEntity(category));
-
-        return CouponResponse.from(newCoupon);
+        return couponRepository.save(couponRequest.toEntity(category));
     }
 
     @Transactional(readOnly = true)
-    public CouponResponse getCoupon(Long couponId) {
-        Coupon coupon = couponRepository.findById(couponId)
+    public Coupon getCoupon(Long couponId) {
+        return couponRepository.findById(couponId)
                 .orElseGet(() -> replicationLagFallback.readFromWriter(() -> findById(couponId)));
-        return CouponResponse.from(coupon);
     }
 
     private Coupon findById(Long couponId) {
