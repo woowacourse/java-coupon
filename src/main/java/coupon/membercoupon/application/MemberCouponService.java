@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import coupon.coupon.application.CouponService;
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.domain.CouponRepository;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.domain.MemberCouponRepository;
 import coupon.membercoupon.dto.FindAllMemberCouponResponse;
@@ -18,7 +18,7 @@ public class MemberCouponService {
     private static final int MAX_COUPON_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponRepository couponRepository;
+    private final CouponService couponService;
 
     public void createMemberCoupon(MemberCoupon memberCoupon) {
         validateIssuedCouponCount(memberCoupon.getMemberId());
@@ -26,7 +26,6 @@ public class MemberCouponService {
     }
 
     private void validateIssuedCouponCount(Long memberId) {
-        System.out.printf("MemberCouponService.createMemberCoupon: %s%n", memberCouponRepository.countByMemberId(memberId));
         if (memberCouponRepository.countByMemberId(memberId) >= MAX_COUPON_COUNT) {
             throw new IllegalArgumentException("발급 가능한 최대 쿠폰 개수를 초과하였습니다. memberId: " + memberId);
         }
@@ -44,6 +43,6 @@ public class MemberCouponService {
                 .map(MemberCoupon::getCouponId)
                 .toList();
 
-        return couponRepository.findAllByIdIn(couponId);
+        return couponService.getAllByIdIn(couponId);
     }
 }
