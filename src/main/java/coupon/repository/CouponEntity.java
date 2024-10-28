@@ -5,10 +5,13 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import coupon.domain.Category;
 import coupon.domain.Coupon;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,6 +36,10 @@ public class CouponEntity extends BaseTimeEntity {
     @Column(name = "MIN_ORDER_AMOUNT", nullable = false)
     private Integer minOrderAmount;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "CATEGORY", nullable = false)
+    private Category category;
+
     @Column(name = "ISSUED_START_DATE_TIME", nullable = false)
     private LocalDateTime issuedStartDateTime;
 
@@ -43,6 +50,7 @@ public class CouponEntity extends BaseTimeEntity {
         this.name = coupon.getName().getValue();
         this.discountAmount = coupon.getDiscountAmount().getValue();
         this.minOrderAmount = coupon.getMinOrderAmount().getAmount();
+        this.category = coupon.getCategory();
         this.issuedStartDateTime = coupon.getIssuancePeriod().getStartDateTime();
         this.issuedEndDateTime = coupon.getIssuancePeriod().getEndDateTime();
     }
