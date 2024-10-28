@@ -4,17 +4,17 @@ import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import org.springframework.data.redis.core.RedisHash;
 
 @Entity
+@Table(name = "member_coupon")
 public class MemberCoupon {
 
     private static final long COUPON_AVAILABLE_DURATION = 7;
@@ -42,13 +42,15 @@ public class MemberCoupon {
             Member member,
             Coupon coupon
     ) {
-        validateIssuedAt(coupon, issuedAt);
-        validateExpiration(expiredAt);
+        LocalDateTime temporalIssuedAt = LocalDateTime.now();
+        LocalDateTime temporalExpiredAt = LocalDate.now().plusDays(COUPON_AVAILABLE_DURATION).atTime(LocalTime.MAX);
+        validateIssuedAt(coupon, temporalIssuedAt);
+        validateExpiration(temporalExpiredAt);
         this.memberId = member.getId();
         this.couponId = coupon.getId();
         this.isUsed = false;
-        this.issuedAt = LocalDateTime.now();
-        this.expiredAt = issuedAt.toLocalDate().plusDays(COUPON_AVAILABLE_DURATION).atTime(LocalTime.MAX);
+        this.issuedAt = temporalIssuedAt;
+        this.expiredAt = temporalExpiredAt;
     }
 
     private void validateIssuedAt(Coupon coupon, LocalDateTime issuedAt) {
