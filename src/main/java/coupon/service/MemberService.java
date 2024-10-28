@@ -1,5 +1,6 @@
 package coupon.service;
 
+import coupon.aspect.ImmediateRead;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
@@ -22,6 +23,7 @@ public class MemberService {
         this.couponRepository = couponRepository;
     }
 
+    @ImmediateRead
     @Transactional(readOnly = true)
     public List<Coupon> getCoupons(Long memberId) {
         Member member = memberRepository.findById(memberId)
