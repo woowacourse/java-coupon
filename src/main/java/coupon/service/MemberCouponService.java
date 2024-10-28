@@ -1,7 +1,10 @@
 package coupon.service;
 
+import coupon.domain.EmptyMemberCouponDetails;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
+import coupon.domain.MemberCouponDetails;
+import coupon.entity.CouponEntity;
 import coupon.entity.MemberCouponEntity;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,12 +39,10 @@ public class MemberCouponService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemberCoupon> getCoupons(Member member) {
+    public List<MemberCouponDetails> getCoupons(Member member) {
         List<MemberCouponEntity> memberCoupons = getMemberCoupon(member.getId());
 
-        return memberCoupons.stream()
-                .map(MemberCouponEntity::toMemberCoupon)
-                .toList();
+        return getCouponDetails(memberCoupons);
     }
 
     private List<MemberCouponEntity> getMemberCoupon(long memberId) {
@@ -49,5 +51,28 @@ public class MemberCouponService {
             return transactionSupporter.executeNewTransaction(() -> memberCouponRepository.findAllByMemberId(memberId));
         }
         return memberCoupons;
+    }
+
+    private List<MemberCouponDetails> getCouponDetails(List<MemberCouponEntity> memberCouponEntities) {
+        return memberCouponEntities.stream()
+                .map(MemberCouponEntity::toMemberCoupon)
+                .map(this::toMemberCouponDetails)
+                .filter(MemberCouponDetails::isNotEmpty)
+                .toList();
+    }
+
+    private MemberCouponDetails toMemberCouponDetails(MemberCoupon memberCoupon) {
+        Optional<CouponEntity> optionalCouponEntity = couponRepository.findById(memberCoupon.getCouponId());
+        if (optionalCouponEntity.isEmpty()) {
+            optionalCouponEntity = getCouponRetry(memberCoupon.getCouponId());
+        }
+
+        return optionalCouponEntity
+                .map(couponEntity -> new MemberCouponDetails(memberCoupon, couponEntity.toCoupon()))
+                .orElseGet(EmptyMemberCouponDetails::new);
+    }
+
+    private Optional<CouponEntity> getCouponRetry(long id) {
+        return transactionSupporter.executeNewTransaction(() -> couponRepository.findById(id));
     }
 }

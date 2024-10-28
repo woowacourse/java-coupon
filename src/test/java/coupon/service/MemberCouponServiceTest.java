@@ -1,9 +1,11 @@
 package coupon.service;
 
-import coupon.domain.MemberCoupon;
+import coupon.domain.MemberCouponDetails;
 import coupon.entity.CouponEntity;
+import coupon.entity.MemberCouponEntity;
 import coupon.entity.MemberEntity;
 import coupon.repository.CouponRepository;
+import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,12 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
 class MemberCouponServiceTest {
@@ -37,6 +41,8 @@ class MemberCouponServiceTest {
 
     MemberEntity member;
     CouponEntity coupon;
+    @Autowired
+    private MemberCouponRepository memberCouponRepository;
 
     @BeforeEach
     void setUp() throws InterruptedException {
@@ -74,13 +80,31 @@ class MemberCouponServiceTest {
         assertThatThrownBy(() -> memberCouponService.issue(coupon.toCoupon().getId(), member.toMember()));
     }
 
-    @DisplayName("발급 쿠폰을 조회한다.")
+    @DisplayName("발급 쿠폰 목록을 조회한다.")
     @Test
     void getMemberCoupons() {
         memberCouponService.issue(coupon.toCoupon().getId(), member.toMember());
 
-        List<MemberCoupon> memberCoupons = memberCouponService.getCoupons(member.toMember());
+        List<MemberCouponDetails> coupons = memberCouponService.getCoupons(member.toMember());
 
-        assertThat(memberCoupons).hasSize(1);
+        assertAll(
+                () -> assertThat(coupons).hasSize(1),
+                () -> assertThat(coupons.get(0).getCoupon()).isNotNull()
+        );
+    }
+
+    @DisplayName("쿠폰이 존재하지 않아도 다른 목록은 조회 가능하다.")
+    @Test
+    void getMemberCouponsWithoutAbsentCoupon() {
+        memberCouponService.issue(coupon.toCoupon().getId(), member.toMember());
+        LocalDateTime now = LocalDateTime.now();
+        memberCouponRepository.save(new MemberCouponEntity(2L, 0L, member, false, now, now.plusDays(7)));
+
+        List<MemberCouponDetails> coupons = memberCouponService.getCoupons(member.toMember());
+
+        assertAll(
+                () -> assertThat(coupons).hasSize(1),
+                () -> assertThat(coupons.get(0).getCoupon()).isNotNull()
+        );
     }
 }
