@@ -1,6 +1,12 @@
 package coupon.coupon.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import coupon.advice.DomainException;
+import coupon.coupon.exception.CouponIssueLimitExceededException;
+import coupon.coupon.exception.CouponIssueTimeException;
 import coupon.util.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.AccessLevel;
@@ -20,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "coupon")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Coupon extends BaseEntity {
+public class Coupon extends BaseEntity implements Serializable {
 
     private static final int NAME_LENGTH_LIMIT = 30;
     private static final int MIN_DISCOUNT_AMOUNT = 1000;
@@ -49,15 +56,25 @@ public class Coupon extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private CouponCategory couponCategory;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(name = "issue_started_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueStartedAt;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(name = "issue_ended_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueEndedAt;
 
+    @Column(name = "issue_count")
+    private Long issueCount;
+
+    @Column(name = "issue_limit")
+    private Long issueLimit;
+
     public Coupon(
             Long id, String name, int discountAmount, int minimumOrderPrice, CouponCategory couponCategory,
-            LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
+            LocalDateTime issueStartedAt, LocalDateTime issueEndedAt, long issueLimit) {
 
         validate(name, discountAmount, minimumOrderPrice, issueStartedAt, issueEndedAt);
 
@@ -68,12 +85,14 @@ public class Coupon extends BaseEntity {
         this.couponCategory = couponCategory;
         this.issueStartedAt = issueStartedAt;
         this.issueEndedAt = issueEndedAt;
+        this.issueCount = 0L;
+        this.issueLimit = issueLimit;
     }
 
     public Coupon(
             String name, int discountAmount, int minimumOrderPrice, CouponCategory couponCategory,
-            LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
-        this(null, name, discountAmount, minimumOrderPrice, couponCategory, issueStartedAt, issueEndedAt);
+            LocalDateTime issueStartedAt, LocalDateTime issueEndedAt, long issueLimit) {
+        this(null, name, discountAmount, minimumOrderPrice, couponCategory, issueStartedAt, issueEndedAt, issueLimit);
     }
 
     private void validate(
@@ -133,6 +152,16 @@ public class Coupon extends BaseEntity {
         }
     }
 
+    public void issue() {
+        if (this.issueStartedAt.isAfter(LocalDateTime.now()) || this.issueEndedAt.isBefore(LocalDateTime.now())) {
+            throw new CouponIssueTimeException();
+        }
+        if (this.issueLimit <= this.issueCount) {
+            throw new CouponIssueLimitExceededException();
+        }
+        this.issueCount++;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -148,5 +177,20 @@ public class Coupon extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Coupon{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", discountAmount=" + discountAmount +
+                ", minimumOrderPrice=" + minimumOrderPrice +
+                ", couponCategory=" + couponCategory +
+                ", issueStartedAt=" + issueStartedAt +
+                ", issueEndedAt=" + issueEndedAt +
+                ", issueCount=" + issueCount +
+                ", issueLimit=" + issueLimit +
+                '}';
     }
 }
