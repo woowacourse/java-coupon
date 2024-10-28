@@ -3,6 +3,9 @@ package coupon.coupon.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import lombok.Getter;
+
+@Getter
 public class Coupon {
 
     // TODO : 쿠폰의 만료 기간을 각 쿠폰이 필드로 가지도록 개선

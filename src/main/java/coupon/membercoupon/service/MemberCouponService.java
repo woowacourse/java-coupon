@@ -3,6 +3,7 @@ package coupon.membercoupon.service;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,9 +13,10 @@ import coupon.coupon.service.port.CouponRepository;
 import coupon.member.domain.Member;
 import coupon.member.service.port.MemberRepository;
 import coupon.membercoupon.domain.MemberCoupon;
+import coupon.membercoupon.service.dto.GetMemberCouponsResponse;
 import coupon.membercoupon.service.port.MemberCouponRepository;
 
-@Transactional(readOnly = true)
+@Transactional
 @Service
 public class MemberCouponService {
 
@@ -63,8 +65,14 @@ public class MemberCouponService {
         }
     }
 
-    public List<MemberCoupon> getMemberCoupons(final Long memberId) {
+    @Cacheable(
+            cacheNames = "getMemberCoupons",
+            key = "'memberCoupons:memberId:' + #memberId",
+            cacheManager = "memberCouponsCacheManager")
+    public List<GetMemberCouponsResponse> getMemberCoupons(final Long memberId) {
         final Member member = getMember(memberId);
-        return memberCouponRepository.findAllByMember(member);
+        final List<GetMemberCouponsResponse> list = memberCouponRepository.findAllByMember(member).stream()
+                .map(memberCoupon -> new GetMemberCouponsResponse(memberCoupon.getCoupon().getNameValue())).toList();
+        return list;
     }
 }

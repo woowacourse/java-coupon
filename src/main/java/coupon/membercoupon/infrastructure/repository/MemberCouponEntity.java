@@ -9,8 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import org.springframework.data.annotation.CreatedDate;
-
 import coupon.membercoupon.domain.MemberCoupon;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,7 +33,6 @@ public class MemberCouponEntity {
     @Column(name = "is_used", nullable = false)
     private boolean isUsed;
 
-    @CreatedDate
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
