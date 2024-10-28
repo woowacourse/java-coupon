@@ -13,7 +13,6 @@ import coupon.coupon.service.port.CouponRepository;
 import coupon.member.domain.Member;
 import coupon.member.service.port.MemberRepository;
 import coupon.membercoupon.domain.MemberCoupon;
-import coupon.membercoupon.service.dto.GetMemberCouponsResponse;
 import coupon.membercoupon.service.port.MemberCouponRepository;
 
 @Transactional
@@ -69,10 +68,8 @@ public class MemberCouponService {
             cacheNames = "getMemberCoupons",
             key = "'memberCoupons:memberId:' + #memberId",
             cacheManager = "memberCouponsCacheManager")
-    public List<GetMemberCouponsResponse> getMemberCoupons(final Long memberId) {
+    public List<MemberCoupon> getMemberCoupons(final Long memberId) {
         final Member member = getMember(memberId);
-        final List<GetMemberCouponsResponse> list = memberCouponRepository.findAllByMember(member).stream()
-                .map(memberCoupon -> new GetMemberCouponsResponse(memberCoupon.getCoupon().getNameValue())).toList();
-        return list;
+        return memberCouponRepository.findAllByMember(member);
     }
 }

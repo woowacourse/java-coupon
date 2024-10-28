@@ -57,27 +57,27 @@ public class Coupon {
         this.issuancePeriod = issuancePeriod;
     }
 
-    public String getNameValue() {
+    public String giveNameValue() {
         return name.getValue();
     }
 
-    public int getMinimumOrderAmountValue() {
+    public int giveMinimumOrderAmountValue() {
         return minimumOrderAmount.getValue();
     }
 
-    public int getDiscountAmountValue() {
+    public int giveDiscountAmountValue() {
         return DiscountAmount.getValue();
     }
 
-    public ProductionCategory getProductionCategory() {
-        return productionCategory;
-    }
+//    public ProductionCategory getProductionCategory() {
+//        return productionCategory;
+//    }
 
-    public LocalDateTime getCouponStartDateValue() {
+    public LocalDateTime giveCouponStartDateValue() {
         return issuancePeriod.getStartDate();
     }
 
-    public LocalDateTime getCouponEndDateValue() {
+    public LocalDateTime giveCouponEndDateValue() {
         return issuancePeriod.getEndDate();
     }
 
@@ -97,7 +97,7 @@ public class Coupon {
         return Objects.hashCode(name);
     }
 
-    public Long getId() {
-        return id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
 }

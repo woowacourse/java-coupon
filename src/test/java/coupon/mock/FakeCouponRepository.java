@@ -15,7 +15,7 @@ public class FakeCouponRepository implements CouponRepository {
     @Override
     public Optional<Coupon> findByName(final CouponName name) {
         return storage.stream()
-                .filter(coupon -> coupon.getNameValue().equals(name.getValue())).findAny();
+                .filter(coupon -> coupon.giveNameValue().equals(name.getValue())).findAny();
     }
 
     @Override

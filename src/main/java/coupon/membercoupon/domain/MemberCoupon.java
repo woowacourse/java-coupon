@@ -2,6 +2,12 @@ package coupon.membercoupon.domain;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 import coupon.coupon.domain.Coupon;
 import coupon.member.domain.Member;
 import lombok.Getter;
@@ -15,7 +21,13 @@ public class MemberCoupon {
     private final Member member;
     private final Coupon coupon;
     private final boolean isUsed;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private final LocalDateTime createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private final LocalDateTime expiredAt;
 
     public static boolean isCouponLimitReached(final int currentIssuesMemberCouponCount) {
@@ -83,15 +95,15 @@ public class MemberCoupon {
         }
     }
 
-    public Long getId() {
-        return id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
 
-    public Long getMemberId() {
+    public Long giveMemberId() {
         return member.getId();
     }
 
-    public Long getCouponId() {
+    public Long giveCouponId() {
         return coupon.getId();
     }
 
@@ -99,11 +111,11 @@ public class MemberCoupon {
         return isUsed;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getExpiredAt() {
-        return expiredAt;
-    }
+    //    public LocalDateTime getCreatedAt() {
+//        return createdAt;
+//    }
+//
+//    public LocalDateTime getExpiredAt() {
+//        return expiredAt;
+//    }
 }

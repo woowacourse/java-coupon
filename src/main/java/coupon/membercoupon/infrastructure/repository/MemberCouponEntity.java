@@ -42,8 +42,8 @@ public class MemberCouponEntity {
     public MemberCouponEntity(final MemberCoupon memberCoupon) {
         this(
                 memberCoupon.getId(),
-                memberCoupon.getMemberId(),
-                memberCoupon.getCouponId(),
+                memberCoupon.giveMemberId(),
+                memberCoupon.giveCouponId(),
                 memberCoupon.getIsUsed(),
                 memberCoupon.getCreatedAt(),
                 memberCoupon.getExpiredAt()

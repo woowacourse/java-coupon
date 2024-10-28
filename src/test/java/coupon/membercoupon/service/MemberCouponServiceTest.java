@@ -61,8 +61,8 @@ class MemberCouponServiceTest {
 
         // Then
         final MemberCoupon savedMemberCoupon = memberCouponRepository.storage.get(0);
-        assertThat(savedMemberCoupon.getMemberId()).isEqualTo(1L);
-        assertThat(savedMemberCoupon.getCoupon().getNameValue()).isEqualTo("싱싱한 켈리 할인 쿠폰");
+        assertThat(savedMemberCoupon.giveMemberId()).isEqualTo(1L);
+        assertThat(savedMemberCoupon.getCoupon().giveNameValue()).isEqualTo("싱싱한 켈리 할인 쿠폰");
     }
 
     @DisplayName("특정 회원의 쿠폰 정보를 모두 조회한다.")
@@ -104,8 +104,8 @@ class MemberCouponServiceTest {
             softly.assertThat(memberCoupons.size()).isEqualTo(5);
 
             final MemberCoupon memberCoupon = memberCoupons.get(0);
-            softly.assertThat(memberCoupon.getMemberId()).isEqualTo(1L);
-            softly.assertThat(memberCoupon.getCoupon().getNameValue()).isEqualTo("싱싱한 켈리 할인 쿠폰");
+            softly.assertThat(memberCoupon.giveMemberId()).isEqualTo(1L);
+            softly.assertThat(memberCoupon.getCoupon().giveNameValue()).isEqualTo("싱싱한 켈리 할인 쿠폰");
             softly.assertThat(memberCoupon.getIsUsed()).isEqualTo(false);
         });
     }

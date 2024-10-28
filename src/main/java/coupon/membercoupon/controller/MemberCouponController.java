@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.service.MemberCouponService;
-import coupon.membercoupon.service.dto.GetMemberCouponsResponse;
 
 @RestController
 public class MemberCouponController {
@@ -19,7 +19,7 @@ public class MemberCouponController {
     }
 
     @GetMapping("/api/members/{memberId}/coupons")
-    public List<GetMemberCouponsResponse> memberCoupons(@PathVariable("memberId") final Long memberId) {
+    public List<MemberCoupon> memberCoupons(@PathVariable("memberId") final Long memberId) {
         return memberCouponService.getMemberCoupons(memberId);
     }
 }
