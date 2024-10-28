@@ -19,12 +19,12 @@ public class CouponService {
     }
 
     @Transactional
-//    @CachePut(value = "coupon", key = "#result.id")
+    @CachePut(value = "coupon", key = "#result.id")
     public Coupon create(Coupon coupon) {
         return couponRepository.save(coupon);
     }
 
-//    @Cacheable(value = "coupon", key = "#id")
+    @Cacheable(value = "coupon", key = "#id")
     public Coupon getCoupon(long id) {
         return couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰을 찾을 수 없습니다. id = " + id));
