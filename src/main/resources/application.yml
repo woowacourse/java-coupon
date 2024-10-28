@@ -15,6 +15,13 @@ spring:
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 36379
+      ttl: 7D
 
 coupon:
   datasource:
