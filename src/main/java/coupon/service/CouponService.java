@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import coupon.domain.Coupon;
 import coupon.exception.NotFoundCouponException;
-import coupon.repository.CouponEntity;
+import coupon.repository.entity.CouponEntity;
 import coupon.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 

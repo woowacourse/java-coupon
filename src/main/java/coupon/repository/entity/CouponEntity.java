@@ -1,4 +1,4 @@
-package coupon.repository;
+package coupon.repository.entity;
 
 import java.time.LocalDateTime;
 
@@ -10,12 +10,10 @@ import jakarta.persistence.Id;
 
 import coupon.domain.Coupon;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class CouponEntity {
@@ -55,7 +53,6 @@ public class CouponEntity {
 
     public static CouponEntity toEntity(final Coupon coupon) {
         return new CouponEntity(
-                null,
                 coupon.getName().getValue(),
                 coupon.getDiscountAmount().getValue(),
                 coupon.getMinimumOrderAmount().getValue(),
