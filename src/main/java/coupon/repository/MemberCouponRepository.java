@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
-    int countByMemberAndCoupon(Member member, Coupon coupon);
+    int countByMemberAndCouponId(Member member, long couponId);
 
     List<MemberCoupon> findByMember(Member member);
 }

@@ -46,13 +46,10 @@ class MemberCouponServiceTest {
         LocalDateTime start = LocalDateTime.now();
         LocalDateTime end = start.plusDays(5);
         coupon = couponRepository.save(new Coupon("쿠폰", 1000, 5000, Category.FASHION, start, end));
-        //TODO 없앨 예정
-        Thread.sleep(60000);
     }
 
     @Test
     @DisplayName("쿠폰 발급 성공")
-    @Transactional
     void testIssueCouponSuccess() {
         // when
         MemberCoupon memberCoupon = memberCouponService.issueCoupon(member.getId(), coupon.getId());
@@ -60,18 +57,16 @@ class MemberCouponServiceTest {
         // then
         assertAll(
                 () -> assertThat(memberCoupon.getMember().getId()).isEqualTo(member.getId()),
-                () -> assertThat(memberCoupon.getCoupon().getId()).isEqualTo(coupon.getId()),
-                () -> assertThat(memberCouponRepository.countByMemberAndCoupon(member, coupon)).isEqualTo(1)
+                () -> assertThat(memberCouponRepository.countByMemberAndCouponId(member, coupon.getId())).isEqualTo(1)
         );
     }
 
     @Test
     @DisplayName("쿠폰 발급 실패 : 최대 발급 제한 초과한 경우")
-    @Transactional
     void testIssueCouponExceedsLimit() {
         // given
         for (int i = 0; i < 5; i++) {
-            memberCouponRepository.save(new MemberCoupon(coupon, member));
+            memberCouponRepository.save(new MemberCoupon(coupon.getId(), member));
         }
 
         // when & then
@@ -84,7 +79,7 @@ class MemberCouponServiceTest {
     @DisplayName("회원의 쿠폰 목록 조회 성공")
     void testReadMemberCouponsByMember_Success() {
         // given
-        memberCouponRepository.save(new MemberCoupon(coupon, member));
+        memberCouponRepository.save(new MemberCoupon(coupon.getId(), member));
 
         // when
         List<MemberCouponResponse> coupons = memberCouponService.readMemberCouponsByMember(member.getId());

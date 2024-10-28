@@ -1,38 +1,36 @@
 package coupon.service;
 
 import coupon.domain.Coupon;
+import coupon.domain.Member;
 import coupon.repository.CouponRepository;
+import coupon.repository.MemberRepository;
 import coupon.util.TransactionWriterExecutor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class CouponService {
+public class MemberService {
 
-    private final CouponRepository couponRepository;
+    private final MemberRepository memberRepository;
     private final TransactionWriterExecutor transactionWriterExecutor;
 
-
-    public long create(Coupon coupon) {
-        return couponRepository.save(coupon).getId();
+    public long create(Member member) {
+        return memberRepository.save(member).getId();
     }
 
-    @Cacheable(key = "#id", value = "coupon")
-    public Coupon read(Long id) {
-        return couponRepository.findById(id).
+    public Member read(Long id) {
+        return memberRepository.findById(id).
                 orElse(findById(id));
     }
 
-    private Coupon findById(Long id) {
+    private Member findById(Long id) {
         return transactionWriterExecutor.execute(
-                () -> couponRepository.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("쿠폰이 없습니다. id=" + id))
+                () -> memberRepository.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("멤버가 없습니다. id=" + id))
         );
     }
 }

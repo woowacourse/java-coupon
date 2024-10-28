@@ -19,28 +19,25 @@ public class MemberCouponService {
     private static final int MAX_COUPON_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponRepository couponRepository;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
+    private final CouponService couponService;
 
-    @Transactional
     public MemberCoupon issueCoupon(long memberId, long couponId) {
-        Member member = memberRepository.getById(memberId);
-        Coupon coupon = couponRepository.getById(couponId);
-        validateCouponCountPerMember(member, coupon);
-        return memberCouponRepository.save(new MemberCoupon(coupon, member));
+        Member member = memberService.read(memberId);
+        validateCouponCountPerMember(member, couponId);
+        return memberCouponRepository.save(new MemberCoupon(couponId, member));
     }
 
-    @Transactional(readOnly = true)
     public List<MemberCouponResponse> readMemberCouponsByMember(long memberId) {
-        Member member = memberRepository.getById(memberId);
+        Member member = memberService.read(memberId);
         List<MemberCoupon> memberCoupons = memberCouponRepository.findByMember(member);
         return memberCoupons.stream()
-                .map(MemberCouponResponse::from)
+                .map(memberCoupon -> MemberCouponResponse.of(memberCoupon, couponService.read(memberCoupon.getCouponId())))
                 .toList();
     }
 
-    private void validateCouponCountPerMember(Member member, Coupon coupon) {
-        int couponCountPerMember = memberCouponRepository.countByMemberAndCoupon(member, coupon);
+    private void validateCouponCountPerMember(Member member, long couponId) {
+        int couponCountPerMember = memberCouponRepository.countByMemberAndCouponId(member, couponId);
         if (couponCountPerMember >= MAX_COUPON_COUNT) {
             throw new IllegalArgumentException("멤버 한 명당 동일한 쿠폰은 5장까지 발급 가능합니다.");
         }
