@@ -9,8 +9,9 @@ import coupon.domain.membercounpon.MemberCouponRepository;
 import coupon.executor.TransactionExecutor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.Cache.ValueWrapper;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class CouponService {
     private final MemberCouponRepository memberCouponRepository;
     private final MemberRepository memberRepository;
     private final TransactionExecutor transactionExecutor;
+    private final CacheManager cacheManager;
 
     @CacheEvict(value = COUPON_CACHE_NAME, key = "#p0")
     @Transactional
@@ -42,9 +44,12 @@ public class CouponService {
         return savedCoupon;
     }
 
-    @Cacheable(value = COUPON_CACHE_NAME, key = "#p0")
     @Transactional(readOnly = true)
     public List<Coupon> findAllCoupons(Long memberId) {
+        ValueWrapper valueWrapper = cacheManager.getCache(COUPON_CACHE_NAME).get(memberId);
+        if (valueWrapper != null) {
+            return (List<Coupon>) valueWrapper.get();
+        }
         Member member = memberRepository.findById(memberId)
                 .orElseGet(() -> getMemberWithWriteDb(memberId));
 
@@ -52,7 +57,9 @@ public class CouponService {
         List<Long> couponIds = memberCoupons.stream()
                 .map(MemberCoupon::getCouponId)
                 .toList();
-        return getCoupons(couponIds);
+        List<Coupon> coupons = getCoupons(couponIds);
+        cacheManager.getCache(COUPON_CACHE_NAME).put(memberId, coupons);
+        return coupons;
     }
 
     @Transactional(readOnly = true)
