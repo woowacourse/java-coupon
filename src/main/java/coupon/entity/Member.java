@@ -44,10 +44,6 @@ public class Member extends BaseEntity {
         return MemberCoupon.issueOf(this, couponId, issuedAt);
     }
 
-    public MemberDomain toDomain() {
-        return new MemberDomain(name);
-    }
-
     public void validateCanIssueMember() {
         if (memberCoupons.size() > MAX_ISSUE_COUPON) {
             throw new CouponException(ErrorConstant.ISSUED_COUPON_MAX);
