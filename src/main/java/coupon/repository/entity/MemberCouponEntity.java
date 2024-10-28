@@ -1,4 +1,4 @@
-package coupon.repository;
+package coupon.repository.entity;
 
 import java.time.LocalDateTime;
 
@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import coupon.domain.MemberCoupon;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -46,5 +47,15 @@ public class MemberCouponEntity {
         this.isUsed = isUsed;
         this.issuedDate = issuedDate;
         this.expirationDate = expirationDate;
+    }
+
+    public static MemberCouponEntity toEntity(final MemberCoupon memberCoupon) {
+        return new MemberCouponEntity(
+                memberCoupon.getMemberId(),
+                memberCoupon.getCouponId(),
+                memberCoupon.isUsed(),
+                memberCoupon.getIssuedDate(),
+                memberCoupon.getExpirationDate()
+        );
     }
 }
