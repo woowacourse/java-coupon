@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 
 @Entity
@@ -17,13 +15,11 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
+    @Column(nullable = false, name = "coupon_id")
+    private long couponId;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column(nullable = false, name = "member_id")
+    private long memberId;
 
     @Column(nullable = false, name = "is_used")
     private boolean isUsed;
@@ -34,28 +30,20 @@ public class MemberCoupon {
     protected MemberCoupon() {
     }
 
-    public MemberCoupon(Coupon coupon, Member member, LocalDate issueDate) {
-        validate(coupon, member, issueDate);
-        this.coupon = coupon;
-        this.member = member;
+    public MemberCoupon(long couponId, long memberId, LocalDate issueDate) {
+        validate(issueDate);
+        this.couponId = couponId;
+        this.memberId = memberId;
         this.issueDate = issueDate;
         this.isUsed = false;
     }
 
-    public MemberCoupon(Coupon coupon, Member member) {
-        this(coupon, member, LocalDate.now());
+    public MemberCoupon(long couponId, long memberId) {
+        this(couponId, memberId, LocalDate.now());
     }
 
-    private void validate(Coupon coupon, Member member, LocalDate issueDate) {
-        validateCoupon(coupon);
-        validateMember(member);
+    private void validate(LocalDate issueDate) {
         validateIssueDate(issueDate);
-    }
-
-    private void validateCoupon(Coupon coupon) {
-        if (coupon == null) {
-            throw new IllegalArgumentException("쿠폰은 필수입니다.");
-        }
     }
 
     private void validateMember(Member member) {
@@ -84,5 +72,21 @@ public class MemberCoupon {
 
     public boolean isUsed() {
         return isUsed;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public long getCouponId() {
+        return couponId;
+    }
+
+    public long getMemberId() {
+        return memberId;
+    }
+
+    public LocalDate getIssueDate() {
+        return issueDate;
     }
 }

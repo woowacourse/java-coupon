@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.dto.CouponRequest;
+import coupon.dto.MemberCouponRequest;
 import coupon.dto.MemberRequest;
 import java.time.LocalDate;
 import java.util.List;
@@ -53,7 +54,7 @@ class CouponServiceTest {
         Member member = memberService.create(new MemberRequest("낙낙"));
 
         // when & then
-        assertThatThrownBy(() -> couponService.issueCoupon(coupon, member))
+        assertThatThrownBy(() -> couponService.issueCoupon(new MemberCouponRequest(coupon.getId(), member.getId())))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("쿠폰을 발급할 수 있는 기간이 아닙니다.");
     }

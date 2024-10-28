@@ -5,10 +5,14 @@ import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
 import coupon.dto.CouponRequest;
+import coupon.dto.MemberCouponRequest;
+import coupon.dto.MemberCouponResponse;
 import coupon.global.ReplicationLagFallback;
 import coupon.repository.CategoryRepository;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
+import coupon.repository.MemberRepository;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,16 +23,19 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final CategoryRepository categoryRepository;
     private final MemberCouponRepository memberCouponRepository;
+    private final MemberRepository memberRepository;
 
     private final ReplicationLagFallback replicationLagFallback;
 
     public CouponService(CouponRepository couponRepository,
                          CategoryRepository categoryRepository,
                          MemberCouponRepository memberCouponRepository,
+                         MemberRepository memberRepository,
                          ReplicationLagFallback replicationLagFallback) {
         this.couponRepository = couponRepository;
         this.categoryRepository = categoryRepository;
         this.memberCouponRepository = memberCouponRepository;
+        this.memberRepository = memberRepository;
         this.replicationLagFallback = replicationLagFallback;
     }
 
@@ -41,9 +48,11 @@ public class CouponService {
     }
 
     @Transactional
-    public MemberCoupon issueCoupon(Coupon coupon, Member member) {
+    public MemberCoupon issueCoupon(MemberCouponRequest request) {
+        Coupon coupon = getCoupon(request.couponId());
+        Member member = getMember(request.memberId());
         validate(coupon, member);
-        return memberCouponRepository.save(new MemberCoupon(coupon, member));
+        return memberCouponRepository.save(new MemberCoupon(coupon.getId(), member.getId()));
     }
 
     private void validate(Coupon coupon, Member member) {
@@ -51,20 +60,39 @@ public class CouponService {
             throw new IllegalArgumentException("쿠폰을 발급할 수 있는 기간이 아닙니다.");
         }
 
-        if (memberCouponRepository.countByCouponAndMember(coupon, member) >= MAX_COUPON_COUNT) {
+        if (memberCouponRepository.countByCouponIdAndMemberId(coupon.getId(), member.getId()) >= MAX_COUPON_COUNT) {
             throw new IllegalArgumentException(
                     String.format("멤버당 동일한 쿠폰은 최대 %d개만 발급 가능합니다.", MAX_COUPON_COUNT));
         }
     }
 
     @Transactional(readOnly = true)
-    public Coupon getCoupon(Long couponId) {
+    public Coupon getCoupon(long couponId) {
         return couponRepository.findById(couponId)
                 .orElseGet(() -> replicationLagFallback.readFromWriter(() -> findById(couponId)));
     }
 
-    private Coupon findById(Long couponId) {
+    private Coupon findById(long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
+    }
+
+    private Member getMember(long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버입니다."));
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<MemberCouponResponse> getMemberCoupon(long memberId) {
+        return memberCouponRepository.findAllByMemberId(memberId)
+                .stream()
+                .map(this::toMemberCouponResponse)
+                .toList();
+    }
+
+    private MemberCouponResponse toMemberCouponResponse(MemberCoupon memberCoupon) {
+        Coupon coupon = getCoupon(memberCoupon.getCouponId());
+        return MemberCouponResponse.of(memberCoupon, coupon);
     }
 }
