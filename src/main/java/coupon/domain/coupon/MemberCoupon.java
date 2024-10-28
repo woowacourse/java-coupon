@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberCoupon {
 
+    private static final int COUPON_USABLE_DATE = 6;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,13 +48,17 @@ public class MemberCoupon {
         this.coupon = coupon;
         this.isUsed = false;
         this.issuedAt = issuedAt;
-        this.expiredAt = LocalDateTime.of(issuedAt.toLocalDate().plusDays(6), LocalTime.MAX);
+        this.expiredAt = getExpiredAt(issuedAt);
     }
 
     private void validateCoupon(Coupon coupon, LocalDateTime issuedAt) {
         if (!coupon.isIssuable(issuedAt)) {
             throw new CouponException("쿠폰 발급 기간이 아닙니다.");
         }
+    }
+
+    private LocalDateTime getExpiredAt(LocalDateTime issuedAt) {
+        return LocalDateTime.of(issuedAt.toLocalDate().plusDays(COUPON_USABLE_DATE), LocalTime.MAX);
     }
 
     public boolean isExpired() {
