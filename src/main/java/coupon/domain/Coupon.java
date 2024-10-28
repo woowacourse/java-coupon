@@ -49,6 +49,12 @@ public class Coupon {
     protected Coupon() {
     }
 
+    public Coupon(Long id, String name, Long minimumAmount, Long discountAmount, LocalDate startIssueDate,
+                  LocalDate endIssueDate, Category category) {
+        this(name, minimumAmount, discountAmount, startIssueDate, endIssueDate, category);
+        this.id = id;
+    }
+
     public Coupon(
             String name,
             Long minimumAmount,

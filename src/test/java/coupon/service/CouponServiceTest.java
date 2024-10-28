@@ -24,7 +24,8 @@ class CouponServiceTest {
     MemberService memberService;
 
     @Autowired
-    public CouponServiceTest(CouponService couponService, MemberService memberService) {
+    public CouponServiceTest(CouponService couponService,
+                             MemberService memberService) {
         this.couponService = couponService;
         this.memberService = memberService;
     }
@@ -48,13 +49,14 @@ class CouponServiceTest {
     @ParameterizedTest
     @MethodSource("provideCouponRequestWithNotIssueDate")
     @DisplayName("쿠폰을 발급할 때 발급 기한이 아닌 경우 예외를 발생시킨다.")
-    void issueCouponWithNotIssueDate(CouponRequest couponRequest) {
+    void issueCouponWithNotIssueMemberDate(CouponRequest couponRequest) {
         // given
         Coupon coupon = couponService.create(couponRequest);
         Member member = memberService.create(new MemberRequest("낙낙"));
 
         // when & then
-        assertThatThrownBy(() -> couponService.issueCoupon(new MemberCouponRequest(coupon.getId(), member.getId())))
+        assertThatThrownBy(
+                () -> couponService.issueMemberCoupon(new MemberCouponRequest(coupon.getId(), member.getId())))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("쿠폰을 발급할 수 있는 기간이 아닙니다.");
     }
