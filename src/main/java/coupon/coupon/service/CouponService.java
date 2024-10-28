@@ -4,6 +4,7 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.dto.CouponResponse;
 import coupon.coupon.entity.CouponEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class CouponService {
         return couponWriterService.create(new CouponEntity(coupon));
     }
 
+    @Cacheable(value = "coupons", key = "#couponId")
     public CouponResponse getCoupon(long couponId) {
         Optional<CouponEntity> coupon = couponReaderService.getCoupon(couponId);
         CouponEntity couponEntity = coupon.orElseGet(() -> couponWriterService.getCoupon(couponId));

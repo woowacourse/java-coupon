@@ -15,7 +15,7 @@ public class CouponWriterService {
 
     public CouponEntity getCoupon(long couponId) {
         return couponRepository.findById(couponId)
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다"));
     }
 
     public CouponEntity create(CouponEntity coupon) {
