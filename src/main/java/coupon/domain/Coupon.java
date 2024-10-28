@@ -3,8 +3,10 @@ package coupon.domain;
 import java.util.Objects;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class Coupon {
 
     private static final int MIN_DISCOUNT_RATE = 3;
@@ -15,7 +17,6 @@ public class Coupon {
     private final MinOrderAmount minOrderAmount;
     private final IssuancePeriod issuancePeriod;
     private final Category category;
-
 
     public Coupon(final CouponName name, final DiscountAmount discountAmount, final MinOrderAmount minOrderAmount,
                   final IssuancePeriod issuancePeriod, final Category category) {

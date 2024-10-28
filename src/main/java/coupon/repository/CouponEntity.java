@@ -13,6 +13,10 @@ import jakarta.persistence.Table;
 
 import coupon.domain.Category;
 import coupon.domain.Coupon;
+import coupon.domain.CouponName;
+import coupon.domain.DiscountAmount;
+import coupon.domain.IssuancePeriod;
+import coupon.domain.MinOrderAmount;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,6 +57,16 @@ public class CouponEntity extends BaseTimeEntity {
         this.category = coupon.getCategory();
         this.issuedStartDateTime = coupon.getIssuancePeriod().getStartDateTime();
         this.issuedEndDateTime = coupon.getIssuancePeriod().getEndDateTime();
+    }
+
+    public Coupon toDomain() {
+        final CouponName couponName = new CouponName(getName());
+        final DiscountAmount discountAmount = new DiscountAmount(getDiscountAmount());
+        final MinOrderAmount minOrderAmount = new MinOrderAmount(getMinOrderAmount());
+        final IssuancePeriod issuancePeriod = new IssuancePeriod(getIssuedStartDateTime().toLocalDate(),
+                getIssuedEndDateTime().toLocalDate());
+        final Category category = getCategory();
+        return new Coupon(couponName, discountAmount, minOrderAmount, issuancePeriod, category);
     }
 
     @Override

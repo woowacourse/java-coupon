@@ -1,8 +1,11 @@
 package coupon.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import coupon.domain.Coupon;
 import coupon.exception.CouponException;
 import coupon.repository.CouponEntity;
 import coupon.repository.MemberCouponEntity;
@@ -31,5 +34,15 @@ public class MemberCouponService {
                 .save(new MemberCouponEntity(coupon, memberId));
 
         return savedMemberCoupon.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Coupon> findAllCoupon(final long memberId) {
+        final List<MemberCouponEntity> coupons = memberCouponRepository.findAllByMemberId(memberId);
+
+        return coupons.stream()
+                .map(MemberCouponEntity::getCoupon)
+                .map(CouponEntity::toDomain)
+                .toList();
     }
 }
