@@ -33,11 +33,10 @@ public class DiscountAmount {
     }
 
     private void validateAmount(int discountAmount) {
-        if (discountAmount < MIN_AMOUNT_CONSTRAINT) {
-            throw new CouponException("할인 금액은 %d원 이상이어야 합니다.".formatted(MIN_AMOUNT_CONSTRAINT));
-        }
-        if (discountAmount > MAX_AMOUNT_CONSTRAINT) {
-            throw new CouponException("할인 금액은 %d원 이하여야 합니다.".formatted(MAX_AMOUNT_CONSTRAINT));
+        if (discountAmount < MIN_AMOUNT_CONSTRAINT || discountAmount > MAX_AMOUNT_CONSTRAINT) {
+            throw new CouponException("할인 금액은 %d원 이상 %d원 이하여야 합니다.".formatted(
+                    MIN_AMOUNT_CONSTRAINT, MAX_AMOUNT_CONSTRAINT
+            ));
         }
         if (discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
             throw new CouponException("할인 금액은 %d원 단위로 입력해야 합니다.".formatted(MIN_RATE_CONSTRAINT));
@@ -46,11 +45,10 @@ public class DiscountAmount {
 
     private void validateRate(int discountAmount, MinimumOrderAmount minimumOrderAmount) {
         int discountRate = discountRate(discountAmount, minimumOrderAmount);
-        if (discountRate < MIN_RATE_CONSTRAINT) {
-            throw new CouponException("할인율은 %d%% 이상이어야 합니다.".formatted(MIN_RATE_CONSTRAINT));
-        }
-        if (discountRate > MAX_RATE_CONSTRAINT) {
-            throw new CouponException("할인율은 %d%% 이하여야 합니다.".formatted(MAX_RATE_CONSTRAINT));
+        if (discountRate < MIN_RATE_CONSTRAINT || discountRate > MAX_RATE_CONSTRAINT) {
+            throw new CouponException("할인율은 %d%% 이상 %d%% 이하여야 합니다.".formatted(
+                    MIN_RATE_CONSTRAINT, MAX_RATE_CONSTRAINT
+            ));
         }
     }
 
