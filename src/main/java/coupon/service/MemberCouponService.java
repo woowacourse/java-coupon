@@ -1,8 +1,10 @@
 package coupon.service;
 
+import coupon.domain.coupon.Coupon;
 import coupon.domain.membercoupon.MemberCoupon;
+import coupon.dto.response.FindMemberCouponResponse;
 import coupon.repository.MemberCouponRepository;
-import java.util.NoSuchElementException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ public class MemberCouponService {
 
     private static final int ISSUANCE_LIMIT = 5;
 
+    private final ReadCouponService readCouponService;
     private final MemberCouponRepository memberCouponRepository;
 
     @Transactional
@@ -30,8 +33,15 @@ public class MemberCouponService {
     }
 
     @Transactional(readOnly = true)
-    public MemberCoupon findById(long couponId) {
-        return memberCouponRepository.findById(couponId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원 쿠폰입니다."));
+    public List<FindMemberCouponResponse> findByMemberId(long memberId) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
+        return memberCoupons.stream()
+                .map(this::findCoupon)
+                .toList();
+    }
+
+    private FindMemberCouponResponse findCoupon(MemberCoupon memberCoupon) {
+        Coupon coupon = readCouponService.findById(memberCoupon.getCouponId());
+        return FindMemberCouponResponse.of(memberCoupon, coupon);
     }
 }
