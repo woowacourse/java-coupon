@@ -13,7 +13,8 @@ import java.util.List;
 @Service
 public class UserCouponService {
 
-    private final int ISSUEABLE_COUPON_MAX_COUNT = 5;
+    private static final int ISSUEABLE_COUPON_MAX_COUNT = 5;
+
     private final CouponService couponService;
     private final UserService userService;
     private final UserCouponRepository userCouponRepository;
