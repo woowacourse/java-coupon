@@ -27,6 +27,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Coupon implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private static final int COUPON_NAME_MAX_LENGTH = 30;
     private static final int MIN_DISCOUNT_AMOUNT = 1_000;
     private static final int MAX_DISCOUNT_AMOUNT = 10_000;
