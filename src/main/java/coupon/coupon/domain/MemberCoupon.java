@@ -39,23 +39,28 @@ public class MemberCoupon extends BaseEntity {
     @Column(name = "used", nullable = false)
     private boolean used;
 
+    @Column(name = "issued_at", nullable = false)
+    private LocalDate issued_at;
 
-    public MemberCoupon(final Long id, final Member owner, final Coupon coupon, final boolean used) {
+    @Column(name = "expired_at", nullable = false)
+    private LocalDate expiredAt;
+
+    public MemberCoupon(Long id, Member owner, Coupon coupon) {
         this.id = id;
         this.owner = owner;
         this.coupon = coupon;
-        this.used = used;
+        this.used = false;
+        this.issued_at = LocalDate.now();
+        this.expiredAt = issued_at.plusDays(VALID_DAY + 1);
     }
 
     public MemberCoupon(final Member owner, final Coupon coupon) {
-        this(null, owner, coupon, true);
+        this(null, owner, coupon);
     }
 
     public boolean isValid() {
         final var now = LocalDate.now();
-        final var couponCreatedDate = getCreatedAt().toLocalDate();
-        final var expirationTime = couponCreatedDate.plusDays(VALID_DAY);
-        if (now.isBefore(expirationTime) && !used) {
+        if (now.isBefore(expiredAt)) {
             return true;
         }
         return false;
