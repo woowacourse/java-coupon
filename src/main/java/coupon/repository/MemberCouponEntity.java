@@ -42,7 +42,6 @@ public class MemberCouponEntity extends BaseTimeEntity {
     @Column(name = "EXPIRES_AT", nullable = false)
     private LocalDateTime expiresAt;
 
-
     public MemberCouponEntity(final CouponEntity coupon, final long memberId) {
         this.coupon = coupon;
         this.memberId = memberId;
