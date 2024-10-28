@@ -40,6 +40,10 @@ public class MemberCoupon {
     @Column(name = "expiration_date_time")
     private LocalDateTime expirationDateTime;
 
+    public MemberCoupon(Long couponId, Long memberId) {
+        this(couponId, memberId, false, LocalDateTime.now());
+    }
+
     public MemberCoupon(Long couponId, Long memberId, boolean isUsed, LocalDateTime issuedDateTime) {
         this.couponId = couponId;
         this.memberId = memberId;
