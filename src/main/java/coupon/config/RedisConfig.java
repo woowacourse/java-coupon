@@ -1,5 +1,6 @@
 package coupon.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -15,13 +16,14 @@ import coupon.domain.Coupon;
 @Configuration
 public class RedisConfig {
 
-	public static final int LOCAL_PORT = 36379;
+	@Value("${spring.data.redis.port}")
+	private int port;
 
 	@Bean
 	public LettuceConnectionFactory jedisConnectionFactory() {
 		LettuceConnectionFactory connectionFactory
 			= new LettuceConnectionFactory();
-		connectionFactory.setPort(LOCAL_PORT);
+		connectionFactory.setPort(port);
 		return connectionFactory;
 	}
 
