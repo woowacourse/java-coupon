@@ -16,7 +16,8 @@ public enum ErrorConstant {
     NOT_AVAILABLE_UNIT_PRICE(HttpStatus.BAD_REQUEST, "가능한 금액 단위가 아닙니다."),
     COUPON_ISSUE_DATE_IS_NULL(HttpStatus.BAD_REQUEST, "쿠폰의 날짜는 비어있을 수 없습니다."),
     NOT_AVAILABLE_COUPON_DATE(HttpStatus.BAD_REQUEST, "쿠폰의 시작일이 끝나는 날보다 늦을 수 없습니다."),
-    MEMBER_NAME_IS_NULL_OR_BLANK(HttpStatus.BAD_REQUEST, "이름은 비어있을 수 없습니다.");
+    MEMBER_NAME_IS_NULL_OR_BLANK(HttpStatus.BAD_REQUEST, "이름은 비어있을 수 없습니다."),
+    ISSUED_COUPON_MAX(HttpStatus.BAD_REQUEST, "이미 최대로 발급받은 쿠폰입니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
