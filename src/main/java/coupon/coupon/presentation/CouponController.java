@@ -20,14 +20,14 @@ public class CouponController {
 
     @GetMapping("/coupons/{couponId}")
     public ResponseEntity<CouponResponse> getCoupon(@PathVariable final Long couponId) {
-        final var coupon = couponService.getCouponByAdmin(couponId);
-        return ResponseEntity.ok(CouponResponse.from(coupon));
+        final var couponResponse = couponService.getCouponByAdmin(couponId);
+        return ResponseEntity.ok(couponResponse);
     }
 
     @PostMapping("/coupons")
     public ResponseEntity<CouponResponse> createCoupon(@RequestBody final CouponCreateRequest couponRequest) {
-        final var savedCoupon = couponService.createCoupon(couponRequest);
-        final var location = "/coupons/" + savedCoupon.getId();
-        return ResponseEntity.created(URI.create(location)).body(CouponResponse.from(savedCoupon));
+        final var savedCouponResponse = couponService.createCoupon(couponRequest);
+        final var location = "/coupons/" + savedCouponResponse.id();
+        return ResponseEntity.created(URI.create(location)).body(savedCouponResponse);
     }
 }

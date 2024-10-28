@@ -1,8 +1,8 @@
 package coupon.coupon.service;
 
-import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
 import coupon.coupon.dto.CouponCreateRequest;
+import coupon.coupon.dto.CouponResponse;
 import coupon.coupon.exception.CouponApplicationException;
 import coupon.member.domain.Member;
 import coupon.member.domain.MemberRepository;
@@ -21,22 +21,25 @@ public class CouponService {
 
     @Transactional
     @Cacheable(value = "coupons", key = "#couponId")
-    public Coupon getCouponByAdmin(final Long couponId) {
-        return couponRepository.findById(couponId)
+    public CouponResponse getCouponByAdmin(final Long couponId) {
+        final var coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new CouponApplicationException("쿠폰이 존재하지 않습니다."));
+        return CouponResponse.from(coupon);
     }
 
     @Transactional(readOnly = true)
     @Cacheable(value = "coupons", key = "#couponId")
-    public Coupon getCoupon(final Long couponId) {
-        return couponRepository.findById(couponId)
+    public CouponResponse getCoupon(final Long couponId) {
+        final var coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new CouponApplicationException("쿠폰이 존재하지 않습니다."));
+        return CouponResponse.from(coupon);
     }
 
     @Transactional
-    public Coupon createCoupon(final CouponCreateRequest couponRequest) {
+    public CouponResponse createCoupon(final CouponCreateRequest couponRequest) {
         final var issuer = findIssuer(couponRequest.issuerId());
-        return couponRepository.save(couponRequest.toCouponEntity(issuer));
+        final var saved = couponRepository.save(couponRequest.toCouponEntity(issuer));
+        return CouponResponse.from(saved);
     }
 
     private Member findIssuer(final Long issuerId) {

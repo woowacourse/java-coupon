@@ -41,7 +41,7 @@ class CouponServiceTest {
         final var couponCreateRequest = CouponFixture.TOUROOT_COUPON.getCouponCreateRequest(issuer);
         final var savedCoupon = couponService.createCoupon(couponCreateRequest);
 
-        assertThat(savedCoupon.getId()).isNotNull();
+        assertThat(savedCoupon.id()).isNotNull();
     }
 
     @DisplayName("쿠폰을 조회할 수 있다")
@@ -50,9 +50,9 @@ class CouponServiceTest {
         final var couponCreateRequest = CouponFixture.TOUROOT_COUPON.getCouponCreateRequest(issuer);
         final var savedCoupon = couponService.createCoupon(couponCreateRequest);
 
-        final var found = couponService.getCouponByAdmin(savedCoupon.getId());
+        final var found = couponService.getCouponByAdmin(savedCoupon.id());
 
-        assertThat(found.getName()).isEqualTo("투룻 쿠폰");
+        assertThat(found.name()).isEqualTo("투룻 쿠폰");
     }
 
     @DisplayName("복제 지연 시간 동안 작성자가 작성한 내용을 조회할 수 있다")
@@ -61,7 +61,7 @@ class CouponServiceTest {
         final var couponCreateRequest = CouponFixture.TOUROOT_COUPON.getCouponCreateRequest(issuer);
         final var saved = couponService.createCoupon(couponCreateRequest);
 
-        final var found = couponService.getCouponByAdmin(saved.getId());
+        final var found = couponService.getCouponByAdmin(saved.id());
         assertThat(found).isNotNull();
     }
 }
