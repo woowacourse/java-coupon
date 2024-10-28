@@ -14,6 +14,8 @@ import java.util.List;
 @Service
 public class MemberCouponService {
 
+    private static final int MAX_PUBLISHED_COUNT = 5;
+
     private final MemberRepository memberRepository;
     private final CouponRepository couponRepository;
     private final PublishedCouponRepository publishedCouponRepository;
@@ -25,16 +27,20 @@ public class MemberCouponService {
     }
 
     public PublishedCoupon publishCoupon(Long memberId, Long couponId) {
-        List<PublishedCoupon> coupons = publishedCouponRepository.findAllByMemberIdAndCouponId(memberId, couponId);
-
-        if (coupons.size() >= 5) {
-            throw new IllegalArgumentException("Too many published coupons");
-        }
+        validatePublishedCount(memberId, couponId);
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Member does not exist"));
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("Coupon does not exist"));
         return publishedCouponRepository.save(new PublishedCoupon(member, coupon, false, LocalDateTime.now()));
+    }
+
+    private void validatePublishedCount(Long memberId, Long couponId) {
+        List<PublishedCoupon> coupons = publishedCouponRepository.findAllByMemberIdAndCouponId(memberId, couponId);
+
+        if (coupons.size() >= MAX_PUBLISHED_COUNT) {
+            throw new IllegalArgumentException("Too many published coupons");
+        }
     }
 }
