@@ -11,10 +11,13 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
     private final TransactionHandler transactionHandler;
+    private final Cache<Long, Coupon> couponCache;
 
-    public CouponService(CouponRepository couponRepository, TransactionHandler transactionHandler) {
+    public CouponService(CouponRepository couponRepository, TransactionHandler transactionHandler,
+                         Cache<Long, Coupon> couponCache) {
         this.couponRepository = couponRepository;
         this.transactionHandler = transactionHandler;
+        this.couponCache = couponCache;
     }
 
     @Transactional
@@ -24,8 +27,15 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) {
-        return couponRepository.findById(id)
+        return couponCache.get(id)
+                .orElseGet(() -> fetchAndCacheCoupon(id));
+    }
+
+    private Coupon fetchAndCacheCoupon(Long id) {
+        Coupon coupon = couponRepository.findById(id)
                 .orElseGet(() -> getCouponOnWriter(id));
+        couponCache.put(id, coupon);
+        return coupon;
     }
 
     private Coupon getCouponOnWriter(Long id) {
