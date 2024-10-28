@@ -30,9 +30,8 @@ public class MemberCoupon {
     @Column(nullable = false)
     private Long memberId;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
+    @Column(nullable = false)
+    private Long couponId;
 
     @Column(nullable = false)
     private boolean isUsed;
@@ -48,7 +47,7 @@ public class MemberCoupon {
         validateIssuedAt(coupon, issuedAt);
 
         this.memberId = memberId;
-        this.coupon = coupon;
+        this.couponId = coupon.getId();
         this.isUsed = false;
         this.issuedAt = issuedAt;
         this.expiredAt = findExpiredAt(issuedAt);
