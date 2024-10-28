@@ -18,8 +18,7 @@ public class MemberCouponService {
 
     private final MemberCouponRepository memberCouponRepository;
     private final CouponService couponService;
-
-
+    
     @Transactional
     public Long create(MemberCoupon memberCoupon) {
         validate(memberCoupon);
