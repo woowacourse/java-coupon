@@ -45,7 +45,6 @@ public class MemberCouponServiceTest {
     void setUp() {
         couponRepository.deleteAll();
         memberCouponRepository.deleteAll();
-        cacheManager.getCache("member_coupon").clear();
         cacheManager.getCache("coupon").clear();
     }
 
