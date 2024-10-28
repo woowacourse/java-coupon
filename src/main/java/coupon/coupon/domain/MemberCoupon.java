@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class MemberCoupon extends BaseEntity {
+
+    private static final int VALID_DAY = 7;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,13 +36,23 @@ public class MemberCoupon extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Coupon coupon;
 
-    public MemberCoupon(Long id, Member owner, Coupon coupon) {
+    public MemberCoupon(final Long id, final Member owner, final Coupon coupon) {
         this.id = id;
         this.owner = owner;
         this.coupon = coupon;
     }
 
-    public MemberCoupon(Member owner, Coupon coupon) {
+    public MemberCoupon(final Member owner, final Coupon coupon) {
         this(null, owner, coupon);
+    }
+
+    public boolean isValid() {
+        final var now = LocalDate.now();
+        final var couponCreatedDate = getCreatedAt().toLocalDate();
+        final var expirationTime = couponCreatedDate.plusDays(VALID_DAY);
+        if (now.isAfter(expirationTime)) {
+            return false;
+        }
+        return true;
     }
 }
