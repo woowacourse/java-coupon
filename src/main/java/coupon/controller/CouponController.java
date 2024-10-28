@@ -23,7 +23,7 @@ public class CouponController {
 
     @PostMapping("/save")
     public ResponseEntity<Void> save(SaveCouponRequest request) {
-        long couponId = couponCommandService.save(request);
+        long couponId = couponCommandService.save(request).getId();
         return ResponseEntity.created(URI.create("/coupons/" + couponId))
                 .build();
     }
