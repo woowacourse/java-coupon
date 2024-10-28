@@ -1,31 +1,28 @@
 package coupon.coupon.application;
 
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
-import coupon.infrastructure.datasource.TransactionRouter;
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 public class CouponService {
 
+    private static final String CACHE_NAME = "coupon";
+
     private final CouponRepository couponRepository;
-    private final TransactionRouter transactionRouter;
 
-    public void create(final Coupon coupon) {
-        couponRepository.save(coupon);
+    @CachePut(value = CACHE_NAME, key = "#result.id", unless = "#result == null")
+    public Coupon create(final Coupon coupon) {
+        return couponRepository.save(coupon);
     }
 
-    @Transactional(readOnly = true)
+    @Cacheable(value = CACHE_NAME, key = "#id")
     public Coupon getCoupon(final Long id) {
-        return couponRepository.findById(id)
-                .orElseGet(() -> getCouponFromWrite(id));
-    }
-
-    public Coupon getCouponFromWrite(final Long id) {
-        return transactionRouter.routeWrite(() -> couponRepository.fetchById(id));
+        return couponRepository.fetchById(id);
     }
 }
