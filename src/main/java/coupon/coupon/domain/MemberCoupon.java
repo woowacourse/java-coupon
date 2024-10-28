@@ -1,5 +1,6 @@
 package coupon.coupon.domain;
 
+import coupon.BaseEntity;
 import coupon.member.domain.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "member_coupon")
 @Getter
 @NoArgsConstructor
-public class MemberCoupon {
+public class MemberCoupon extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
