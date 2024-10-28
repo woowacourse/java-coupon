@@ -44,14 +44,12 @@ public class RedisConfig {
     @Bean
     @DependsOn("redisConnectionFactory")
     public CacheManager redisCacheManager(
-            RedisConnectionFactory redisConnectionFactory,
-            RedisCacheConfiguration redisCacheConfiguration,
-            Map<String, RedisCacheConfiguration> redisCacheConfigurationMap
+            RedisConnectionFactory redisConnectionFactory
     ) {
         return RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)
-                .cacheDefaults(redisCacheConfiguration)
-                .withInitialCacheConfigurations(redisCacheConfigurationMap)
+                .cacheDefaults(redisCacheConfiguration())
+                .withInitialCacheConfigurations(redisCacheConfigurationMap())
                 .build();
     }
 
@@ -65,36 +63,31 @@ public class RedisConfig {
         return lettuceConnectionFactory;
     }
 
-    @Bean
-    public RedisCacheConfiguration redisCacheConfiguration(
-            ObjectMapper objectMapper
-    ) {
-        objectMapper.activateDefaultTyping(
-                objectMapper.getPolymorphicTypeValidator(),
-                DefaultTyping.NON_FINAL,
-                As.PROPERTY
-        );
+    private RedisCacheConfiguration redisCacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(redisProperties.getTtl("default"))
                 .serializeKeysWith(
                         RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(
-                        new GenericJackson2JsonRedisSerializer(objectMapper)))
+                        new GenericJackson2JsonRedisSerializer(objectMapper())))
                 .disableCachingNullValues();
     }
 
-    @Bean
-    public Map<String, RedisCacheConfiguration> redisCacheConfigurationMap() {
+    private Map<String, RedisCacheConfiguration> redisCacheConfigurationMap() {
         return Map.of(
-                "coupon", RedisCacheConfiguration.defaultCacheConfig().entryTtl(redisProperties.getTtl("coupon"))
+                "coupon", redisCacheConfiguration().entryTtl(redisProperties.getTtl("coupon"))
         );
     }
 
-    @Bean
-    public ObjectMapper objectMapper() {
+    private ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(javaTimeModule());
 
+        objectMapper.activateDefaultTyping(
+                objectMapper.getPolymorphicTypeValidator(),
+                DefaultTyping.NON_FINAL,
+                As.PROPERTY
+        );
         return objectMapper;
     }
 
