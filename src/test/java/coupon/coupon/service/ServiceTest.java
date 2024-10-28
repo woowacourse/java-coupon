@@ -1,5 +1,6 @@
 package coupon.coupon.service;
 
+import coupon.coupon.support.CacheCleanerExtension;
 import coupon.coupon.support.DatabaseCleanerExtension;
 import coupon.coupon.support.TestConfig;
 import java.lang.annotation.ElementType;
@@ -13,6 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE, classes = TestConfig.class)
-@ExtendWith(DatabaseCleanerExtension.class)
+@ExtendWith({DatabaseCleanerExtension.class, CacheCleanerExtension.class})
 public @interface ServiceTest {
 }

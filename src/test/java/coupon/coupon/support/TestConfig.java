@@ -16,6 +16,11 @@ public class TestConfig {
     }
 
     @Bean
+    public CacheCleaner cacheCleaner() {
+        return new CacheCleaner();
+    }
+
+    @Bean
     @Primary
     public Clock testClock() {
         return Clock.fixed(Instant.parse("2024-01-01T00:00:00Z"), ZoneId.of("UTC+9"));
