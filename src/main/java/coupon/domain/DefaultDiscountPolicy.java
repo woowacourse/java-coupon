@@ -1,10 +1,12 @@
 package coupon.domain;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 public class DefaultDiscountPolicy implements DiscountPolicy {
 
@@ -20,11 +22,6 @@ public class DefaultDiscountPolicy implements DiscountPolicy {
 
     private long discountAmount;
     private long minimumOrderPrice;
-
-    public DefaultDiscountPolicy(long discountAmount, long minimumOrderPrice) {
-        this.discountAmount = discountAmount;
-        this.minimumOrderPrice = minimumOrderPrice;
-    }
 
     @Override
     public void validate() {
