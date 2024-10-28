@@ -25,8 +25,7 @@ public class CouponService {
     @Transactional(readOnly = true)
     @UsingWriterSource
     public Coupon getCoupon(Long id) {
-        return couponRepository.findById(id)
-                .orElseThrow(() -> new CouponBusinessLogicException("Coupon not found ID = " + id));
+        return couponRepository.getById(id);
     }
 
     @Transactional(readOnly = true)
