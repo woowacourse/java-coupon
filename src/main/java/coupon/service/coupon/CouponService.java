@@ -6,6 +6,7 @@ import coupon.domain.coupon.MemberCoupon;
 import coupon.domain.coupon.MemberCouponRepository;
 import coupon.exception.CouponException;
 import coupon.service.coupon.dto.MemberCouponsRequest;
+import coupon.support.CouponCache;
 import coupon.support.TransactionSupport;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,17 +26,26 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
+    private final CouponCache couponCache;
     private final TransactionSupport transactionSupport;
 
     @Transactional
     public void create(Coupon coupon) {
         couponRepository.save(coupon);
+        couponCache.putCoupon(coupon.getId(), coupon);
     }
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) {
-        return couponRepository.findById(id)
+        Coupon cachedCoupon = couponCache.getCoupon(id);
+        if (cachedCoupon != null) {
+            return cachedCoupon;
+        }
+
+        Coupon coupon = couponRepository.findById(id)
                 .orElseGet(() -> getCouponWriter(id));
+        couponCache.putCoupon(id, coupon);
+        return coupon;
     }
 
     private Coupon getCouponWriter(Long id) {
