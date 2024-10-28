@@ -28,10 +28,10 @@ public class MemberCoupon {
     private Long id;
 
     @Column(nullable = false)
-    private Long couponId;
+    private Long memberId;
 
     @Column(nullable = false)
-    private Long memberId;
+    private Long couponId;
 
     @Column(nullable = false)
     private boolean isUsed;
@@ -42,13 +42,17 @@ public class MemberCoupon {
     @Column(nullable = false)
     private LocalDateTime issueEndDate;
 
-    public MemberCoupon(Long couponId, Long memberId, boolean isUsed, LocalDateTime issueStartDate) {
-        this.couponId = couponId;
+    public MemberCoupon(Long memberId, Long couponId, boolean isUsed, LocalDateTime issueStartDate) {
         this.memberId = memberId;
+        this.couponId = couponId;
         this.isUsed = isUsed;
         this.issueStartDate = issueStartDate;
         this.issueEndDate = getIssueEndDate(issueStartDate);
         validate();
+    }
+
+    public static MemberCoupon issue(Long memberId, Long couponId, LocalDateTime issueStartDate) {
+        return new MemberCoupon(memberId, couponId, false, issueStartDate);
     }
 
     private LocalDateTime getIssueEndDate(LocalDateTime issueStartDate) {
