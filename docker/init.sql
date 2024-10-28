@@ -1,10 +1,10 @@
-CREATE TABLE Member
+CREATE TABLE member
 (
     id   BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Coupon
+CREATE TABLE coupon
 (
     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
     name             VARCHAR(30) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE Coupon
     end_date         DATETIME    NOT NULL
 );
 
-CREATE TABLE MemberCoupon
+CREATE TABLE member_coupon
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     coupon_id  BIGINT   NOT NULL,
