@@ -36,7 +36,7 @@ class CouponServiceTest {
                 couponStartAt, couponStartAt.plusDays(1));
 
         // then
-        CouponEntity actual = couponService.getCoupon(couponId);
+        CouponEntity actual = transactionExecutor.executeByWriter(() -> couponService.getCoupon(couponId));
         assertThat(actual.getCouponName()).isEqualTo(couponName);
     }
 
