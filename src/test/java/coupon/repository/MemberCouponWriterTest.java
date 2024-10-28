@@ -39,8 +39,8 @@ class MemberCouponWriterTest {
                 LocalDateTime.of(2024, 9, 1, 0, 0),
                 LocalDateTime.of(2024, 9, 30, 23, 59)
         ));
-        IntStream.rangeClosed(0,5).forEach(nu->memberCouponWriter.create(member,coupon));
-        assertThatThrownBy(()->memberCouponWriter.create(member,coupon))
+        IntStream.rangeClosed(0, 5).forEach(nu -> memberCouponWriter.create(member, coupon));
+        assertThatThrownBy(() -> memberCouponWriter.create(member, coupon))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
