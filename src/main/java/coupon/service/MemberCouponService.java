@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberCouponService {
 
+    public static final int MAXIMUM_ISSUABLE_COUPONS_COUNT = 5;
     private final MemberCouponReaderService readerService;
     private final MemberCouponWriterService writerService;
 
@@ -23,6 +24,13 @@ public class MemberCouponService {
 
     @Transactional
     public MemberCoupon issueCoupon(MemberCouponRequest memberCouponRequest) {
+        validateIssuable(memberCouponRequest.memberId());
         return writerService.create(memberCouponRequest.toMemberCoupon());
+    }
+
+    private void validateIssuable(Long memberId) {
+        if (readerService.countMemberCoupon(memberId) > MAXIMUM_ISSUABLE_COUPONS_COUNT) {
+            throw new IllegalArgumentException("해당 사용자에게 발행할 수 있는 쿠폰의 최대 개수를 초과했습니다.");
+        }
     }
 }

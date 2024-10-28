@@ -1,6 +1,7 @@
 package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import coupon.domain.Category;
@@ -54,5 +55,25 @@ public class MemberCouponServiceTest {
                 LocalDateTime.now());
 
         assertDoesNotThrow(() -> memberCouponService.issueCoupon(memberCouponRequest));
+    }
+
+    @Test
+    @DisplayName("쿠폰을 발행할 때, 정해진 최대 개수를 넘지 않았는지 검증한다.")
+    void validIssueCoupon() {
+        Member member = memberService.createMember("리건");
+
+        CouponRequest couponRequest = new CouponRequest("크리스마스 쿠폰", 1000, 10000, Category.FOODS);
+        Coupon coupon = couponService.createCoupon(couponRequest);
+
+        MemberCouponRequest request = new MemberCouponRequest(coupon.getId(), member.getId(), false,
+                LocalDateTime.now());
+
+        for (int i = 0; i < 6; i++) {
+            memberCouponService.issueCoupon(request);
+        }
+
+        assertThatThrownBy(() -> memberCouponService.issueCoupon(request))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("해당 사용자에게 발행할 수 있는 쿠폰의 최대 개수를 초과했습니다.");
     }
 }

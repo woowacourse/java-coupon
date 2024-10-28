@@ -19,17 +19,19 @@ public class MemberCouponReaderService {
     private final MemberCouponRepository memberCouponRepository;
 
     @Transactional(readOnly = true)
-    public MemberCoupon getMemberCoupon(Long id, Supplier<MemberCoupon> memberCouponWriter) {
-        log.info("Find member coupon by id: {}", id);
-
-        return memberCouponRepository.findById(id)
-                .orElseGet(memberCouponWriter);
-    }
-
-    @Transactional(readOnly = true)
     public List<MemberCoupon> getIssuedMemberCoupon(Long memberId, Supplier<List<MemberCoupon>> memberCouponWriter) {
         log.info("Find issued member coupons by member id: {}", memberId);
 
-        return memberCouponRepository.findAllByMemberId(memberId);
+        List<MemberCoupon> issuedCoupons = memberCouponRepository.findAllByMemberId(memberId);
+
+        if (issuedCoupons.isEmpty()) {
+            return memberCouponWriter.get();
+        }
+        return issuedCoupons;
+    }
+
+    @Transactional(readOnly = true)
+    public int countMemberCoupon(Long memberId) {
+        return memberCouponRepository.countByMemberId(memberId);
     }
 }

@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
     List<MemberCoupon> findAllByMemberId(Long memberId);
+
+    int countByMemberId(Long memberId);
 }
