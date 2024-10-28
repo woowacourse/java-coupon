@@ -1,4 +1,4 @@
-package coupon.application;
+package coupon.application.coupon;
 
 import coupon.domain.Coupon;
 import coupon.domain.CouponRepository;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-class CouponService {
+public class CouponService {
 
     private static final int COUPON_ISSUE_LIMIT = 5;
 
