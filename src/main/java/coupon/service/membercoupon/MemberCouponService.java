@@ -2,10 +2,9 @@ package coupon.service.membercoupon;
 
 import coupon.entity.coupon.Coupon;
 import coupon.entity.membercoupon.MemberCoupon;
-import coupon.exception.coupon.CouponNotFoundException;
 import coupon.exception.membercoupon.CannotCreateMemberCouponException;
-import coupon.repository.coupon.CouponRepository;
 import coupon.repository.membercoupon.MemberCouponRepository;
+import coupon.service.coupon.CouponService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,8 @@ public class MemberCouponService {
     private static final int MAX_MEMBER_COUPON_CREATE_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponRepository couponRepository;
+    private final CouponService couponService;
+
 
     @Transactional
     public Long create(MemberCoupon memberCoupon) {
@@ -42,8 +42,7 @@ public class MemberCouponService {
     }
 
     private MemberCouponResponse toMemberCouponResponse(MemberCoupon memberCoupon) {
-        Coupon coupon = couponRepository.findById(memberCoupon.getCouponId())
-                .orElseThrow(() -> new CouponNotFoundException(memberCoupon.getCouponId()));
+        Coupon coupon = couponService.getCouponFromCache(memberCoupon.getCouponId());
         return new MemberCouponResponse(memberCoupon, coupon);
     }
 }

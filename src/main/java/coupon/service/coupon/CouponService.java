@@ -2,6 +2,7 @@ package coupon.service.coupon;
 
 import coupon.entity.coupon.Coupon;
 import coupon.exception.coupon.CouponNotFoundException;
+import coupon.helper.CacheExecutor;
 import coupon.helper.TransactionExecutor;
 import coupon.repository.coupon.CouponRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
     private final TransactionExecutor transactionExecutor;
+    private final CacheExecutor cacheExecutor;
 
     @Transactional
     public Long create(Coupon coupon) {
@@ -35,6 +37,13 @@ public class CouponService {
 
     private Coupon getCouponFromWriterDatabase(Long id) {
         return transactionExecutor.executeNewTransaction(() ->
+                couponRepository.findById(id)
+                        .orElseThrow(() -> new CouponNotFoundException(id))
+        );
+    }
+
+    public Coupon getCouponFromCache(Long id) {
+        return cacheExecutor.executeWithCache(id, () ->
                 couponRepository.findById(id)
                         .orElseThrow(() -> new CouponNotFoundException(id))
         );
