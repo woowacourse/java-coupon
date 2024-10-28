@@ -37,4 +37,9 @@ public class AvailablePeriod {
         }
         return end;
     }
+
+    public boolean isAvailable() {
+        LocalDateTime today = LocalDateTime.now();
+        return (today.isAfter(startDateTime) || today.isEqual(startDateTime)) && today.isBefore(endDateTime);
+    }
 }

@@ -28,4 +28,22 @@ class AvailablePeriodTest {
         // then
         assertThat(actual).isEqualTo(expected);
     }
+
+    @DisplayName("쿠폰의 사용 가능 기간을 검사할 수 있다.")
+    @Test
+    void isAvailable() {
+        // given
+        LocalDateTime start = LocalDateTime.now().minusDays(2);
+        LocalDateTime end = LocalDateTime.now().plusDays(9);
+        boolean expected = true;
+
+        IssuedPeriod issuedPeriod = new IssuedPeriod(start, end);
+
+        // when
+        AvailablePeriod availablePeriod = new AvailablePeriod(issuedPeriod);
+        boolean actual = availablePeriod.isAvailable();
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
 }
