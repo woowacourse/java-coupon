@@ -2,6 +2,7 @@ package coupon.infrastructure.cache.redis;
 
 import java.time.Duration;
 
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -14,9 +15,6 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @Configuration
 @EnableCaching
 @EnableConfigurationProperties(RedisProperties.class)
@@ -35,6 +33,7 @@ public class RedisCacheConfig {
     @Bean
     public RedisCacheConfiguration redisCacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
+                .disableCachingNullValues()
                 .serializeKeysWith(SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
                 .entryTtl(DEFAULT_TTL);
