@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class CouponName {
 
+    private static final int NAME_LENGTH_MAX = 30;
+
     private String name;
 
     public CouponName(String name) {
@@ -16,7 +18,7 @@ public class CouponName {
     }
 
     private void validateLength(String name) {
-        if (name.length() > 30) {
+        if (name.length() > NAME_LENGTH_MAX) {
             throw new IllegalArgumentException("쿠폰 이름의 길이는 30 초과일 수 없습니다: %s".formatted(name));
         }
     }
