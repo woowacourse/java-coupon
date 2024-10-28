@@ -23,6 +23,7 @@ public class MemberCouponService {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final int MAX_ISSUE_COUNT = 5;
+    public static final String MEMBER_COUPON_CACHE_NAME = "memberCoupons";
 
     private final CouponService couponService;
     private final MemberReader memberReader;
@@ -32,7 +33,7 @@ public class MemberCouponService {
 
 
     @Transactional
-    @CacheEvict(cacheNames = "memberCoupons", key = "#memberId")
+    @CacheEvict(cacheNames = MEMBER_COUPON_CACHE_NAME, key = "#memberId")
     public MemberCoupon issueCoupon(long memberId, long couponId) {
         Member member = memberReader.getMember(memberId);
         validateIssueCount(memberId, couponId);
@@ -57,7 +58,7 @@ public class MemberCouponService {
         }
     }
 
-    @Cacheable(cacheNames = "memberCoupons", key = "#memberId", unless = "#result.isEmpty()")
+    @Cacheable(cacheNames = MEMBER_COUPON_CACHE_NAME, key = "#memberId", unless = "#result.isEmpty()")
     public List<MemberCouponResponse> findAllByMemberId(long memberId) {
         List<MemberCoupon> memberCoupons = transactionRouter.route(() -> memberCouponReader.findAllByMemberId(memberId));
         return memberCoupons.stream()

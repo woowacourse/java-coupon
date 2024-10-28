@@ -13,15 +13,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CouponService {
 
+    public static final String COUPON_CACHE_NAME = "coupon";
+
     private final CouponWriter couponWriter;
     private final CouponReader couponReader;
     private final TransactionRouter transactionRouter;
 
-    public void create(Coupon coupon) {
-        couponWriter.create(coupon);
+    public Coupon create(Coupon coupon) {
+        return couponWriter.create(coupon);
     }
 
-    @Cacheable(cacheNames = "coupon", key = "#couponId")
+    @Cacheable(cacheNames = COUPON_CACHE_NAME, key = "#couponId")
     public Coupon getCoupon(long couponId) {
         try {
             return couponReader.getCoupon(couponId);
