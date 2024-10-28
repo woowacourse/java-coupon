@@ -1,5 +1,6 @@
 package coupon.membercoupon.domain;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -7,11 +8,19 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MemberCoupon {
 
-    private boolean useable;
+    private boolean available;
 
     private AvailablePeriod availablePeriod;
 
     boolean isUseable() {
-        return useable && availablePeriod.isAvailable();
+        return available && availablePeriod.isAvailable();
+    }
+
+    public LocalDateTime getAvailableStartDate() {
+        return availablePeriod.getStartDateTime();
+    }
+
+    public LocalDateTime getAvailableEndDate() {
+        return availablePeriod.getEndDateTime();
     }
 }

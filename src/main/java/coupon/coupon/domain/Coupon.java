@@ -60,8 +60,11 @@ public class Coupon {
         return issuedPeriod.getStartDateTime();
     }
 
-
     public LocalDateTime getEnd() {
         return issuedPeriod.getEndDateTime();
+    }
+
+    public IssuedPeriod getIssuedPeriod() {
+        return issuedPeriod;
     }
 }
