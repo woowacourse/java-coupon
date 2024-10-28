@@ -2,6 +2,7 @@ package coupon.membercoupon.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import coupon.CouponException;
 import coupon.coupon.domain.Coupon;
 import coupon.member.domain.Member;
@@ -9,6 +10,7 @@ import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.repository.MemberCouponRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class MemberCouponService {
 
     private static final int MAX_MEMBER_COUPON_COUNT = 5;
@@ -23,6 +25,7 @@ public class MemberCouponService {
         this.memberCouponRepository = memberCouponRepository;
     }
 
+    @Transactional
     public void issue(Member member, Coupon coupon) {
         List<MemberCoupon> memberCoupons = getMemberCoupons(member, coupon);
         validate(memberCoupons);
