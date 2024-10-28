@@ -5,8 +5,6 @@ import coupon.domain.coupon.CouponRepository;
 import coupon.support.TransactionSupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
