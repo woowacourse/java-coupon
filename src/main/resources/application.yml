@@ -37,3 +37,6 @@ write-time-checker:
   redis:
     host: localhost
     port: 36379
+
+coupon:
+  issue_limit: 5
