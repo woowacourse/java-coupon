@@ -1,15 +1,14 @@
 package coupon.service;
 
+import coupon.cache.CouponCache;
 import coupon.domain.EmptyMemberCouponDetails;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
 import coupon.domain.MemberCouponDetails;
 import coupon.entity.CouponEntity;
 import coupon.entity.MemberCouponEntity;
-import coupon.entity.cache.CachedCouponEntity;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
-import coupon.repository.cache.CachedCouponRepository;
 import coupon.support.TransactionSupporter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ public class MemberCouponService {
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
     private final TransactionSupporter transactionSupporter;
-    private final CachedCouponRepository cachedCouponRepository;
+    private final CouponCache couponCache;
 
     @Transactional
     public MemberCoupon issue(Long couponId, Member member) {
@@ -65,20 +64,13 @@ public class MemberCouponService {
     }
 
     private MemberCouponDetails toMemberCouponDetails(MemberCoupon memberCoupon) {
-        Optional<CachedCouponEntity> optionalCachedCouponEntity = cachedCouponRepository.findById(memberCoupon.getCouponId());
-        if (optionalCachedCouponEntity.isEmpty()) {
-            MemberCouponDetails memberCouponDetails = getMemberCouponDetails(memberCoupon);
-            return cacheCoupon(memberCouponDetails);
-        }
-        CachedCouponEntity cachedCouponEntity = optionalCachedCouponEntity.get();
-        return new MemberCouponDetails(memberCoupon, cachedCouponEntity.toCoupon());
-    }
-
-    private MemberCouponDetails cacheCoupon(MemberCouponDetails memberCouponDetails) {
+        MemberCouponDetails memberCouponDetails = couponCache.hitCache(memberCoupon);
         if (memberCouponDetails.isNotEmpty()) {
-            cachedCouponRepository.save(CachedCouponEntity.from(memberCouponDetails.getCoupon()));
+            return memberCouponDetails;
         }
-        return memberCouponDetails;
+        MemberCouponDetails details = getMemberCouponDetails(memberCoupon);
+        couponCache.write(details);
+        return details;
     }
 
     private MemberCouponDetails getMemberCouponDetails(MemberCoupon memberCoupon) {
