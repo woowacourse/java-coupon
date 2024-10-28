@@ -28,11 +28,11 @@ public class MemberCoupon extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    @JoinColumn(name = "owner", nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member owner;
 
-    @JoinColumn(name = "coupon", nullable = false)
+    @JoinColumn(name = "coupon_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Coupon coupon;
 
