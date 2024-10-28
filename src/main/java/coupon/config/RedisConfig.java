@@ -17,6 +17,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class RedisConfig {
 
+    private static final int DEFAULT_CACHE_EXPIRATION_DAYS = 1;
+
     @Value("${spring.data.redis.host}")
     private String host;
 
@@ -40,7 +42,7 @@ public class RedisConfig {
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofDays(1))
+                .entryTtl(Duration.ofDays(DEFAULT_CACHE_EXPIRATION_DAYS))
                 .disableCachingNullValues();
 
         return RedisCacheManager.builder(redisConnectionFactory)
