@@ -21,11 +21,12 @@ public class MemberCouponService {
         if (!couponRepository.existsById(couponId)) {
             throw new IllegalArgumentException("존재하지 않는 쿠폰입니다.");
         }
-        MemberCoupon memberCoupon = MemberCoupon.issue(1L, member);
+
+        int issuedCouponCount = memberCouponRepository.countByCouponIdAndMemberId(couponId, member.getId());
+        MemberCoupon memberCoupon = MemberCoupon.issue(couponId, member, issuedCouponCount);
 
         MemberCouponEntity memberCouponEntity = memberCouponRepository.save(MemberCouponEntity.from(memberCoupon));
 
         return memberCouponEntity.toMemberCoupon();
     }
-
 }
