@@ -8,7 +8,7 @@ import coupon.coupon.service.CouponService;
 import coupon.member.repository.MemberEntity;
 import coupon.member.request.MemberCreateRequest;
 import coupon.member.service.MemberService;
-import coupon.membercoupon.repository.MemberCouponEntity;
+import coupon.membercoupon.response.MemberCouponResponse;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
@@ -57,8 +57,8 @@ public class MemberCouponServiceTest {
         int expected = 1;
 
         // when
-        List<MemberCouponEntity> memberEntity = memberCouponService.findByMember(member);
-        int actual = memberEntity.size();
+        List<MemberCouponResponse> couponResponses = memberCouponService.findByMember(member);
+        int actual = couponResponses.size();
 
         // then
         assertThat(actual).isEqualTo(expected);

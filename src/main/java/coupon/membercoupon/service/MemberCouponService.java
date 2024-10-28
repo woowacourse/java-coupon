@@ -8,6 +8,7 @@ import coupon.membercoupon.domain.AvailablePeriod;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.repository.MemberCouponEntity;
 import coupon.membercoupon.repository.MemberCouponRepository;
+import coupon.membercoupon.response.MemberCouponResponse;
 import coupon.support.DataAccessSupporter;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -43,7 +44,12 @@ public class MemberCouponService {
     }
 
     @Transactional(readOnly = true)
-    List<MemberCouponEntity> findByMember(MemberEntity memberEntity) {
-        return dataAccessSupporter.executeWriteDataBase(() -> memberCouponRepository.findByMemberEntity(memberEntity));
+    List<MemberCouponResponse> findByMember(MemberEntity memberEntity) {
+        List<MemberCouponEntity> memberCouponEntities = dataAccessSupporter.executeWriteDataBase(
+                () -> memberCouponRepository.findByMemberEntity(memberEntity));
+        return memberCouponEntities.stream()
+                .map(memberCoupon ->
+                        new MemberCouponResponse(couponReader.findById(memberCoupon.getCouponId()), memberCoupon))
+                .toList();
     }
 }
