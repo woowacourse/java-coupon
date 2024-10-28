@@ -4,23 +4,18 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import coupon.CouponException;
+import coupon.ServiceTest;
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.repository.CouponRepository;
 import coupon.fixture.CouponFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-@SpringBootTest
-public class CouponServiceTest {
+public class CouponServiceTest extends ServiceTest {
 
     @Autowired
     private CouponService couponService;
-
-    @Autowired
-    private CouponRepository couponRepository;
 
     @DisplayName("요청한 쿠폰을 조회한다.")
     @Test

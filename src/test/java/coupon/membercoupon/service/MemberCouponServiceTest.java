@@ -5,29 +5,19 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import coupon.CouponException;
+import coupon.ServiceTest;
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.repository.CouponRepository;
 import coupon.fixture.CouponFixture;
 import coupon.fixture.MemberFixture;
 import coupon.member.domain.Member;
-import coupon.member.repository.MemberRepository;
 import coupon.membercoupon.domain.MemberCoupon;
-import coupon.membercoupon.repository.MemberCouponRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-@SpringBootTest
-class MemberCouponServiceTest {
+class MemberCouponServiceTest extends ServiceTest {
 
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private MemberCouponRepository memberCouponRepository;
-    @Autowired
-    private CouponRepository couponRepository;
     @Autowired
     private MemberCouponService memberCouponService;
 
@@ -70,7 +60,7 @@ class MemberCouponServiceTest {
         memberCouponRepository.save(MemberCoupon.issue(member, coupon));
 
         // when
-        List<MemberCoupon> result = memberCouponService.findAllCouponByMember(member);
+        List<Coupon> result = memberCouponService.findAllCouponByMember(member);
 
         // then
         assertThat(result).hasSize(1);
