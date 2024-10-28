@@ -11,3 +11,10 @@ CREATE TABLE IF NOT EXISTS coupon(
     end_at                  DATETIME    NOT NULL,
     PRIMARY KEY(id)
 );
+
+CREATE TABLE IF NOT EXISTS member (
+    id          BIGINT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    account     VARCHAR(255)    NOT NULL UNIQUE,
+    password    VARCHAR(255)    NOT NULL
+    PRIMARY KEY(id)
+);
