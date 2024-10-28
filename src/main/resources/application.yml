@@ -1,4 +1,13 @@
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 36379
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 5
+          min-idle: 1
   jpa:
     hibernate:
       naming:
