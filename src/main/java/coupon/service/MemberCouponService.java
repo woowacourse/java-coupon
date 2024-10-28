@@ -3,6 +3,7 @@ package coupon.service;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.PublishedCoupon;
+import coupon.dto.MemberCouponDto;
 import coupon.repository.CouponCache;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
@@ -43,6 +44,13 @@ public class MemberCouponService {
         if (coupons.size() >= MAX_PUBLISHED_COUNT) {
             throw new IllegalArgumentException("Too many published coupons");
         }
+    }
+
+    public List<MemberCouponDto> findMemberCoupon(Long memberId) {
+        List<PublishedCoupon> publishedCoupons = publishedCouponRepository.findAllByMemberId(memberId);
+        return publishedCoupons.stream()
+                .map(MemberCouponDto::from)
+                .toList();
     }
 
     private Member getMember(Long memberId) {
