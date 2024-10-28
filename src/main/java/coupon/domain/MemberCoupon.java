@@ -26,17 +26,17 @@ public class MemberCoupon {
     private final LocalDateTime expireAt;
     private boolean isUsed;
 
-    public MemberCoupon(Long id, Long couponId, Long memberId, boolean isUsed, LocalDateTime grantedAt) {
+    public MemberCoupon(Long id, Long couponId, Long memberId, LocalDateTime grantedAt) {
         this.id = id;
         this.couponId = couponId;
         this.memberId = memberId;
-        this.isUsed = isUsed;
+        this.isUsed = false;
         this.grantedAt = grantedAt;
         this.expireAt = calculateExpireDateTime();
     }
 
-    public MemberCoupon(Long couponId, Long memberId, boolean isUsed, LocalDateTime grantedAt) {
-        this(null, couponId, memberId, isUsed, grantedAt);
+    public MemberCoupon(Long couponId, Long memberId, LocalDateTime grantedAt) {
+        this(null, couponId, memberId, grantedAt);
     }
 
     public boolean isUsable(LocalDateTime requestTime) {
