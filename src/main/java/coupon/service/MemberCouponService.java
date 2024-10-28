@@ -5,10 +5,12 @@ import coupon.data.repository.CouponRepository;
 import coupon.data.repository.MemberCouponRepository;
 import coupon.domain.coupon.CouponMapper;
 import coupon.domain.member.MemberCouponMapper;
+import coupon.exception.MemberCouponIssueException;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -19,20 +21,22 @@ public class MemberCouponService {
     private final MemberCouponRepository memberCouponRepository;
 
 
-    public void issue(long memberId, long couponId) {
-        List<MemberCoupon> all = memberCouponRepository.findAllByMemberIdAndCouponId(
-                memberId, couponId);
+    @Transactional
+    public void issue(long memberId, long couponId, LocalDateTime issuedDateTime) {
+        List<MemberCoupon> all = memberCouponRepository.findAllByMemberIdAndCouponId(memberId, couponId);
 
         if (all.size() >= 5) {
-            throw new IllegalStateException("size exceeded");
+            throw new MemberCouponIssueException("quantity max size exceeded");
         }
 
         coupon.domain.member.MemberCoupon memberCoupon = new coupon.domain.member.MemberCoupon(couponId, memberId,
-                false, LocalDateTime.now(),
-                LocalDateTime.now());
+                false, issuedDateTime, issuedDateTime.plusDays(6));
+
         memberCouponRepository.save(MemberCouponMapper.toEntity(memberCoupon));
     }
 
+
+    @Transactional(readOnly = true)
     public List<CouponResponse> findByMemberId(long memberId) {
         List<MemberCoupon> allByMemberId = memberCouponRepository.findAllByMemberId(memberId);
         return allByMemberId.stream()
