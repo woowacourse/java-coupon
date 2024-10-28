@@ -97,7 +97,7 @@ class MemberCouponServiceTest {
 
     @DisplayName("쿠폰 발급 기간 외에는 쿠폰을 발급할 수 없다")
     @ParameterizedTest
-    @ValueSource(ints = {21, 31})
+    @ValueSource(ints = {23, 27})
     void validateCouponIssuanceOutPeriod(int day) {
         Coupon coupon = new Coupon(
                 "테스트 쿠폰",

@@ -58,7 +58,7 @@ public class CouponServiceTest {
         assertThat(couponResponse).isNotNull();
     }
 
-    @DisplayName("쿠폰 첫 조회시 캐시에 저장된다.")
+    @DisplayName("쿠폰 첫 조회시 캐시에 저장된다")
     @Test
     void saveCacheFirst() {
         LocalDate today = LocalDate.now();
@@ -87,7 +87,7 @@ public class CouponServiceTest {
         );
     }
 
-    @DisplayName("쿠폰 조회 2번째부터는 캐시에서 조회되므로 DB가 삭제되어도 캐싱된 값을 반환한다.")
+    @DisplayName("한번 캐싱이 되면 DB가 삭제되어도 캐싱된 값을 반환한다")
     @Test
     void saveCache() {
         LocalDate today = LocalDate.now();
