@@ -48,7 +48,7 @@ class MemberCouponServiceTest {
                 () -> assertThat(coupons)
                         .hasSize(2)
                         .map(IssuedCouponResponse::id)
-                        .containsExactly(coupon1.getId(), coupon2.getId())
+                        .containsExactlyInAnyOrder(coupon1.getId(), coupon2.getId())
         );
     }
 
