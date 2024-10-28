@@ -9,13 +9,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import coupon.domain.Coupon;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class CouponEntity {
 
@@ -32,14 +33,25 @@ public class CouponEntity {
     @Column(name = "MINIMUM_ORDER_AMOUNT", nullable = false)
     private Long minimumOrderAmount;
 
-    @Column(name = "DISCOUNT_RATE", nullable = false)
-    private Long discountRate;
-
     @Column(name = "START_DATE", nullable = false)
     private LocalDateTime startDate;
 
     @Column(name = "EXPIRATION_DATE", nullable = false)
     private LocalDateTime expirationDate;
+
+    public CouponEntity(
+            final String name,
+            final Long discountAmount,
+            final Long minimumOrderAmount,
+            final LocalDateTime startDate,
+            final LocalDateTime expirationDate
+    ) {
+        this.name = name;
+        this.discountAmount = discountAmount;
+        this.minimumOrderAmount = minimumOrderAmount;
+        this.startDate = startDate;
+        this.expirationDate = expirationDate;
+    }
 
     public static CouponEntity toEntity(final Coupon coupon) {
         return new CouponEntity(
@@ -47,20 +59,18 @@ public class CouponEntity {
                 coupon.getName().getValue(),
                 coupon.getDiscountAmount().getValue(),
                 coupon.getMinimumOrderAmount().getValue(),
-                coupon.getDiscountRate().getValue(),
                 coupon.getValidityPeriod().getStartDate(),
                 coupon.getValidityPeriod().getExpirationDate()
         );
     }
 
     public Coupon toDomain() {
-        return Coupon.builder()
-                .name(name)
-                .discountAmount(discountAmount)
-                .discountRate(discountRate)
-                .minimumOrderAmount(minimumOrderAmount)
-                .startDate(startDate)
-                .expirationDate(expirationDate)
-                .build();
+        return new Coupon(
+                name,
+                discountAmount,
+                minimumOrderAmount,
+                startDate,
+                expirationDate
+        );
     }
 }

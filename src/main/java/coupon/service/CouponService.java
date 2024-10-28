@@ -1,7 +1,5 @@
 package coupon.service;
 
-import static java.lang.Thread.sleep;
-
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 import org.springframework.stereotype.Service;
@@ -11,9 +9,6 @@ import coupon.domain.Coupon;
 import coupon.exception.NotFoundCouponException;
 import coupon.repository.CouponEntity;
 import coupon.repository.CouponRepository;
-import coupon.service.dto.CreateCouponRequest;
-import coupon.service.dto.CreateCouponResponse;
-import coupon.service.dto.GetCouponResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -24,31 +19,18 @@ public class CouponService {
     private final CouponRepository couponRepository;
 
     @Transactional
-    public CreateCouponResponse createCoupon(final CreateCouponRequest request) {
-        Coupon coupon = newCoupon(request);
-        final CouponEntity save = couponRepository.save(CouponEntity.toEntity(coupon));
-        return CreateCouponResponse.from(save);
+    public CouponEntity createCoupon(final Coupon request) {
+        return couponRepository.save(CouponEntity.toEntity(request));
     }
 
-    private static Coupon newCoupon(final CreateCouponRequest request) {
-        return new Coupon(
-                request.couponName(),
-                request.discountAmount(),
-                request.minimumOrderAmount(),
-                request.startDate(),
-                request.expirationDate()
-        );
-    }
-
-    // 회원을 위한 쿠폰 조회
     @Transactional(readOnly = true)
-    public GetCouponResponse getCouponForMember(final long id) {
+    public Coupon getCouponForMember(final long id) {
         int attempts = 0;
         while (attempts < MAX_READ_ATTEMPT) {
             try {
                 final CouponEntity couponEntity = couponRepository.findById(id)
                         .orElseThrow(() -> new NotFoundCouponException("존재하지 않는 쿠폰입니다."));
-                return GetCouponResponse.from(couponEntity.toDomain());
+                return couponEntity.toDomain();
             } catch (NotFoundCouponException e) {
                 attempts++;
                 sleep();
@@ -66,13 +48,11 @@ public class CouponService {
         }
     }
 
-
-    // 관리자를 위한 쿠폰 조회
     @Transactional(readOnly = true)
-    public GetCouponResponse getCouponForAdmin(final long id) {
+    public Coupon getCouponForAdmin(final long id) {
         final CouponEntity couponEntity = couponRepository.findById(id)
                 .orElseGet(() -> findCouponEntity(id));
-        return GetCouponResponse.from(couponEntity.toDomain());
+        return couponEntity.toDomain();
     }
 
     @Transactional(propagation = REQUIRES_NEW)

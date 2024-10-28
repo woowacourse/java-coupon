@@ -29,20 +29,4 @@ public class Coupon {
         this.discountRate = new DiscountRate(this.discountAmount, this.minimumOrderAmount);
         this.validityPeriod = new ValidityPeriod(startDate, expirationDate);
     }
-
-    @Builder
-    private Coupon(
-            final String name,
-            final long discountAmount,
-            final long minimumOrderAmount,
-            final long discountRate,
-            final LocalDateTime startDate,
-            final LocalDateTime expirationDate
-    ) {
-        this.name = new CouponName(name);
-        this.discountAmount = new DiscountAmount(discountAmount);
-        this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
-        this.discountRate = new DiscountRate(discountRate);
-        this.validityPeriod = new ValidityPeriod(startDate, expirationDate);
-    }
 }

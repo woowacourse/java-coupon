@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import coupon.service.dto.CreateCouponRequest;
-import coupon.service.dto.CreateCouponResponse;
-import coupon.service.dto.GetCouponResponse;
+import coupon.domain.Coupon;
+import coupon.repository.CouponEntity;
 
 @SpringBootTest
 class CouponServiceTest {
@@ -20,15 +19,15 @@ class CouponServiceTest {
 
     @Test
     void 복제지연테스트() {
-        CreateCouponRequest request = new CreateCouponRequest(
+        Coupon request = new Coupon(
                 "쿠폰이름",
                 9000,
                 500,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7)
         );
-        final CreateCouponResponse createCouponResponse = couponService.createCoupon(request);
-        final GetCouponResponse getCouponResponse = couponService.getCoupon(createCouponResponse.id());
-        assertThat(getCouponResponse).isNotNull();
+        final CouponEntity coupon = couponService.createCoupon(request);
+        final Coupon actual = couponService.getCouponForAdmin(coupon.getId());
+        assertThat(actual).isNotNull();
     }
 }
