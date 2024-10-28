@@ -3,7 +3,6 @@ package coupon.coupon.domain;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -12,13 +11,13 @@ public class DatePeriod {
     private static final LocalTime startTime = LocalTime.of(0, 0, 0);
     private static final LocalTime endTime = LocalTime.of(23, 59, 59);
 
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
     public DatePeriod(LocalDate startDate, LocalDate endDate) {
         validateEndDate(startDate, endDate);
-        this.startDate = LocalDateTime.of(startDate, startTime);
-        this.endDate = LocalDateTime.of(endDate, endTime);
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     private static void validateEndDate(LocalDate startDate, LocalDate endDate) {

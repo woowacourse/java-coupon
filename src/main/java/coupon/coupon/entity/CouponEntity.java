@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -37,10 +37,10 @@ public class CouponEntity extends BaseEntity {
     private Category category;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     public CouponEntity(Coupon coupon) {
         this(null, coupon.getName(), coupon.getDiscountAmount(), coupon.getMinimumOrderAmount(), coupon.getCategory(), coupon.getStartDate(), coupon.getEndDate());

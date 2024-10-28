@@ -3,7 +3,7 @@ package coupon.coupon.dto;
 import coupon.coupon.domain.Category;
 import coupon.coupon.entity.CouponEntity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record CouponResponse(
         Long id,
@@ -11,8 +11,8 @@ public record CouponResponse(
         int discountAmount,
         int minimumOrderAmount,
         Category category,
-        LocalDateTime startDate,
-        LocalDateTime endDate
+        LocalDate startDate,
+        LocalDate endDate
 ) {
 
     public static CouponResponse from(CouponEntity coupon) {

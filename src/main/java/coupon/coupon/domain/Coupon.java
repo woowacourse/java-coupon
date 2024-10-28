@@ -3,7 +3,6 @@ package coupon.coupon.domain;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -30,11 +29,11 @@ public class Coupon {
         return name.getName();
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return datePeriod.getStartDate();
     }
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return datePeriod.getEndDate();
     }
 }

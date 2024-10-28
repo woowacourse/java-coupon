@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -21,17 +21,25 @@ public class MemberCouponEntity extends BaseEntity {
     private Long id;
 
     @Column(name = "coupon_id", nullable = false)
-    private Long coupon_id;
+    private Long couponId;
 
     @Column(name = "member_id", nullable = false)
-    private Long member_id;
+    private Long memberId;
 
     @Column(name = "used", nullable = false)
     private boolean used;
 
     @Column(name = "issued_date", nullable = false)
-    private LocalDateTime issedDate;
+    private LocalDate issedDate;
 
     @Column(name = "expiry_date", nullable = false)
-    private LocalDateTime expiryDate;
+    private LocalDate expiryDate;
+
+    public MemberCouponEntity(Long memberId, Long couponId, boolean used, LocalDate issedDate) {
+        this.memberId = memberId;
+        this.couponId = couponId;
+        this.used = used;
+        this.issedDate = issedDate;
+        this.expiryDate = issedDate.plusDays(7);
+    }
 }
