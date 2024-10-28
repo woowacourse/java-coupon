@@ -3,7 +3,9 @@ package coupon.memberCoupon.repository;
 import coupon.coupon.domain.Coupon;
 import coupon.member.domain.Member;
 import java.util.Objects;
+import lombok.Getter;
 
+@Getter
 public class MemberCouponCacheKey {
 
     private Member member;

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import coupon.coupon.domain.Coupon;
 import coupon.member.domain.Member;
+import coupon.memberCoupon.cache.MemberCouponLocalCache;
 import coupon.memberCoupon.domain.MemberCoupon;
 import coupon.utils.IsolatedTest;
 import org.junit.jupiter.api.DisplayName;
