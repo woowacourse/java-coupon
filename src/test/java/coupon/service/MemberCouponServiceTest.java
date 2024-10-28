@@ -5,11 +5,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
+import coupon.dto.MemberCouponResponse;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
@@ -39,11 +41,13 @@ class MemberCouponServiceTest {
     private Coupon coupon;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws InterruptedException {
         member = memberRepository.save(new Member("name", "email", "password"));
         LocalDateTime start = LocalDateTime.now();
         LocalDateTime end = start.plusDays(5);
-        coupon = couponRepository.save(new Coupon("테스트 쿠폰", 1000, 5000, Category.FASHION, start, end));
+        coupon = couponRepository.save(new Coupon("쿠폰", 1000, 5000, Category.FASHION, start, end));
+        //TODO 없앨 예정
+        Thread.sleep(60000);
     }
 
     @Test
@@ -74,5 +78,32 @@ class MemberCouponServiceTest {
         assertThatThrownBy(() -> memberCouponService.issueCoupon(member.getId(), coupon.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("멤버 한 명당 동일한 쿠폰은 5장까지 발급 가능합니다.");
+    }
+
+    @Test
+    @DisplayName("회원의 쿠폰 목록 조회 성공")
+    void testReadMemberCouponsByMember_Success() {
+        // given
+        memberCouponRepository.save(new MemberCoupon(coupon, member));
+
+        // when
+        List<MemberCouponResponse> coupons = memberCouponService.readMemberCouponsByMember(member.getId());
+
+        // then
+        assertAll(
+                () -> assertThat(coupons).hasSize(1),
+                () -> assertThat(coupons.get(0).couponName()).isEqualTo("쿠폰"),
+                () -> assertThat(coupons.get(0).memberName()).isEqualTo("name")
+        );
+    }
+
+    @Test
+    @DisplayName("회원의 쿠폰이 없는 경우 빈 목록 반환")
+    void testReadMemberCouponsByMember_Empty() {
+        // when
+        List<MemberCouponResponse> coupons = memberCouponService.readMemberCouponsByMember(member.getId());
+
+        // then
+        assertThat(coupons).isEmpty();
     }
 }

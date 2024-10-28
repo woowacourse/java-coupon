@@ -3,12 +3,14 @@ package coupon.service;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
+import coupon.dto.MemberCouponResponse;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -26,6 +28,15 @@ public class MemberCouponService {
         Coupon coupon = couponRepository.getById(couponId);
         validateCouponCountPerMember(member, coupon);
         return memberCouponRepository.save(new MemberCoupon(coupon, member));
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberCouponResponse> readMemberCouponsByMember(long memberId) {
+        Member member = memberRepository.getById(memberId);
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findByMember(member);
+        return memberCoupons.stream()
+                .map(MemberCouponResponse::from)
+                .toList();
     }
 
     private void validateCouponCountPerMember(Member member, Coupon coupon) {
