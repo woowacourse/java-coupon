@@ -10,5 +10,5 @@ import lombok.RequiredArgsConstructor;
 public class ValidityPeriod {
 
     private final LocalDateTime startDate;
-    private final LocalDateTime expirationDate;
+    private final LocalDateTime endDate;
 }

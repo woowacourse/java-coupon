@@ -34,21 +34,21 @@ public class CouponEntity {
     @Column(name = "START_DATE", nullable = false)
     private LocalDateTime startDate;
 
-    @Column(name = "EXPIRATION_DATE", nullable = false)
-    private LocalDateTime expirationDate;
+    @Column(name = "END_DATE", nullable = false)
+    private LocalDateTime endDate;
 
     public CouponEntity(
             final String name,
             final Long discountAmount,
             final Long minimumOrderAmount,
             final LocalDateTime startDate,
-            final LocalDateTime expirationDate
+            final LocalDateTime endDate
     ) {
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;
         this.startDate = startDate;
-        this.expirationDate = expirationDate;
+        this.endDate = endDate;
     }
 
     public static CouponEntity toEntity(final Coupon coupon) {
@@ -57,7 +57,7 @@ public class CouponEntity {
                 coupon.getDiscountAmount().getValue(),
                 coupon.getMinimumOrderAmount().getValue(),
                 coupon.getValidityPeriod().getStartDate(),
-                coupon.getValidityPeriod().getExpirationDate()
+                coupon.getValidityPeriod().getEndDate()
         );
     }
 
@@ -67,7 +67,7 @@ public class CouponEntity {
                 discountAmount,
                 minimumOrderAmount,
                 startDate,
-                expirationDate
+                endDate
         );
     }
 }

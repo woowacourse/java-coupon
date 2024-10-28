@@ -21,12 +21,12 @@ public class Coupon {
             final long discountAmount,
             final long minimumOrderAmount,
             final LocalDateTime startDate,
-            final LocalDateTime expirationDate
+            final LocalDateTime endDate
     ) {
         this.name = new CouponName(name);
         this.discountAmount = new DiscountAmount(discountAmount);
         this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
         this.discountRate = new DiscountRate(this.discountAmount, this.minimumOrderAmount);
-        this.validityPeriod = new ValidityPeriod(startDate, expirationDate);
+        this.validityPeriod = new ValidityPeriod(startDate, endDate);
     }
 }
