@@ -15,6 +15,7 @@ public class DataSourceConfig {
 
     private static final String WRITER = "writer";
     private static final String READER = "reader";
+    private static final String DATASOURCE_ROUTER = "router";
 
     @Bean(WRITER)
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
@@ -30,7 +31,7 @@ public class DataSourceConfig {
                 .build();
     }
 
-    @Bean
+    @Bean(DATASOURCE_ROUTER)
     public DataSource routingDataSource(
             @Qualifier(WRITER) DataSource writer,
             @Qualifier(READER) DataSource reader
@@ -47,8 +48,7 @@ public class DataSourceConfig {
 
     @Bean
     @Primary
-    public DataSource dataSource() {
-        DataSource dataSource = routingDataSource(writerDataSource(), readerDataSource());
-        return new LazyConnectionDataSourceProxy(dataSource);
+    public DataSource dataSource(@Qualifier(DATASOURCE_ROUTER) DataSource routingDataSource) {
+        return new LazyConnectionDataSourceProxy(routingDataSource);
     }
 }
