@@ -33,7 +33,6 @@ class MemberServiceTest {
     @Autowired
     CouponRepository couponRepository;
 
-    //    @Disabled // 지연 복제로 인해서 테스트 실패
     @Test
     @DisplayName("사용자의 쿠폰을 조회한다.")
     void getCoupons() {
