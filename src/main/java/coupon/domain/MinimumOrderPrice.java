@@ -5,11 +5,13 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
+@Getter
 public class MinimumOrderPrice implements Serializable {
 
     private static final int MIN_PRICE = 5_000;
