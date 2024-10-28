@@ -5,6 +5,7 @@ import coupon.coupon.domain.UserCoupon;
 import coupon.coupon.repository.UserCouponRepository;
 import coupon.user.domain.User;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +26,11 @@ public class UserCouponService {
     }
 
     private boolean canIssue(Coupon coupon, User user) {
-        return userCouponRepository.countByUserAndCoupon(user, coupon) <= MAX_ISSUE_COUNT;
+        return userCouponRepository.countByUserAndCouponId(user, coupon.getId()) <= MAX_ISSUE_COUNT;
     }
 
+    public List<UserCoupon> getUserCoupons(User user) {
+        return userCouponRepository.findByUser(user);
+    }
 
 }

@@ -10,4 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface UserCouponRepository extends JpaRepository<UserCoupon, Long> {
 
     int countByUserAndCoupon(User user, Coupon coupon);
+    int countByUserAndCouponId(User user, Long couponId);
+
+    List<UserCoupon> findByUser(User user);
+
 }
