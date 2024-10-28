@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.coupons.domain;
 
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
@@ -35,10 +35,15 @@ public class Coupon {
     @Embedded
     private Duration duration;
 
+    public Coupon(Long id, CouponName couponName, PricingCondition pricingCondition, Category category, Duration duration) {
+        this.id = id;
+        this.couponName = couponName;
+        this.pricingCondition = pricingCondition;
+        this.category = category;
+        this.duration = duration;
+    }
+
     public Coupon(String name, Integer discountAmount, Integer minOrderAmount, String category, LocalDateTime startDate, LocalDateTime endDate) {
-        this.couponName = new CouponName(name);
-        this.pricingCondition = new PricingCondition(discountAmount, minOrderAmount);
-        this.category = Category.from(category);
-        this.duration = new Duration(startDate, endDate);
+        this(null, new CouponName(name), new PricingCondition(discountAmount, minOrderAmount), Category.from(category), new Duration(startDate, endDate));
     }
 }

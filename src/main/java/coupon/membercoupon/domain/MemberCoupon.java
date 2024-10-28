@@ -1,4 +1,4 @@
-package membercoupon.domain;
+package coupon.membercoupon.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -7,11 +7,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import coupon.domain.Coupon;
+import coupon.coupons.domain.Coupon;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import member.domain.Member;
+import coupon.member.domain.Member;
 
 @Entity
 @Getter

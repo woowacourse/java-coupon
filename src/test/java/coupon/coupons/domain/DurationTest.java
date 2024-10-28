@@ -1,8 +1,10 @@
-package coupon.domain;
+package coupon.coupons.domain;
 
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import coupon.coupons.domain.Duration;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

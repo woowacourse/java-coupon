@@ -1,4 +1,4 @@
-package coupon.service;
+package coupon.coupons.service;
 
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
-import coupon.domain.Category;
-import coupon.domain.Coupon;
-import coupon.repository.CouponRepository;
+import coupon.coupons.domain.Category;
+import coupon.coupons.domain.Coupon;
+import coupon.coupons.repository.CouponRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

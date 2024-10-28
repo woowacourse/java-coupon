@@ -1,9 +1,9 @@
-package membercoupon.domain;
+package coupon.membercoupon.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import coupon.domain.Coupons;
-import exception.CouponException;
+import coupon.coupons.domain.Coupons;
+import coupon.exception.CouponException;
 
 
 public record MemberCoupons(List<MemberCoupon> memberCoupons) {

@@ -1,7 +1,9 @@
-package coupon.domain;
+package coupon.coupons.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import coupon.coupons.domain.PricingCondition;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

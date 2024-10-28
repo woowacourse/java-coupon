@@ -1,16 +1,16 @@
-package membercoupon.domain;
+package coupon.membercoupon.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import coupon.domain.Category;
-import coupon.domain.Coupon;
-import coupon.domain.CouponName;
-import coupon.domain.Coupons;
-import coupon.domain.Duration;
-import coupon.domain.PricingCondition;
-import exception.CouponException;
+import coupon.coupons.domain.Category;
+import coupon.coupons.domain.Coupon;
+import coupon.coupons.domain.CouponName;
+import coupon.coupons.domain.Coupons;
+import coupon.coupons.domain.Duration;
+import coupon.coupons.domain.PricingCondition;
+import coupon.exception.CouponException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
