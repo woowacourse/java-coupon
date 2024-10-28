@@ -31,7 +31,6 @@ public class MemberCouponService {
     private final MemberCouponWriter memberCouponWriter;
     private final TransactionRouter transactionRouter;
 
-
     @Transactional
     @CacheEvict(cacheNames = MEMBER_COUPON_CACHE_NAME, key = "#memberId")
     public MemberCoupon issueCoupon(long memberId, long couponId) {

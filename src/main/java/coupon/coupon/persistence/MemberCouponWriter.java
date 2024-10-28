@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCouponWriter {
 
-
     private final MemberCouponRepository memberCouponRepository;
 
     public MemberCoupon create(MemberCoupon memberCoupon) {
