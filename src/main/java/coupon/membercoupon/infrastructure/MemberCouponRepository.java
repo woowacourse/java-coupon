@@ -8,4 +8,6 @@ import java.util.List;
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
     List<MemberCoupon> findByCouponIdAndMemberId(long couponId, long memberId);
+
+    List<MemberCoupon> findByMemberId(long memberId);
 }
