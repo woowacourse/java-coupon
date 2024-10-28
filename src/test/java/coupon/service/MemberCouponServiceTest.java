@@ -1,5 +1,6 @@
 package coupon.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -7,8 +8,10 @@ import coupon.domain.Coupon;
 import coupon.domain.CouponCategory;
 import coupon.domain.CouponRepository;
 import coupon.domain.Member;
+import coupon.domain.MemberCoupon;
 import coupon.domain.MemberCouponRepository;
 import coupon.domain.MemberRepository;
+import coupon.service.dto.MemberCouponResponses;
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
@@ -94,5 +97,28 @@ class MemberCouponServiceTest {
 
         assertThatNoException()
                 .isThrownBy(() -> memberCouponService.create(savedMember.getId(), savedCoupon.getId()));
+    }
+
+    @DisplayName("멤버 쿠폰 조회 시 존재하지 않는 멤버일 경우 예외를 발생시킨다.")
+    @Test
+    void throwsWhenGetMemberCouponsNotExistsMember() {
+        assertThatThrownBy(() -> memberCouponService.getMemberCoupons(1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("존재하지 않는 회원입니다.");
+    }
+
+    @DisplayName("멤버 쿠폰을 정상적으로 조회한다.")
+    @Test
+    void getMemberCouponsSuccessfully() {
+        Member savedMember = memberRepository.save(member);
+        Coupon savedCoupon1 = couponRepository.save(coupon);
+        Coupon savedCoupon2 = couponRepository.save(coupon);
+
+        memberCouponRepository.save(new MemberCoupon(savedMember, savedCoupon1));
+        memberCouponRepository.save(new MemberCoupon(savedMember, savedCoupon2));
+
+        MemberCouponResponses memberCoupons = memberCouponService.getMemberCoupons(1L);
+
+        assertThat(memberCoupons.memberCouponResponses.size()).isEqualTo(2);
     }
 }
