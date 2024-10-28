@@ -1,5 +1,6 @@
 package coupon.membercoupon.business;
 
+import coupon.coupon.domain.Coupon;
 import coupon.coupon.exception.CouponErrorMessage;
 import coupon.coupon.exception.CouponException;
 import coupon.coupon.infrastructure.CouponRepository;
@@ -21,25 +22,27 @@ public class MemberCouponService {
     private final CouponRepository couponRepository;
 
     public void issue(long couponId, long memberId) {
-        List<MemberCoupon> memberCoupons = memberCouponRepository.findByCouponIdAndMemberId(couponId, memberId);
-        validateIssuableCoupon(memberCoupons);
-        memberCouponRepository.save(new MemberCoupon(couponId, memberId));
-    }
-
-    private void validateIssuableCoupon(List<MemberCoupon> memberCoupons) {
-        if (memberCoupons.size() >= 5) {
-            throw new CouponException(CouponErrorMessage.EXCEED_MAXIMUM_ISSUABLE_COUPON);
-        }
+        MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId);
+        memberCouponRepository.save(memberCoupon);
+        MemberCouponCache.add(memberId, memberCoupon);
     }
 
     public List<MemberCouponResponse> findAllMemberCoupons(long memberId) {
-        List<MemberCoupon> memberCoupons = memberCouponRepository.findByMemberId(memberId);
+        List<MemberCoupon> memberCoupons = MemberCouponCache.get(memberId);
+        if (memberCoupons == null) {
+            memberCoupons = memberCouponRepository.findByMemberId(memberId);
+        }
         return memberCoupons.stream()
-                .map(memberCoupon -> new MemberCouponResponse(
-                        memberCoupon,
-                        couponRepository.findById(memberCoupon.getCouponId())
-                                .orElseThrow(() -> new CouponException(CouponErrorMessage.COUPON_DOES_NOT_EXISTS_IN_MEMBER_COUPON))
-                ))
+                .map(this::generateMemberCouponResponse)
                 .toList();
+    }
+
+    private MemberCouponResponse generateMemberCouponResponse(MemberCoupon memberCoupon) {
+        Coupon coupon = CouponCache.get(memberCoupon.getCouponId());
+        if(coupon == null) {
+            coupon = couponRepository.findById(memberCoupon.getCouponId())
+                    .orElseThrow(() -> new CouponException(CouponErrorMessage.COUPON_DOES_NOT_EXISTS_IN_MEMBER_COUPON));
+        }
+        return new MemberCouponResponse(memberCoupon, coupon);
     }
 }
