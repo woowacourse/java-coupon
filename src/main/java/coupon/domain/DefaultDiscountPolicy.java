@@ -1,5 +1,11 @@
 package coupon.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class DefaultDiscountPolicy implements DiscountPolicy {
 
     private static final long DISCOUNT_AMOUNT_UNIT = 500L;
@@ -12,8 +18,8 @@ public class DefaultDiscountPolicy implements DiscountPolicy {
     private static final long DISCOUNT_RATE_MIN = 3L;
     private static final long DISCOUNT_RATE_MAX = 20L;
 
-    private final long discountAmount;
-    private final long minimumOrderPrice;
+    private long discountAmount;
+    private long minimumOrderPrice;
 
     public DefaultDiscountPolicy(long discountAmount, long minimumOrderPrice) {
         this.discountAmount = discountAmount;

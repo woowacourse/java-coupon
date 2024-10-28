@@ -7,6 +7,11 @@ import java.time.LocalTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,9 +24,13 @@ public class IssuePeriod {
     private static final LocalTime END_AT_TIME = LocalTime.of(23, 59, 59, 999999000);
 
     @Column(name = "issue_start_at", nullable = false)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime issueStartAt;
 
     @Column(name = "issue_end_at", nullable = false)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime issueEndAt;
 
     public IssuePeriod(LocalDate issueStartAt, LocalDate issueEndAt) {
