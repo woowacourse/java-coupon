@@ -17,14 +17,23 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class MemberCouponService {
+    private static final int MAXIMUM_ISSUABLE_MEMBER_COUPON = 5;
 
     private final MemberCouponRepository memberCouponRepository;
     private final CouponRepository couponRepository;
 
     public void issue(long couponId, long memberId) {
+        validateIssuable(couponId, memberId);
         MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId);
         memberCouponRepository.save(memberCoupon);
         MemberCouponCache.add(memberId, memberCoupon);
+    }
+
+    private void validateIssuable(long couponId, long memberId) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findByCouponIdAndMemberId(couponId, memberId);
+        if(memberCoupons.size() >= MAXIMUM_ISSUABLE_MEMBER_COUPON) {
+            throw new CouponException(CouponErrorMessage.EXCEED_MAXIMUM_ISSUABLE_COUPON);
+        }
     }
 
     public List<MemberCouponResponse> findAllMemberCoupons(long memberId) {

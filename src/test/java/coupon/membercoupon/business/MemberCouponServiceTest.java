@@ -71,7 +71,7 @@ class MemberCouponServiceTest {
         memberCouponRepository.save(MemberCouponFixture.getMemberCoupon());
 
         // when & then
-        assertThatThrownBy(() ->memberCouponService.issue(1L, 1L))
+        assertThatThrownBy(() -> memberCouponService.issue(1L, 1L))
                 .isInstanceOf(CouponException.class);
     }
 
