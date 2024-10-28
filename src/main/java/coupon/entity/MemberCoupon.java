@@ -19,6 +19,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MemberCoupon {
 
+    private static final int DAYS_TO_LIVE = 6;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,6 +46,6 @@ public class MemberCoupon {
         this.memberId = memberId;
         this.used = false;
         this.start = start;
-        this.end = start.plusDays(6);
+        this.end = start.plusDays(DAYS_TO_LIVE);
     }
 }
