@@ -20,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCouponWriteService {
 
-    public static final int MAX_COUPON_COUNT_PER_MEMBER = 5;
+    private static final int MAX_COUPON_COUNT_PER_MEMBER = 5;
+
     private final CouponRepository couponRepository;
 
     private final MemberRepository memberRepository;
