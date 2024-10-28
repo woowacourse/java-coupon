@@ -53,7 +53,7 @@ class MemberCouponServiceTest extends ServiceTest {
 
     @DisplayName("사용자에게 발행된 모든 쿠폰 정보를 가져온다.")
     @Test
-    void getCouponWithInvalidIdThrowsException() {
+    void getCouponsByMember() {
         // given
         Coupon coupon = saveCoupon();
         Member member = saveMember();

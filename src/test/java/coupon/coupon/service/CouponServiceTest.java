@@ -25,7 +25,7 @@ public class CouponServiceTest extends ServiceTest {
         couponRepository.save(coupon);
 
         // when
-        Coupon savedCoupon = couponService.getCouponByAdmin(coupon.getId());
+        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
 
         // then
         assertThat(savedCoupon).isNotNull();
@@ -38,7 +38,7 @@ public class CouponServiceTest extends ServiceTest {
         long notExistCouponId = 0;
 
         // when & then
-        assertThatThrownBy(() -> couponService.getCouponByAdmin(notExistCouponId))
+        assertThatThrownBy(() -> couponService.getCoupon(notExistCouponId))
                 .isInstanceOf(CouponException.class)
                 .hasMessage("요청하신 쿠폰을 찾을 수 없어요.");
     }

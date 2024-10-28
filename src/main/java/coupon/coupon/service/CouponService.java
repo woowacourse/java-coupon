@@ -2,7 +2,7 @@ package coupon.coupon.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import coupon.CouponException;
+import coupon.cache.CacheService;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.repository.CouponRepository;
 
@@ -11,9 +11,11 @@ import coupon.coupon.repository.CouponRepository;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final CacheService cacheService;
 
-    public CouponService(CouponRepository couponRepository) {
+    public CouponService(CouponRepository couponRepository, CacheService cacheService) {
         this.couponRepository = couponRepository;
+        this.cacheService = cacheService;
     }
 
     @Transactional
@@ -22,8 +24,7 @@ public class CouponService {
     }
 
     @Transactional
-    public Coupon getCouponByAdmin(long id) {
-        return couponRepository.findById(id)
-                .orElseThrow(() -> new CouponException("요청하신 쿠폰을 찾을 수 없어요."));
+    public Coupon getCoupon(long id) {
+        return cacheService.getCoupon(id);
     }
 }

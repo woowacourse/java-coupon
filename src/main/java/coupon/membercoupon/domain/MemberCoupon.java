@@ -68,4 +68,8 @@ public class MemberCoupon {
     public LocalDateTime getExpiredAt() {
         return expiredAt;
     }
+
+    public Long getCouponId() {
+        return couponId;
+    }
 }

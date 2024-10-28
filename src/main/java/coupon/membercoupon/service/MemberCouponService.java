@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import coupon.CouponException;
+import coupon.cache.CacheService;
 import coupon.coupon.domain.Coupon;
 import coupon.member.domain.Member;
 import coupon.membercoupon.domain.MemberCoupon;
@@ -20,9 +21,11 @@ public class MemberCouponService {
     );
 
     private final MemberCouponRepository memberCouponRepository;
+    private final CacheService cacheService;
 
-    public MemberCouponService(MemberCouponRepository memberCouponRepository) {
+    public MemberCouponService(MemberCouponRepository memberCouponRepository, CacheService cacheService) {
         this.memberCouponRepository = memberCouponRepository;
+        this.cacheService = cacheService;
     }
 
     @Transactional
@@ -43,7 +46,10 @@ public class MemberCouponService {
         }
     }
 
-    public List<MemberCoupon> findAllCouponByMember(Member member) {
-        return memberCouponRepository.findAllByMemberId(member.getId());
+    public List<Coupon> findAllCouponByMember(Member member) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(member.getId());
+        return memberCoupons.stream()
+                .map(cacheService::getCoupon)
+                .toList();
     }
 }
