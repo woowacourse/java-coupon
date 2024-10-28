@@ -26,13 +26,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 )
 public class DataSourceConfig {
 
-    @Primary
-    @Bean(name = "dataSource")
-    public DataSource dataSource(
-            @Qualifier("routingDataSource") DataSourceRouter routingDataSource) {
-        return new LazyConnectionDataSourceProxy(routingDataSource);
-    }
-
     @Bean(name = "writerDataSource")
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writerDataSource() {
@@ -58,6 +51,13 @@ public class DataSourceConfig {
         return router;
     }
 
+    @Primary
+    @Bean(name = "dataSource")
+    public DataSource dataSource(
+            @Qualifier("routingDataSource") DataSourceRouter routingDataSource) {
+        return new LazyConnectionDataSourceProxy(routingDataSource);
+    }
+
     @Bean(name = "couponEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean couponEntityManagerFactory(
             @Qualifier("dataSource") DataSource dataSource) {
@@ -67,15 +67,15 @@ public class DataSourceConfig {
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.MYSQL);
-        vendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
         em.setJpaVendorAdapter(vendorAdapter);
 
         Map<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "create-drop");
         properties.put("hibernate.physical_naming_strategy",
-                "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl");
+                "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
+        properties.put("hibernate.implicit_naming_strategy",
+                "org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl");
+        properties.put("hibernate.show_sql", "true");
         em.setJpaPropertyMap(properties);
-
         return em;
     }
 
