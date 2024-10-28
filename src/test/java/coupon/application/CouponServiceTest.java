@@ -69,6 +69,29 @@ class CouponServiceTest {
         assertThat(savedCoupon).isNotNull();
     }
 
+    @Test
+    @Transactional
+    @DisplayName("한 명의 회원은 동일한 쿠폰을 사용한 쿠폰을 포함하여 최대 5장까지 발급할 수 있다.")
+    void validateIssuable() {
+        Long memberId = 1L;
+        Coupon coupon1 = createCoupon();
+        couponService.create(coupon1);
+        Coupon coupon2 = createCoupon();
+        couponService.create(coupon2);
+        issueCoupons(memberId, coupon1, 5);
+        issueCoupons(memberId, coupon2, 1);
+
+        assertThatThrownBy(() -> couponService.issue(1L, coupon1.getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("더 이상 해당 쿠폰을 발급할 수 없습니다.");
+    }
+
+    private void issueCoupons(Long memberId, Coupon coupon, int times) {
+        for (int i = 0; i < times; i++) {
+            couponService.issue(memberId, coupon.getId());
+        }
+    }
+
     private Coupon createCoupon() {
         LocalDate today = LocalDate.now();
         LocalDate end = today.plusDays(1);

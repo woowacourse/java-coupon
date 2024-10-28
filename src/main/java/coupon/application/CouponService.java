@@ -15,15 +15,26 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 class CouponService {
 
+    private static final int COUPON_ISSUE_LIMIT = 5;
+
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
 
     @Transactional
     public void issue(Long memberId, Long couponId) {
         log.info("쿠폰 발급 요청 memberId = {}, couponId = {}", memberId, couponId);
+        validateIssuableLimit(memberId, couponId);
         Coupon coupon = getCoupon(couponId);
         MemberCoupon memberCoupon = coupon.issue(memberId);
         memberCouponRepository.save(memberCoupon);
+    }
+
+    private void validateIssuableLimit(Long memberId, Long couponId) {
+        long couponIssueCount = memberCouponRepository.countMemberCouponByMemberIdAndCouponId(memberId, couponId);
+
+        if (couponIssueCount >= COUPON_ISSUE_LIMIT) {
+            throw new IllegalStateException("더 이상 해당 쿠폰을 발급할 수 없습니다.");
+        }
     }
 
     @Transactional
