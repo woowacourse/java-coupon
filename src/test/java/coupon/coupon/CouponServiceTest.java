@@ -21,7 +21,7 @@ class CouponServiceTest {
 
         // when
         couponService.create(coupon);
-        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        Coupon savedCoupon = couponService.find(coupon.getId());
 
         // then
         assertThat(savedCoupon).isNotNull();
