@@ -30,11 +30,11 @@ public class MemberCoupon {
     @Embedded
     private MemberCouponPeriod couponPeriod;
 
-    public MemberCoupon(Long memberId, Long couponId, LocalDate issuedAt) {
+    public MemberCoupon(Long memberId, Long couponId, boolean isUsed, LocalDate issuedAt) {
         this(null,
                 memberId,
                 couponId,
-                false,
+                isUsed,
                 new MemberCouponPeriod(issuedAt)
         );
     }
