@@ -1,5 +1,6 @@
 package coupon.service;
 
+import coupon.domain.MemberCoupon;
 import coupon.entity.CouponEntity;
 import coupon.entity.MemberEntity;
 import coupon.repository.CouponRepository;
@@ -12,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -19,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class MemberCouponServiceTest {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    Set<JdbcTemplate> jdbcTemplates;
 
     @Autowired
     MemberRepository memberRepository;
@@ -42,12 +47,14 @@ class MemberCouponServiceTest {
 
     @AfterEach
     void tearDown() {
-        jdbcTemplate.update("DELETE FROM member_coupon");
-        jdbcTemplate.update("DELETE FROM member");
-        jdbcTemplate.update("DELETE FROM coupon");
-        jdbcTemplate.update("ALTER TABLE member_coupon AUTO_INCREMENT = 1");
-        jdbcTemplate.update("ALTER TABLE member AUTO_INCREMENT = 1");
-        jdbcTemplate.update("ALTER TABLE coupon AUTO_INCREMENT = 1");
+        jdbcTemplates.forEach((jdbcTemplate) -> {
+            jdbcTemplate.update("DELETE FROM member_coupon");
+            jdbcTemplate.update("DELETE FROM member");
+            jdbcTemplate.update("DELETE FROM coupon");
+            jdbcTemplate.update("ALTER TABLE member_coupon AUTO_INCREMENT = 1");
+            jdbcTemplate.update("ALTER TABLE member AUTO_INCREMENT = 1");
+            jdbcTemplate.update("ALTER TABLE coupon AUTO_INCREMENT = 1");
+        });
     }
 
     @DisplayName("멤버가 쿠폰을 발급한다.")

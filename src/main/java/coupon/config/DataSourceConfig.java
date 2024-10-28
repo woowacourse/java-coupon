@@ -14,13 +14,13 @@ import java.util.Map;
 @Configuration
 public class DataSourceConfig {
 
-    @Bean
+    @Bean(name = "writerDataSource")
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
     public DataSource writerDataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean
+    @Bean(name = "readerDataSource")
     @ConfigurationProperties(prefix = "coupon.datasource.reader")
     public DataSource readerDataSource() {
         return DataSourceBuilder.create().build();
