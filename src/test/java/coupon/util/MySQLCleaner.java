@@ -17,7 +17,6 @@ public class MySQLCleaner {
     private static final String DISABLE_FOREIGN_KEY_CHECKS = "SET FOREIGN_KEY_CHECKS = 0";
     private static final String ENABLE_FOREIGN_KEY_CHECKS = "SET FOREIGN_KEY_CHECKS = 1";
     private static final String TRUNCATE_TABLE = "TRUNCATE TABLE %s";
-    private static final String RESET_ID_SEQUENCE = "ALTER TABLE %s AUTO_INCREMENT = 1";
     private static final String CAMEL_CASE = "([a-z])([A-Z])";
     private static final String SNAKE_CASE = "$1_$2";
 
@@ -48,7 +47,6 @@ public class MySQLCleaner {
 
         for (String tableName : tableNames) {
             truncateTable(tableName);
-            resetIdColumn(tableName);
         }
 
         enableForeignKeyChecks();
@@ -61,11 +59,6 @@ public class MySQLCleaner {
 
     private void truncateTable(final String tableName) {
         entityManager.createNativeQuery(String.format(TRUNCATE_TABLE, tableName))
-                .executeUpdate();
-    }
-
-    private void resetIdColumn(final String tableName) {
-        entityManager.createNativeQuery(String.format(RESET_ID_SEQUENCE, tableName))
                 .executeUpdate();
     }
 
