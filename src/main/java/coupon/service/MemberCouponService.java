@@ -1,6 +1,5 @@
 package coupon.service;
 
-import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.entity.Coupon;
 import coupon.repository.entity.Member;
@@ -18,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberCouponService {
 
     private final ReaderService readerService;
+    private final CouponService couponService;
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponRepository couponRepository;
 
     @Transactional
     public MemberCoupon issueCoupon(Member member, Coupon coupon) {
@@ -51,12 +50,7 @@ public class MemberCouponService {
     @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
     public List<MemberCoupon> getMemberCoupons(Member member) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findByMember(member);
-        memberCoupons.forEach(memberCoupon -> memberCoupon.setCoupon(getCoupon(memberCoupon)));
+        memberCoupons.forEach(mc -> mc.setCoupon(couponService.getCoupon(mc.getCoupon().getId())));
         return memberCoupons;
-    }
-
-    private Coupon getCoupon(MemberCoupon memberCoupon) {
-        return couponRepository.findById(memberCoupon.getCoupon().getId())
-                .orElse(null);
     }
 }
