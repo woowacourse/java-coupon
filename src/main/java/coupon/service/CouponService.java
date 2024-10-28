@@ -4,21 +4,20 @@ import coupon.CouponException;
 import coupon.dto.CouponCreateRequest;
 import coupon.entity.Coupon;
 import coupon.repository.CouponRepository;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class CouponService {
 
     private final CouponRepository couponRepository;
-    private final CacheManager cacheManager;
 
-    @CachePut(key = "#result.id", value = "coupon")
+    @CachePut(key = "#result.id", value = "coupon", cacheManager = "replicationLagCacheManager")
+    @Transactional
     public Coupon create(CouponCreateRequest request) {
         Coupon coupon = new Coupon(
                 request.name(),
@@ -31,10 +30,10 @@ public class CouponService {
         return couponRepository.save(coupon);
     }
 
+    @Cacheable(key = "#id", value = "coupon")
+    @Transactional(readOnly = true)
     public Coupon read(long id) {
-        Optional<Cache> optionalCache = Optional.ofNullable(cacheManager.getCache("coupon"));
-        return optionalCache.map(cache -> cache.get(id, Coupon.class))
-                .or(() -> couponRepository.findById(id))
+        return couponRepository.findById(id)
                 .orElseThrow(() -> new CouponException("coupon with id " + id + " not found"));
     }
 }
