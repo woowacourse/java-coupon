@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CouponCommandService {
 
+    private static final int MAX_EQUAL_COUPON_ISSUE_COUNT = 5;
+
     private final CouponRepository couponRepository;
     private final MemberRepository memberRepository;
     private final MemberCouponRepository memberCouponRepository;
@@ -32,13 +34,22 @@ public class CouponCommandService {
         return couponRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
     }
 
-    public void issueCoupon(Long memberId, Long couponId) {
+    public MemberCoupon issueCoupon(Long memberId, Long couponId) {
+        validateIssuedCouponCount(memberId, couponId);
+
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 멤버입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버입니다."));
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
 
         MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
-        memberCouponRepository.save(memberCoupon);
+
+        return memberCouponRepository.save(memberCoupon);
+    }
+
+    private void validateIssuedCouponCount(Long memberId, Long couponId) {
+        if (memberCouponRepository.countByMemberIdAndCouponId(memberId, couponId) >= MAX_EQUAL_COUPON_ISSUE_COUNT) {
+            throw new IllegalArgumentException("동일한 쿠폰은 사용한 쿠폰 포함해서 5개까지만 발급 가능합니다.");
+        }
     }
 }

@@ -13,17 +13,19 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.mapping.ToOne;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class MemberCoupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -43,19 +45,9 @@ public class MemberCoupon {
     @Column(name = "used_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime usedAt;
 
-    public MemberCoupon(
-            Member member,
-            Coupon coupon,
-            LocalDateTime now,
-            LocalDateTime localDateTime,
-            boolean used,
-            LocalDateTime usedAt
-    ) {
-
-    }
-
     public MemberCoupon(Member member, Coupon coupon) {
         this(
+                null,
                 member,
                 coupon,
                 LocalDateTime.now(),
