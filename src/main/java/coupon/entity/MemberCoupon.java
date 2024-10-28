@@ -23,7 +23,7 @@ public class MemberCoupon extends BaseEntity {
     @Column(name = "coupon_id", nullable = false)
     private Long couponId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
