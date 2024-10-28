@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
+import java.util.StringJoiner;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -116,5 +117,38 @@ public class Coupon {
 
     public boolean canIssue(LocalDateTime issueAt) {
         return issueAt.isAfter(startIssueAt) && issueAt.isBefore(endIssueAt);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Coupon coupon = (Coupon) o;
+        return minOrderAmount == coupon.minOrderAmount && discountAmount == coupon.discountAmount
+                && Objects.equals(id, coupon.id) && Objects.equals(name, coupon.name)
+                && category == coupon.category && Objects.equals(startIssueAt, coupon.startIssueAt)
+                && Objects.equals(endIssueAt, coupon.endIssueAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, minOrderAmount, discountAmount, category, startIssueAt, endIssueAt);
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Coupon.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .add("minOrderAmount=" + minOrderAmount)
+                .add("discountAmount=" + discountAmount)
+                .add("category=" + category)
+                .add("startIssueAt=" + startIssueAt)
+                .add("endIssueAt=" + endIssueAt)
+                .toString();
     }
 }

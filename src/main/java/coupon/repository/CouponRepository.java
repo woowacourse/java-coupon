@@ -2,6 +2,7 @@ package coupon.repository;
 
 import coupon.domain.Coupon;
 import coupon.service.exception.CouponBusinessLogicException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -10,10 +11,21 @@ import org.springframework.stereotype.Repository;
 public class CouponRepository {
 
     private final CouponDiskRepository diskRepository;
+    private final CouponMemoryRepository memoryRepository;
 
     public Coupon getById(Long id) {
-        return diskRepository.findById(id)
-                .orElseThrow(() -> new CouponBusinessLogicException("Coupon not found ID = " + id));
+        Optional<Coupon> cashedCoupon = memoryRepository.findById(id);
+        if (cashedCoupon.isPresent()) {
+            return cashedCoupon.get();
+        }
+
+        Optional<Coupon> coupon = diskRepository.findById(id);
+        if (coupon.isPresent()) {
+            memoryRepository.save(coupon.get());
+            return coupon.get();
+        }
+
+        throw new CouponBusinessLogicException("coupon not found");
     }
 
     public void save(Coupon coupon) {
