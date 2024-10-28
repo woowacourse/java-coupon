@@ -5,8 +5,10 @@ import coupon.coupon.domain.MemberCoupon;
 import coupon.coupon.domain.MemberCouponRepository;
 import coupon.coupon.dto.MemberCouponCreateRequest;
 import coupon.coupon.dto.MemberCouponResponse;
+import coupon.coupon.dto.MyCouponsRequest;
 import coupon.coupon.exception.CouponApplicationException;
 import coupon.member.domain.MemberRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,12 +30,24 @@ public class MemberCouponService {
         final var coupon = couponRepository.findById(memberCouponCreateRequest.couponId())
                 .orElseThrow(() -> new CouponApplicationException("존재하지 않는 쿠폰입니다"));
 
-        final var memberCouponCount = memberCouponRepository.countByMemberAndCoupon(member, coupon);
+        final var memberCouponCount = memberCouponRepository.countByOwnerAndCoupon(member, coupon);
         if (memberCouponCount > MAX_ISSUE_COUNT) {
             throw new CouponApplicationException("같은 쿠폰은 " + MAX_ISSUE_COUNT + "횟수 이상 발급할 수 없습니다");
         }
 
         final var memberCoupon = memberCouponRepository.save(new MemberCoupon(member, coupon));
         return MemberCouponResponse.from(memberCoupon);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberCouponResponse> getMyCoupons(final MyCouponsRequest myCouponsRequest) {
+        final var member = memberRepository.findById(myCouponsRequest.memberId())
+                .orElseThrow(() -> new CouponApplicationException("존재하지 않는 멤버입니다"));
+
+        final var couponsOwnedByMember = memberCouponRepository.findMemberCouponByOwner(member);
+
+        return couponsOwnedByMember.stream()
+                .map(MemberCouponResponse::from)
+                .toList();
     }
 }
