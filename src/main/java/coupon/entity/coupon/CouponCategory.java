@@ -1,4 +1,4 @@
-package coupon.entity;
+package coupon.entity.coupon;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,9 @@
-package coupon.service;
+package coupon.service.coupon;
 
-import coupon.entity.Coupon;
-import coupon.exception.CouponNotFoundException;
+import coupon.entity.coupon.Coupon;
+import coupon.exception.coupon.CouponNotFoundException;
 import coupon.helper.TransactionExecutor;
-import coupon.repository.CouponRepository;
+import coupon.repository.coupon.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

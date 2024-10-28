@@ -1,6 +1,6 @@
-package coupon.entity;
+package coupon.entity.coupon;
 
-import coupon.exception.CouponNameException;
+import coupon.exception.coupon.CouponNameException;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
