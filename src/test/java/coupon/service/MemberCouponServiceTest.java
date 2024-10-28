@@ -8,16 +8,20 @@ import coupon.domain.member.Member;
 import coupon.domain.member.MemberRepository;
 import coupon.fixture.CouponFixture;
 import coupon.fixture.MemberFixture;
+import coupon.service.dto.MemberCouponResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class MemberCouponServiceTest {
@@ -70,5 +74,23 @@ class MemberCouponServiceTest {
         long memberId = savedMember.getId();
         assertThatThrownBy(() -> memberCouponService.create(couponId, memberId))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("회원의 쿠폰 목록을 조회한다.")
+    @Test
+    void getMemberCoupons() {
+        // given
+        Member member = memberRepository.save(MemberFixture.TEST_MEMBER);
+        Coupon testCoupon = couponRepository.save(CouponFixture.TEST_COUPON);
+        memberCouponService.create(testCoupon.getId(), member.getId());
+
+        // when
+        List<MemberCouponResponse> memberCoupons = memberCouponService.getMemberCoupons(member);
+
+        // then
+        assertAll(
+                () -> assertThat(memberCoupons).isNotEmpty(),
+                () -> assertThat(Objects.requireNonNull(memberCoupons).get(0).coupon().getId()).isEqualTo(testCoupon.getId())
+        );
     }
 }
