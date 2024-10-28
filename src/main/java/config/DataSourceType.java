@@ -1,4 +1,4 @@
-package coupon.config;
+package config;
 
 public enum DataSourceType {
 
