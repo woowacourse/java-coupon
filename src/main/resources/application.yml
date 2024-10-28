@@ -19,6 +19,7 @@ spring:
   data:
     redis:
       port: 36379
+      host: localhost
 
 coupon.datasource:
   writer:
