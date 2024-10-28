@@ -4,6 +4,7 @@ import coupon.coupon.domain.CouponRepository;
 import coupon.coupon.domain.MemberCoupon;
 import coupon.coupon.domain.MemberCouponRepository;
 import coupon.coupon.dto.MemberCouponCreateRequest;
+import coupon.coupon.dto.MemberCouponResponse;
 import coupon.coupon.exception.CouponApplicationException;
 import coupon.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class MemberCouponService {
     private final CouponRepository couponRepository;
 
     @Transactional
-    public MemberCoupon createMemberCoupon(final MemberCouponCreateRequest memberCouponCreateRequest) {
+    public MemberCouponResponse createMemberCoupon(final MemberCouponCreateRequest memberCouponCreateRequest) {
         final var member = memberRepository.findById(memberCouponCreateRequest.memberId())
                 .orElseThrow(() -> new CouponApplicationException("존재하지 않는 멤버입니다"));
         final var coupon = couponRepository.findById(memberCouponCreateRequest.couponId())
@@ -32,7 +33,7 @@ public class MemberCouponService {
             throw new CouponApplicationException("같은 쿠폰은 " + MAX_ISSUE_COUNT + "횟수 이상 발급할 수 없습니다");
         }
 
-        final var memberCoupon = new MemberCoupon(member, coupon);
-        return memberCouponRepository.save(memberCoupon);
+        final var memberCoupon = memberCouponRepository.save(new MemberCoupon(member, coupon));
+        return MemberCouponResponse.from(memberCoupon);
     }
 }
