@@ -8,7 +8,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class DiscountRatePolicyTest {
 
-    private final DiscountRatePolicy discountRatePolicy = new DiscountRatePolicy();
+    private final DiscountRatePolicy discountRatePolicy = new DiscountRatePolicy(
+            new DiscountRatePolicyProperties(3, 20)
+    );
 
     @ParameterizedTest
     @ValueSource(ints = {2, 21})

@@ -40,3 +40,11 @@ write-time-checker:
 
 coupon:
   issue_limit: 5
+  policy:
+    fixed:
+      min_amount: 1000
+      max_amount: 10000
+      unit: 500
+    rate:
+      min_rate: 3
+      max_rate: 20
