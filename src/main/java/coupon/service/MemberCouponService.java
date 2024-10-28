@@ -1,9 +1,13 @@
 package coupon.service;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+
 import coupon.domain.MemberCoupon;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
 import coupon.dto.MemberCouponResponse;
+import coupon.dto.MemberCouponResponses;
 import coupon.repository.MemberCouponRepository;
 import coupon.service.db.CouponDBService;
 import java.util.List;
@@ -12,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class MemberCouponService {
 
     private static final int MAX_MEMBER_COUPON_COUNT = 5;
@@ -26,7 +30,6 @@ public class MemberCouponService {
         this.couponDBService = couponDBService;
     }
 
-    @Transactional
     public MemberCoupon issue(Member member, Coupon coupon) {
         MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
         validateIssuedCount(member, coupon);
@@ -41,11 +44,11 @@ public class MemberCouponService {
     }
 
     @Cacheable(value = CACHE_NAME, key = "#member.id")
-    public List<MemberCouponResponse> findAllMemberCoupon(Member member) {
+    public MemberCouponResponses findAllMemberCoupon(Member member) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(member.getId());
         return memberCoupons.stream()
                 .map(this::resolveMemberCouponResponse)
-                .toList();
+                .collect(collectingAndThen(toList(), MemberCouponResponses::new));
     }
 
     private MemberCouponResponse resolveMemberCouponResponse(MemberCoupon memberCoupon) {
