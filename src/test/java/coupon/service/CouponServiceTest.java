@@ -3,6 +3,8 @@ package coupon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import coupon.domain.Category;
 import coupon.domain.MemberCoupon;
@@ -23,11 +25,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 @SpringBootTest
 class CouponServiceTest {
 
-    @Autowired
+    @SpyBean
     private CouponService couponService;
     @Autowired
     private CouponRepository couponRepository;
@@ -114,5 +117,25 @@ class CouponServiceTest {
                 () -> assertThat(actual.memberCoupons().get(0).getId())
                         .isEqualTo(memberCoupon.getId())
         );
+    }
+
+    @DisplayName("쿠폰을 캐싱해서 반환할 수 있다.")
+    @Test
+    void cacheable() {
+        Coupon coupon = couponService.create(new Coupon(
+                new CouponName("쿠폰"),
+                new DiscountMount(1000),
+                new MinimumMount(5000),
+                Category.FASHION,
+                new Period(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1))
+        ));
+
+        couponService.getCoupon(coupon.getId());
+        // cache miss: 메서드가 실제로 호출된다
+        verify(couponService, times(1)).getCoupon(coupon.getId());
+
+        couponService.getCoupon(coupon.getId());
+        // cache hit: 메서드가 실제로 호출되지 않고 캐시를 반환한다
+        verify(couponService, times(1)).getCoupon(coupon.getId());
     }
 }
