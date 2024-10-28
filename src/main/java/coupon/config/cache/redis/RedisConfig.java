@@ -62,7 +62,7 @@ public class RedisConfig {
             //직렬화 시 type 정보를 저장할 scope 지정
             objectMapper.activateDefaultTyping(
                     BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build(), //커스텀 objectmapper에게 클래스 정보도 함께 저장
-                    DefaultTyping.NON_FINAL
+                    DefaultTyping.EVERYTHING
             );
 
             return objectMapper;
