@@ -18,13 +18,12 @@ public class MemberCreator {
     private final HashedPasswordCreator hashedPasswordCreator;
     private final SaltGenerator saltGenerator;
 
-    public Long createMember(MemberCreateRequest request) {
+    public MemberEntity createMember(MemberCreateRequest request) {
         Name name = new Name(request.name());
         String plainPassword = request.password();
         String salt = saltGenerator.generate();
         Password password = hashedPasswordCreator.createPassword(plainPassword, salt);
         MemberEntity memberEntity = new MemberEntity(name, password, salt);
-        MemberEntity savedMemberEntity = memberRepository.save(memberEntity);
-        return savedMemberEntity.getId();
+        return memberRepository.save(memberEntity);
     }
 }
