@@ -2,6 +2,7 @@ package coupon.service.coupon;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import coupon.domain.coupon.Category;
 import coupon.domain.coupon.Coupon;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class CouponServiceTest {
                 "coupon",
                 10000,
                 1000,
-                "FOOD",
+                Category.FOOD,
                 LocalDate.now(),
                 LocalDate.now().plusDays(7)
         );

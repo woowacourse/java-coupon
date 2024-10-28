@@ -41,31 +41,18 @@ public class Coupon {
     private IssuancePeriod issuancePeriod;
 
     public Coupon(
-            Long id,
             String name,
             int minimumOrderAmount,
             int discountAmount,
-            String category,
+            Category category,
             LocalDate issuanceStart,
             LocalDate issuanceEnd
     ) {
-        this.id = id;
         this.name = new CouponName(name);
         this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
         this.discountAmount = new DiscountAmount(discountAmount, this.minimumOrderAmount);
-        this.category = Category.valueOf(category);
+        this.category = category;
         this.issuancePeriod = new IssuancePeriod(issuanceStart, issuanceEnd);
-    }
-
-    public Coupon(
-            String name,
-            int minimumOrderAmount,
-            int discountAmount,
-            String category,
-            LocalDate issuanceStart,
-            LocalDate issuanceEnd
-    ) {
-        this(null, name, minimumOrderAmount, discountAmount, category, issuanceStart, issuanceEnd);
     }
 
     public boolean isIssuable(LocalDateTime issuedAt) {

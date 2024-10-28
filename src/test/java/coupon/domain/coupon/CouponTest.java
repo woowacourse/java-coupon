@@ -17,11 +17,10 @@ class CouponTest {
     @Test
     void isIssuable() {
         Coupon coupon = new Coupon(
-                1L,
                 "쿠폰 이름",
                 10000,
                 1000,
-                "FOOD",
+                Category.FOOD,
                 today,
                 tomorrow
         );
@@ -34,11 +33,10 @@ class CouponTest {
     @Test
     void isIssuableBeforeIssuanceStart() {
         Coupon coupon = new Coupon(
-                1L,
                 "쿠폰 이름",
                 10000,
                 1000,
-                "FOOD",
+                Category.FOOD,
                 today,
                 tomorrow
         );

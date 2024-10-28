@@ -14,11 +14,10 @@ class MemberCouponTest {
 
     private final LocalDate today = LocalDate.now();
     private final Coupon coupon = new Coupon(
-            1L,
             "쿠폰 이름",
             10000,
             1000,
-            "FOOD",
+            Category.FOOD,
             today.minusDays(10),
             today.plusDays(1)
     );
