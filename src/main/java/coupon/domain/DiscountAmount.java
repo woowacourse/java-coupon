@@ -1,11 +1,12 @@
 package coupon.domain;
 
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Embeddable
-public class DiscountAmount {
+public class DiscountAmount implements Serializable {
 
     private static final BigDecimal AMOUNT_UNIT = BigDecimal.valueOf(500);
     private static final BigDecimal LOWEST_ALLOWED_AMOUNT = BigDecimal.valueOf(1_000);
