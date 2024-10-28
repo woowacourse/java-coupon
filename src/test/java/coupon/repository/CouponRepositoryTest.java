@@ -21,17 +21,13 @@ class CouponRepositoryTest {
     @Autowired
     private CouponMemoryRepository couponMemoryRepository;
 
-    @Autowired
-    private CouponDiskRepository couponDiskRepository;
-
     @Test
     void cashingTest() {
         couponRepository.save(COUPON);
 
-        couponRepository.getById(COUPON.getId());
+        Coupon coupon = couponRepository.getById(COUPON.getId());
 
-        Optional<Coupon> diskCoupon = couponDiskRepository.findById(COUPON.getId());
-        Optional<Coupon> memoryCoupon = couponMemoryRepository.findById(COUPON.getId());
-        assertThat(memoryCoupon).isEqualTo(diskCoupon);
+        Optional<Coupon> memoryCoupon = couponMemoryRepository.findById(coupon.getId());
+        assertThat(memoryCoupon).contains(coupon);
     }
 }

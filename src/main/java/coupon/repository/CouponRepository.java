@@ -30,5 +30,6 @@ public class CouponRepository {
 
     public void save(Coupon coupon) {
         diskRepository.save(coupon);
+        memoryRepository.save(coupon);
     }
 }
