@@ -5,8 +5,14 @@ import coupon.domain.coupon.CouponRepository;
 import coupon.domain.coupon.MemberCoupon;
 import coupon.domain.coupon.MemberCouponRepository;
 import coupon.exception.CouponException;
+import coupon.service.coupon.dto.MemberCouponsRequest;
 import coupon.support.TransactionSupport;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +59,25 @@ public class CouponService {
         if (issueCount > MAX_ISSUE_COUNT) {
             throw new CouponException("동일한 쿠폰은 최대 %d장까지 발급할 수 있습니다.".formatted(MAX_ISSUE_COUNT));
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberCouponsRequest> getMemberCoupons(Long memberId) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
+        Map<Long, Coupon> coupons = getCoupons(memberCoupons);
+
+        return memberCoupons.stream()
+                .map(memberCoupon -> MemberCouponsRequest.of(coupons.get(memberCoupon.getCouponId()), memberCoupon))
+                .collect(Collectors.toList());
+    }
+
+    private Map<Long, Coupon> getCoupons(List<MemberCoupon> memberCoupons) {
+        return memberCoupons.stream()
+                .map(MemberCoupon::getCouponId)
+                .distinct()
+                .map(couponRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toMap(Coupon::getId, Function.identity()));
     }
 }
