@@ -7,7 +7,6 @@ import coupon.domain.Coupon;
 import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import java.time.LocalDate;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +25,11 @@ class CouponQueryServiceTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @AfterEach
-    void tearDown() {
-        jdbcTemplate.update("DELETE FROM coupon");
-        jdbcTemplate.update("ALTER TABLE coupon AUTO_INCREMENT = 1");
-    }
+//    @AfterEach
+//    void tearDown() {
+//        jdbcTemplate.update("DELETE FROM coupon");
+//        jdbcTemplate.update("ALTER TABLE coupon AUTO_INCREMENT = 1");
+//    }
 
     @DisplayName("성공: 존재하는 ID로 조회, 복제 지연 해결")
     @Test

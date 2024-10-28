@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Table(name = "coupon")
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@EqualsAndHashCode(of = "id")
 public class Coupon {
 
     private static final int MIN_NAME_LENGTH = 1;
@@ -54,7 +56,6 @@ public class Coupon {
     private LocalDate untilDate;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "category")
     private Category category;
 
     public Coupon(String name, long discountMoney, long minimumOrderMoney, LocalDate sinceDate, LocalDate untilDate,

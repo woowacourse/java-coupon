@@ -24,7 +24,7 @@ class MemberCouponTest {
         LocalDate until = LocalDate.now().plusDays(100);
         Coupon coupon = new Coupon("5,000원 할인쿠폰", 5000, 50000, since, until, "FOOD");
 
-        memberCoupon = new MemberCoupon(coupon, member);
+        memberCoupon = new MemberCoupon(member, coupon);
     }
 
     @DisplayName("성공: 쿠폰 사용")
@@ -71,7 +71,7 @@ class MemberCouponTest {
         Coupon coupon = new Coupon("coupon", 1000, 10000, LocalDate.now(), LocalDate.now(), "FOOD");
         Member member = new Member("트레");
 
-        assertDoesNotThrow(() -> new MemberCoupon(coupon, member));
+        assertDoesNotThrow(() -> new MemberCoupon(member, coupon));
     }
 
     @DisplayName("생성 실패: 쿠폰 발급일 범위 외 발급")
@@ -81,7 +81,7 @@ class MemberCouponTest {
                 LocalDate.now().minusDays(2), LocalDate.now().minusDays(1), "FOOD");
         Member member = new Member("트레");
 
-        assertThatThrownBy(() -> new MemberCoupon(coupon, member))
+        assertThatThrownBy(() -> new MemberCoupon(member, coupon))
                 .isInstanceOf(CouponException.class);
     }
 }

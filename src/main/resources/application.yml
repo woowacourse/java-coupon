@@ -4,6 +4,7 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -12,7 +13,7 @@ spring:
         format_sql: true
         show_sql: false
         use_sql_comments: true
-        hbm2ddl.auto: update
+        hbm2ddl.auto: create-drop
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
@@ -21,14 +22,14 @@ coupon.datasource:
   writer:
     type: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    jdbcUrl: jdbc:mysql://localhost:33306/coupon?createDatabaseIfNotExist=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
     maximumPoolSize: 10
   reader:
     type: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://localhost:33307/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    jdbcUrl: jdbc:mysql://localhost:33307/coupon?createDatabaseIfNotExist=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
     maximumPoolSize: 10
