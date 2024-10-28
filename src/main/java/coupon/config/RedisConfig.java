@@ -16,32 +16,31 @@ import coupon.domain.Coupon;
 @Configuration
 public class RedisConfig {
 
-	@Value("${spring.data.redis.port}")
-	private int port;
+    @Value("${spring.data.redis.port}")
+    private int port;
 
-	@Bean
-	public LettuceConnectionFactory jedisConnectionFactory() {
-		LettuceConnectionFactory connectionFactory
-			= new LettuceConnectionFactory();
-		connectionFactory.setPort(port);
-		return connectionFactory;
-	}
+    @Bean
+    public LettuceConnectionFactory jedisConnectionFactory() {
+        LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory();
+        connectionFactory.setPort(port);
+        return connectionFactory;
+    }
 
-	@Bean
-	public RedisTemplate<String, Coupon> redisTemplate(LettuceConnectionFactory connectionFactory) {
-		RedisTemplate<String, Coupon> template = new RedisTemplate<>();
-		template.setConnectionFactory(connectionFactory);
+    @Bean
+    public RedisTemplate<String, Coupon> redisTemplate(LettuceConnectionFactory connectionFactory) {
+        RedisTemplate<String, Coupon> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
 
-		template.setKeySerializer(new StringRedisSerializer());
+        template.setKeySerializer(new StringRedisSerializer());
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.registerModule(new JavaTimeModule());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
 
-		Jackson2JsonRedisSerializer<Coupon> serializer = new Jackson2JsonRedisSerializer<>(objectMapper, Coupon.class);
+        Jackson2JsonRedisSerializer<Coupon> serializer = new Jackson2JsonRedisSerializer<>(objectMapper, Coupon.class);
 
-		template.setValueSerializer(serializer);
-		template.setHashValueSerializer(serializer);
+        template.setValueSerializer(serializer);
+        template.setHashValueSerializer(serializer);
 
-		return template;
-	}
+        return template;
+    }
 }
