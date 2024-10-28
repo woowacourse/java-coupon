@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberCoupon {
 
+    private static final int USABLE_DAY = 7;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -37,6 +39,8 @@ public class MemberCoupon {
     private LocalDateTime expiresAt;
 
     public static MemberCoupon issue(Long couponId, Long memberId) {
-        return new MemberCoupon(null, couponId, memberId, false, LocalDateTime.now(), null);
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime expiresAt = today.plusDays(USABLE_DAY);
+        return new MemberCoupon(null, couponId, memberId, false, today, expiresAt);
     }
 }
