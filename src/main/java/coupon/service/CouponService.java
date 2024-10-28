@@ -7,6 +7,8 @@ import coupon.repository.CouponRepository;
 import coupon.validator.CouponValidator;
 import java.util.concurrent.Callable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ public class CouponService {
     private final CouponValidator couponValidator;
 
     @Transactional
+    @CachePut(value = "coupon", key = "#result.id")
     public Coupon create(Coupon coupon) {
         couponValidator.validate(coupon);
 
@@ -26,6 +29,7 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "coupon", key = "#couponId")
     public Coupon getCoupon(long couponId) {
         Callable<Coupon> callable = () -> couponRepository.findById(couponId)
                 .orElseThrow(() -> new CouponException(CouponErrorMessage.COUPON_NOT_FOUND));
