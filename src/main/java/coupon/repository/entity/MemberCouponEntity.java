@@ -10,8 +10,10 @@ import jakarta.persistence.Id;
 
 import coupon.domain.MemberCoupon;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class MemberCouponEntity {
@@ -56,6 +58,16 @@ public class MemberCouponEntity {
                 memberCoupon.isUsed(),
                 memberCoupon.getIssuedDate(),
                 memberCoupon.getExpirationDate()
+        );
+    }
+
+    public MemberCoupon toDomain() {
+        return new MemberCoupon(
+                memberId,
+                couponId,
+                isUsed,
+                issuedDate,
+                expirationDate
         );
     }
 }

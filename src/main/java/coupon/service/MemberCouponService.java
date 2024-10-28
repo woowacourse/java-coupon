@@ -1,26 +1,47 @@
 package coupon.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import coupon.domain.Coupon;
 import coupon.domain.MemberCoupon;
-import coupon.repository.entity.MemberCouponEntity;
+import coupon.exception.DuplicateCouponException;
+import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
+import coupon.repository.entity.MemberCouponEntity;
+import coupon.service.dto.CouponInfoResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class MemberCouponService {
 
-    private final MemberCouponRepository memberCouponRepository;
+    public static final int MAX_DUPLICATE_COUPON = 5;
 
-    public void provideCoupon(final MemberCoupon memberCoupon) {
+    private final MemberCouponRepository memberCouponRepository;
+    private final CouponRepository couponRepository;
+
+    public MemberCouponEntity provideCoupon(final MemberCoupon memberCoupon) {
         final long couponCount = memberCouponRepository.countByMemberIdAndCouponId(
                 memberCoupon.getMemberId(),
                 memberCoupon.getCouponId()
         );
-        if (couponCount >= 5) {
-            return;
+        if (couponCount >= MAX_DUPLICATE_COUPON) {
+            throw new DuplicateCouponException("동일한 쿠폰은 5개를 초과하여 발급할 수 없습니다.");
         }
-        memberCouponRepository.save(MemberCouponEntity.toEntity(memberCoupon));
+        return memberCouponRepository.save(MemberCouponEntity.toEntity(memberCoupon));
+    }
+
+    public List<CouponInfoResponse> getCouponsByMember(final long memberId) {
+        final List<MemberCouponEntity> memberCoupons = memberCouponRepository.findByMemberId(memberId);
+        return memberCoupons.stream()
+                .map(memberCoupon -> {
+                    final Coupon coupon = couponRepository.findById(memberCoupon.getCouponId())
+                            .orElseThrow(() -> new RuntimeException("쿠폰을 찾을 수 없습니다."))
+                            .toDomain();
+                    return CouponInfoResponse.of(memberCoupon.toDomain(), coupon);
+                })
+                .toList();
     }
 }
