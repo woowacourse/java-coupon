@@ -17,12 +17,12 @@ public final class Fixtures {
             LocalDate.now().plusDays(1L));
 
     public static final Coupon coupon_2 = new Coupon(
-            "쿠폰1",
-            1000L,
-            10000L,
-            Category.FASHION,
+            "쿠폰2",
+            2000L,
+            20000L,
+            Category.APPLIANCE,
             LocalDate.now(),
-            LocalDate.now().plusDays(1L));
+            LocalDate.now().plusDays(2L));
 
     public static final Member member = new Member("초롱");
 }
