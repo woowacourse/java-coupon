@@ -2,6 +2,7 @@ package coupon.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class MemberCouponService {
     private final CouponService couponService;
     private final MemberCouponRepository memberCouponRepository;
 
+    @CachePut(value = "coupons", key = "#memberId", condition = "#memberId!=null")
     public long issuedCoupon(final long couponId, final long memberId) {
         final CouponEntity coupon = couponService.getCoupon(couponId);
 
@@ -32,10 +34,8 @@ public class MemberCouponService {
             throw new CouponException("쿠폰은 최대 5장까지 발급할 수 있습니다.");
         }
 
-        final MemberCouponEntity savedMemberCoupon = memberCouponRepository
-                .save(new MemberCouponEntity(coupon, memberId));
-
-        return savedMemberCoupon.getId();
+        final MemberCouponEntity saved = memberCouponRepository.save(new MemberCouponEntity(coupon, memberId));
+        return saved.getId();
     }
 
     @Transactional(readOnly = true)
