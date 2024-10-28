@@ -1,4 +1,4 @@
-package coupon.datasource;
+package coupon.config;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -11,6 +11,11 @@ public class DataSourceRouter extends AbstractRoutingDataSource {
             return DataSourceType.READER;
         }
 
-        return DataSourceContextHolder.getDataSource();
+        DataSourceType dataSource = DataSourceContextHolder.getDataSource();
+        if (dataSource != null) {
+            return dataSource;
+        }
+
+        return DataSourceType.WRITER;
     }
 }
