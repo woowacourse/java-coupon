@@ -2,6 +2,8 @@ package coupon.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +39,8 @@ public class MemberCouponService {
     }
 
     @Transactional(readOnly = true)
-    public List<Coupon> findAllCoupon(final long memberId) {
+    @Cacheable(value = "coupons", key = "#memberId", condition = "#memberId!=null")
+    public List<Coupon> findAllCoupon(@Param("memberId") final long memberId) {
         final List<MemberCouponEntity> coupons = memberCouponRepository.findAllByMemberId(memberId);
 
         return coupons.stream()
