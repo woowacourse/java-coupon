@@ -18,7 +18,8 @@ class CouponTest {
         final DiscountAmount discountAmount = new DiscountAmount(10000);
         final MinOrderAmount minOrderAmount = new MinOrderAmount(10000);
         final IssuancePeriod issuancePeriod = new IssuancePeriod(LocalDate.now(), LocalDate.now().plusDays(10));
-        final Coupon coupon = new Coupon(name, discountAmount, minOrderAmount, issuancePeriod);
+        final Category category = Category.FASHION;
+        final Coupon coupon = new Coupon(name, discountAmount, minOrderAmount, issuancePeriod, category);
 
         //when && then
         assertThatThrownBy(coupon::calculateDiscountRate)
@@ -33,7 +34,8 @@ class CouponTest {
         final DiscountAmount discountAmount = new DiscountAmount(4000);
         final MinOrderAmount minOrderAmount = new MinOrderAmount(20000);
         final IssuancePeriod issuancePeriod = new IssuancePeriod(LocalDate.now(), LocalDate.now().plusDays(10));
-        final Coupon coupon = new Coupon(name, discountAmount, minOrderAmount, issuancePeriod);
+        final Category category = Category.FASHION;
+        final Coupon coupon = new Coupon(name, discountAmount, minOrderAmount, issuancePeriod, category);
 
         //when
         final double calculateDiscountRate = coupon.calculateDiscountRate();

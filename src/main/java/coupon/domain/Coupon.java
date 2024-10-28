@@ -14,13 +14,16 @@ public class Coupon {
     private final DiscountAmount discountAmount;
     private final MinOrderAmount minOrderAmount;
     private final IssuancePeriod issuancePeriod;
+    private final Category category;
+
 
     public Coupon(final CouponName name, final DiscountAmount discountAmount, final MinOrderAmount minOrderAmount,
-                  final IssuancePeriod issuancePeriod) {
+                  final IssuancePeriod issuancePeriod, final Category category) {
         this.name = name;
         this.discountAmount = discountAmount;
         this.minOrderAmount = minOrderAmount;
         this.issuancePeriod = issuancePeriod;
+        this.category = category;
     }
 
     public double calculateDiscountRate() {
@@ -43,11 +46,12 @@ public class Coupon {
         return Objects.equals(getName(), coupon.getName())
                && Objects.equals(getDiscountAmount(), coupon.getDiscountAmount())
                && Objects.equals(getMinOrderAmount(), coupon.getMinOrderAmount())
-               && Objects.equals(getIssuancePeriod(), coupon.getIssuancePeriod());
+               && Objects.equals(getIssuancePeriod(), coupon.getIssuancePeriod())
+               && getCategory() == coupon.getCategory();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDiscountAmount(), getMinOrderAmount(), getIssuancePeriod());
+        return Objects.hash(getName(), getDiscountAmount(), getMinOrderAmount(), getIssuancePeriod(), getCategory());
     }
 }

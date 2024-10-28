@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.domain.CouponName;
 import coupon.domain.DiscountAmount;
@@ -32,7 +33,8 @@ class MemberCouponRepositoryTest {
         final DiscountAmount discountAmount = new DiscountAmount(5000);
         final MinOrderAmount minOrderAmount = new MinOrderAmount(5000);
         final IssuancePeriod issuancePeriod = new IssuancePeriod(LocalDate.now(), LocalDate.now().plusDays(3));
-        final Coupon coupon = new Coupon(name, discountAmount, minOrderAmount, issuancePeriod);
+        final Category category = Category.FASHION;
+        final Coupon coupon = new Coupon(name, discountAmount, minOrderAmount, issuancePeriod, category);
 
         final CouponEntity couponEntity = couponRepository.save(new CouponEntity(coupon));
 
