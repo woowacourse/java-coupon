@@ -27,6 +27,7 @@ class MemberCouponTest {
                         LocalDateTime.now().minusMinutes(1),
                         new Member(),
                         coupon)
-        ).isExactlyInstanceOf(IllegalArgumentException.class);
+        ).isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("만료 날짜는 생성날짜 이전일 수 없습니다.");
     }
 }

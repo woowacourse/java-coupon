@@ -17,7 +17,8 @@ class CouponTest {
                 LocalDateTime.now().plusDays(1),
                 1000000,
                 10000)
-        ).isExactlyInstanceOf(IllegalArgumentException.class);
+        ).isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("할인율은 3% 이상 20% 이하만 가능합니다.");
     }
 
     @Test
@@ -29,6 +30,7 @@ class CouponTest {
                 LocalDateTime.now().plusDays(1),
                 10000,
                 9000)
-        ).isExactlyInstanceOf(IllegalArgumentException.class);
+        ).isExactlyInstanceOf(IllegalArgumentException.class)
+                .hasMessage("할인율은 3% 이상 20% 이하만 가능합니다.");
     }
 }

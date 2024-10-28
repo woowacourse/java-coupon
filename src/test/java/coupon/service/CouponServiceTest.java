@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,7 +40,7 @@ public class CouponServiceTest {
     }
 
     @Test
-    void 생성테스트() {
+    void 생성테스트() throws InterruptedException {
         Coupon coupon = new Coupon("name",
                 Category.FOOD,
                 LocalDateTime.now(),
@@ -49,6 +48,7 @@ public class CouponServiceTest {
                 10000,
                 1000);
         couponService.create(coupon);
+        Thread.sleep(5000);
         assertThat(couponRepository.findAll()).size().isEqualTo(1);
     }
 
