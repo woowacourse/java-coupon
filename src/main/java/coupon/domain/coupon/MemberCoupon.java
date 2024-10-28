@@ -40,10 +40,8 @@ public class MemberCoupon {
     @Column(nullable = false)
     private LocalDateTime expiredAt;
 
-    public MemberCoupon(Long id, Long memberId, Coupon coupon, LocalDateTime issuedAt) {
+    public MemberCoupon(Long memberId, Coupon coupon, LocalDateTime issuedAt) {
         validateCoupon(coupon, issuedAt);
-
-        this.id = id;
         this.memberId = memberId;
         this.coupon = coupon;
         this.isUsed = false;

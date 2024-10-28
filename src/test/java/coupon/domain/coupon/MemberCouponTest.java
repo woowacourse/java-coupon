@@ -27,14 +27,14 @@ class MemberCouponTest {
     void createAfterIssuanceEnd() {
         assertThrows(
                 CouponException.class,
-                () -> new MemberCoupon(1L, 1L, coupon, today.plusDays(2).atStartOfDay())
+                () -> new MemberCoupon(1L, coupon, today.plusDays(2).atStartOfDay())
         );
     }
 
     @DisplayName("회원에게 발급된 쿠폰은 발급일 포함 7일 23:59:59.999999 까지 사용 가능하다.")
     @Test
     void noExpired() {
-        MemberCoupon memberCoupon = new MemberCoupon(1L, 1L, coupon, LocalDateTime.now());
+        MemberCoupon memberCoupon = new MemberCoupon(1L, coupon, LocalDateTime.now());
 
         assertFalse(memberCoupon.isExpired());
     }
@@ -42,7 +42,7 @@ class MemberCouponTest {
     @DisplayName("회원에게 발급된 쿠폰은 발급일 포함 7일 23:59:59.999999이 지나면 사용하지 못한다.")
     @Test
     void expired() {
-        MemberCoupon memberCoupon = new MemberCoupon(1L, 1L, coupon, LocalDateTime.now().minusDays(7));
+        MemberCoupon memberCoupon = new MemberCoupon(1L, coupon, LocalDateTime.now().minusDays(7));
 
         assertTrue(memberCoupon.isExpired());
     }
