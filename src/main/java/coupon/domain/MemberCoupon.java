@@ -10,6 +10,12 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @Getter
 @Entity
@@ -27,9 +33,16 @@ public class MemberCoupon {
 
     private boolean used;
 
+    private LocalDateTime issuedAt;
+
+    private LocalDateTime expiredAt;
+
     public MemberCoupon(Coupon coupon, Member member) {
         this.coupon = coupon;
         this.member = member;
         this.used = false;
+        this.issuedAt = LocalDateTime.now();
+        this.expiredAt = issuedAt.plusDays(7).withHour(23).withMinute(59).withSecond(59).withNano(999999000);
     }
 }
+
