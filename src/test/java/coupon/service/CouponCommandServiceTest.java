@@ -14,7 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 @SpringBootTest
 class CouponCommandServiceTest {
@@ -30,26 +29,6 @@ class CouponCommandServiceTest {
 
     @Autowired
     private CouponRepository couponRepository;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-//    @AfterEach
-//    void tearDown() {
-//        jdbcTemplate.update("""
-//                SET FOREIGN_KEY_CHECKS = 0;
-//
-//                DELETE FROM coupon;
-//                DELETE FROM member_coupon;
-//                DELETE FROM member;
-//
-//                ALTER TABLE coupon AUTO_INCREMENT = 1;
-//                ALTER TABLE member_coupon AUTO_INCREMENT = 1;
-//                ALTER TABLE member AUTO_INCREMENT = 1;
-//
-//                SET FOREIGN_KEY_CHECKS = 1;
-//                """);
-//    }
 
     @DisplayName("성공: 쿠폰을 저장한다.")
     @Test
@@ -69,7 +48,7 @@ class CouponCommandServiceTest {
 
     @DisplayName("성공: 쿠폰을 발급한다.")
     @Test
-    void issue() throws InterruptedException {
+    void issue() {
         Member member = memberRepository.save(new Member("트레"));
         Coupon coupon = couponRepository.save(new Coupon("천원 할인",
                 1000, 10000,
@@ -77,15 +56,12 @@ class CouponCommandServiceTest {
                 "FASHION"));
 
         couponCommandService.issue(member, coupon);
-
-        Thread.sleep(2000);
-
         assertThat(couponRepository.findMine(member.getId())).containsExactly(coupon);
     }
 
     @DisplayName("실패: 동일한 쿠폰 6장 이상 발급 불가 (사용 여부 관련 X)")
     @Test
-    void issue_Fail() throws InterruptedException {
+    void issue_Fail() {
         Member member = memberRepository.save(new Member("트레"));
         Coupon coupon = couponRepository.save(new Coupon("천원 할인",
                 1000, 10000,

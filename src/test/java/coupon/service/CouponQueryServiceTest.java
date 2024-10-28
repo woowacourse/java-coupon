@@ -22,15 +22,6 @@ class CouponQueryServiceTest {
     @Autowired
     private CouponRepository couponRepository;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-//    @AfterEach
-//    void tearDown() {
-//        jdbcTemplate.update("DELETE FROM coupon");
-//        jdbcTemplate.update("ALTER TABLE coupon AUTO_INCREMENT = 1");
-//    }
-
     @DisplayName("성공: 존재하는 ID로 조회, 복제 지연 해결")
     @Test
     void findById() {
