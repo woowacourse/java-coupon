@@ -2,6 +2,9 @@ package coupon.coupon.service;
 
 import coupon.coupon.repository.CouponEntity;
 import coupon.coupon.repository.IssuedCouponEntity;
+import coupon.coupon.service.dto.CouponResponse;
+import coupon.coupon.service.dto.IssuedCouponResponse;
+import coupon.coupon.service.dto.MemberCouponResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

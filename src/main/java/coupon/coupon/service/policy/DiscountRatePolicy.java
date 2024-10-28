@@ -1,4 +1,4 @@
-package coupon.coupon.service;
+package coupon.coupon.service.policy;
 
 import coupon.coupon.domain.DiscountPolicy;
 import coupon.coupon.domain.DiscountPolicyViolationException;

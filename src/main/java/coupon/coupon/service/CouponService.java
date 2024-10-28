@@ -4,6 +4,7 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.DiscountPolicy;
 import coupon.coupon.repository.CouponEntity;
 import coupon.coupon.repository.CouponRepository;
+import coupon.coupon.service.dto.CouponCreationRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package coupon.coupon.service;
+package coupon.coupon.service.dto;
 
 import coupon.coupon.domain.Category;
 import coupon.coupon.repository.CouponEntity;

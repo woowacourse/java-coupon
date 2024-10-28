@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 import coupon.coupon.domain.Category;
 import coupon.coupon.repository.CouponEntity;
+import coupon.coupon.service.dto.CouponCreationRequest;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

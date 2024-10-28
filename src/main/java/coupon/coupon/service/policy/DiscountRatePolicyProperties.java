@@ -1,4 +1,4 @@
-package coupon.coupon.service;
+package coupon.coupon.service.policy;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
