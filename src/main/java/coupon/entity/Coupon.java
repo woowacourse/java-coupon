@@ -2,6 +2,7 @@ package coupon.entity;
 
 import coupon.domain.coupon.Category;
 import coupon.domain.coupon.CouponDomain;
+import coupon.domain.coupon.UserStorageCoupon;
 import coupon.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -50,5 +51,9 @@ public class Coupon extends BaseEntity {
                 coupon.getStartDate(),
                 coupon.getEndDate()
         );
+    }
+
+    public UserStorageCoupon toUserStorageCoupon() {
+        return UserStorageCoupon.of(this);
     }
 }
