@@ -27,7 +27,7 @@ public class CouponServiceTest {
     void create() {
         Coupon coupon = new Coupon("유효한 쿠폰", 1000, 5000, Category.FASHION.name(), LocalDateTime.now(), LocalDateTime.now());
         Coupon saved = couponService.create(coupon);
-        assertThat(couponRepository.findById(saved.getId())).isNotNull();
+        assertThat(couponService.getCoupon(saved.getId())).isNotNull();
     }
 
     @DisplayName("쿠폰 조회에 실패하는 경우 예외가 발생한다.")

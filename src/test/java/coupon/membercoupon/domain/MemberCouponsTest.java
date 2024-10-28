@@ -25,10 +25,9 @@ class MemberCouponsTest {
                         new MemberCoupon(2L, 1L, LocalDateTime.now().plusHours(1)),
                         new MemberCoupon(3L, 1L, LocalDateTime.now().plusHours(2)),
                         new MemberCoupon(4L, 1L, LocalDateTime.now().plusHours(3)),
-                        new MemberCoupon(5L, 1L, LocalDateTime.now().plusHours(4)),
-                        new MemberCoupon(6L, 1L, LocalDateTime.now().plusHours(5))));
+                        new MemberCoupon(5L, 1L, LocalDateTime.now().plusHours(4))));
 
-        assertThatThrownBy(memberCoupons::validateCouponIssuanceLimit)
+        assertThatThrownBy(() -> memberCoupons.validateCouponIssuanceLimit(1))
                 .isInstanceOf(CouponException.class)
                 .hasMessage("최대로 발급 받을 수 있는 쿠폰 수는 5개 입니다.");
     }

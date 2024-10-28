@@ -10,8 +10,8 @@ public record MemberCoupons(List<MemberCoupon> memberCoupons) {
 
     private static final int MAX_ISSUED_COUPON_SIZE = 5;
 
-    public void validateCouponIssuanceLimit() {
-        if (memberCoupons.size() >= MAX_ISSUED_COUPON_SIZE) {
+    public void validateCouponIssuanceLimit(int addedCouponSize) {
+        if (memberCoupons.size() + addedCouponSize >= MAX_ISSUED_COUPON_SIZE) {
             throw new CouponException(String.format("최대로 발급 받을 수 있는 쿠폰 수는 %s개 입니다.", MAX_ISSUED_COUPON_SIZE));
         }
     }
@@ -24,10 +24,13 @@ public record MemberCoupons(List<MemberCoupon> memberCoupons) {
 
     public List<MemberCouponDetail> getMemberCouponDetails(Coupons coupons) {
         List<MemberCouponDetail> memberCouponDetails = new ArrayList<>();
-        memberCoupons.forEach(memberCoupon ->
-                memberCouponDetails.add(
-                        new MemberCouponDetail(memberCoupon, coupons.findCouponBy(memberCoupon)))
-        );
+        for (MemberCoupon memberCoupon : memberCoupons) {
+            memberCouponDetails.add(new MemberCouponDetail(memberCoupon, coupons.findCouponBy(memberCoupon)));
+        }
         return memberCouponDetails;
+    }
+
+    public void add(MemberCoupon memberCoupon){
+        memberCoupons.add(memberCoupon);
     }
 }
