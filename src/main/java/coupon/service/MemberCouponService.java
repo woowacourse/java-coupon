@@ -1,0 +1,52 @@
+package coupon.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import coupon.domain.member.Member;
+import coupon.domain.member.MemberCoupon;
+import coupon.repository.CouponCache;
+import coupon.repository.CouponRepository;
+import coupon.repository.MemberCouponRepository;
+import coupon.service.dto.MemberCouponResponse;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class MemberCouponService {
+
+    private static final int COUPON_LIMIT = 5;
+
+    private final MemberCouponRepository memberCouponRepository;
+
+    @Transactional
+    public void create(Member member, long couponId) {
+        validate(member, couponId);
+        MemberCoupon memberCoupon = new MemberCoupon(couponId,
+                false,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMonths(1),
+                member);
+        memberCouponRepository.save(memberCoupon);
+    }
+
+    private void validate(Member member, long couponId) {
+        if (memberCouponRepository.countByMemberAndCouponId(member, couponId) >= COUPON_LIMIT) {
+            throw new IllegalArgumentException(String.format("발급 가능한 수량은 최대 %d 개 입니다", COUPON_LIMIT));
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberCouponResponse> readAll(long id) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(id);
+        return memberCoupons.stream()
+                .map(memberCoupon -> new MemberCouponResponse(
+                        memberCoupon,
+                        CouponCache.getCoupon(memberCoupon.getCouponId()))
+                )
+                .toList();
+    }
+}

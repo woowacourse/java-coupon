@@ -2,6 +2,7 @@ package coupon.domain.coupon;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -13,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(name = "coupon")
 public class Coupon {
 
     @Id
@@ -69,5 +72,33 @@ public class Coupon {
         if (discountRate < 3 || discountRate > 20) {
             throw new IllegalArgumentException("할인율은 3% 이상 20% 이하만 가능합니다.");
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof final Coupon coupon)) {
+            return false;
+        }
+        return id == coupon.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Coupon{" +
+                "id=" + id +
+                ", couponName=" + couponName +
+                ", category=" + category +
+                ", couponDuration=" + couponDuration +
+                ", orderAmount=" + orderAmount +
+                ", discountAmount=" + discountAmount +
+                '}';
     }
 }
