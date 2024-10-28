@@ -31,7 +31,7 @@ class CouponServiceTest {
                 LocalDateTime.now().plusDays(7)
         );
         final CouponEntity coupon = couponService.createCoupon(request);
-        final Coupon actual = couponService.getCouponForAdmin(coupon.getId());
+        final Coupon actual = couponService.getCoupon(coupon.getId());
         assertThat(actual).isNotNull();
     }
 
@@ -46,7 +46,7 @@ class CouponServiceTest {
                 LocalDateTime.now().plusDays(7)
         );
         final CouponEntity coupon = couponService.createCoupon(request);
-        final Coupon actual = couponService.getCouponForMember(coupon.getId());
+        final Coupon actual = couponService.getCoupon(coupon.getId());
         assertThat(actual).isNotNull();
     }
 }

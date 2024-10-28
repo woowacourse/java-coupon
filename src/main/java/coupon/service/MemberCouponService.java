@@ -2,7 +2,9 @@ package coupon.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import coupon.domain.Coupon;
 import coupon.domain.MemberCoupon;
@@ -22,6 +24,7 @@ public class MemberCouponService {
     private final MemberCouponRepository memberCouponRepository;
     private final CouponRepository couponRepository;
 
+    @Transactional
     public MemberCouponEntity provideCoupon(final MemberCoupon memberCoupon) {
         final long couponCount = memberCouponRepository.countByMemberIdAndCouponId(
                 memberCoupon.getMemberId(),
@@ -33,6 +36,8 @@ public class MemberCouponService {
         return memberCouponRepository.save(MemberCouponEntity.toEntity(memberCoupon));
     }
 
+    @Transactional(readOnly = true)
+    @Cacheable(value = "member-coupon", key = "#memberId", cacheManager = "cacheManager", condition = "#memberId != null")
     public List<CouponInfoResponse> getCouponsByMember(final long memberId) {
         final List<MemberCouponEntity> memberCoupons = memberCouponRepository.findByMemberId(memberId);
         return memberCoupons.stream()

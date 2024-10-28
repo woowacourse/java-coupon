@@ -87,7 +87,7 @@ class MemberCouponServiceTest {
         final List<CouponInfoResponse> actual = memberCouponService.getCouponsByMember(memberId);
 
         // then
-        assertThat(actual.getFirst().couponName())
+        assertThat(actual.get(0).couponName())
                 .isEqualTo(couponEntity.getName());
     }
 
