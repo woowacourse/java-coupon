@@ -12,6 +12,8 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class CouponName {
 
+    private static final int NAME_MAX_LENGTH = 30;
+
     private String name;
 
     public CouponName(String name) {
@@ -24,7 +26,7 @@ public class CouponName {
             throw new CouponException("쿠폰 이름은 반드시 존재해야 합니다.");
         }
 
-        if (name.length() > 30) {
+        if (name.length() > NAME_MAX_LENGTH) {
             throw new CouponException("쿠폰 이름은 최대 30자 이하여야 합니다.");
         }
     }
