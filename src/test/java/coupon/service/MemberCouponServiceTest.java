@@ -13,6 +13,7 @@ import coupon.dto.MemberCouponResponses;
 import coupon.fixture.CouponFixture;
 import coupon.fixture.MemberFixture;
 import coupon.repository.CouponRepository;
+import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
 import java.util.List;
 import java.util.Objects;
@@ -38,13 +39,20 @@ class MemberCouponServiceTest {
     private CouponRepository couponRepository;
 
     @Autowired
+    private MemberCouponRepository memberCouponRepository;
+
+    @Autowired
     private MemberCouponService memberCouponService;
+
 
     @Autowired
     private CacheManager cacheManager;
 
     @AfterEach
     void tearDown() {
+        memberCouponRepository.deleteAll();
+        couponRepository.deleteAll();
+        memberRepository.deleteAll();
         Objects.requireNonNull(cacheManager.getCache(CACHE_NAME))
                 .clear();
     }
