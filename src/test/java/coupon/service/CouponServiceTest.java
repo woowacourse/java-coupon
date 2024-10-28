@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,8 +29,8 @@ public class CouponServiceTest {
                 1000,
                 10000,
                 Category.ELECTRONICS,
-                LocalDateTime.now().plusDays(1),
-                LocalDateTime.now().plusDays(8)
+                LocalDate.now().plusDays(1),
+                LocalDate.now().plusDays(8)
         );
         CouponEntity couponEntity = couponService.create(coupon);
         CouponResponse couponResponse = couponService.getCoupon(couponEntity.getId());

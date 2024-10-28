@@ -1,6 +1,9 @@
 package coupon.domain;
 
-import coupon.coupon.domain.*;
+import coupon.coupon.domain.Category;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.CouponName;
+import coupon.coupon.domain.ExceptionMessage;
 import coupon.coupon.service.DiscountAmountPolicy;
 import coupon.coupon.service.DiscountRatePolicy;
 import coupon.coupon.service.MinimumOrderAmountPolicy;
@@ -9,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,7 +23,7 @@ class CouponTest {
     @ParameterizedTest
     @ValueSource(strings = {"", " "})
     void nameIsNotBlank(String name) {
-        LocalDateTime today = LocalDateTime.now();
+        LocalDate today = LocalDate.now();
         assertThatThrownBy(() -> new Coupon(
                 name,
                 List.of(),
@@ -36,7 +39,7 @@ class CouponTest {
     @DisplayName("이름이 30글자를 초과하면 예외를 발생시킨다")
     @Test
     void nameLengthIsNotOver30() {
-        LocalDateTime today = LocalDateTime.now();
+        LocalDate today = LocalDate.now();
         assertThatThrownBy(() -> new Coupon(
                 "f".repeat(31),
                 List.of(),
@@ -53,7 +56,7 @@ class CouponTest {
     @ParameterizedTest
     @ValueSource(ints = {999, 10001, 1501})
     void invalidDiscountAmount(int discountAmount) {
-        LocalDateTime today = LocalDateTime.now();
+        LocalDate today = LocalDate.now();
         assertThatThrownBy(() -> new Coupon(
                 "nyangin",
                 List.of(),
@@ -75,7 +78,7 @@ class CouponTest {
     @ParameterizedTest
     @ValueSource(ints = {4999, 100_001})
     void invalidMinimumOrderAmount(int minimumOrderAmount) {
-        LocalDateTime today = LocalDateTime.now();
+        LocalDate today = LocalDate.now();
         assertThatThrownBy(() -> new Coupon(
                 "nyangin",
                 List.of(),
@@ -95,7 +98,7 @@ class CouponTest {
     @DisplayName("할인률이 3% 미만이면 예외를 발생시킨다")
     @Test
     void discountRateIsNotUnder3() {
-        LocalDateTime today = LocalDateTime.now();
+        LocalDate today = LocalDate.now();
         assertThatThrownBy(() -> new Coupon(
                 "nyangin",
                 List.of(),
@@ -115,7 +118,7 @@ class CouponTest {
     @DisplayName("할인률이 20%를 초과하면 예외를 발생시킨다")
     @Test
     void discountRateIsNotOver20() {
-        LocalDateTime today = LocalDateTime.now();
+        LocalDate today = LocalDate.now();
         assertThatThrownBy(() -> new Coupon(
                 "nyangin",
                 List.of(),
@@ -135,7 +138,7 @@ class CouponTest {
     @DisplayName("시작 날짜가 종료 날짜보다 뒤에 있으면 예외를 발생시킨다")
     @Test
     void startDateIsNotLaterEndDate() {
-        LocalDateTime today = LocalDateTime.now();
+        LocalDate today = LocalDate.now();
         assertThatThrownBy(() -> new Coupon(
                 "nyangin",
                 List.of(),

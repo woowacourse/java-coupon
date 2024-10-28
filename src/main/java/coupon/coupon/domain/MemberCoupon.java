@@ -3,7 +3,7 @@ package coupon.coupon.domain;
 import coupon.member.domain.Member;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 public class MemberCoupon {
@@ -13,7 +13,7 @@ public class MemberCoupon {
     private final boolean used;
     private final DatePeriod datePeriod;
 
-    public MemberCoupon(Coupon coupon, Member member, boolean used, LocalDateTime issuedAt) {
+    public MemberCoupon(Coupon coupon, Member member, boolean used, LocalDate issuedAt) {
         this.coupon = coupon;
         this.member = member;
         this.used = used;
