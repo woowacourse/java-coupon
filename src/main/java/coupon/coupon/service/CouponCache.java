@@ -30,8 +30,8 @@ public class CouponCache {
     }
 
     public void save(CouponEntity couponEntity) {
-        long ttlNanoSeconds = calculateTTL(couponEntity);
         try {
+            long ttlNanoSeconds = calculateTTL(couponEntity);
             redisTemplate.opsForValue()
                     .set(COUPON_KEY_NAME + couponEntity.getId(), couponEntity, ttlNanoSeconds, TimeUnit.NANOSECONDS);
             log.info("save cache success");
@@ -41,11 +41,19 @@ public class CouponCache {
     }
 
     private long calculateTTL(CouponEntity couponEntity) {
+        LocalDateTime today = LocalDateTime.now();
         LocalDateTime end = couponEntity.getEnd();
-        Duration duration = Duration.between(LocalDateTime.now(), end);
+        Duration duration = Duration.between(today, calculateExpiredDate(today, end));
         long seconds = duration.getSeconds();
         long nanoSeconds = duration.getNano();
         return convertToNanoSeconds(seconds) + nanoSeconds;
+    }
+
+    private LocalDateTime calculateExpiredDate(LocalDateTime today, LocalDateTime end) {
+        if (end.isBefore(today)) {
+            return today.plusDays(1);
+        }
+        return end;
     }
 
     private long convertToNanoSeconds(long seconds) {
