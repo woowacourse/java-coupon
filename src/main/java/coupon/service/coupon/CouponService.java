@@ -4,10 +4,10 @@ import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponRepository;
 import coupon.exception.CouponException;
 import coupon.support.TransactionSupport;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
 public class CouponService {
@@ -34,7 +34,7 @@ public class CouponService {
     }
 
     @Transactional
-    @Cacheable(value = "coupon", key = "#coupon.id")
+    @CachePut(value = "coupon", key = "#result.id")
     public Coupon create(Coupon coupon) {
         return couponRepository.save(coupon);
     }
