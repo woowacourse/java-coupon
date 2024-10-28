@@ -2,6 +2,8 @@ package coupon.domain;
 
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 public class Discount {
 
@@ -52,5 +54,17 @@ public class Discount {
 
     public double getDiscountRate() {
         return (double) 100 * discountAmount / minOrderAmount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Discount discount)) return false;
+        return discountAmount == discount.discountAmount && minOrderAmount == discount.minOrderAmount;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(discountAmount, minOrderAmount);
     }
 }

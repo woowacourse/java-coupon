@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "published_coupon")
@@ -58,5 +59,17 @@ public class PublishedCoupon {
         if (coupon.getIssuanceEndDate().isBefore(issuanceDate)) {
             throw new IllegalArgumentException("Issuance end date cannot be before issuance date");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PublishedCoupon that)) return false;
+        return isUsed == that.isUsed && Objects.equals(id, that.id) && Objects.equals(member, that.member) && Objects.equals(coupon, that.coupon) && Objects.equals(issuanceDate, that.issuanceDate) && Objects.equals(expirationDate, that.expirationDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, member, coupon, isUsed, issuanceDate, expirationDate);
     }
 }
