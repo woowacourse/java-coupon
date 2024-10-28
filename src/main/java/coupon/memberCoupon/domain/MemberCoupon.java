@@ -25,12 +25,12 @@ public class MemberCoupon {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_id")
-    private Coupon coupon;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coupon_id")
+    private Coupon coupon;
 
     private boolean isUsed;
 
@@ -38,16 +38,16 @@ public class MemberCoupon {
 
     private LocalDateTime expiredAt;
 
-    public static MemberCoupon create(Coupon coupon, Member member) {
+    public static MemberCoupon create(Member member, Coupon coupon) {
         LocalDate createdDate = LocalDate.now();
         LocalDateTime createdAt = LocalDateTime.of(createdDate, LocalTime.MIDNIGHT);
 
-        return new MemberCoupon(coupon, member, false, createdAt, createdAt.plusDays(7L));
+        return new MemberCoupon(member, coupon, false, createdAt, createdAt.plusDays(7L));
     }
 
-    public MemberCoupon(Coupon coupon, Member member, boolean isUsed, LocalDateTime createdAt, LocalDateTime expiredAt) {
-        this.coupon = coupon;
+    public MemberCoupon(Member member, Coupon coupon, boolean isUsed, LocalDateTime createdAt, LocalDateTime expiredAt) {
         this.member = member;
+        this.coupon = coupon;
         this.isUsed = isUsed;
         this.createdAt = createdAt;
         this.expiredAt = expiredAt;

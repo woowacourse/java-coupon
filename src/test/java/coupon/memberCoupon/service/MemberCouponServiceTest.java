@@ -1,40 +1,35 @@
 package coupon.memberCoupon.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.repository.CouponRepository;
 import coupon.member.domain.Member;
-import coupon.member.repository.MemberRepository;
-import coupon.memberCoupon.repository.MemberCouponRepository;
+import coupon.utils.IsolatedTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class MemberCouponServiceTest {
+class MemberCouponServiceTest extends IsolatedTest {
 
     @Autowired
     private MemberCouponService memberCouponService;
 
-    @Autowired
-    private CouponRepository couponRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private MemberCouponRepository memberCouponRepository;
-
-    @DisplayName("쿠폰 발급 이후에 DB에서 조회할 수 있다.")
+    @DisplayName("동일한 쿠폰을 5장 넘게 발급 시도 시 예외가 발생한다.")
     @Test
-    void issueCoupon() {
-        Coupon coupon = couponRepository.save(new Coupon());
+    void issueOverMaximumCount() {
         Member member = memberRepository.save(new Member());
+        Coupon coupon = couponRepository.save(new Coupon());
 
-        Long memberCouponId = memberCouponService.issueMemberCoupon(coupon.getId(), member.getId());
+        // 5장 발급
+        memberCouponService.issueMemberCoupon(member.getId(), coupon.getId());
+        memberCouponService.issueMemberCoupon(member.getId(), coupon.getId());
+        memberCouponService.issueMemberCoupon(member.getId(), coupon.getId());
+        memberCouponService.issueMemberCoupon(member.getId(), coupon.getId());
+        memberCouponService.issueMemberCoupon(member.getId(), coupon.getId());
 
-        assertThat(memberCouponRepository.findById(memberCouponId).isPresent()).isTrue();
+        // 6장째 발급 시도 시 예외 발생
+        assertThatThrownBy(() -> memberCouponService.issueMemberCoupon(member.getId(), coupon.getId()))
+                .isExactlyInstanceOf(IllegalStateException.class)
+                .hasMessage("동일한 쿠폰은 최대 5장 까지만 발급할 수 있습니다.");
     }
 }
