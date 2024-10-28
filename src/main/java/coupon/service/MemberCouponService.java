@@ -1,13 +1,16 @@
 package coupon.service;
 
+import coupon.config.CouponCache;
 import coupon.data.MemberCoupon;
 import coupon.data.repository.CouponRepository;
 import coupon.data.repository.MemberCouponRepository;
+import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponMapper;
 import coupon.domain.member.MemberCouponMapper;
 import coupon.exception.MemberCouponIssueException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,8 +44,22 @@ public class MemberCouponService {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
         return memberCoupons.stream()
                 .map(MemberCouponMapper::fromEntity)
-                .map(r -> new CouponResponse(CouponMapper.fromEntity(couponRepository.findById(r.getCouponId()).get()),
-                        r))
+                .map(memberCoupon -> new CouponResponse(getCachedCoupon(memberCoupon.getCouponId()), memberCoupon))
                 .toList();
+    }
+
+    private Coupon getCachedCoupon(long couponId) {
+        if (CouponCache.exists(couponId)) {
+            return CouponMapper.fromEntity(CouponCache.get(couponId));
+        }
+
+        Optional<coupon.data.Coupon> optional = couponRepository.findById(couponId);
+        if (optional.isEmpty()) {
+            throw new MemberIdNotFoundException(String.format("member couponId: %d, does not exsit", couponId));
+        }
+
+        CouponCache.cache(optional.get());
+
+        return CouponMapper.fromEntity(CouponCache.get(couponId));
     }
 }

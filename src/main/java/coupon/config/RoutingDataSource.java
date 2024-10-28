@@ -1,4 +1,4 @@
-package coupon.data.config;
+package coupon.config;
 
 import java.util.Map;
 import javax.sql.DataSource;

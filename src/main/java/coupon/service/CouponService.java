@@ -1,5 +1,6 @@
 package coupon.service;
 
+import coupon.config.CouponCache;
 import coupon.data.repository.CouponRepository;
 import coupon.data.Coupon;
 import coupon.data.repository.MemberCouponRepository;
@@ -21,6 +22,7 @@ public class CouponService {
 
     @Transactional
     public Coupon create(coupon.domain.coupon.Coupon coupon) {
+        CouponCache.cache(CouponMapper.toEntity(coupon));
         return couponRepository.save(CouponMapper.toEntity(coupon));
     }
 

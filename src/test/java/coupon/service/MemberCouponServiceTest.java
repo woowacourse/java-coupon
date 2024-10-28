@@ -2,19 +2,26 @@ package coupon.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import coupon.config.CouponCache;
 import coupon.data.Coupon;
 import coupon.data.repository.CouponRepository;
 import coupon.domain.coupon.CouponMapper;
 import coupon.exception.MemberCouponIssueException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 class MemberCouponServiceTest {
 
     private static final Coupon entity = new Coupon(
@@ -33,6 +40,10 @@ class MemberCouponServiceTest {
     @Autowired
     private MemberCouponService memberCouponService;
 
+    @BeforeEach
+    void before(){
+
+    }
 
     @DisplayName("동일 쿠폰을 5장을 초과하여 발행하려고 하면 예외가 발생한다.")
     @Test
@@ -47,24 +58,15 @@ class MemberCouponServiceTest {
 
     }
 
-    @DisplayName("회원의 쿠폰 목록 조회 시 쿠폰, 회원에게 발급된 쿠폰의 정보를 보여준다.")
+    @DisplayName("쿠폰 정보가 캐싱 되었는지 확인한다.")
     @Test
     void findByMemberId() {
-        Coupon coupon1 = couponService.create(coupon);
-        System.out.println(coupon1);
-        for (int i = 0; i < 5; i++) {
-            memberCouponService.issue(1, 1, LocalDateTime.now());
-        }
-        List<CouponResponse> byMemberId = memberCouponService.findByMemberId(1);
+        Coupon newCoupon = couponService.create(coupon);
+        memberCouponService.issue(1, newCoupon.getId(), LocalDateTime.now());
+        memberCouponService.findByMemberId(1);
 
-        System.out.println(byMemberId.get(0).coupon() + " " + byMemberId.get(0).memberCoupon());
+        Coupon cachedCoupon = CouponCache.get(newCoupon.getId());
+        Assertions.assertThat(cachedCoupon).isEqualTo(newCoupon);
     }
 
-    @Test
-    void testIssue() {
-    }
-
-    @Test
-    void testFindByMemberId() {
-    }
 }
