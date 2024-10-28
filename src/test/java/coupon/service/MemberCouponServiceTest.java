@@ -38,9 +38,10 @@ class MemberCouponServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    private Member member;
     @Autowired
     private CouponRepository couponRepository;
+
+    private Member member;
 
     @BeforeEach
     void setUp() {
