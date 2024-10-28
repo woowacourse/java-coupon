@@ -2,7 +2,7 @@ package coupon.coupon.service;
 
 import coupon.coupon.repository.CouponEntity;
 import coupon.coupon.repository.CouponRepository;
-import coupon.coupon.service.support.DataAccessSupporter;
+import coupon.support.DataAccessSupporter;
 import java.util.NoSuchElementException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
