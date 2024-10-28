@@ -1,5 +1,7 @@
 package coupon.coupon.domain;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import coupon.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,16 +10,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = PROTECTED)
 public class UserCoupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Coupon coupon;
+    private Long couponId;
 
     @ManyToOne
     private User user;
@@ -27,6 +30,13 @@ public class UserCoupon {
 
     @Column(nullable = false)
     private LocalDate issueDate;
+
+    public UserCoupon(Long couponId, User user, boolean isUsed, LocalDate issueDate) {
+        this.couponId = couponId;
+        this.user = user;
+        this.isUsed = isUsed;
+        this.issueDate = issueDate;
+    }
 
     public boolean isExpired(){
         return LocalDate.now().isAfter(issueDate.plusDays(7));
