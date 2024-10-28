@@ -21,13 +21,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.cache.CacheManager;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
+@TestPropertySource(properties = "spring.profiles.active=test")
 class MemberCouponServiceTest {
 
     @Autowired
-    private RedisCacheManager redisCacheManager;
+    private CacheManager cacheManager;
 
     @Autowired
     private MemberCouponService memberCouponService;
@@ -54,7 +56,7 @@ class MemberCouponServiceTest {
 
     @AfterEach
     void tearDown() {
-    	Objects.requireNonNull(redisCacheManager.getCache("coupon")).clear();
+        Objects.requireNonNull(cacheManager.getCache("coupon")).clear();
         couponRepository.deleteAll();
         memberCouponRepository.deleteAll();
     }

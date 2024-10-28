@@ -13,9 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
-import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.cache.CacheManager;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
+@TestPropertySource(properties = "spring.profiles.active=test")
 class CouponServiceTest {
 
     @Autowired
@@ -25,11 +27,11 @@ class CouponServiceTest {
     private CouponRepository couponRepository;
 
     @Autowired
-    private RedisCacheManager redisCacheManager;
+    private CacheManager cacheManager;
 
     @AfterEach
     void tearDown() {
-        Objects.requireNonNull(redisCacheManager.getCache("coupon")).clear();
+        Objects.requireNonNull(cacheManager.getCache("coupon")).clear();
         couponRepository.deleteAll();
     }
 
@@ -65,7 +67,7 @@ class CouponServiceTest {
         Coupon savedCoupon = couponService.create(coupon);
 
         // then
-        Cache couponCache = Objects.requireNonNull(redisCacheManager.getCache("coupon"));
+        Cache couponCache = Objects.requireNonNull(cacheManager.getCache("coupon"));
         Coupon fromCache = couponCache.get(savedCoupon.getId(), Coupon.class);
         assertThat(fromCache).isNotNull();
         assertThat(fromCache.getId()).isEqualTo(savedCoupon.getId());
@@ -83,13 +85,13 @@ class CouponServiceTest {
                 .validFrom(LocalDateTime.now())
                 .validTo(LocalDateTime.now().plusDays(7))
                 .build());
-        Coupon fromCache = Objects.requireNonNull(redisCacheManager.getCache("coupon"))
+        Coupon fromCache = Objects.requireNonNull(cacheManager.getCache("coupon"))
                 .get(coupon.getId(), Coupon.class);
         assertThat(fromCache).isNull();
 
         // when
         couponService.getCoupon(coupon.getId());
-        fromCache = Objects.requireNonNull(redisCacheManager.getCache("coupon"))
+        fromCache = Objects.requireNonNull(cacheManager.getCache("coupon"))
                 .get(coupon.getId(), Coupon.class);
 
         // then
