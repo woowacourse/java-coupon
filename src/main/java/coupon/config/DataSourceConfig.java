@@ -13,8 +13,8 @@ import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 @Configuration
 public class DataSourceConfig {
 
-    public static final String WRITER = "writer";
-    public static final String READER = "reader";
+    private static final String WRITER = "writer";
+    private static final String READER = "reader";
 
     @Bean(WRITER)
     @ConfigurationProperties(prefix = "coupon.datasource.writer")
@@ -37,8 +37,8 @@ public class DataSourceConfig {
     ) {
         RoutingDataSource routingDataSource = new RoutingDataSource();
         Map<Object, Object> dataSourceMap = Map.of(
-                WRITER, writer,
-                READER, reader
+                DataSourceType.WRITER, writer,
+                DataSourceType.READER, reader
         );
         routingDataSource.setTargetDataSources(dataSourceMap);
         routingDataSource.setDefaultTargetDataSource(writer);
