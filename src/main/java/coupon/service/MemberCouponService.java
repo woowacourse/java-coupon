@@ -33,7 +33,7 @@ public class MemberCouponService {
         validatePublishedCount(memberId, couponId);
 
         Member member = getMember(memberId);
-        Coupon coupon = getCoupon(couponId);
+        Coupon coupon = getCouponFromCache(couponId);
         return publishedCouponRepository.save(new PublishedCoupon(member, coupon, false, LocalDateTime.now()));
     }
 
@@ -50,9 +50,15 @@ public class MemberCouponService {
                 .orElseThrow(() -> new IllegalArgumentException("Member does not exist"));
     }
 
-    private Coupon getCoupon(Long couponId) {
+    private Coupon getCouponFromCache(Long couponId) {
         return couponCache.getCoupon(couponId)
-                .orElse(couponRepository.findById(couponId)
-                        .orElseThrow(() -> new IllegalArgumentException("Coupon does not exist")));
+                .orElse(getCoupon(couponId));
+    }
+
+    private Coupon getCoupon(Long couponId) {
+        Coupon coupon = couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("Coupon does not exist"));
+        couponCache.putCoupon(coupon);
+        return coupon;
     }
 }
