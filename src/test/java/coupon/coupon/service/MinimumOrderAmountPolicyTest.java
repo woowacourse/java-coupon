@@ -16,10 +16,8 @@ class MinimumOrderAmountPolicyTest {
         MinimumOrderAmountPolicy minimumOrderAmountPolicy = new MinimumOrderAmountPolicy();
         assertThatThrownBy(() -> minimumOrderAmountPolicy.validatePolicy(1000, minimumOrderAmount))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(String.format(
-                        ExceptionMessage.MINIMUM_ORDER_AMOUNT_EXCEPTION.getMessage(),
+                .hasMessage(String.format(ExceptionMessage.MINIMUM_ORDER_AMOUNT_EXCEPTION.getMessage(),
                         MinimumOrderAmountPolicy.MIN_MINIMUM_ORDER_AMOUNT,
-                        MinimumOrderAmountPolicy.MAX_MINIMUM_ORDER_AMOUNT
-                ));
+                        MinimumOrderAmountPolicy.MAX_MINIMUM_ORDER_AMOUNT));
     }
 }

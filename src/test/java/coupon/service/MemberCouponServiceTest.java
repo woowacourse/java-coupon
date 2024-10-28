@@ -2,6 +2,7 @@ package coupon.service;
 
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.ExceptionMessage;
 import coupon.coupon.dto.MemberCouponRequest;
 import coupon.coupon.entity.CouponEntity;
 import coupon.coupon.entity.MemberCouponEntity;
@@ -35,15 +36,9 @@ class MemberCouponServiceTest {
     @Autowired
     private CouponRepository couponRepository;
 
-    private Coupon testCoupon = new Coupon(
-            "테스트 쿠폰",
-            List.of(),
-            1000,
-            10000,
-            Category.ELECTRONICS,
-            LocalDate.of(2024, 10, 24),
-            LocalDate.of(2024, 10, 26)
-    );
+    private Coupon testCoupon = new Coupon("테스트 쿠폰", List.of(), 1000, 10000,
+            Category.ELECTRONICS, LocalDate.of(2024, 10, 24),
+            LocalDate.of(2024, 10, 26));
 
     @BeforeEach
     void setUp() {
@@ -84,7 +79,7 @@ class MemberCouponServiceTest {
 
         assertThatThrownBy(() -> memberCouponService.create(memberCouponRequest))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("최대 5장까지만 발급가능합니다");
+                .hasMessage(ExceptionMessage.OVER_FIVE_COUPON.getMessage());
     }
 
     @DisplayName("쿠폰 발급 기간 외에는 쿠폰을 발급할 수 없다")
@@ -96,7 +91,7 @@ class MemberCouponServiceTest {
 
         assertThatThrownBy(() -> memberCouponService.create(request))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("발급 기간이 유효하지 않습니다");
+                .hasMessage(ExceptionMessage.INVALID_ISSUE_DATE.getMessage());
     }
 
     @DisplayName("쿠폰 발급 기간에는 쿠폰을 발급할 수 있다")

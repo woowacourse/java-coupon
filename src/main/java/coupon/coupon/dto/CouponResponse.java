@@ -5,15 +5,8 @@ import coupon.coupon.entity.CouponEntity;
 
 import java.time.LocalDate;
 
-public record CouponResponse(
-        Long id,
-        String name,
-        int discountAmount,
-        int minimumOrderAmount,
-        Category category,
-        LocalDate startDate,
-        LocalDate endDate
-) {
+public record CouponResponse(Long id, String name, int discountAmount, int minimumOrderAmount, Category category,
+        LocalDate startDate, LocalDate endDate) {
 
     public static CouponResponse from(CouponEntity coupon) {
         return new CouponResponse(

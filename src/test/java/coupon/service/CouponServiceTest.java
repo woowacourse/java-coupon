@@ -33,15 +33,9 @@ public class CouponServiceTest {
     @Autowired
     private CouponRepository couponRepository;
 
-    private Coupon testCoupon = new Coupon(
-            "테스트 쿠폰",
-            List.of(),
-            1000,
-            10000,
-            Category.ELECTRONICS,
-            LocalDate.of(2024, 10, 24),
-            LocalDate.of(2024, 10, 26)
-    );
+    private Coupon testCoupon = new Coupon("테스트 쿠폰", List.of(), 1000, 10000,
+            Category.ELECTRONICS, LocalDate.of(2024, 10, 24),
+            LocalDate.of(2024, 10, 26));
 
     @BeforeEach
     void setUp() {

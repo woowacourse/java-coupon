@@ -1,5 +1,6 @@
 package coupon.coupon.service;
 
+import coupon.coupon.domain.ExceptionMessage;
 import coupon.coupon.dto.CouponResponse;
 import coupon.coupon.dto.MemberCouponRequest;
 import coupon.coupon.entity.MemberCouponEntity;
@@ -21,9 +22,11 @@ public class MemberCouponService {
     @Transactional
     public MemberCouponEntity create(MemberCouponRequest memberCouponRequest) {
         validateIssueDate(memberCouponRequest);
-        List<MemberCouponEntity> memberCouponEntities = memberCouponRepository.findByCouponIdAndMemberId(memberCouponRequest.couponId(), memberCouponRequest.memberId());
+        List<MemberCouponEntity> memberCouponEntities = memberCouponRepository.findByCouponIdAndMemberId(
+                memberCouponRequest.couponId(), memberCouponRequest.memberId());
         validateMemberCouponSize(memberCouponEntities);
-        MemberCouponEntity memberCouponEntity = new MemberCouponEntity(memberCouponRequest.couponId(), memberCouponRequest.memberId(), false, memberCouponRequest.issueDate());
+        MemberCouponEntity memberCouponEntity = new MemberCouponEntity(memberCouponRequest.couponId(),
+                memberCouponRequest.memberId(), false, memberCouponRequest.issueDate());
         return memberCouponRepository.save(memberCouponEntity);
     }
 
@@ -31,13 +34,13 @@ public class MemberCouponService {
         CouponResponse couponResponse = couponService.getCoupon(memberCouponRequest.couponId());
         LocalDate issueDate = memberCouponRequest.issueDate();
         if (issueDate.isBefore(couponResponse.startDate()) || issueDate.isAfter(couponResponse.endDate())) {
-            throw new IllegalArgumentException("발급 기간이 유효하지 않습니다");
+            throw new IllegalArgumentException(ExceptionMessage.INVALID_ISSUE_DATE.getMessage());
         }
     }
 
     private void validateMemberCouponSize(List<MemberCouponEntity> memberCouponEntities) {
         if (memberCouponEntities.size() >= 5) {
-            throw new IllegalArgumentException("최대 5장까지만 발급가능합니다");
+            throw new IllegalArgumentException(ExceptionMessage.OVER_FIVE_COUPON.getMessage());
         }
     }
 

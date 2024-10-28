@@ -16,11 +16,8 @@ class DiscountAmountPolicyTest {
         DiscountAmountPolicy discountAmountPolicy = new DiscountAmountPolicy();
         assertThatThrownBy(() -> discountAmountPolicy.validatePolicy(discountAmount, 5000))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(String.format(
-                        ExceptionMessage.DISCOUNT_AMOUNT_EXCEPTION.getMessage(),
-                        DiscountAmountPolicy.MIN_DISCOUNT_AMOUNT,
-                        DiscountAmountPolicy.MAX_DISCOUNT_AMOUNT,
-                        DiscountAmountPolicy.DISCOUNT_AMOUNT_UNIT
-                ));
+                .hasMessage(String.format(ExceptionMessage.DISCOUNT_AMOUNT_EXCEPTION.getMessage(),
+                        DiscountAmountPolicy.MIN_DISCOUNT_AMOUNT, DiscountAmountPolicy.MAX_DISCOUNT_AMOUNT,
+                        DiscountAmountPolicy.DISCOUNT_AMOUNT_UNIT));
     }
 }

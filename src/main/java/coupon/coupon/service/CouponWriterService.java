@@ -1,5 +1,6 @@
 package coupon.coupon.service;
 
+import coupon.coupon.domain.ExceptionMessage;
 import coupon.coupon.entity.CouponEntity;
 import coupon.coupon.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class CouponWriterService {
 
     public CouponEntity getCoupon(long couponId) {
         return couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다"));
+                .orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NOT_EXIST_COUPON.getMessage()));
     }
 
     public CouponEntity create(CouponEntity coupon) {

@@ -13,15 +13,10 @@ public class DiscountAmountPolicy implements DiscountPolicy {
 
     @Override
     public void validatePolicy(int discountAmount, int minimumOrderAmount) {
-        if (discountAmount < MIN_DISCOUNT_AMOUNT
-                || discountAmount > MAX_DISCOUNT_AMOUNT
+        if (discountAmount < MIN_DISCOUNT_AMOUNT || discountAmount > MAX_DISCOUNT_AMOUNT
                 || discountAmount % DISCOUNT_AMOUNT_UNIT != 0) {
-            throw new IllegalArgumentException(String.format(
-                    ExceptionMessage.DISCOUNT_AMOUNT_EXCEPTION.getMessage(),
-                    MIN_DISCOUNT_AMOUNT,
-                    MAX_DISCOUNT_AMOUNT,
-                    DISCOUNT_AMOUNT_UNIT
-            ));
+            throw new IllegalArgumentException(String.format(ExceptionMessage.DISCOUNT_AMOUNT_EXCEPTION.getMessage(),
+                    MIN_DISCOUNT_AMOUNT, MAX_DISCOUNT_AMOUNT, DISCOUNT_AMOUNT_UNIT));
         }
     }
 }

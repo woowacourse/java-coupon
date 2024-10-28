@@ -43,6 +43,7 @@ public class CouponEntity extends BaseEntity {
     private LocalDate endDate;
 
     public CouponEntity(Coupon coupon) {
-        this(null, coupon.getName(), coupon.getDiscountAmount(), coupon.getMinimumOrderAmount(), coupon.getCategory(), coupon.getStartDate(), coupon.getEndDate());
+        this(null, coupon.getName(), coupon.getDiscountAmount(), coupon.getMinimumOrderAmount(), coupon.getCategory(),
+                coupon.getStartDate(), coupon.getEndDate());
     }
 }

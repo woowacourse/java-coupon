@@ -15,7 +15,8 @@ public class Coupon {
     private final Category category;
     private final DatePeriod datePeriod;
 
-    public Coupon(String name, List<DiscountPolicy> discountPolicies, int discountAmount, int minimumOrderAmount, Category category, LocalDate startDate, LocalDate endDate) {
+    public Coupon(String name, List<DiscountPolicy> discountPolicies, int discountAmount, int minimumOrderAmount,
+                  Category category, LocalDate startDate, LocalDate endDate) {
         this.name = new CouponName(name);
         this.discountPolicies = discountPolicies;
         this.discountAmount = discountAmount;
