@@ -16,17 +16,16 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MemberCouponServiceTest {
+class MemberServiceTest {
 
     @Autowired
-    MemberCouponService memberCouponService;
+    MemberService memberService;
     @Autowired
     MemberCouponRepository memberCouponRepository;
     @Autowired
@@ -34,7 +33,7 @@ class MemberCouponServiceTest {
     @Autowired
     CouponRepository couponRepository;
 
-    @Disabled // 지연 복제로 인해서 테스트 실패
+    //    @Disabled // 지연 복제로 인해서 테스트 실패
     @Test
     @DisplayName("사용자의 쿠폰을 조회한다.")
     void getCoupons() {
@@ -45,7 +44,7 @@ class MemberCouponServiceTest {
         Coupon saveCoupon = couponRepository.save(coupon);
         memberCouponRepository.save(new MemberCoupon(saveCoupon.getId(), saveMember));
 
-        List<Coupon> coupons = memberCouponService.getCoupons(saveMember.getId());
+        List<Coupon> coupons = memberService.getCoupons(saveMember.getId());
 
         assertThat(coupons).hasSize(1);
     }
@@ -59,7 +58,7 @@ class MemberCouponServiceTest {
         Member saveMember = memberRepository.save(member);
         Coupon saveCoupon = couponRepository.save(coupon);
 
-        Long savedId = memberCouponService.issueCoupon(saveMember.getId(), saveCoupon.getId()).getId();
+        Long savedId = memberService.issueCoupon(saveMember.getId(), saveCoupon.getId()).getId();
 
         MemberCoupon actual = memberCouponRepository.findByIdImmediately(savedId).orElseThrow();
         assertAll(
@@ -78,9 +77,9 @@ class MemberCouponServiceTest {
         Coupon saveCoupon = couponRepository.save(coupon);
 
         IntStream.range(0, 5)
-                .forEach(i -> memberCouponService.issueCoupon(saveMember.getId(), saveCoupon.getId()));
+                .forEach(i -> memberService.issueCoupon(saveMember.getId(), saveCoupon.getId()));
 
-        assertThatThrownBy(() -> memberCouponService.issueCoupon(saveMember.getId(), saveCoupon.getId()))
+        assertThatThrownBy(() -> memberService.issueCoupon(saveMember.getId(), saveCoupon.getId()))
                 .isInstanceOf(CouponException.class)
                 .hasMessage("같은 쿠폰은 최대 5장까지 발급 가능합니다.");
     }

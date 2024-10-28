@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class MemberCouponService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
     private final CouponRepository couponRepository;
 
-    public MemberCouponService(MemberRepository memberRepository, CouponRepository couponRepository) {
+    public MemberService(MemberRepository memberRepository, CouponRepository couponRepository) {
         this.memberRepository = memberRepository;
         this.couponRepository = couponRepository;
     }
