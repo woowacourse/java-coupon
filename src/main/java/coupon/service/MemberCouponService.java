@@ -22,7 +22,7 @@ public class MemberCouponService {
 
     @Transactional
     public MemberCoupon create(Member member, long couponId) {
-        memberCouponValidator.validateIssuedCount(member);
+        memberCouponValidator.validateIssuedCount(memberCouponRepository.countByMemberId(member.getId()));
         couponValidator.validateCanIssue(couponService.getCoupon(couponId));
 
         MemberCoupon memberCoupon = MemberCoupon.builder()

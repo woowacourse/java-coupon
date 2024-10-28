@@ -12,11 +12,9 @@ import org.springframework.stereotype.Component;
 public class MemberCouponValidator {
 
     private static final int MAX_ISSUABLE_COUNT = 5;
-    private final MemberCouponRepository memberCouponRepository;
 
-
-    public void validateIssuedCount(Member member) {
-        if (memberCouponRepository.countByMemberId(member.getId()) >= MAX_ISSUABLE_COUNT) {
+    public void validateIssuedCount(int issuedCount) {
+        if (issuedCount >= MAX_ISSUABLE_COUNT) {
             throw new CouponException(CouponErrorMessage.EXCEEDED_MAX_COUPON_COUNT);
         }
     }
