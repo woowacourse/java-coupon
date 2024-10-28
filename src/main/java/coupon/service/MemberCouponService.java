@@ -59,7 +59,6 @@ public class MemberCouponService {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMember(member);
 
         // 영속성 컨텍스트에 Coupon들을 올리는 작업 -> 하나의 쿼리로 가능한가?
-        // TODO : 아래 작업이 없으면 coupon 정보를 get하려 할 때 터지는지 확인
         memberCoupons.stream()
                 .map(memberCoupon -> memberCoupon.getCoupon().getId())
                 .forEach(couponId -> couponService.getCoupon(couponId));
