@@ -33,7 +33,7 @@ public class CouponService {
                 .orElseGet(() -> getCouponFromWriterDatabase(id));
     }
 
-    public Coupon getCouponFromWriterDatabase(Long id) {
+    private Coupon getCouponFromWriterDatabase(Long id) {
         return transactionExecutor.executeNewTransaction(() ->
                 couponRepository.findById(id)
                         .orElseThrow(() -> new CouponNotFoundException(id))

@@ -37,7 +37,7 @@ public class CouponServiceTest {
         Long id = couponService.create(coupon);
 
         // then
-        assertThat(couponService.getCouponFromWriterDatabase(id).getName().getName()).isEqualTo(rightName);
+        assertThat(couponService.getCouponWithoutReplicaLag(id).getName().getName()).isEqualTo(rightName);
     }
 
     @Test
