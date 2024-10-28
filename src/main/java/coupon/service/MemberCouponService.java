@@ -56,4 +56,9 @@ public class MemberCouponService {
         memberCoupons.forEach(memberCoupon -> memberCoupon.getCoupon().getName());
         return memberCoupons;
     }
+
+    @Transactional
+    public void deleteAll() {
+        memberCouponRepository.deleteAllInBatch();
+    }
 }

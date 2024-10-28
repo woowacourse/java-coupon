@@ -29,4 +29,9 @@ public class CouponService {
         return couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰을 찾을 수 없습니다. id = " + id));
     }
+
+    @Transactional
+    public void deleteAll() {
+        couponRepository.deleteAllInBatch();
+    }
 }
