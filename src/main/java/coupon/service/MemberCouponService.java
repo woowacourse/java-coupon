@@ -38,8 +38,8 @@ public class MemberCouponService {
 
     @Transactional(readOnly = true)
     public List<CouponResponse> findByMemberId(long memberId) {
-        List<MemberCoupon> allByMemberId = memberCouponRepository.findAllByMemberId(memberId);
-        return allByMemberId.stream()
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
+        return memberCoupons.stream()
                 .map(MemberCouponMapper::fromEntity)
                 .map(r -> new CouponResponse(CouponMapper.fromEntity(couponRepository.findById(r.getCouponId()).get()),
                         r))

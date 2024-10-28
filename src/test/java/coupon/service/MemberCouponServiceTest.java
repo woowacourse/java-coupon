@@ -7,6 +7,7 @@ import coupon.data.repository.CouponRepository;
 import coupon.domain.coupon.CouponMapper;
 import coupon.exception.MemberCouponIssueException;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,8 +47,17 @@ class MemberCouponServiceTest {
 
     }
 
+    @DisplayName("회원의 쿠폰 목록 조회 시 쿠폰, 회원에게 발급된 쿠폰의 정보를 보여준다.")
     @Test
     void findByMemberId() {
+        Coupon coupon1 = couponService.create(coupon);
+        System.out.println(coupon1);
+        for (int i = 0; i < 5; i++) {
+            memberCouponService.issue(1, 1, LocalDateTime.now());
+        }
+        List<CouponResponse> byMemberId = memberCouponService.findByMemberId(1);
+
+        System.out.println(byMemberId.get(0).coupon() + " " + byMemberId.get(0).memberCoupon());
     }
 
     @Test

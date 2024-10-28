@@ -57,7 +57,7 @@ public class CouponServiceTest {
     @Test
     void delayWaiting() throws InterruptedException {
         Coupon expected = couponService.create(coupon);
-        final int WAITING_TIME_IN_NANO = 2000;
+        final int WAITING_TIME_IN_NANO = 4000;
         Thread.sleep(WAITING_TIME_IN_NANO);
 
         Coupon actual = jdbcTemplate.queryForObject("select * from coupon where id = ?",

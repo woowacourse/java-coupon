@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.type.descriptor.DateTimeUtils;
 
 
 @Getter
+@ToString
 @AllArgsConstructor
 public class MemberCoupon {
     private static final int VALID_DAYS_SINCE_ISSUED = 7;

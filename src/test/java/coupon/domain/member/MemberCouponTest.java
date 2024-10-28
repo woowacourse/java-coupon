@@ -2,6 +2,7 @@ package coupon.domain.member;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import coupon.data.Coupon;
 import java.time.LocalDateTime;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
