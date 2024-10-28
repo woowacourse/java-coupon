@@ -8,6 +8,8 @@ import coupon.membercoupon.domain.AvailablePeriod;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.repository.MemberCouponEntity;
 import coupon.membercoupon.repository.MemberCouponRepository;
+import coupon.support.DataAccessSupporter;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ public class MemberCouponService {
 
     private final CouponReader couponReader;
     private final MemberCouponRepository memberCouponRepository;
+    private final DataAccessSupporter dataAccessSupporter;
 
     @Transactional
     Long issueCoupon(MemberEntity memberEntity, Long couponId) {
@@ -37,5 +40,10 @@ public class MemberCouponService {
         if (issuedCount >= MAX_AVAILABLE_COUNT) {
             throw new RuntimeException("쿠폰의 최대 발급 개수를 넘었습니다. [%d]".formatted(MAX_AVAILABLE_COUNT));
         }
+    }
+
+    @Transactional(readOnly = true)
+    List<MemberCouponEntity> findByMember(MemberEntity memberEntity) {
+        return dataAccessSupporter.executeWriteDataBase(() -> memberCouponRepository.findByMemberEntity(memberEntity));
     }
 }

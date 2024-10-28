@@ -1,5 +1,6 @@
 package coupon.membercoupon.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import coupon.coupon.domain.Coupon;
@@ -7,6 +8,8 @@ import coupon.coupon.service.CouponService;
 import coupon.member.repository.MemberEntity;
 import coupon.member.request.MemberCreateRequest;
 import coupon.member.service.MemberService;
+import coupon.membercoupon.repository.MemberCouponEntity;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayName;
@@ -39,5 +42,25 @@ public class MemberCouponServiceTest {
         // when & then
         assertThatThrownBy(() -> memberCouponService.issueCoupon(member, couponId))
                 .isInstanceOf(RuntimeException.class);
+    }
+
+    @DisplayName("발급받은 쿠폰을 조회할 수 있다.")
+    @Test
+    void findByMemberEntity() {
+        // given
+        String randomId = UUID.randomUUID().toString();
+        MemberCreateRequest request = new MemberCreateRequest(randomId.substring(0, 5), "패스워드");
+        Coupon coupon = new Coupon(1000L, 10000L);
+        Long couponId = couponService.create(coupon);
+        MemberEntity member = memberService.create(request);
+        memberCouponService.issueCoupon(member, couponId);
+        int expected = 1;
+
+        // when
+        List<MemberCouponEntity> memberEntity = memberCouponService.findByMember(member);
+        int actual = memberEntity.size();
+
+        // then
+        assertThat(actual).isEqualTo(expected);
     }
 }
