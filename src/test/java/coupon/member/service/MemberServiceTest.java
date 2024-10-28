@@ -3,6 +3,7 @@ package coupon.member.service;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import coupon.member.request.MemberCreateRequest;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,8 @@ class MemberServiceTest {
     @Test
     void createMember() {
         // given
-        MemberCreateRequest request = new MemberCreateRequest("테바", "패스워드");
+        String randomId = UUID.randomUUID().toString();
+        MemberCreateRequest request = new MemberCreateRequest(randomId, "패스워드");
 
         // when & then
         assertThatCode(() -> memberService.create(request))
