@@ -13,7 +13,15 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 @EnableCaching
@@ -35,7 +43,33 @@ public class RedisCacheConfig {
         return RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
                 .serializeKeysWith(SerializationPair.fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
+                .serializeValuesWith(SerializationPair.fromSerializer(getJsonRedisSerializer()))
                 .entryTtl(DEFAULT_TTL);
+    }
+
+    private RedisSerializer<Object> getJsonRedisSerializer() {
+        ObjectMapper objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .registerModule(new JavaTimeModule())
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .activateDefaultTyping(getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+
+        return new GenericJackson2JsonRedisSerializer(objectMapper);
+    }
+
+    private BasicPolymorphicTypeValidator getPolymorphicTypeValidator() {
+        return BasicPolymorphicTypeValidator.builder()
+                .allowIfBaseType(Object.class)
+                .build();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .findAndRegisterModules()
+                .enable(SerializationFeature.INDENT_OUTPUT)
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .registerModule(new JavaTimeModule());
     }
 }
