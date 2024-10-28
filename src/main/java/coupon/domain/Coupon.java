@@ -147,6 +147,11 @@ public class Coupon {
         }
     }
 
+    public boolean canIssue() {
+        LocalDate now = LocalDate.now();
+        return now.isAfter(startIssueDate) && now.isBefore(endIssueDate);
+    }
+
     public Long getId() {
         return id;
     }

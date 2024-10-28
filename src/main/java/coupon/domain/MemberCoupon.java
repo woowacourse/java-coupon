@@ -42,6 +42,10 @@ public class MemberCoupon {
         this.isUsed = false;
     }
 
+    public MemberCoupon(Coupon coupon, Member member) {
+        this(coupon, member, LocalDate.now());
+    }
+
     private void validate(Coupon coupon, Member member, LocalDate issueDate) {
         validateCoupon(coupon);
         validateMember(member);
