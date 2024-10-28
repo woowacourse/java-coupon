@@ -2,6 +2,7 @@ package coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
-public class Duration {
+public class Duration implements Serializable {
 
     @Column(name = "start_date")
     private LocalDate startDate;
