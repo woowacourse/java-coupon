@@ -35,6 +35,16 @@ class MemberCouponServiceTest {
     @Autowired
     private CouponRepository couponRepository;
 
+    private Coupon testCoupon = new Coupon(
+            "테스트 쿠폰",
+            List.of(),
+            1000,
+            10000,
+            Category.ELECTRONICS,
+            LocalDate.of(2024, 10, 24),
+            LocalDate.of(2024, 10, 26)
+    );
+
     @BeforeEach
     void setUp() {
         memberCouponRepository.deleteAll();
@@ -44,20 +54,11 @@ class MemberCouponServiceTest {
     @DisplayName("회원이 쿠폰을 5개까지 발급할 수 있다")
     @Test
     void createMemberCouponFive() {
-        Coupon coupon = new Coupon(
-                "테스트 쿠폰",
-                List.of(),
-                1000,
-                10000,
-                Category.ELECTRONICS,
-                LocalDate.of(2024, 10, 24),
-                LocalDate.of(2024, 10, 26)
-        );
-        CouponEntity couponEntity = couponRepository.save(new CouponEntity(coupon));
-        MemberCouponEntity memberCoupon1 = new MemberCouponEntity(couponEntity.getId(), 1L, false, LocalDate.of(2024, 10, 25));
-        MemberCouponEntity memberCoupon2 = new MemberCouponEntity(couponEntity.getId(), 1L, false, LocalDate.of(2024, 10, 25));
-        MemberCouponEntity memberCoupon3 = new MemberCouponEntity(couponEntity.getId(), 1L, false, LocalDate.of(2024, 10, 25));
-        MemberCouponEntity memberCoupon4 = new MemberCouponEntity(couponEntity.getId(), 1L, false, LocalDate.of(2024, 10, 25));
+        CouponEntity couponEntity = couponRepository.save(new CouponEntity(testCoupon));
+        MemberCouponEntity memberCoupon1 = createTestMemberCouponEntity(couponEntity.getId(), 25);
+        MemberCouponEntity memberCoupon2 = createTestMemberCouponEntity(couponEntity.getId(), 25);
+        MemberCouponEntity memberCoupon3 = createTestMemberCouponEntity(couponEntity.getId(), 25);
+        MemberCouponEntity memberCoupon4 = createTestMemberCouponEntity(couponEntity.getId(), 25);
         memberCouponRepository.saveAll(List.of(memberCoupon1, memberCoupon2, memberCoupon3, memberCoupon4));
 
         MemberCouponRequest memberCouponRequest = new MemberCouponRequest(
@@ -70,21 +71,12 @@ class MemberCouponServiceTest {
     @DisplayName("회원이 쿠폰을 5개 초과로 발급할 수 없다")
     @Test
     void createMemberCouponSix() {
-        Coupon coupon = new Coupon(
-                "테스트 쿠폰",
-                List.of(),
-                1000,
-                10000,
-                Category.ELECTRONICS,
-                LocalDate.of(2024, 10, 24),
-                LocalDate.of(2024, 10, 26)
-        );
-        CouponEntity couponEntity = couponRepository.save(new CouponEntity(coupon));
-        MemberCouponEntity memberCoupon1 = new MemberCouponEntity(couponEntity.getId(), 1L, false, LocalDate.of(2024, 10, 25));
-        MemberCouponEntity memberCoupon2 = new MemberCouponEntity(couponEntity.getId(), 1L, false, LocalDate.of(2024, 10, 25));
-        MemberCouponEntity memberCoupon3 = new MemberCouponEntity(couponEntity.getId(), 1L, false, LocalDate.of(2024, 10, 25));
-        MemberCouponEntity memberCoupon4 = new MemberCouponEntity(couponEntity.getId(), 1L, false, LocalDate.of(2024, 10, 25));
-        MemberCouponEntity memberCoupon5 = new MemberCouponEntity(couponEntity.getId(), 1L, false, LocalDate.of(2024, 10, 25));
+        CouponEntity couponEntity = couponRepository.save(new CouponEntity(testCoupon));
+        MemberCouponEntity memberCoupon1 = createTestMemberCouponEntity(couponEntity.getId(), 25);
+        MemberCouponEntity memberCoupon2 = createTestMemberCouponEntity(couponEntity.getId(), 25);
+        MemberCouponEntity memberCoupon3 = createTestMemberCouponEntity(couponEntity.getId(), 25);
+        MemberCouponEntity memberCoupon4 = createTestMemberCouponEntity(couponEntity.getId(), 25);
+        MemberCouponEntity memberCoupon5 = createTestMemberCouponEntity(couponEntity.getId(), 25);
         memberCouponRepository.saveAll(List.of(memberCoupon1, memberCoupon2, memberCoupon3, memberCoupon4, memberCoupon5));
 
         MemberCouponRequest memberCouponRequest = new MemberCouponRequest(
@@ -99,16 +91,7 @@ class MemberCouponServiceTest {
     @ParameterizedTest
     @ValueSource(ints = {23, 27})
     void validateCouponIssuanceOutPeriod(int day) {
-        Coupon coupon = new Coupon(
-                "테스트 쿠폰",
-                List.of(),
-                1000,
-                10000,
-                Category.ELECTRONICS,
-                LocalDate.of(2024, 10, 24),
-                LocalDate.of(2024, 10, 26)
-        );
-        CouponEntity couponEntity = couponRepository.save(new CouponEntity(coupon));
+        CouponEntity couponEntity = couponRepository.save(new CouponEntity(testCoupon));
         MemberCouponRequest request = new MemberCouponRequest(couponEntity.getId(), 1L, LocalDate.of(2024, 10, day));
 
         assertThatThrownBy(() -> memberCouponService.create(request))
@@ -120,16 +103,7 @@ class MemberCouponServiceTest {
     @ParameterizedTest
     @ValueSource(ints = {24, 25, 26})
     void validateCouponIssuanceInPeriod(int day) {
-        Coupon coupon = new Coupon(
-                "테스트 쿠폰",
-                List.of(),
-                1000,
-                10000,
-                Category.ELECTRONICS,
-                LocalDate.of(2024, 10, 24),
-                LocalDate.of(2024, 10, 26)
-        );
-        CouponEntity couponEntity = couponRepository.save(new CouponEntity(coupon));
+        CouponEntity couponEntity = couponRepository.save(new CouponEntity(testCoupon));
         LocalDate issueDate = LocalDate.of(2024, 10, day);
         MemberCouponRequest request = new MemberCouponRequest(couponEntity.getId(), 1L, issueDate);
 
@@ -142,17 +116,8 @@ class MemberCouponServiceTest {
     @DisplayName("맴버 쿠폰 조회시 쿠폰 정보도 함께 조회한다")
     @Test
     void findByMemberId() {
-        Coupon coupon = new Coupon(
-                "테스트 쿠폰",
-                List.of(),
-                1000,
-                10000,
-                Category.ELECTRONICS,
-                LocalDate.of(2024, 10, 24),
-                LocalDate.of(2024, 10, 26)
-        );
-        CouponEntity couponEntity = couponRepository.save(new CouponEntity(coupon));
-        MemberCouponEntity memberCoupon = new MemberCouponEntity(couponEntity.getId(), 1L, false, LocalDate.of(2024, 10, 25));
+        CouponEntity couponEntity = couponRepository.save(new CouponEntity(testCoupon));
+        MemberCouponEntity memberCoupon = createTestMemberCouponEntity(couponEntity.getId(), 25);
         memberCouponRepository.save(memberCoupon);
 
         MemberCouponEntity memberCouponEntity = memberCouponService.findByMemberId(1L).get(0);
@@ -161,5 +126,9 @@ class MemberCouponServiceTest {
                 () -> assertThat(memberCouponEntity.getMemberId()).isEqualTo(1L),
                 () -> assertThat(memberCouponEntity.getCouponId()).isEqualTo(couponEntity.getId())
         );
+    }
+
+    private MemberCouponEntity createTestMemberCouponEntity(Long couponId, int day) {
+        return new MemberCouponEntity(couponId, 1L, false, LocalDate.of(2024, 10, day));
     }
 }
