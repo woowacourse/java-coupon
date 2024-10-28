@@ -67,10 +67,18 @@ public class MemberCouponService {
     private MemberCouponDetails toMemberCouponDetails(MemberCoupon memberCoupon) {
         Optional<CachedCouponEntity> optionalCachedCouponEntity = cachedCouponRepository.findById(memberCoupon.getCouponId());
         if (optionalCachedCouponEntity.isEmpty()) {
-            return getMemberCouponDetails(memberCoupon);
+            MemberCouponDetails memberCouponDetails = getMemberCouponDetails(memberCoupon);
+            return cacheCoupon(memberCouponDetails);
         }
         CachedCouponEntity cachedCouponEntity = optionalCachedCouponEntity.get();
         return new MemberCouponDetails(memberCoupon, cachedCouponEntity.toCoupon());
+    }
+
+    private MemberCouponDetails cacheCoupon(MemberCouponDetails memberCouponDetails) {
+        if (memberCouponDetails.isNotEmpty()) {
+            cachedCouponRepository.save(CachedCouponEntity.from(memberCouponDetails.getCoupon()));
+        }
+        return memberCouponDetails;
     }
 
     private MemberCouponDetails getMemberCouponDetails(MemberCoupon memberCoupon) {

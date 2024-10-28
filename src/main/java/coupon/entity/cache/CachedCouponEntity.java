@@ -27,6 +27,10 @@ public class CachedCouponEntity implements Serializable {
         this.minimumOrderPrice = coupon.getMinimumOrderPrice();
     }
 
+    public static CachedCouponEntity from(Coupon coupon) {
+        return new CachedCouponEntity(coupon.getId(), coupon.getDiscountAmount(), coupon.getMinimumOrderPrice());
+    }
+
     public Coupon toCoupon() {
         return new Coupon(id, discountAmount, minimumOrderPrice);
     }

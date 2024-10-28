@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,9 @@ class MemberCouponServiceTest {
 
     @Autowired
     Set<JdbcTemplate> jdbcTemplates;
+
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     MemberRepository memberRepository;
@@ -61,6 +65,10 @@ class MemberCouponServiceTest {
             jdbcTemplate.update("ALTER TABLE member AUTO_INCREMENT = 1");
             jdbcTemplate.update("ALTER TABLE coupon AUTO_INCREMENT = 1");
         });
+        Set<String> keys = redisTemplate.keys("*");
+        if (keys != null && !keys.isEmpty()) {
+            redisTemplate.delete(keys);
+        }
     }
 
     @DisplayName("멤버가 쿠폰을 발급한다.")
