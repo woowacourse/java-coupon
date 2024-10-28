@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +21,11 @@ public class CouponServiceTest {
     private CouponService couponService;
     @Autowired
     private CouponRepository couponRepository;
+
+    @AfterEach
+    void setUp() {
+        couponRepository.deleteAll();
+    }
 
     @Test
     void 복제지연테스트() {
