@@ -83,10 +83,6 @@ public class CouponService {
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
 
-        if (member.getCouponCount() >= 5) {
-            throw new IllegalArgumentException("한 회원은 최대 5장의 쿠폰만 발급받을 수 있습니다.");
-        }
-
         coupon.decrementAvailableCount();
         member.incrementCouponCount();
         MemberCoupon memberCoupon = new MemberCoupon(coupon, member, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
