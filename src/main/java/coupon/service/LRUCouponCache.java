@@ -7,10 +7,12 @@ import java.util.Optional;
 
 public class LRUCouponCache<Long, Coupon> implements Cache<Long, Coupon> {
 
+    private static final float CACHE_LOAD_THRESHOLD = 0.75f;
+
     private final Map<Long, Coupon> cache;
 
     public LRUCouponCache(int cacheSize) {
-        this.cache = Collections.synchronizedMap(new LinkedHashMap<>(cacheSize, 0.75f, true) {
+        this.cache = Collections.synchronizedMap(new LinkedHashMap<>(cacheSize, CACHE_LOAD_THRESHOLD, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<Long, Coupon> eldest) {
                 return size() > cacheSize;
