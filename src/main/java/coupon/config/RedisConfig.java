@@ -34,10 +34,7 @@ public class RedisConfig {
 
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
-        redisConfig.setHostName(host);
-        redisConfig.setPort(port);
-        return new LettuceConnectionFactory(redisConfig);
+        return new LettuceConnectionFactory(redisStandaloneConfig());
     }
 
     @Bean
@@ -47,30 +44,41 @@ public class RedisConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer(objectMapper()));
         redisTemplate.afterPropertiesSet();
-
         return redisTemplate;
     }
 
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         return RedisCacheManager.builder(redisConnectionFactory)
-                .cacheDefaults(getRedisCacheConfiguration())
+                .cacheDefaults(redisCacheConfiguration())
                 .build();
     }
 
-    private RedisCacheConfiguration getRedisCacheConfiguration() {
+    private RedisStandaloneConfiguration redisStandaloneConfig() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName(host);
+        config.setPort(port);
+        return config;
+    }
+
+    private RedisCacheConfiguration redisCacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .serializeKeysWith(
-                        SerializationPair.fromSerializer(new StringRedisSerializer())
-                )
-                .serializeValuesWith(
-                        SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper()))
-                )
+                .serializeKeysWith(keySerializationPair())
+                .serializeValuesWith(valueSerializationPair())
                 .entryTtl(Duration.ofHours(CACHE_TTL_IN_HOURS))
                 .disableCachingNullValues();
     }
 
-    private ObjectMapper objectMapper() {
+    private SerializationPair<String> keySerializationPair() {
+        return SerializationPair.fromSerializer(new StringRedisSerializer());
+    }
+
+    private SerializationPair<Object> valueSerializationPair() {
+        return SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper()));
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
         PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
                 .allowIfSubType(Object.class)
                 .build();
