@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.CacheManager;
 
 import coupon.Fixtures;
 import coupon.domain.Coupon;
@@ -22,7 +22,6 @@ import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
 
 @SpringBootTest
-@Transactional
 class MemberCouponServiceTest {
 
     @Autowired
@@ -36,6 +35,9 @@ class MemberCouponServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     private Member member;
     private Coupon coupon1;
@@ -52,6 +54,14 @@ class MemberCouponServiceTest {
         coupon3 = couponRepository.save(Fixtures.coupon_1);
         coupon4 = couponRepository.save(Fixtures.coupon_1);
         coupon5 = couponRepository.save(Fixtures.coupon_1);
+
+        var cache = cacheManager.getCache("coupon");
+        cache.put(coupon1.getId(), coupon1);
+        cache.put(coupon1.getId(), coupon2);
+        cache.put(coupon1.getId(), coupon3);
+        cache.put(coupon1.getId(), coupon4);
+        cache.put(coupon1.getId(), coupon5);
+
         var memberCoupons = List.of(
                 new MemberCoupon(member, coupon1),
                 new MemberCoupon(member, coupon2),
