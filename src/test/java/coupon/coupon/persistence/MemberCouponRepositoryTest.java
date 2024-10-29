@@ -53,11 +53,11 @@ class MemberCouponRepositoryTest {
     void countByMemberIdAndCouponId() {
         Member member = memberRepository.save(Fixture.generateMember());
         IssuePeriod issuePeriod = new IssuePeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1L));
-        Coupon coupon1 = couponRepository.save(Fixture.generateBigSaleFashionCoupon(issuePeriod));
-        Coupon coupon2 = couponRepository.save(Fixture.generateBigSaleFashionCoupon(issuePeriod));
-        memberCouponRepository.save(Fixture.generateMemberCoupon(member.getId(), coupon1.getId()));
+        Coupon coupon = couponRepository.save(Fixture.generateBigSaleFashionCoupon(issuePeriod));
+        couponRepository.save(Fixture.generateBigSaleFashionCoupon(issuePeriod));
+        memberCouponRepository.save(Fixture.generateMemberCoupon(member.getId(), coupon.getId()));
 
-        int issueCount = memberCouponRepository.countByMemberIdAndCouponId(member.getId(), coupon1.getId());
+        int issueCount = memberCouponRepository.countByMemberIdAndCouponId(member.getId(), coupon.getId());
 
         assertThat(issueCount).isEqualTo(1);
     }

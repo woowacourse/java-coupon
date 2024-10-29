@@ -6,7 +6,6 @@ import coupon.coupon.business.CouponService;
 import coupon.coupon.common.Fixture;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.IssuePeriod;
-import coupon.member.domain.Member;
 import coupon.member.persistence.MemberWriter;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +40,7 @@ public class CouponServiceTest {
     @DisplayName("쿠폰을 조회할 때 캐시 데이터가 없다면 캐시에 저장하고 다음 조회시 캐시에서 반환한다.")
     @Test
     void findAllByMemberIdFromCache() {
-        Member member = memberWriter.create(Fixture.generateMember());
+        memberWriter.create(Fixture.generateMember());
         IssuePeriod issuePeriod = new IssuePeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1L));
         Coupon coupon = couponService.create(Fixture.generateBigSaleFashionCoupon(issuePeriod));
 
