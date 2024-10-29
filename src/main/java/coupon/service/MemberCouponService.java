@@ -17,14 +17,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberCouponService {
 
+    private static final int MEMBER_COUPON_COUNT_MAX = 5;
+
     private final MemberCouponRepository memberCouponRepository;
 
     @Transactional
     @CacheEvict(value = "memberCoupons", key = "#member.id")
     public MemberCoupon issueMemberCoupon(Member member, Coupon coupon) {
         int memberCouponCount = memberCouponRepository.countByMember(member);
-        if (memberCouponCount >= 5) {
-            throw new IllegalArgumentException("동일한 쿠폰은 5장까지만 발급받을 수 있습니다.");
+        if (memberCouponCount >= MEMBER_COUPON_COUNT_MAX) {
+            throw new IllegalArgumentException(
+                    String.format("동일한 쿠폰은 %d장까지만 발급받을 수 있습니다.", MEMBER_COUPON_COUNT_MAX));
         }
         return memberCouponRepository.save(new MemberCoupon(member, coupon));
     }
