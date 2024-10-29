@@ -1,8 +1,5 @@
 package coupon.coupon.domain;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CouponRepository extends JpaRepository<Coupon, Long> {
@@ -11,8 +8,4 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
         return findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 쿠폰이 없습니다. id: " + id));
     }
-
-    Optional<Coupon> findById(Long id);
-
-    List<Coupon> findAllByIdIn(List<Long> couponId);
 }
