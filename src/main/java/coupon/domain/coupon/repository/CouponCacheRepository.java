@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CouponCacheRepository {
-
-    private static final String COUPON_ISSUE_COUNT_UP_SCRIPT =
+    private static final DefaultRedisScript<Object> COUPON_ISSUE_COUNT_UP_SCRIPT = new DefaultRedisScript<>(
             "local value = redis.call('GET', KEYS[1]); " +
                     "if not value then " +
                     "    value = 0; " +
@@ -25,7 +24,9 @@ public class CouponCacheRepository {
                     "    value = tonumber(value) + 1; " +
                     "    redis.call('SET', KEYS[1], value); " +
                     "    return tostring(value); " +
-                    "end";
+                    "end",
+            Object.class
+    );
 
     private final RedisTemplate redisTemplate;
 
@@ -36,12 +37,9 @@ public class CouponCacheRepository {
 
     public void updateIssuedMemberCouponCount(long memberId, long couponId) {
         String key = RedisKey.MEMBER_COUPONS.getKey(memberId, couponId);
-        DefaultRedisScript<Object> script = new DefaultRedisScript<>();
-        script.setScriptText(COUPON_ISSUE_COUNT_UP_SCRIPT);
-        script.setResultType(Object.class);
 
-        int result = (Integer) redisTemplate.execute(script, Collections.singletonList(key));
-        if(result == -1) {
+        int result = (Integer) redisTemplate.execute(COUPON_ISSUE_COUNT_UP_SCRIPT, Collections.singletonList(key));
+        if (result == -1) {
             throw new MemberCouponIssueLimitException();
         }
     }
