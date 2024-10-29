@@ -28,12 +28,12 @@ public class MemberCoupon {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
-
-    @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "coupon_id", nullable = false)
+    private Coupon coupon;
 
     @Column(name = "used", nullable = false)
     private boolean used;
@@ -41,14 +41,14 @@ public class MemberCoupon {
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "expiration_date", nullable = false)
     private LocalDateTime expirationDate;
 
-    public MemberCoupon(Coupon coupon, Member member) {
+    public MemberCoupon(Member member, Coupon coupon) {
         this(
                 null,
-                coupon,
                 member,
+                coupon,
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(6).withHour(23).withMinute(59).withSecond(59).withNano(999999)
