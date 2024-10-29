@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import coupon.domain.Coupon;
-import coupon.repository.CouponRepository;
+import coupon.domain.CouponRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -27,8 +27,7 @@ public class CouponService {
         if (cachedCoupon != null) {
             return cachedCoupon;
         }
-        Coupon coupon = couponRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 쿠폰이 존재하지 않습니다."));
+        Coupon coupon = couponRepository.findById(id);
         redisTemplate.opsForValue().set("coupon:" + id, coupon);
         return coupon;
     }
