@@ -17,6 +17,7 @@ import lombok.Getter;
 @Getter
 @Table(name = "member_coupon")
 public class MemberCoupon {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
