@@ -6,6 +6,7 @@ import coupon.domain.Coupon;
 import coupon.domain.CouponCategory;
 import coupon.domain.CouponRepository;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,12 +28,16 @@ class CouponServiceTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    CacheManager cacheManager;
+
     private Coupon coupon;
 
     @BeforeEach
     void setUp() {
         resetAutoIncrement("member_coupon");
         resetAutoIncrement("coupon");
+        resetAutoIncrement("member");
 
         coupon = new Coupon(
                 "Jazz",
@@ -56,17 +61,27 @@ class CouponServiceTest {
         assertThat(savedCoupon).isNotNull();
     }
 
-    @Autowired
-    CacheManager cacheManager;
-
     @DisplayName("레디스 캐시 테스트")
     @Test
     void cacheTest() {
+        // 캐시 초기화
+        Objects.requireNonNull(cacheManager.getCache("coupon")).clear();
+
         Coupon savedCoupon = couponRepository.save(coupon);
 
-        couponService.getCoupon(savedCoupon.getId());
-        couponService.getCoupon(savedCoupon.getId());
+        // 캐시 데이터 NULL
+        assertThat(cacheManager.getCache("coupon").get(savedCoupon.getId(), Coupon.class)).isNull();
 
-        System.out.println(cacheManager.getCache("coupon").get(savedCoupon.getId(), Coupon.class));
+        // 캐시 미스 및 캐시에 쿠폰 저장
+        Coupon firstFetch = couponService.getCoupon(savedCoupon.getId());
+
+        // 캐시에 데이터가 적재되었는지 검증
+        Coupon cacheCoupon = cacheManager.getCache("coupon").get(savedCoupon.getId(), Coupon.class);
+        assertThat(cacheCoupon).isNotNull();
+        assertThat(firstFetch.getId()).isEqualTo(cacheCoupon.getId());
+
+        // 캐시 히트
+        Coupon secondFetch = couponService.getCoupon(savedCoupon.getId());
+        assertThat(secondFetch.getId()).isEqualTo(cacheCoupon.getId());
     }
 }
