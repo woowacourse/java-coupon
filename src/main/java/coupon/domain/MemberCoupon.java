@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -34,13 +32,11 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column(name = "member_id", nullable = false)
+    private long memberId;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
+    @Column(name = "coupon_id", nullable = false)
+    private long couponId;
 
     @Column(nullable = false)
     private boolean used;
@@ -60,6 +56,6 @@ public class MemberCoupon {
     }
 
     public MemberCoupon(Member member, Coupon coupon, LocalDateTime issuedAt) {
-        this(null, member, coupon, false, issuedAt, issuedAt.plusDays(VALID_DAYS));
+        this(null, member.getId(), coupon.getId(), false, issuedAt, issuedAt.plusDays(VALID_DAYS));
     }
 }
