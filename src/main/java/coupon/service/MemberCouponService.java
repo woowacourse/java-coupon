@@ -1,5 +1,7 @@
 package coupon.service;
 
+import coupon.Dto.CouponOfMemberResponse;
+import coupon.Dto.CouponResponse;
 import coupon.domain.MemberCoupon;
 import coupon.domain.coupon.Coupon;
 import coupon.repository.MemberCouponRepository;
@@ -22,6 +24,19 @@ public class MemberCouponService {
         validateMemberCanGet(memberId, couponId);
         MemberCoupon memberCoupon = MemberCoupon.issue(couponId, memberId);
         return memberCouponRepository.save(memberCoupon);
+    }
+
+    public List<CouponOfMemberResponse> getCouponsOf(Long memberId) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findByMemberId(memberId);
+        return memberCoupons.stream()
+                .map(memberCoupon -> {
+                    Long couponId = memberCoupon.getCouponId();
+                    Coupon coupon = couponService.getCoupon(couponId);
+                    CouponResponse couponResponse = new CouponResponse(coupon);
+
+                    return new CouponOfMemberResponse(memberCoupon, couponResponse);
+                })
+                .toList();
     }
 
     private void validateCouponCanIssue(Long couponId) {
