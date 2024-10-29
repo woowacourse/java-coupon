@@ -38,6 +38,6 @@ public class Coupon {
     }
 
     public boolean canIssueAt(LocalDate date) {
-        return periodOfIssuance.have(date);
+        return periodOfIssuance.contains(date);
     }
 }

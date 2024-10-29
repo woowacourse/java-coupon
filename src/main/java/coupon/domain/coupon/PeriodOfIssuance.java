@@ -20,7 +20,7 @@ public class PeriodOfIssuance {
         this.endDate = endDate;
     }
 
-    public boolean have(LocalDate date) {
+    public boolean contains(LocalDate date) {
         return !startDate.isAfter(date) && !endDate.isBefore(date);
     }
 
