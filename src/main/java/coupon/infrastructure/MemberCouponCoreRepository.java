@@ -1,5 +1,7 @@
 package coupon.infrastructure;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import coupon.domain.MemberCoupon;
@@ -15,5 +17,15 @@ public class MemberCouponCoreRepository implements MemberCouponRepository {
     @Override
     public MemberCoupon save(MemberCoupon memberCoupon) {
         return memberCouponJpaRepository.save(memberCoupon);
+    }
+
+    @Override
+    public List<MemberCoupon> findAllByMemberId(long memberId) {
+        return memberCouponJpaRepository.findAllByMemberId(memberId);
+    }
+
+    @Override
+    public int countByMemberIdAndCouponId(long memberId, long couponId) {
+        return memberCouponJpaRepository.countByMemberIdAndCouponId(memberId, couponId);
     }
 }
