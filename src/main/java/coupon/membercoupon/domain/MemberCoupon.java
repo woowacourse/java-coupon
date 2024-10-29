@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MemberCoupon {
 
-    private static final int COUPON_USABLE_DAYS = 7;
+    private static final int COUPON_USABLE_DAYS = 6;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +40,19 @@ public class MemberCoupon {
     @Column(name = "expires_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime expiresAt;
 
-    public MemberCoupon(Long couponId, Long memberId, boolean used, LocalDateTime issuedAt, LocalDateTime expiresAt) {
-        this(null, couponId, memberId, used, issuedAt, expiresAt);
+    public static MemberCoupon issue(Long memberId, Coupon coupon) {
+        coupon.issue();
+
+        return new MemberCoupon(
+                coupon.getId(),
+                memberId,
+                false,
+                LocalDateTime.now()
+        );
+    }
+
+    public MemberCoupon(Long couponId, Long memberId, boolean used, LocalDateTime issuedAt) {
+        this(null, couponId, memberId, used, issuedAt, issuedAt.plusDays(COUPON_USABLE_DAYS));
     }
 
     public MemberCoupon(
@@ -58,17 +69,5 @@ public class MemberCoupon {
         this.used = used;
         this.issuedAt = issuedAt;
         this.expiresAt = expiresAt;
-    }
-
-    public static MemberCoupon issue(Long memberId, Coupon coupon) {
-        coupon.issue();
-
-        return new MemberCoupon(
-                coupon.getId(),
-                memberId,
-                false,
-                LocalDateTime.now(),
-                coupon.getIssueEndedAt().plusDays(COUPON_USABLE_DAYS)
-        );
     }
 }

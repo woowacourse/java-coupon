@@ -31,7 +31,7 @@ class MemberCouponTest {
         // then
         SoftAssertions.assertSoftly(softly -> {
             softly.assertThat(memberCoupon.isUsed()).isFalse();
-            softly.assertThat(memberCoupon.getExpiresAt()).isEqualTo(coupon.getIssueEndedAt().plusDays(7));
+            softly.assertThat(memberCoupon.getExpiresAt()).isEqualTo(memberCoupon.getIssuedAt().plusDays(6));
         });
     }
 }
