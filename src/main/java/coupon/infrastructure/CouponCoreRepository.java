@@ -16,7 +16,6 @@ public class CouponCoreRepository implements CouponRepository {
     @Override
     public Coupon save(Coupon coupon) {
         Coupon savedCoupon = couponJpaRepository.save(coupon);
-        couponCacheRepository.save(savedCoupon);
         return savedCoupon;
     }
 
@@ -26,7 +25,7 @@ public class CouponCoreRepository implements CouponRepository {
         if (cachedCoupon != null) {
             return cachedCoupon;
         }
-        
+
         Coupon coupon = couponJpaRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 쿠폰이 존재하지 않습니다."));
         couponCacheRepository.save(coupon);
