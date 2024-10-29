@@ -43,10 +43,10 @@ class MemberCouponServiceTest {
                     new Coupon("name", 1000, 10000, FOOD, LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
             Member member = memberRepository.save(new Member("member"));
 
-            var result = sut.issueMemberCoupon(member, coupon);
+            var actual = sut.issueMemberCoupon(member, coupon);
 
-            assertThat(result.getCoupon().getId()).isEqualTo(coupon.getId());
-            assertThat(result.getMember().getId()).isEqualTo(member.getId());
+            assertThat(actual.getCoupon().getId()).isEqualTo(coupon.getId());
+            assertThat(actual.getMember().getId()).isEqualTo(member.getId());
         }
 
         @Test
@@ -61,6 +61,23 @@ class MemberCouponServiceTest {
             assertThatThrownBy(() -> sut.issueMemberCoupon(member, coupon))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("동일한 쿠폰은 5장까지만 발급받을 수 있습니다.");
+        }
+    }
+
+    @Nested
+    class FindAllCouponByMember {
+
+        @Test
+        void success() {
+            Coupon coupon = couponRepository.save(
+                    new Coupon("name", 1000, 10000, FOOD, LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
+            Member member = memberRepository.save(new Member("member"));
+            memberCouponRepository.save(new MemberCoupon(member, coupon));
+
+            var actual = sut.findAllCouponByMember(member);
+
+            assertThat(actual).hasSize(1);
+            assertThat(actual.get(0).getId()).isEqualTo(coupon.getId());
         }
     }
 }
