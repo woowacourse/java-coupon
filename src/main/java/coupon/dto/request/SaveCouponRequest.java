@@ -1,4 +1,4 @@
-package coupon.dto;
+package coupon.dto.request;
 
 import java.time.LocalDate;
 

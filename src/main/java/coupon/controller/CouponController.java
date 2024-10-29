@@ -1,7 +1,7 @@
 package coupon.controller;
 
 import coupon.domain.Coupon;
-import coupon.dto.SaveCouponRequest;
+import coupon.dto.request.SaveCouponRequest;
 import coupon.service.CouponCommandService;
 import coupon.service.CouponQueryService;
 import java.net.URI;

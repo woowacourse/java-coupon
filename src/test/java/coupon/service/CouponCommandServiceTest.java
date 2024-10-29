@@ -5,7 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.domain.Coupon;
 import coupon.domain.Member;
-import coupon.dto.SaveCouponRequest;
+import coupon.dto.request.SaveCouponRequest;
+import coupon.dto.response.FindMyCouponsResponse;
 import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
@@ -23,6 +24,9 @@ class CouponCommandServiceTest {
 
     @Autowired
     private CouponQueryService couponQueryService;
+
+    @Autowired
+    private MemberCouponQueryService memberCouponQueryService;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -56,7 +60,9 @@ class CouponCommandServiceTest {
                 "FASHION"));
 
         couponCommandService.issue(member, coupon);
-        assertThat(couponRepository.findMine(member.getId())).containsExactly(coupon);
+        assertThat(memberCouponQueryService.findByMemberId(member.getId()))
+                .extracting(FindMyCouponsResponse::couponId)
+                .containsExactly(coupon.getId());
     }
 
     @DisplayName("실패: 동일한 쿠폰 6장 이상 발급 불가 (사용 여부 관련 X)")

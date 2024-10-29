@@ -32,9 +32,7 @@ public class MemberCoupon {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_id")
-    private Coupon coupon;
+    private Long couponId;
 
     @Column(name = "is_used")
     private boolean isUsed;
@@ -46,7 +44,7 @@ public class MemberCoupon {
         LocalDateTime now = LocalDateTime.now();
         validate(now, coupon);
         this.member = member;
-        this.coupon = coupon;
+        this.couponId = coupon.getId();
         this.isUsed = false;
         this.issueDate = now.toLocalDate();
     }

@@ -3,7 +3,8 @@ package coupon.service;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
-import coupon.dto.SaveCouponRequest;
+import coupon.dto.request.SaveCouponRequest;
+import coupon.dto.response.FindMyCouponsResponse;
 import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
@@ -18,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CouponCommandService {
 
-    private static final int MAX_COUPON_ISSUE_COUNT = 5;
+    private static final int MAX_ISSUE_COUNT = 5;
 
-    private final CouponQueryService couponQueryService;
+    private final MemberCouponQueryService memberCouponQueryService;
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
 
@@ -36,15 +37,15 @@ public class CouponCommandService {
     }
 
     @CachePut(value = "coupons", key = "#member.id")
-    public List<Coupon> issue(Member member, Coupon coupon) {
-        if (memberCouponRepository.countByMemberAndCoupon(member, coupon) >= MAX_COUPON_ISSUE_COUNT) {
-            throw new CouponException("동일한 쿠폰은 최대 %d장까지 발행할 수 있습니다.".formatted(MAX_COUPON_ISSUE_COUNT));
+    public List<FindMyCouponsResponse> issue(Member member, Coupon coupon) {
+        if (memberCouponRepository.countByMemberIdAndCouponId(member.getId(), coupon.getId()) >= MAX_ISSUE_COUNT) {
+            throw new CouponException("동일한 쿠폰은 최대 %d장까지 발행할 수 있습니다.".formatted(MAX_ISSUE_COUNT));
         }
 
-        List<Coupon> coupons = couponQueryService.findMine(member.getId());
-        coupons.add(coupon);
-        memberCouponRepository.save(new MemberCoupon(member, coupon));
-
-        return coupons;
+        MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
+        List<FindMyCouponsResponse> issuedCoupons = memberCouponQueryService.findByMemberId(member.getId());
+        issuedCoupons.add(new FindMyCouponsResponse(coupon, memberCoupon));
+        memberCouponRepository.save(memberCoupon);
+        return issuedCoupons;
     }
 }

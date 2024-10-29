@@ -1,11 +1,12 @@
 package coupon.repository;
 
-import coupon.domain.Coupon;
-import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
-    long countByMemberAndCoupon(Member member, Coupon coupon);
+    long countByMemberIdAndCouponId(long memberId, long couponId);
+
+    List<MemberCoupon> findAllByMemberId(long memberId);
 }
