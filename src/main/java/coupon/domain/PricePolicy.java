@@ -1,8 +1,10 @@
 package coupon.domain;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@Getter
 public class PricePolicy {
 
     private static final long DISCOUNT_AMOUNT_UNIT = 500L;

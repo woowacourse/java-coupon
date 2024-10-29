@@ -14,6 +14,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,6 +48,7 @@ public class Coupon {
     private IssuancePeriod issuancePeriod;
 
     @Transient
+    @JsonIgnore
     private PricePolicy pricePolicy;
 
     public Coupon(
