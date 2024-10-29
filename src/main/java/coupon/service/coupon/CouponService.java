@@ -50,13 +50,16 @@ public class CouponService {
 
     private Coupon getCouponWriter(Long id) {
         return transactionSupport.executeNewTransaction(
-                () -> couponRepository.findById(id).orElseThrow(() -> new CouponException("존재하지 않는 쿠폰입니다.")));
+                () -> couponRepository.findById(id).orElseThrow(() -> new CouponException("존재하지 않는 쿠폰입니다."))
+        );
     }
 
     @Transactional
     public MemberCoupon issue(Long memberId, Long couponId) {
         LocalDateTime issuedAt = LocalDateTime.now();
-        Coupon coupon = getCoupon(couponId);
+        Coupon coupon = transactionSupport.executeNewTransaction(
+                () -> couponRepository.findById(couponId).orElseThrow(() -> new CouponException("존재하지 않는 쿠폰입니다."))
+        );
 
         validateIssueCount(memberId, couponId);
 
@@ -66,7 +69,7 @@ public class CouponService {
 
     private void validateIssueCount(Long memberId, Long couponId) {
         int issueCount = memberCouponRepository.countByMemberIdAndCouponId(memberId, couponId);
-        if (issueCount > MAX_ISSUE_COUNT) {
+        if (issueCount >= MAX_ISSUE_COUNT) {
             throw new CouponException("동일한 쿠폰은 최대 %d장까지 발급할 수 있습니다.".formatted(MAX_ISSUE_COUNT));
         }
     }
