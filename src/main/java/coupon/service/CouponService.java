@@ -10,10 +10,12 @@ import jakarta.persistence.EntityManagerFactory;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,14 @@ public class CouponService {
     private final MemberRepository memberRepository;
     private final CacheManager cacheManager;
 
+    private CouponService self;
+
+    @Autowired
+    @Lazy
+    public void setSelf(CouponService self) {
+        this.self = self;
+    }
+
     @Transactional
     public void createCoupon(Coupon coupon) {
         couponRepository.save(coupon);
@@ -37,7 +47,7 @@ public class CouponService {
         Coupon coupon = couponRepository.findById(couponId)
                 .orElse(null);
         if (coupon == null) {
-            return getCouponFromWriter(couponId);
+            return self.getCouponFromWriter(couponId);
         }
         return coupon;
     }
@@ -49,7 +59,7 @@ public class CouponService {
                 .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
         List<MemberCoupon> memberCoupons = memberCouponRepository.findByMember(member);
         if (memberCoupons.isEmpty()) {
-            return getMemberCouponsFromWriter(member);
+            return self.getMemberCouponsFromWriter(member);
         }
         return memberCoupons;
     }
