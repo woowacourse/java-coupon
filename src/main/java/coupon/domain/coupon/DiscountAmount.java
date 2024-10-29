@@ -1,6 +1,5 @@
 package coupon.domain.coupon;
 
-import coupon.domain.MinimumOrderAmount;
 import coupon.exception.CouponException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

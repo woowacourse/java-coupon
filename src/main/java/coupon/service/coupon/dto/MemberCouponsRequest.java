@@ -1,6 +1,6 @@
 package coupon.service.coupon.dto;
 
-import coupon.domain.MinimumOrderAmount;
+import coupon.domain.coupon.MinimumOrderAmount;
 import coupon.domain.coupon.Category;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponName;
