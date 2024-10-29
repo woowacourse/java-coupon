@@ -2,7 +2,6 @@ package coupon.service;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +20,6 @@ public class MemberCouponService {
     private final CouponService couponService;
 
     @Transactional
-    @CachePut(key = "#result.memberId", value = "memberCoupon")
     public MemberCoupon issueMemberCoupon(Member member, Coupon coupon) {
         var memberCouponCount = memberCouponRepository.countByMemberId(member.getId());
         var memberCouponIssuePolicy = new DefaultMemberCouponPolicy(memberCouponCount);
