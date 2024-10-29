@@ -5,6 +5,7 @@ import coupon.coupon.persistence.CouponReader;
 import coupon.coupon.persistence.CouponWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -12,14 +13,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CouponService {
 
+    public static final String COUPON_CACHE_NAME = "coupon";
+
     private final CouponWriter couponWriter;
     private final CouponReader couponReader;
     private final TransactionRouter transactionRouter;
 
-    public void create(Coupon coupon) {
-        couponWriter.create(coupon);
+    public Coupon create(Coupon coupon) {
+        return couponWriter.create(coupon);
     }
 
+    @Cacheable(cacheNames = COUPON_CACHE_NAME, key = "#couponId")
     public Coupon getCoupon(long couponId) {
         try {
             return couponReader.getCoupon(couponId);

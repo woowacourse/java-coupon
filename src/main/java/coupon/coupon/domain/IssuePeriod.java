@@ -25,7 +25,7 @@ public class IssuePeriod {
     }
 
     private void validateIssuePeriod(LocalDateTime startAt, LocalDateTime endAt) {
-        if (startAt.isAfter(endAt)) {
+        if (startAt.toLocalDate().isAfter(endAt.toLocalDate())) {
             throw new IllegalArgumentException("쿠폰 발급 시작일은 종료일보다 이전이어야 합니다.");
         }
     }
