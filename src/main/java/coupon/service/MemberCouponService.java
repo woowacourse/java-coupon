@@ -29,13 +29,7 @@ public class MemberCouponService {
     public List<CouponOfMemberResponse> getCouponsOf(Long memberId) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findByMemberId(memberId);
         return memberCoupons.stream()
-                .map(memberCoupon -> {
-                    Long couponId = memberCoupon.getCouponId();
-                    Coupon coupon = couponService.getCoupon(couponId);
-                    CouponResponse couponResponse = new CouponResponse(coupon);
-
-                    return new CouponOfMemberResponse(memberCoupon, couponResponse);
-                })
+                .map(this::getCouponOfMemberResponse)
                 .toList();
     }
 
@@ -53,5 +47,13 @@ public class MemberCouponService {
         if (memberCoupons.size() >= MAXIMUM_OF_COUPON_COUNT) {
             throw new IllegalStateException("동일한 쿠폰은 " + MAXIMUM_OF_COUPON_COUNT + "장까지만 발급받을 수 있습니다.");
         }
+    }
+
+    private CouponOfMemberResponse getCouponOfMemberResponse(MemberCoupon memberCoupon) {
+        Long couponId = memberCoupon.getCouponId();
+        Coupon coupon = couponService.getCoupon(couponId);
+        CouponResponse couponResponse = new CouponResponse(coupon);
+
+        return new CouponOfMemberResponse(memberCoupon, couponResponse);
     }
 }
