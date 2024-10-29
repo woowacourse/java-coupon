@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class MemberCouponServiceTest {
@@ -36,14 +37,17 @@ class MemberCouponServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     private Member member;
     private Coupon coupon;
 
     @BeforeEach
     void setUp() {
-        memberCouponRepository.deleteAllInBatch();
-        couponRepository.deleteAllInBatch();
-        memberRepository.deleteAllInBatch();
+        resetAutoIncrement("member_coupon");
+        resetAutoIncrement("coupon");
+        resetAutoIncrement("member");
 
         member = new Member("jazz");
         coupon = new Coupon(
@@ -54,6 +58,12 @@ class MemberCouponServiceTest {
                 100, 0
         );
     }
+
+    private void resetAutoIncrement(String tableName) {
+        jdbcTemplate.execute("DELETE FROM " + tableName);
+        jdbcTemplate.execute("ALTER TABLE " + tableName + " AUTO_INCREMENT = 1");
+    }
+
 
     @DisplayName("멤버 쿠폰 발급 시 존재하지 않는 멤버일 경우 예외를 발생시킨다.")
     @Test
@@ -111,13 +121,14 @@ class MemberCouponServiceTest {
     @Test
     void getMemberCouponsSuccessfully() {
         Member savedMember = memberRepository.save(member);
+
         Coupon savedCoupon1 = couponRepository.save(coupon);
         Coupon savedCoupon2 = couponRepository.save(coupon);
 
         memberCouponRepository.save(new MemberCoupon(savedMember, savedCoupon1));
         memberCouponRepository.save(new MemberCoupon(savedMember, savedCoupon2));
 
-        MemberCouponResponses memberCoupons = memberCouponService.getMemberCoupons(1L);
+        MemberCouponResponses memberCoupons = memberCouponService.getMemberCoupons(savedMember.getId());
 
         assertThat(memberCoupons.memberCouponResponses.size()).isEqualTo(2);
     }
