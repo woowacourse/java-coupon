@@ -4,8 +4,8 @@ USE coupon;
 
 create table if not exists coupon
 (
-    discount_amount integer      not null,
-    purchase_amount integer      not null,
+    discount_amount bigint      not null,
+    purchase_amount bigint      not null,
     end_date        datetime(6)  not null,
     id              bigint       not null auto_increment,
     start_date      datetime(6)  not null,

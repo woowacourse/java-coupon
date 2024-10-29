@@ -60,7 +60,7 @@ public class CouponTest {
             LocalDateTime endDate = startDate.plusDays(1);
             assertThatThrownBy(() -> new Coupon("coupon", discountAmount, 10000, FOOD, startDate, endDate))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("할인 금액은 1_000원 이상, 10_000원 이하여야 합니다.");
+                    .hasMessage("할인 금액은 1000원 이상, 10000원 이하여야 합니다.");
         }
 
         @Test
@@ -71,7 +71,7 @@ public class CouponTest {
             LocalDateTime endDate = startDate.plusDays(1);
             assertThatThrownBy(() -> new Coupon("coupon", 1000, purchaseAmount, FOOD, startDate, endDate))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("최소 주문 금액은 5_000원 이상 100_000원 이하여야 합니다.");
+                    .hasMessage("최소 주문 금액은 5000원 이상 100000원 이하여야 합니다.");
         }
 
         @ParameterizedTest
