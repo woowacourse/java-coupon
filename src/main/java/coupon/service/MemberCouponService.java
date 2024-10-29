@@ -16,12 +16,12 @@ public class MemberCouponService {
 
     private final MemberCouponRepository memberCouponRepository;
 
-    public MemberCoupon issueMemberCoupon(Coupon coupon, Member member) {
+    public MemberCoupon issueMemberCoupon(Member member, Coupon coupon) {
         int memberCouponCount = memberCouponRepository.countByMember(member);
-        if (memberCouponCount > 5) {
+        if (memberCouponCount >= 5) {
             throw new IllegalArgumentException("동일한 쿠폰은 5장까지만 발급받을 수 있습니다.");
         }
-        return memberCouponRepository.save(new MemberCoupon(coupon, member));
+        return memberCouponRepository.save(new MemberCoupon(member, coupon));
     }
 
     public List<Coupon> findAllCouponByMember(Member member) {
