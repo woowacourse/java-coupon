@@ -40,11 +40,11 @@ public class MemberCoupon {
 
     public void use() {
         validatePeriodOfUse();
-        validateAlreadyUsed();
+        validateNotUsed();
         isUsed = true;
     }
 
-    private void validateAlreadyUsed() {
+    private void validateNotUsed() {
         if (isUsed) {
             throw new IllegalStateException("이미 사용된 쿠폰입니다.");
         }
