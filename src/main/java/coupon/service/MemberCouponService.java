@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class MemberCouponService {
 
     private static final int MAXIMUM_OF_COUPON_COUNT = 5;
+
     private final MemberCouponRepository memberCouponRepository;
     private final CouponService couponService;
 
