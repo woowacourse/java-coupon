@@ -15,7 +15,7 @@ import coupon.member.service.port.MemberRepository;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.service.port.MemberCouponRepository;
 
-@Transactional
+@Transactional(readOnly = true)
 @Service
 public class MemberCouponService {
 

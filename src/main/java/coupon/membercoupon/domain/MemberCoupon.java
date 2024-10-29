@@ -21,10 +21,12 @@ public class MemberCoupon {
     private final Member member;
     private final Coupon coupon;
     private final boolean isUsed;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private final LocalDateTime createdAt;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
@@ -95,27 +97,11 @@ public class MemberCoupon {
         }
     }
 
-//    public Long getId() {
-//        return id;
-//    }
-
-    public Long giveMemberId() {
+    public Long memberId() {
         return member.getId();
     }
 
-    public Long giveCouponId() {
+    public Long couponId() {
         return coupon.getId();
     }
-
-    public boolean getIsUsed() {
-        return isUsed;
-    }
-
-    //    public LocalDateTime getCreatedAt() {
-//        return createdAt;
-//    }
-//
-//    public LocalDateTime getExpiredAt() {
-//        return expiredAt;
-//    }
 }

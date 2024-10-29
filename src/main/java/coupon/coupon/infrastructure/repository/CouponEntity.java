@@ -49,12 +49,12 @@ public class CouponEntity {
     public CouponEntity(final Coupon coupon) {
         this(
                 coupon.getId(),
-                coupon.giveNameValue(),
-                coupon.giveMinimumOrderAmountValue(),
-                coupon.giveDiscountAmountValue(),
+                coupon.nameValue(),
+                coupon.minimumOrderAmountValue(),
+                coupon.discountAmountValue(),
                 coupon.getProductionCategory(),
-                coupon.giveCouponStartDateValue(),
-                coupon.giveCouponEndDateValue()
+                coupon.couponStartDateValue(),
+                coupon.couponEndDateValue()
         );
     }
 

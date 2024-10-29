@@ -42,9 +42,9 @@ public class MemberCouponEntity {
     public MemberCouponEntity(final MemberCoupon memberCoupon) {
         this(
                 memberCoupon.getId(),
-                memberCoupon.giveMemberId(),
-                memberCoupon.giveCouponId(),
-                memberCoupon.getIsUsed(),
+                memberCoupon.memberId(),
+                memberCoupon.couponId(),
+                memberCoupon.isUsed(),
                 memberCoupon.getCreatedAt(),
                 memberCoupon.getExpiredAt()
         );

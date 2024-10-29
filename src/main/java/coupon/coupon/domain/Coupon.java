@@ -8,7 +8,6 @@ import lombok.Getter;
 @Getter
 public class Coupon {
 
-    // TODO : 쿠폰의 만료 기간을 각 쿠폰이 필드로 가지도록 개선
     private static final int ENABLE_USE_DAYS = 7;
 
     private final Long id;
@@ -57,27 +56,23 @@ public class Coupon {
         this.issuancePeriod = issuancePeriod;
     }
 
-    public String giveNameValue() {
+    public String nameValue() {
         return name.getValue();
     }
 
-    public int giveMinimumOrderAmountValue() {
+    public int minimumOrderAmountValue() {
         return minimumOrderAmount.getValue();
     }
 
-    public int giveDiscountAmountValue() {
+    public int discountAmountValue() {
         return DiscountAmount.getValue();
     }
 
-//    public ProductionCategory getProductionCategory() {
-//        return productionCategory;
-//    }
-
-    public LocalDateTime giveCouponStartDateValue() {
+    public LocalDateTime couponStartDateValue() {
         return issuancePeriod.getStartDate();
     }
 
-    public LocalDateTime giveCouponEndDateValue() {
+    public LocalDateTime couponEndDateValue() {
         return issuancePeriod.getEndDate();
     }
 
@@ -96,8 +91,4 @@ public class Coupon {
     public int hashCode() {
         return Objects.hashCode(name);
     }
-
-//    public Long getId() {
-//        return id;
-//    }
 }
