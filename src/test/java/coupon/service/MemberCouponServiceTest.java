@@ -68,11 +68,12 @@ class MemberCouponServiceTest {
     class FindAllCouponByMember {
 
         @Test
-        void success() {
+        void success() throws InterruptedException {
             Coupon coupon = couponRepository.save(
                     new Coupon("name", 1000, 10000, FOOD, LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
             Member member = memberRepository.save(new Member("member"));
             memberCouponRepository.save(new MemberCoupon(member, coupon));
+            Thread.sleep(2000);
 
             var actual = sut.findAllCouponByMember(member);
 

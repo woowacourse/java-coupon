@@ -22,7 +22,6 @@ public class MemberCouponService {
     private final MemberCouponRepository memberCouponRepository;
 
     @Transactional
-    @CacheEvict(value = "memberCoupons", key = "#member.id")
     public MemberCoupon issueMemberCoupon(Member member, Coupon coupon) {
         int memberCouponCount = memberCouponRepository.countByMember(member);
         if (memberCouponCount >= MEMBER_COUPON_COUNT_MAX) {
@@ -32,8 +31,7 @@ public class MemberCouponService {
         return memberCouponRepository.save(new MemberCoupon(member, coupon));
     }
 
-    @Transactional
-    @Cacheable(value = "memberCoupons", key = "#member.id")
+    @Transactional(readOnly = true)
     public List<Coupon> findAllCouponByMember(Member member) {
         return memberCouponRepository.findAllByMember(member).stream()
                 .map(MemberCoupon::getCoupon)
