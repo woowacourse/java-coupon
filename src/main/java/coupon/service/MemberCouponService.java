@@ -25,6 +25,7 @@ public class MemberCouponService {
     private final CouponRepository couponRepository;
     private final MemberRepository memberRepository;
     private final DataSourceSupport dataSourceSupport;
+    private final CouponService couponService;
 
     @Transactional
     public long create(long memberId, long couponId) {
@@ -77,8 +78,7 @@ public class MemberCouponService {
         return memberCoupons.stream()
                 .collect(Collectors.toMap(
                         memberCoupon -> memberCoupon,
-                        memberCoupon -> couponRepository.findById(memberCoupon.getCoupon().getId())
-                                .orElseThrow(() -> new IllegalArgumentException("쿠폰이 유효하지 않습니다."))
-                ));
+                        memberCoupon -> couponService.getCoupon(memberCoupon.getCoupon().getId()))
+                );
     }
 }
