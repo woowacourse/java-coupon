@@ -22,7 +22,7 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "coupon", key = "#id")
+    @Cacheable(key = "#id", value = "coupon")
     public Coupon getCoupon(long id) {
         return couponRepository.fetchById(id);
     }
