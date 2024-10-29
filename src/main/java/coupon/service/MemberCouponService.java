@@ -22,7 +22,7 @@ public class MemberCouponService {
     private final CouponRepository couponRepository;
 
     public MemberCoupon addCoupon(long memberId, long couponId) {
-        MemberCoupon memberCoupon = new MemberCoupon(memberId, couponId, LocalDateTime.now());
+        MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId, LocalDateTime.now());
 
         int issuedCount = memberCouponRepository.countByMemberIdAndCouponId(memberId, couponId);
         if (issuedCount >= MAX_COUPON_COUNT) {
