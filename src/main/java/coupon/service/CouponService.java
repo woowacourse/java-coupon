@@ -6,7 +6,7 @@ import coupon.exception.ErrorMessage;
 import coupon.exception.GlobalCustomException;
 import coupon.repository.CachedCouponRepository;
 import coupon.repository.CouponRepository;
-import coupon.utill.WriterDbReader;
+import coupon.util.WriterDbReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

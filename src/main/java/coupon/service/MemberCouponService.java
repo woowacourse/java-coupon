@@ -12,7 +12,7 @@ import coupon.exception.GlobalCustomException;
 import coupon.repository.CachedCouponRepository;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
-import coupon.utill.WriterDbReader;
+import coupon.util.WriterDbReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

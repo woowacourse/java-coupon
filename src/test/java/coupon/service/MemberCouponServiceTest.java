@@ -19,7 +19,7 @@ import coupon.exception.ErrorMessage;
 import coupon.exception.GlobalCustomException;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
-import coupon.utill.DatabaseCleaner;
+import coupon.util.DatabaseCleaner;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package coupon.utill;
+package coupon.util;
 
 import coupon.repository.CachedCouponRepository;
 import jakarta.persistence.EntityManager;
