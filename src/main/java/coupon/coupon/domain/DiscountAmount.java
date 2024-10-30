@@ -10,46 +10,19 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DiscountAmount {
 
-    private static final int MIN_DISCOUNT_AMOUNT = 1_000;
-    private static final int MAX_DISCOUNT_AMOUNT = 10_000;
-    private static final int DISCOUNT_AMOUNT_UNIT = 500;
-    private static final int VALID_REMAINING_DISCOUNT_AMOUNT = 0;
-
-    private static final int MIN_DISCOUNT_RATE = 3;
-    private static final int MAX_DISCOUNT_RATE = 20;
-    private static final int VALUE_TO_MAKE_DISCOUNT_RATE = 100;
+    private static final int MIN_DISCOUNT_AMOUNT = 0;
 
     private int discountAmount;
 
-    public DiscountAmount(int discountAmount, int minOrderAmount) {
+    public DiscountAmount(int discountAmount) {
         validateDiscountAmount(discountAmount);
-        validateDiscountRate(discountAmount, minOrderAmount);
         this.discountAmount = discountAmount;
     }
 
     private void validateDiscountAmount(int discountAmount) {
-        if (discountAmount < MIN_DISCOUNT_AMOUNT || MAX_DISCOUNT_AMOUNT < discountAmount) {
-            throw new IllegalArgumentException("할인 금액은 %,d원 이상 ~ %,d원 이하여야 합니다.".formatted(MIN_DISCOUNT_AMOUNT, MAX_DISCOUNT_AMOUNT));
+        if (discountAmount < MIN_DISCOUNT_AMOUNT) {
+            throw new IllegalArgumentException("할인 금액이 %d원 보다 작을 수 없습니다.".formatted(MIN_DISCOUNT_AMOUNT));
         }
-        if (hasInvalidDiscountAmountUnit(discountAmount)) {
-            throw new IllegalArgumentException("할인 금액은 %,d원 단위어야 합니다.".formatted(DISCOUNT_AMOUNT_UNIT));
-        }
-    }
-
-    private boolean hasInvalidDiscountAmountUnit(int discountAmount) {
-        return discountAmount % DISCOUNT_AMOUNT_UNIT != VALID_REMAINING_DISCOUNT_AMOUNT;
-    }
-
-    private void validateDiscountRate(int discountAmount, int minOrderAmount) {
-        int discountRate = calculateDiscountRate(discountAmount, minOrderAmount);
-
-        if (discountRate < MIN_DISCOUNT_RATE || MAX_DISCOUNT_RATE < discountRate) {
-            throw new IllegalArgumentException("할인율은 %d%% 이상 ~ %d%% 이하여야 합니다.".formatted(MIN_DISCOUNT_RATE, MAX_DISCOUNT_RATE));
-        }
-    }
-
-    private int calculateDiscountRate(int discountAmount, int minOrderAmount) {
-        return (discountAmount * VALUE_TO_MAKE_DISCOUNT_RATE) / minOrderAmount;
     }
 
     public int getValue() {
