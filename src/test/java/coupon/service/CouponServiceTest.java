@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import coupon.domain.Coupon;
 import coupon.util.CouponFixture;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,13 @@ public class CouponServiceTest {
     private CouponService couponService;
 
     @Test
-    @DisplayName("복제 지연 테스트")
-    void replicationDelay() {
-        // given
-        Coupon coupon = CouponFixture.createCoupon();
-
-        // when
-        couponService.create(coupon);
-        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+    @DisplayName("캐싱 테스트")
+    void getCouponFromCache() {
+        // given & when
+        Coupon savedCoupon = couponService.create(CouponFixture.createCoupon());
+        Optional<Coupon> cachedCoupon = couponService.getCoupon(savedCoupon.getId());
 
         // then
-        assertThat(savedCoupon).isNotNull();
+        assertThat(cachedCoupon).isPresent();
     }
 }
