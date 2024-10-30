@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.service.CouponService;
 import coupon.membercoupon.domain.MemberCoupon;
-import coupon.membercoupon.domain.MemberCoupons;
 import coupon.membercoupon.service.MemberCouponService;
 
 @WebMvcTest(CouponController.class)
@@ -34,7 +33,8 @@ public class CouponControllerTest {
 
     @DisplayName("해당하는 멤버 ID의 쿠폰 정보를 가져올 수 있다.")
     @Test
-    void testGetCouponsByMember() throws Exception {
+    void testGetCouponsByMemberId() throws Exception {
+        // given
         Long memberId = 1L;
         Long couponId1 = 1L;
         Long couponId2 = 2L;
@@ -48,6 +48,7 @@ public class CouponControllerTest {
         when(memberCouponService.readAllByMemberId(memberId)).thenReturn(List.of(memberCoupon1, memberCoupon2));
         when(couponService.readAllByIdsFromReaderWithCache(List.of(couponId1, couponId2))).thenReturn(List.of(coupon1, coupon2));
 
+        // when & then
         mockMvc.perform(get("/coupons/member/{memberId}", memberId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

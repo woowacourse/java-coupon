@@ -29,6 +29,7 @@ public class MemberCouponControllerTest {
     @DisplayName("해당하는 멤버 ID의 멤버 쿠폰 정보를 가져올 수 있다.")
     @Test
     void testGetMemberCouponsByMemberId() throws Exception {
+        // given
         Long memberId = 1L;
         Long couponId1 = 1L;
         Long couponId2 = 2L;
@@ -38,6 +39,7 @@ public class MemberCouponControllerTest {
 
         when(memberCouponService.readAllByMemberId(memberId)).thenReturn(List.of(memberCoupon1, memberCoupon2));
 
+        // when & then
         mockMvc.perform(get("/membercoupons/member/{memberId}", memberId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
