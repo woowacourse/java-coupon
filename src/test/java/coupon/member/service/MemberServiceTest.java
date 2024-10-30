@@ -20,7 +20,7 @@ class MemberServiceTest {
     void createMember() {
         // given
         String randomId = UUID.randomUUID().toString();
-        MemberCreateRequest request = new MemberCreateRequest(randomId, "패스워드");
+        MemberCreateRequest request = new MemberCreateRequest(randomId.substring(0, 19), "패스워드");
 
         // when & then
         assertThatCode(() -> memberService.create(request))
