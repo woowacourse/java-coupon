@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MinimumOrderAmountPolicy implements DiscountPolicy {
 
-    public static final int MIN_MINIMUM_ORDER_AMOUNT = 5_000;
-    public static final int MAX_MINIMUM_ORDER_AMOUNT = 100_000;
+    static final int MIN_MINIMUM_ORDER_AMOUNT = 5_000;
+    static final int MAX_MINIMUM_ORDER_AMOUNT = 100_000;
 
     @Override
     public void validatePolicy(int discountAmount, int minimumOrderAmount) {

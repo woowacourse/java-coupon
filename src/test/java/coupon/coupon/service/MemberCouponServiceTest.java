@@ -1,4 +1,4 @@
-package coupon.service;
+package coupon.coupon.service;
 
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
@@ -8,7 +8,6 @@ import coupon.coupon.entity.CouponEntity;
 import coupon.coupon.entity.MemberCouponEntity;
 import coupon.coupon.repository.CouponRepository;
 import coupon.coupon.repository.MemberCouponRepository;
-import coupon.coupon.service.MemberCouponService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

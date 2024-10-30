@@ -1,11 +1,10 @@
-package coupon.service;
+package coupon.coupon.service;
 
 import coupon.coupon.domain.Category;
 import coupon.coupon.dto.CouponCreateRequest;
 import coupon.coupon.dto.CouponResponse;
 import coupon.coupon.entity.CouponEntity;
 import coupon.coupon.repository.CouponRepository;
-import coupon.coupon.service.CouponService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

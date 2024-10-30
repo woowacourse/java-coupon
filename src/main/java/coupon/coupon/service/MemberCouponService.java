@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberCouponService {
 
-    public static final int MAX_MEMBER_COUPON_COUNT = 5;
+    static final int MAX_MEMBER_COUPON_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
     private final CouponService couponService;
