@@ -81,6 +81,6 @@ public class Coupon {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, couponName, discountAmount, minimumOrderAmount, category, issuablePeriod);
+        return Objects.hash(id);
     }
 }
