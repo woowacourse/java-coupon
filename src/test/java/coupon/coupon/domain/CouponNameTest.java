@@ -30,7 +30,7 @@ class CouponNameTest {
     @Test
     @DisplayName("이름 길이가 최대 30자 이하여야 한다.")
     void invalidLength() {
-        assertThatThrownBy(() -> new CouponName("1234567890123456789012345678901"))
+        assertThatThrownBy(() -> new CouponName("a".repeat(31)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("쿠폰 이름은 30자 이하여야 합니다.");
     }
