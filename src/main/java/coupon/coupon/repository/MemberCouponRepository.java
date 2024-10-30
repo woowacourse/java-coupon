@@ -9,5 +9,7 @@ public interface MemberCouponRepository extends JpaRepository<MemberCouponEntity
 
     List<MemberCouponEntity> findByCouponIdAndMemberId(Long couponId, Long memberId);
 
+    int countByCouponIdAndMemberId(Long couponId, Long memberId);
+
     List<MemberCouponEntity> findByMemberId(Long memberId);
 }

@@ -16,15 +16,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberCouponService {
 
+    public static final int MAX_MEMBER_COUPON_COUNT = 5;
+
     private final MemberCouponRepository memberCouponRepository;
     private final CouponService couponService;
 
     @Transactional
     public MemberCouponEntity create(MemberCouponRequest memberCouponRequest) {
         validateIssueDate(memberCouponRequest);
-        List<MemberCouponEntity> memberCouponEntities = memberCouponRepository.findByCouponIdAndMemberId(
-                memberCouponRequest.couponId(), memberCouponRequest.memberId());
-        validateMemberCouponSize(memberCouponEntities);
+        validateMemberCouponSize(memberCouponRequest);
         MemberCouponEntity memberCouponEntity = new MemberCouponEntity(memberCouponRequest.couponId(),
                 memberCouponRequest.memberId(), false, memberCouponRequest.issueDate());
         return memberCouponRepository.save(memberCouponEntity);
@@ -38,8 +38,10 @@ public class MemberCouponService {
         }
     }
 
-    private void validateMemberCouponSize(List<MemberCouponEntity> memberCouponEntities) {
-        if (memberCouponEntities.size() >= 5) {
+    private void validateMemberCouponSize(MemberCouponRequest memberCouponRequest) {
+        int memberCouponCount = memberCouponRepository.countByCouponIdAndMemberId(
+                memberCouponRequest.couponId(), memberCouponRequest.memberId());
+        if (memberCouponCount >= MAX_MEMBER_COUPON_COUNT) {
             throw new IllegalArgumentException(ExceptionMessage.OVER_FIVE_COUPON.getMessage());
         }
     }
