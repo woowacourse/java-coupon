@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class UserCoupon {
 
+    public static final int EXPIRED_LIMIT = 7;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +40,7 @@ public class UserCoupon {
         this.issueDate = issueDate;
     }
 
-    public boolean isExpired(){
-        return LocalDate.now().isAfter(issueDate.plusDays(7));
+    public boolean isExpired() {
+        return LocalDate.now().isAfter(issueDate.plusDays(EXPIRED_LIMIT));
     }
 }
