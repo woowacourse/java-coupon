@@ -26,8 +26,4 @@ public class CouponCache {
     public Coupon get(Long id) {
         return couponCache.get(id, Coupon.class);
     }
-
-    public boolean contains(Long id) {
-        return couponCache.get(id) != null;
-    }
 }
