@@ -7,8 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import lombok.AccessLevel;
@@ -27,13 +25,11 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column(name = "member_id", nullable = false)
+    private long memberId;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
+    @Column(name = "coupon_id", nullable = false)
+    private long couponId;
 
     @Column(name = "used", nullable = false)
     private boolean used;
@@ -47,8 +43,8 @@ public class MemberCoupon {
     public MemberCoupon(Member member, Coupon coupon) {
         this(
                 null,
-                member,
-                coupon,
+                member.getId(),
+                coupon.getId(),
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(6).withHour(23).withMinute(59).withSecond(59).withNano(999999)

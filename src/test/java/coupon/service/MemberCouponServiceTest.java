@@ -3,18 +3,20 @@ package coupon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static coupon.domain.Category.FOOD;
+import java.util.List;
 
-import java.time.LocalDateTime;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
+import coupon.fixture.CouponFixture;
+import coupon.fixture.MemberFixture;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
@@ -34,31 +36,57 @@ class MemberCouponServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private CacheManager cacheManager;
+
+    private Member member;
+    private Coupon coupon1;
+    private Coupon coupon2;
+    private Coupon coupon3;
+    private Coupon coupon4;
+    private Coupon coupon5;
+
+    @BeforeEach
+    void setUp() {
+        member = memberRepository.save(MemberFixture.member);
+        coupon1 = couponRepository.save(CouponFixture.coupon_1);
+        coupon2 = couponRepository.save(CouponFixture.coupon_1);
+        coupon3 = couponRepository.save(CouponFixture.coupon_1);
+        coupon4 = couponRepository.save(CouponFixture.coupon_1);
+        coupon5 = couponRepository.save(CouponFixture.coupon_1);
+
+        var cache = cacheManager.getCache("coupon");
+        cache.put(coupon1.getId(), coupon1);
+        cache.put(coupon1.getId(), coupon2);
+        cache.put(coupon1.getId(), coupon3);
+        cache.put(coupon1.getId(), coupon4);
+        cache.put(coupon1.getId(), coupon5);
+
+        var memberCoupons = List.of(
+                new MemberCoupon(member, coupon1),
+                new MemberCoupon(member, coupon2),
+                new MemberCoupon(member, coupon3),
+                new MemberCoupon(member, coupon4),
+                new MemberCoupon(member, coupon5)
+        );
+        memberCouponRepository.saveAll(memberCoupons);
+    }
+
     @Nested
     class IssueMemberCoupon {
 
         @Test
         void success() {
-            Coupon coupon = couponRepository.save(
-                    new Coupon("name", 1000, 10000, FOOD, LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
-            Member member = memberRepository.save(new Member("member"));
+            Coupon coupon2 = couponRepository.save(CouponFixture.coupon_2);
+            var actual = sut.issueMemberCoupon(member, coupon2);
 
-            var actual = sut.issueMemberCoupon(member, coupon);
-
-            assertThat(actual.getCoupon().getId()).isEqualTo(coupon.getId());
-            assertThat(actual.getMember().getId()).isEqualTo(member.getId());
+            assertThat(actual.getCouponId()).isEqualTo(coupon2.getId());
+            assertThat(actual.getMemberId()).isEqualTo(member.getId());
         }
 
         @Test
         void fail() {
-            Coupon coupon = couponRepository.save(
-                    new Coupon("name", 1000, 10000, FOOD, LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
-            Member member = memberRepository.save(new Member("member"));
-            for (int i = 0; i < 5; i++) {
-                memberCouponRepository.save(new MemberCoupon(member, coupon));
-            }
-
-            assertThatThrownBy(() -> sut.issueMemberCoupon(member, coupon))
+            assertThatThrownBy(() -> sut.issueMemberCoupon(member, coupon1))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("동일한 쿠폰은 5장까지만 발급받을 수 있습니다.");
         }
@@ -68,17 +96,10 @@ class MemberCouponServiceTest {
     class FindAllCouponByMember {
 
         @Test
-        void success() throws InterruptedException {
-            Coupon coupon = couponRepository.save(
-                    new Coupon("name", 1000, 10000, FOOD, LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
-            Member member = memberRepository.save(new Member("member"));
-            memberCouponRepository.save(new MemberCoupon(member, coupon));
-            Thread.sleep(2000);
-
+        void success() {
             var actual = sut.findAllCouponByMember(member);
 
-            assertThat(actual).hasSize(1);
-            assertThat(actual.get(0).getId()).isEqualTo(coupon.getId());
+            assertThat(actual).hasSize(5);
         }
     }
 }
