@@ -39,7 +39,7 @@ class MemberCouponServiceTest {
         // when & then
         assertThatThrownBy(() -> memberCouponService.create(invalidCouponId, member.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 쿠폰입니다.");
+                .hasMessage("존재하지 않는 쿠폰입니다. 쿠폰 ID : " + invalidCouponId);
     }
 
     @Test

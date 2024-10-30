@@ -1,7 +1,7 @@
 package coupon.membercoupon.service;
 
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.repository.CouponRepository;
+import coupon.coupon.service.CouponService;
 import coupon.member.repository.MemberRepository;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.domain.dto.MemberCouponItem;
@@ -17,14 +17,14 @@ public class MemberCouponService {
 
     private static final int MAX_ISSUE_COUNT = 5;
 
-    private final CouponRepository couponRepository;
+    private final CouponService couponService;
     private final MemberRepository memberRepository;
     private final MemberCouponRepository memberCouponRepository;
 
-    public MemberCouponService(CouponRepository couponRepository,
+    public MemberCouponService(CouponService couponService,
                                MemberRepository memberRepository,
                                MemberCouponRepository memberCouponRepository) {
-        this.couponRepository = couponRepository;
+        this.couponService = couponService;
         this.memberRepository = memberRepository;
         this.memberCouponRepository = memberCouponRepository;
     }
@@ -46,8 +46,7 @@ public class MemberCouponService {
     }
 
     private void validateCoupon(Long couponId) {
-        Coupon coupon = couponRepository.findById(couponId).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
+        Coupon coupon = couponService.getCoupon(couponId);
         if (!coupon.getIssuablePeriod().canIssue(LocalDateTime.now())) {
             throw new IllegalArgumentException("발급 가능한 날짜가 아닙니다.");
         }
@@ -64,8 +63,7 @@ public class MemberCouponService {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findByMemberId(memberId);
         List<MemberCouponItem> memberCouponItems = new ArrayList<>();
         for (MemberCoupon memberCoupon : memberCoupons) {
-            Coupon coupon = couponRepository.findById(memberCoupon.getCouponId())
-                    .orElseThrow(IllegalArgumentException::new);
+            Coupon coupon = couponService.getCoupon(memberCoupon.getCouponId());
             memberCouponItems.add(new MemberCouponItem(memberCoupon, coupon));
         }
         return memberCouponItems;
