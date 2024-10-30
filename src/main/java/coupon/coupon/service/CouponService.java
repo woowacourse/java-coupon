@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CouponService {
 
@@ -25,6 +24,7 @@ public class CouponService {
         return CouponResponse.from(coupon);
     }
 
+    @Transactional(readOnly = true)
     public Coupon getCoupon(long couponId) {
         return couponRepository.findById(couponId)
                 .orElseGet(() -> couponReader.getCouponFromWriteDb(couponId));
