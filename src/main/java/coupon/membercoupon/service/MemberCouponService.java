@@ -25,7 +25,7 @@ public class MemberCouponService {
     private final DataAccessSupporter dataAccessSupporter;
 
     @Transactional
-    Long issueCoupon(MemberEntity memberEntity, Long couponId) {
+    public Long issueCoupon(MemberEntity memberEntity, Long couponId) {
         validateCanIssuable(memberEntity);
         CouponEntity couponEntity = couponReader.findById(couponId);
         Coupon coupon = couponEntity.toDomain();
@@ -44,7 +44,7 @@ public class MemberCouponService {
     }
 
     @Transactional(readOnly = true)
-    List<MemberCouponResponse> findByMember(MemberEntity memberEntity) {
+    public List<MemberCouponResponse> findByMember(MemberEntity memberEntity) {
         List<MemberCouponEntity> memberCouponEntities = dataAccessSupporter.executeWriteDataBase(
                 () -> memberCouponRepository.findByMemberEntity(memberEntity));
         return memberCouponEntities.stream()

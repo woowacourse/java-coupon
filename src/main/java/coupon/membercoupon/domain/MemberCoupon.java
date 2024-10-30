@@ -12,7 +12,7 @@ public class MemberCoupon {
 
     private AvailablePeriod availablePeriod;
 
-    boolean isUseable() {
+    public boolean isUseable() {
         return available && availablePeriod.isAvailable();
     }
 
