@@ -1,7 +1,7 @@
 package coupon.coupon;
 
-import coupon.datasource.DataSourceContextHolder;
-import coupon.datasource.DataSourceType;
+import coupon.config.DataSourceContextHolder;
+import coupon.config.DataSourceType;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
@@ -30,8 +30,12 @@ public class CouponRepositoryAdapter implements CouponRepository {
     }
 
     private Optional<Coupon> getCouponByWriterDB(long couponId) {
-        DataSourceContextHolder.setDataSource(DataSourceType.WRITER);
-        transactionTemplate.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
-        return transactionTemplate.execute(status -> couponJpaRepository.findById(couponId));
+        try {
+            DataSourceContextHolder.setDataSource(DataSourceType.WRITER);
+            transactionTemplate.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
+            return transactionTemplate.execute(status -> couponJpaRepository.findById(couponId));
+        } finally {
+            DataSourceContextHolder.clearDataSource();
+        }
     }
 }
