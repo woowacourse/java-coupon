@@ -1,5 +1,6 @@
 package coupon.coupon.service;
 
+import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.ExceptionMessage;
 import coupon.coupon.entity.CouponEntity;
 import coupon.coupon.repository.CouponRepository;
@@ -19,7 +20,7 @@ public class CouponWriterService {
                 .orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NOT_EXIST_COUPON.getMessage()));
     }
 
-    public CouponEntity create(CouponEntity coupon) {
-        return couponRepository.save(coupon);
+    public CouponEntity create(Coupon coupon) {
+        return couponRepository.save(new CouponEntity(coupon));
     }
 }

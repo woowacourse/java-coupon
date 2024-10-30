@@ -1,7 +1,7 @@
 package coupon.service;
 
 import coupon.coupon.domain.Category;
-import coupon.coupon.domain.Coupon;
+import coupon.coupon.dto.CouponCreateRequest;
 import coupon.coupon.dto.CouponResponse;
 import coupon.coupon.entity.CouponEntity;
 import coupon.coupon.repository.CouponRepository;
@@ -16,7 +16,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -33,7 +32,7 @@ public class CouponServiceTest {
     @Autowired
     private CouponRepository couponRepository;
 
-    private Coupon testCoupon = new Coupon("테스트 쿠폰", List.of(), 1000, 10000,
+    private CouponCreateRequest couponCreateRequest = new CouponCreateRequest("테스트 쿠폰", 1000, 10000,
             Category.ELECTRONICS, LocalDate.of(2024, 10, 24),
             LocalDate.of(2024, 10, 26));
 
@@ -48,7 +47,7 @@ public class CouponServiceTest {
 
     @Test
     void 복제지연테스트() {
-        CouponEntity couponEntity = couponService.create(testCoupon);
+        CouponEntity couponEntity = couponService.create(couponCreateRequest);
         CouponResponse couponResponse = couponService.getCoupon(couponEntity.getId());
         assertThat(couponResponse).isNotNull();
     }
@@ -56,26 +55,26 @@ public class CouponServiceTest {
     @DisplayName("쿠폰 첫 조회시 캐시에 저장된다")
     @Test
     void saveCacheFirst() {
-        CouponEntity couponEntity = couponService.create(testCoupon);
+        CouponEntity couponEntity = couponService.create(couponCreateRequest);
         CouponResponse couponResponse = couponService.getCoupon(couponEntity.getId());
 
         CouponResponse cacheCoupon = cacheManager.getCache("coupons").get(couponResponse.id(), CouponResponse.class);
 
         assertAll(
                 () -> assertThat(cacheCoupon.id()).isEqualTo(couponEntity.getId()),
-                () -> assertThat(cacheCoupon.category()).isEqualTo(testCoupon.getCategory()),
-                () -> assertThat(cacheCoupon.discountAmount()).isEqualTo(testCoupon.getDiscountAmount()),
-                () -> assertThat(cacheCoupon.minimumOrderAmount()).isEqualTo(testCoupon.getMinimumOrderAmount()),
-                () -> assertThat(cacheCoupon.name()).isEqualTo(testCoupon.getName()),
-                () -> assertThat(cacheCoupon.startDate()).isEqualTo(testCoupon.getStartDate()),
-                () -> assertThat(cacheCoupon.endDate()).isEqualTo(testCoupon.getEndDate())
+                () -> assertThat(cacheCoupon.category()).isEqualTo(couponCreateRequest.category()),
+                () -> assertThat(cacheCoupon.discountAmount()).isEqualTo(couponCreateRequest.discountAmount()),
+                () -> assertThat(cacheCoupon.minimumOrderAmount()).isEqualTo(couponCreateRequest.minimumOrderAmount()),
+                () -> assertThat(cacheCoupon.name()).isEqualTo(couponCreateRequest.name()),
+                () -> assertThat(cacheCoupon.startDate()).isEqualTo(couponCreateRequest.startDate()),
+                () -> assertThat(cacheCoupon.endDate()).isEqualTo(couponCreateRequest.endDate())
         );
     }
 
     @DisplayName("한번 캐싱이 되면 DB가 삭제되어도 캐싱된 값을 반환한다")
     @Test
     void saveCache() {
-        CouponEntity couponEntity = couponService.create(testCoupon);
+        CouponEntity couponEntity = couponService.create(couponCreateRequest);
         couponService.getCoupon(couponEntity.getId());
         couponRepository.deleteAll();
 
@@ -83,12 +82,12 @@ public class CouponServiceTest {
 
         assertAll(
                 () -> assertThat(cacheCoupon.id()).isEqualTo(couponEntity.getId()),
-                () -> assertThat(cacheCoupon.category()).isEqualTo(testCoupon.getCategory()),
-                () -> assertThat(cacheCoupon.discountAmount()).isEqualTo(testCoupon.getDiscountAmount()),
-                () -> assertThat(cacheCoupon.minimumOrderAmount()).isEqualTo(testCoupon.getMinimumOrderAmount()),
-                () -> assertThat(cacheCoupon.name()).isEqualTo(testCoupon.getName()),
-                () -> assertThat(cacheCoupon.startDate()).isEqualTo(testCoupon.getStartDate()),
-                () -> assertThat(cacheCoupon.endDate()).isEqualTo(testCoupon.getEndDate())
+                () -> assertThat(cacheCoupon.category()).isEqualTo(couponCreateRequest.category()),
+                () -> assertThat(cacheCoupon.discountAmount()).isEqualTo(couponCreateRequest.discountAmount()),
+                () -> assertThat(cacheCoupon.minimumOrderAmount()).isEqualTo(couponCreateRequest.minimumOrderAmount()),
+                () -> assertThat(cacheCoupon.name()).isEqualTo(couponCreateRequest.name()),
+                () -> assertThat(cacheCoupon.startDate()).isEqualTo(couponCreateRequest.startDate()),
+                () -> assertThat(cacheCoupon.endDate()).isEqualTo(couponCreateRequest.endDate())
         );
     }
 }
