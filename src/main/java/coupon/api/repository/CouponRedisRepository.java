@@ -20,7 +20,7 @@ public class CouponRedisRepository {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Coupon> getCoupon(Long id) {
+    public Optional<Coupon> findCoupon(Long id) {
         return Optional.ofNullable(couponRedisTemplate.opsForValue().get(String.valueOf(id)));
     }
 }
