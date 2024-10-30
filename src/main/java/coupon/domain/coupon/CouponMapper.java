@@ -1,21 +1,23 @@
 package coupon.domain.coupon;
 
+import coupon.data.CouponEntity;
+
 public class CouponMapper {
 
     private CouponMapper() {
     }
 
-    public static Coupon fromEntity(coupon.data.Coupon coupon) {
-        Accounting accounting = new Accounting(coupon.getDiscountAmount(), coupon.getMinimumOrderAmount());
-        Category category = Category.from(coupon.getCategory());
-        Duration duration = new Duration(coupon.getBeginAt().toLocalDate(), coupon.getEndAt().toLocalDate());
-        Name name = new Name(coupon.getName());
+    public static Coupon fromEntity(CouponEntity couponEntity) {
+        Accounting accounting = new Accounting(couponEntity.getDiscountAmount(), couponEntity.getMinimumOrderAmount());
+        Category category = Category.from(couponEntity.getCategory());
+        Duration duration = new Duration(couponEntity.getBeginAt().toLocalDate(), couponEntity.getEndAt().toLocalDate());
+        Name name = new Name(couponEntity.getName());
 
         return new Coupon(name, accounting, category, duration);
     }
 
-    public static coupon.data.Coupon toEntity(Coupon coupon) {
-        return new coupon.data.Coupon(
+    public static CouponEntity toEntity(Coupon coupon) {
+        return new CouponEntity(
                 coupon.getName().getValue(),
                 coupon.getAccounting().getDiscountAmount(),
                 coupon.getAccounting().getMinimumOrderCost(),

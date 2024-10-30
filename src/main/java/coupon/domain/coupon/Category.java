@@ -10,7 +10,7 @@ enum Category {
 
     public static Category from(String category) {
         return Arrays.stream(values())
-                .filter(name -> name.name().equals(category.toUpperCase()))
+                .filter(name -> name.name().equalsIgnoreCase(category.toUpperCase()))
                 .findAny()
                 .orElseThrow(() -> new CategoryNotFoundException(category));
     }

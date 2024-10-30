@@ -1,30 +1,23 @@
 package coupon.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import coupon.config.CouponCache;
-import coupon.data.Coupon;
-import coupon.data.repository.CouponRepository;
+import coupon.data.CouponEntity;
 import coupon.domain.coupon.CouponMapper;
 import coupon.exception.MemberCouponIssueException;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-class MemberCouponServiceTest {
+class MemberCouponEntityEntityServiceTest {
 
-    private static final Coupon entity = new Coupon(
+    private static final CouponEntity entity = new CouponEntity(
             "potato",
             1000,
             5000,
@@ -61,12 +54,12 @@ class MemberCouponServiceTest {
     @DisplayName("쿠폰 정보가 캐싱 되었는지 확인한다.")
     @Test
     void findByMemberId() {
-        Coupon newCoupon = couponService.create(coupon);
-        memberCouponService.issue(1, newCoupon.getId(), LocalDateTime.now());
+        CouponEntity newCouponEntity = couponService.create(coupon);
+        memberCouponService.issue(1, newCouponEntity.getId(), LocalDateTime.now());
         memberCouponService.findByMemberId(1);
 
-        Coupon cachedCoupon = CouponCache.get(newCoupon.getId());
-        Assertions.assertThat(cachedCoupon).isEqualTo(newCoupon);
+        CouponEntity cachedCouponEntity = CouponCache.get(newCouponEntity.getId());
+        Assertions.assertThat(cachedCouponEntity).isEqualTo(newCouponEntity);
     }
 
 }

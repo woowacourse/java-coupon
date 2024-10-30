@@ -10,15 +10,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.lang.NonNull;
 
 @Data
 @Entity(name = "coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Coupon {
+public class CouponEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -41,8 +38,8 @@ public class Coupon {
     @Column(name = "end_at")
     private LocalDateTime endAt;
 
-    public Coupon(String name, int discountAmount, int minimumOrderAmount, String category, LocalDateTime beginAt,
-                  LocalDateTime endAt) {
+    public CouponEntity(String name, int discountAmount, int minimumOrderAmount, String category, LocalDateTime beginAt,
+                        LocalDateTime endAt) {
         this.name = name;
         this.discountAmount = discountAmount;
         this.minimumOrderAmount = minimumOrderAmount;

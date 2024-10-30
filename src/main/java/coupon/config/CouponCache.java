@@ -1,15 +1,19 @@
 package coupon.config;
 
-import coupon.data.Coupon;
+import coupon.data.CouponEntity;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.stereotype.Component;
 
-@Component
 public class CouponCache {
-    private static final ConcurrentHashMap<Long, Coupon> value = new ConcurrentHashMap<>();
 
-    public static void cache(Coupon coupon) {
-        value.put(coupon.getId(), coupon);
+    private CouponCache(){
+
+    }
+
+    private static final ConcurrentHashMap<Long, CouponEntity> value = new ConcurrentHashMap<>();
+
+    public static void cache(CouponEntity couponEntity) {
+
+        value.put(couponEntity.getId(), couponEntity);
     }
 
     public static void delete(long id) {
@@ -20,8 +24,7 @@ public class CouponCache {
         return value.contains(id);
     }
 
-    public static Coupon get(long id) {
+    public static CouponEntity get(long id) {
         return value.get(id);
     }
-
 }

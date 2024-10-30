@@ -9,13 +9,12 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @Entity(name = "member_coupon")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberCoupon {
+public class MemberCouponEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

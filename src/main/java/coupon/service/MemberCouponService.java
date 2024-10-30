@@ -1,7 +1,8 @@
 package coupon.service;
 
 import coupon.config.CouponCache;
-import coupon.data.MemberCoupon;
+import coupon.data.CouponEntity;
+import coupon.data.MemberCouponEntity;
 import coupon.data.repository.CouponRepository;
 import coupon.data.repository.MemberCouponRepository;
 import coupon.domain.coupon.Coupon;
@@ -20,15 +21,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCouponService {
 
+    public static final int MEMBER_COUPON_UPPER_BOUND = 5;
+
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
 
 
     @Transactional
     public void issue(long memberId, long couponId, LocalDateTime issuedDateTime) {
-        List<MemberCoupon> all = memberCouponRepository.findAllByMemberIdAndCouponId(memberId, couponId);
+        List<MemberCouponEntity> memberCouponEntities = memberCouponRepository.findAllByMemberIdAndCouponId(memberId, couponId);
 
-        if (all.size() >= 5) {
+        if (memberCouponEntities.size() >= MEMBER_COUPON_UPPER_BOUND) {
             throw new MemberCouponIssueException("quantity max size exceeded");
         }
 
@@ -41,8 +44,8 @@ public class MemberCouponService {
 
     @Transactional(readOnly = true)
     public List<CouponResponse> findByMemberId(long memberId) {
-        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
-        return memberCoupons.stream()
+        List<MemberCouponEntity> memberCouponEntities = memberCouponRepository.findAllByMemberId(memberId);
+        return memberCouponEntities.stream()
                 .map(MemberCouponMapper::fromEntity)
                 .map(memberCoupon -> new CouponResponse(getCachedCoupon(memberCoupon.getCouponId()), memberCoupon))
                 .toList();
@@ -53,7 +56,7 @@ public class MemberCouponService {
             return CouponMapper.fromEntity(CouponCache.get(couponId));
         }
 
-        Optional<coupon.data.Coupon> optional = couponRepository.findById(couponId);
+        Optional<CouponEntity> optional = couponRepository.findById(couponId);
         if (optional.isEmpty()) {
             throw new MemberIdNotFoundException(String.format("member couponId: %d, does not exsit", couponId));
         }

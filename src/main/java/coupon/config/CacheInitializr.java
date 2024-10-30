@@ -1,6 +1,6 @@
 package coupon.config;
 
-import coupon.data.Coupon;
+import coupon.data.CouponEntity;
 import coupon.data.repository.CouponRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class CacheInitializr implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        List<Coupon> coupons = couponRepository.findAll();
-        coupons.forEach(CouponCache::cache);
+        List<CouponEntity> couponEntities = couponRepository.findAll();
+        couponEntities.forEach(CouponCache::cache);
     }
 }
