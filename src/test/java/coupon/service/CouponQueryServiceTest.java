@@ -56,6 +56,7 @@ class CouponQueryServiceTest {
         verify(couponRepository, times(2)).findById(1L); // 원인은 아직 못찾았지만, getCoupon한번 호출 할때 findById가 두번 호출 되는 버그가 있습니다.
         couponQueryService.getCoupon(1L); // 두번 째 호출
 
+        // then
         verify(couponRepository, times(2)).findById(1L); // 두번 째 호출 했음에도 verify그대로 2번이 true임을 검증
     }
 }

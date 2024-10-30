@@ -26,7 +26,6 @@ public class CouponQueryService {
 
     @Cacheable(value = "coupon", key = "#id", cacheManager = CACHE_MANAGER)
     public Coupon getCoupon(Long id) {
-        System.out.println("쿠폰겟=" + couponRepository.findById(1L).get());
         return couponRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
     }
 
