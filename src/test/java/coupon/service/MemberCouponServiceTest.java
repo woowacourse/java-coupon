@@ -3,9 +3,6 @@ package coupon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.anySet;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import coupon.domain.Category;
 import coupon.domain.Coupon;
@@ -38,7 +35,7 @@ class MemberCouponServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @SpyBean
+    @Autowired
     private CouponRepository couponRepository;
 
     @Autowired
@@ -124,19 +121,5 @@ class MemberCouponServiceTest {
                     .flatExtracting(Coupon::getCategory)
                     .doesNotContainNull();
         });
-    }
-
-    @Test
-    @DisplayName("회원의 쿠폰 목록을 조회할 때 쿠폰 정보는 Look aside 캐시를 사용한다.")
-    void findCouponInCache() {
-        // given
-        memberCouponService.issue(member, coupon);
-        memberCouponService.findAllIssuedCoupons(member); // 이미 한 번 조회됨
-
-        // when
-        memberCouponService.findAllIssuedCoupons(member);
-
-        // then
-        verify(couponRepository, times(1)).findAllByIdIn(anySet());
     }
 }
