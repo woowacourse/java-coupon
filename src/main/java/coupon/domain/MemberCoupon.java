@@ -43,16 +43,6 @@ public class MemberCoupon {
     }
 
     private void validate(LocalDate issueDate) {
-        validateIssueDate(issueDate);
-    }
-
-    private void validateMember(Member member) {
-        if (member == null) {
-            throw new IllegalArgumentException("사용자는 필수입니다.");
-        }
-    }
-
-    private void validateIssueDate(LocalDate issueDate) {
         if (issueDate == null) {
             throw new IllegalArgumentException("발급일은 필수입니다.");
         }
