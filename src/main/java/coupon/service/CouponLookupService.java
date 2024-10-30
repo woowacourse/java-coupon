@@ -46,7 +46,7 @@ public class CouponLookupService {
         return Optional.ofNullable(couponCache.get(couponId));
     }
 
-    public List<Coupon> getCoupons(List<Long> couponIds) {
+    private List<Coupon> getCoupons(List<Long> couponIds) {
         return couponRepository.findByIdIn(couponIds);
     }
 
