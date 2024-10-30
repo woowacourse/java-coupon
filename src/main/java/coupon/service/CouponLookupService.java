@@ -47,7 +47,10 @@ public class CouponLookupService {
     }
 
     private List<Coupon> getCoupons(List<Long> couponIds) {
-        return couponRepository.findByIdIn(couponIds);
+        List<Coupon> coupons = couponRepository.findByIdIn(couponIds);
+        coupons.forEach(couponCache::cache);
+
+        return coupons;
     }
 
     private Coupon getCoupon(Long couponId) {
