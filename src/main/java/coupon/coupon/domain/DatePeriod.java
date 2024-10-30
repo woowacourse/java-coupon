@@ -3,13 +3,9 @@ package coupon.coupon.domain;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 public class DatePeriod {
-
-    private static final LocalTime startTime = LocalTime.of(0, 0, 0);
-    private static final LocalTime endTime = LocalTime.of(23, 59, 59);
 
     private final LocalDate startDate;
     private final LocalDate endDate;
