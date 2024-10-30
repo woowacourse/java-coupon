@@ -32,7 +32,6 @@ class IssueServiceTest {
         Coupon coupon = couponService.create(
                 new Coupon("name", 1000, 10000, Category.FASHION, LocalDate.now(), LocalDate.now().plusDays(7)));
         Member member = memberService.save(new Member());
-        System.out.println(member.getId());
 
         //when
         IssuedCoupon issue = issueService.issue(member.getId(), coupon.getId());
