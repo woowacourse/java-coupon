@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,20 +19,21 @@ public class MemberCouponService {
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
 
+    @Transactional
     @CacheEvict(value = "memberCoupon", key = "#memberId")
-    public void issueMemberCoupon(long couponId, long memberId) {
+    public MemberCoupon issueMemberCoupon(long couponId, long memberId) {
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 쿠폰 정보가 없습니다. couponId : " + couponId));
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 회원 정보가 없습니다. memberId : " + memberId));
         validateIssuedMemberCouponCount(member.getId());
         validateCouponIssuable(coupon);
-        memberCouponRepository.save(new MemberCoupon(coupon.getId(), member.getId()));
+        return memberCouponRepository.save(new MemberCoupon(coupon.getId(), member.getId()));
     }
 
     private void validateIssuedMemberCouponCount(long memberId) {
         int issuedCount = memberCouponRepository.findAllByMemberId(memberId).size();
-        if (issuedCount > 5) {
+        if (issuedCount >= 5) {
             throw new IllegalArgumentException("쿠폰은 최대 5장까지 발급할 수 있습니다. memberId : " + memberId);
         }
     }
@@ -42,6 +44,7 @@ public class MemberCouponService {
         }
     }
 
+    @Transactional
     @Cacheable(value = "memberCoupon", key = "#memberId")
     public MemberCouponResponse findMemberCoupons(long memberId) {
         Member member = memberRepository.findById(memberId)
