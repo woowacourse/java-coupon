@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS member_coupons
     coupon_id        BIGINT      NOT NULL,
     used             BOOLEAN     NOT NULL,
     issued_at        DATETIME(6) NOT NULL,
-    expired_at       DATETIME(6) NOT NULL,
+    expires_at       DATETIME(6) NOT NULL,
     CONSTRAINT fk_member_member_coupon FOREIGN KEY (member_id) REFERENCES members (member_id) ON DELETE CASCADE,
     CONSTRAINT fk_coupon_member_coupon FOREIGN KEY (coupon_id) REFERENCES coupons (coupon_id) ON DELETE CASCADE
 ) ENGINE = InnoDB

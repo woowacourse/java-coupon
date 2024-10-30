@@ -71,6 +71,12 @@ public class Coupon {
         this.issueDate = CouponIssueDate.createWithTime(issueStartDate, issueEndDate);
     }
 
+    public void issue() {
+        if (!issueDate.isIssuable(LocalDateTime.now())) {
+            throw new IllegalArgumentException("쿠폰 발급 기간이 아닙니다.");
+        }
+    }
+
     public LocalDateTime getIssueEndedAt() {
         return issueDate.getIssueEndedAt();
     }

@@ -1,11 +1,9 @@
 package coupon.coupon.domain;
 
-import java.util.Optional;
-import org.springframework.data.repository.Repository;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CouponRepository extends Repository<Coupon, Long> {
+public interface CouponRepository extends JpaRepository<Coupon, Long> {
 
-    void save(Coupon coupon);
-
-    Optional<Coupon> findById(Long id);
+    List<Coupon> findAllByIdIn(List<Long> ids);
 }

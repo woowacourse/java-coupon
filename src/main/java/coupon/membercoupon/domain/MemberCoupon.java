@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MemberCoupon {
 
-    private static final int COUPON_USABLE_DAYS = 7;
+    private static final int COUPON_USABLE_DAYS = 6;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +37,22 @@ public class MemberCoupon {
     @Column(name = "issued_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime issuedAt;
 
-    @Column(name = "expired_at", nullable = false, columnDefinition = "DATETIME(6)")
-    private LocalDateTime expiredAt;
+    @Column(name = "expires_at", nullable = false, columnDefinition = "DATETIME(6)")
+    private LocalDateTime expiresAt;
 
-    public MemberCoupon(Long couponId, Long memberId, boolean used, LocalDateTime issuedAt, LocalDateTime expiredAt) {
-        this(null, couponId, memberId, used, issuedAt, expiredAt);
+    public static MemberCoupon issue(Long memberId, Coupon coupon) {
+        coupon.issue();
+
+        return new MemberCoupon(
+                coupon.getId(),
+                memberId,
+                false,
+                LocalDateTime.now()
+        );
+    }
+
+    public MemberCoupon(Long couponId, Long memberId, boolean used, LocalDateTime issuedAt) {
+        this(null, couponId, memberId, used, issuedAt, issuedAt.plusDays(COUPON_USABLE_DAYS));
     }
 
     public MemberCoupon(
@@ -50,23 +61,13 @@ public class MemberCoupon {
             Long memberId,
             boolean used,
             LocalDateTime issuedAt,
-            LocalDateTime expiredAt
+            LocalDateTime expiresAt
     ) {
         this.id = id;
         this.couponId = couponId;
         this.memberId = memberId;
         this.used = used;
         this.issuedAt = issuedAt;
-        this.expiredAt = expiredAt;
-    }
-
-    public static MemberCoupon issue(Long memberId, Coupon coupon) {
-        return new MemberCoupon(
-                coupon.getId(),
-                memberId,
-                false,
-                LocalDateTime.now(),
-                coupon.getIssueEndedAt().plusDays(COUPON_USABLE_DAYS)
-        );
+        this.expiresAt = expiresAt;
     }
 }
