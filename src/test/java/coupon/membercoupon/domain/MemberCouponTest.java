@@ -14,7 +14,7 @@ class MemberCouponTest {
     @Test
     void expiredTest() {
         // given
-        LocalDateTime expected = LocalDate.now().plusDays(MemberCoupon.USEABLE_DAYS).atTime(LocalTime.MIN);
+        LocalDateTime expected = LocalDate.now().plusDays(MemberCoupon.USABLE_COUPON).atTime(LocalTime.MIN);
 
         // when
         MemberCoupon memberCoupon = new MemberCoupon(1L, 1L);

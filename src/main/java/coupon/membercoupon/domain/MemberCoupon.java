@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 public class MemberCoupon {
 
-    public static final int USEABLE_DAYS = 7;
+    public static final int USABLE_COUPON = 7;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class MemberCoupon {
         this.used = false;
         this.issuedAt = LocalDateTime.now();
         this.expiredAt = LocalDateTime.of(
-                issuedAt.plusDays(USEABLE_DAYS).toLocalDate(),
+                issuedAt.plusDays(USABLE_COUPON).toLocalDate(),
                 LocalTime.MIN
         );
     }
