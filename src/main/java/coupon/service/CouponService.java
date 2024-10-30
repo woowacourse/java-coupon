@@ -7,7 +7,6 @@ import coupon.domain.MemberCoupon;
 import coupon.dto.CouponRequest;
 import coupon.dto.MemberCouponRequest;
 import coupon.dto.MemberCouponResponse;
-import coupon.global.ReplicationLagFallback;
 import coupon.repository.CategoryRepository;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
@@ -28,18 +27,15 @@ public class CouponService {
     private final CategoryRepository categoryRepository;
     private final MemberCouponRepository memberCouponRepository;
     private final MemberRepository memberRepository;
-    private final ReplicationLagFallback replicationLagFallback;
 
     public CouponService(CouponRepository couponRepository,
                          CategoryRepository categoryRepository,
                          MemberCouponRepository memberCouponRepository,
-                         MemberRepository memberRepository,
-                         ReplicationLagFallback replicationLagFallback) {
+                         MemberRepository memberRepository) {
         this.couponRepository = couponRepository;
         this.categoryRepository = categoryRepository;
         this.memberCouponRepository = memberCouponRepository;
         this.memberRepository = memberRepository;
-        this.replicationLagFallback = replicationLagFallback;
     }
 
     @CachePut(cacheNames = COUPON_CACHE_NAME, key = "#result.id")
@@ -73,11 +69,6 @@ public class CouponService {
     @Cacheable(cacheNames = COUPON_CACHE_NAME, key = "#couponId")
     @Transactional(readOnly = true)
     public Coupon getCoupon(long couponId) {
-        return couponRepository.findById(couponId)
-                .orElseGet(() -> replicationLagFallback.readFromWriter(() -> findById(couponId)));
-    }
-
-    private Coupon findById(long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
     }
