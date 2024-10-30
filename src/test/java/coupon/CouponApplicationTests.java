@@ -8,9 +8,11 @@ import coupon.domain.Coupon;
 import coupon.service.CouponQueryService;
 import coupon.service.CouponCommandService;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 
 @SpringBootTest
 class CouponApplicationTests {
@@ -22,8 +24,12 @@ class CouponApplicationTests {
     @Autowired
     private CouponQueryService couponQueryService;
 
-    @Test
-    void contextLoads() {
+    @Autowired
+    private CacheManager cacheManager;
+
+    @BeforeEach
+    void setUp() {
+        cacheManager.getCache("coupon").clear();
     }
 
     @Test

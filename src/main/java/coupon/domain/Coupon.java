@@ -12,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
+@Table(name = "coupon")
 @NoArgsConstructor
 public class Coupon {
 

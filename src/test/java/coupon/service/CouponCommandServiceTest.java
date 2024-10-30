@@ -10,10 +10,12 @@ import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -32,6 +34,14 @@ class CouponCommandServiceTest {
     @Autowired
     private MemberCouponRepository memberCouponRepository;
 
+    @Autowired
+    private CacheManager cacheManager;
+
+    @BeforeEach
+    void setUp() {
+        couponRepository.deleteAll();
+        memberCouponRepository.deleteAll();
+    }
 
     @DisplayName("쿠폰을 발급 할 수 있다.")
     @Transactional
