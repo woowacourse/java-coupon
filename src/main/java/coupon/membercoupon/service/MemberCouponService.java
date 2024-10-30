@@ -1,5 +1,6 @@
 package coupon.membercoupon.service;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MemberCouponService {
+    private static final String CACHE_NAMES = "member_coupons";
 
     private final MemberCouponRepository memberCouponRepository;
     private final MemberService memberService;
@@ -46,6 +48,7 @@ public class MemberCouponService {
     }
 
     @Transactional
+    @Cacheable(value = CACHE_NAMES, key = "#memberId")
     public MemberCoupons readAllByMemberId(Long memberId) {
         return new MemberCoupons(memberCouponRepository.findAllByMemberId(memberId));
     }
