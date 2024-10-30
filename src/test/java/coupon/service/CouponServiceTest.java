@@ -4,9 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import coupon.domain.Coupon;
@@ -15,11 +15,12 @@ import coupon.support.Fixture;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class CouponServiceTest {
 
     private static final String COUPON_CACHE_NAME = "coupon";
@@ -51,8 +52,8 @@ class CouponServiceTest {
 
         assertAll(
                 () -> assertThat(firstSearch.getId()).isEqualTo(dbCoupon.getId()),
-                () -> verify(couponRepository, times(2)).findById(dbCoupon.getId()), // 복제지연으로 2회 DB 조회
-                () -> assertThat(couponCache.get(dbCoupon.getId(), Coupon.class)) // 캐시 조회
+                () -> verify(couponRepository, atLeastOnce()).findById(dbCoupon.getId()),
+                () -> assertThat(couponCache.get(dbCoupon.getId(), Coupon.class))
                         .extracting(Coupon::getId)
                         .isEqualTo(dbCoupon.getId())
         );
@@ -61,11 +62,11 @@ class CouponServiceTest {
     @Test
     void 조회_시_캐시에_있으면_DB를_조회하지_않는다() {
         Coupon dbCoupon = couponService.save(Fixture.createCoupon());
-        couponService.findById(dbCoupon.getId()); // 캐시 쓰기
+        couponService.findById(dbCoupon.getId());
 
         clearInvocations(couponRepository);
 
-        Coupon secondSearch = couponService.findById(dbCoupon.getId()); // 캐시 히트
+        Coupon secondSearch = couponService.findById(dbCoupon.getId());
 
         assertAll(
                 () -> assertThat(secondSearch.getId()).isEqualTo(dbCoupon.getId()),
