@@ -1,5 +1,9 @@
 package coupon.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -12,6 +16,7 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
@@ -42,9 +47,15 @@ public class Coupon {
     @Column(name = "minimum_order_price")
     private MinimumOrderPrice minimumOrderPrice;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @CreationTimestamp
     @Column(name = "issue_started_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueStartedAt;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @CreationTimestamp
     @Column(name = "issue_ended_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueEndedAt;
 

@@ -1,5 +1,9 @@
 package coupon.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
@@ -30,15 +35,24 @@ public class MemberCoupon {
     @JoinColumn(name = "coupon_id")
     private Long couponId;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @CreationTimestamp
     @Column(name = "issued_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issuedAt;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @CreationTimestamp
     @Column(name = "use_ended_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime useEndedAt;
 
     @Column(name = "used", columnDefinition = "BOOLEAN")
     private boolean used;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @CreationTimestamp
     @Column(name = "used_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime usedAt;
 

@@ -17,18 +17,16 @@ public class CouponQueryService {
     public static final String CACHE_MANAGER = "redisCacheManager";
 
     private final CouponRepository couponRepository;
-    private final CouponCommandService couponCommandService;
     private final MemberCouponRepository memberCouponRepository;
 
-    public CouponQueryService(CouponRepository couponRepository, CouponCommandService couponCommandService,
-                              MemberCouponRepository memberCouponRepository) {
+    public CouponQueryService(CouponRepository couponRepository, MemberCouponRepository memberCouponRepository) {
         this.couponRepository = couponRepository;
-        this.couponCommandService = couponCommandService;
         this.memberCouponRepository = memberCouponRepository;
     }
 
     @Cacheable(value = "coupon", key = "#id", cacheManager = CACHE_MANAGER)
     public Coupon getCoupon(Long id) {
+        System.out.println("쿠폰겟=" + couponRepository.findById(1L).get());
         return couponRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
     }
 
