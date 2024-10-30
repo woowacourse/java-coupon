@@ -25,7 +25,7 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long couponId; // coupon ID만 저장하도록 수정
+    private Long couponId;
 
     @ManyToOne
     private Member member;
@@ -41,7 +41,7 @@ public class MemberCoupon {
         this.member = member;
         this.used = false;
         this.issuedAt = LocalDateTime.now();
-        this.expiredAt = issuedAt.plusDays(7).withHour(23).withMinute(59).withSecond(59).withNano(999999000);
+        this.expiredAt = issuedAt.plusDays(6).withHour(23).withMinute(59).withSecond(59).withNano(999999000);
     }
 }
 
