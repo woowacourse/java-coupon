@@ -21,7 +21,6 @@ import org.hibernate.annotations.CreationTimestamp;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Coupon {
 
     public static final int MIN_DISCOUNT_RATE = 3;
