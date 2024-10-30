@@ -33,7 +33,7 @@ public class IssuePeriod {
         }
     }
 
-    public boolean isInIssuePeriod(LocalDateTime issueDateTime) {
+    public boolean includes(LocalDateTime issueDateTime) {
         LocalDate issueDate = issueDateTime.toLocalDate();
         LocalDate startedAtDate = issueStartedAt.toLocalDate();
         LocalDate endedAtDate = issueEndedAt.toLocalDate();

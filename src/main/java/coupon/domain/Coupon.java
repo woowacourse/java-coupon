@@ -78,6 +78,6 @@ public class Coupon extends BaseTime {
     }
 
     public boolean canIssue(LocalDateTime issueDateTime) {
-        return this.issuePeriod.isInIssuePeriod(issueDateTime);
+        return this.issuePeriod.includes(issueDateTime);
     }
 }

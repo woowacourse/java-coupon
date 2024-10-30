@@ -36,7 +36,7 @@ class IssuePeriodTest {
         IssuePeriod issuePeriod = new IssuePeriod(issueStartedAt, issueEndedAt);
 
         // when
-        boolean actual = issuePeriod.isInIssuePeriod(issueDateTime);
+        boolean actual = issuePeriod.includes(issueDateTime);
 
         // then
         assertThat(actual).isEqualTo(expected);
