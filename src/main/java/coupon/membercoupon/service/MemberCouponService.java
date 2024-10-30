@@ -31,21 +31,31 @@ public class MemberCouponService {
 
     @Transactional
     public void create(Long couponId, Long memberId) {
-        validateMemberAndCoupon(couponId, memberId);
+        validateCouponAndMember(couponId, memberId);
         MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId, LocalDateTime.now());
         memberCouponRepository.save(memberCoupon);
     }
 
-    private void validateMemberAndCoupon(Long couponId, Long memberId) {
-        if (!couponRepository.existsById(couponId)) {
-            throw new IllegalArgumentException("존재하지 않는 쿠폰입니다.");
-        }
-        if (!memberRepository.existsById(memberId)) {
-            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
-        }
+    private void validateCouponAndMember(Long couponId, Long memberId) {
+        validateCoupon(couponId);
+        validateMember(memberId);
         int issuedCount = memberCouponRepository.countByCouponIdAndMemberId(couponId, memberId);
         if (issuedCount >= MAX_ISSUE_COUNT) {
             throw new IllegalArgumentException("더 이상 발급할 수 없는 쿠폰입니다. 최대 발급 횟수 : " + MAX_ISSUE_COUNT);
+        }
+    }
+
+    private void validateCoupon(Long couponId) {
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(
+                () -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
+        if (!coupon.getIssuablePeriod().canIssue(LocalDateTime.now())) {
+            throw new IllegalArgumentException("발급 가능한 날짜가 아닙니다.");
+        }
+    }
+
+    private void validateMember(Long memberId) {
+        if (!memberRepository.existsById(memberId)) {
+            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
         }
     }
 
