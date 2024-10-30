@@ -33,7 +33,7 @@ public class Coupon {
 
     public Coupon(String name, int discountAmount, int minOrderAmount, String category, LocalDate startDate, LocalDate endDate) {
         this.name = new CouponName(name);
-        this.discountAmount = new DiscountAmount(discountAmount, minOrderAmount);
+        this.discountAmount = new DiscountAmount(discountAmount);
         this.minOrderAmount = new MinOrderAmount(minOrderAmount);
         this.category = Category.from(category);
         this.period = new Period(startDate, endDate);

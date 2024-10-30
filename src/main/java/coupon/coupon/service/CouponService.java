@@ -14,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponReader couponReader;
+    private final CouponValidator couponValidator;
     private final CouponRepository couponRepository;
 
     @Transactional
     public CouponResponse create(CouponRequest request) {
+        couponValidator.validateAmount(request.discountAmount(), request.minOrderAmount());
+
         Coupon coupon = couponRepository.save(request.toEntity());
         return CouponResponse.from(coupon);
     }
