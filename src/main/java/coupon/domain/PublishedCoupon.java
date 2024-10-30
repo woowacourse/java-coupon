@@ -65,7 +65,12 @@ public class PublishedCoupon {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PublishedCoupon that)) return false;
-        return isUsed == that.isUsed && Objects.equals(id, that.id) && Objects.equals(member, that.member) && Objects.equals(coupon, that.coupon) && Objects.equals(issuanceDate, that.issuanceDate) && Objects.equals(expirationDate, that.expirationDate);
+        return isUsed == that.isUsed &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(member, that.member) &&
+                Objects.equals(coupon, that.coupon) &&
+                Objects.equals(issuanceDate, that.issuanceDate) &&
+                Objects.equals(expirationDate, that.expirationDate);
     }
 
     @Override

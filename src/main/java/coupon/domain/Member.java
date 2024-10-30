@@ -32,7 +32,8 @@ public class Member {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Member member)) return false;
-        return Objects.equals(id, member.id) && Objects.equals(name, member.name);
+        return Objects.equals(id, member.id) &&
+                Objects.equals(name, member.name);
     }
 
     @Override

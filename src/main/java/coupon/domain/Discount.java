@@ -60,7 +60,8 @@ public class Discount {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Discount discount)) return false;
-        return discountAmount == discount.discountAmount && minOrderAmount == discount.minOrderAmount;
+        return discountAmount == discount.discountAmount &&
+                minOrderAmount == discount.minOrderAmount;
     }
 
     @Override

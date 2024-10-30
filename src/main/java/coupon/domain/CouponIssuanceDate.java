@@ -28,7 +28,8 @@ public class CouponIssuanceDate {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CouponIssuanceDate that)) return false;
-        return Objects.equals(issuanceStartDate, that.issuanceStartDate) && Objects.equals(issuanceEndDate, that.issuanceEndDate);
+        return Objects.equals(issuanceStartDate, that.issuanceStartDate) &&
+                Objects.equals(issuanceEndDate, that.issuanceEndDate);
     }
 
     @Override

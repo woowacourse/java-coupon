@@ -62,7 +62,13 @@ public class Coupon {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Coupon coupon)) return false;
-        return discountAmount == coupon.discountAmount && minOrderAmount == coupon.minOrderAmount && Objects.equals(id, coupon.id) && Objects.equals(name, coupon.name) && category == coupon.category && Objects.equals(issuanceStartDate, coupon.issuanceStartDate) && Objects.equals(issuanceEndDate, coupon.issuanceEndDate);
+        return discountAmount == coupon.discountAmount &&
+                minOrderAmount == coupon.minOrderAmount &&
+                Objects.equals(id, coupon.id) &&
+                Objects.equals(name, coupon.name) &&
+                category == coupon.category &&
+                Objects.equals(issuanceStartDate, coupon.issuanceStartDate) &&
+                Objects.equals(issuanceEndDate, coupon.issuanceEndDate);
     }
 
     @Override
