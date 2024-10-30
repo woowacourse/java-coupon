@@ -3,6 +3,7 @@ package coupon.coupon.service;
 import coupon.coupon.domain.ExceptionMessage;
 import coupon.coupon.dto.CouponResponse;
 import coupon.coupon.dto.MemberCouponRequest;
+import coupon.coupon.dto.MemberCouponResponse;
 import coupon.coupon.entity.MemberCouponEntity;
 import coupon.coupon.repository.MemberCouponRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,11 @@ public class MemberCouponService {
     }
 
     @Transactional
-    public List<MemberCouponEntity> findByMemberId(Long memberId) {
-        return memberCouponRepository.findByMemberId(memberId);
+    public List<MemberCouponResponse> findByMemberId(Long memberId) {
+        List<MemberCouponEntity> memberCouponEntities = memberCouponRepository.findByMemberId(memberId);
+        return memberCouponEntities.stream()
+                .map(memberCouponEntity -> MemberCouponResponse.of(memberCouponEntity,
+                        couponService.getCoupon(memberCouponEntity.getCouponId())))
+                .toList();
     }
 }

@@ -4,6 +4,7 @@ import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.ExceptionMessage;
 import coupon.coupon.dto.MemberCouponRequest;
+import coupon.coupon.dto.MemberCouponResponse;
 import coupon.coupon.entity.CouponEntity;
 import coupon.coupon.entity.MemberCouponEntity;
 import coupon.coupon.repository.CouponRepository;
@@ -115,11 +116,17 @@ class MemberCouponServiceTest {
         MemberCouponEntity memberCoupon = createTestMemberCouponEntity(couponEntity.getId(), 25);
         memberCouponRepository.save(memberCoupon);
 
-        MemberCouponEntity memberCouponEntity = memberCouponService.findByMemberId(1L).get(0);
+        MemberCouponResponse memberCouponResponse = memberCouponService.findByMemberId(1L).get(0);
 
         assertAll(
-                () -> assertThat(memberCouponEntity.getMemberId()).isEqualTo(1L),
-                () -> assertThat(memberCouponEntity.getCouponId()).isEqualTo(couponEntity.getId())
+                () -> assertThat(memberCouponResponse.memberId()).isEqualTo(1L),
+                () -> assertThat(memberCouponResponse.couponResponse().id()).isEqualTo(couponEntity.getId()),
+                () -> assertThat(memberCouponResponse.couponResponse().category()).isEqualTo(couponEntity.getCategory()),
+                () -> assertThat(memberCouponResponse.couponResponse().discountAmount()).isEqualTo(couponEntity.getDiscountAmount()),
+                () -> assertThat(memberCouponResponse.couponResponse().name()).isEqualTo(couponEntity.getName()),
+                () -> assertThat(memberCouponResponse.couponResponse().minimumOrderAmount()).isEqualTo(couponEntity.getMinimumOrderAmount()),
+                () -> assertThat(memberCouponResponse.couponResponse().startDate()).isEqualTo(couponEntity.getStartDate()),
+                () -> assertThat(memberCouponResponse.couponResponse().endDate()).isEqualTo(couponEntity.getEndDate())
         );
     }
 
