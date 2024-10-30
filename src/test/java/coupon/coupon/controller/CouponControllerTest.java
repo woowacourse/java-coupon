@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.service.CouponService;
 import coupon.membercoupon.domain.MemberCoupon;
+import coupon.membercoupon.domain.MemberCoupons;
 import coupon.membercoupon.service.MemberCouponService;
 
 @WebMvcTest(CouponController.class)
@@ -45,16 +46,16 @@ public class CouponControllerTest {
         Coupon coupon1 = new Coupon(couponId1, "coupon_name_1", 1000L, 10000L, "FOOD", LocalDateTime.now(), LocalDateTime.now());
         Coupon coupon2 = new Coupon(couponId2, "coupon_name_2", 1000L, 10000L, "FOOD", LocalDateTime.now(), LocalDateTime.now());
 
-        when(memberCouponService.readAllByMemberId(memberId)).thenReturn(List.of(memberCoupon1, memberCoupon2));
+        when(memberCouponService.readAllByMemberId(memberId)).thenReturn(new MemberCoupons(List.of(memberCoupon1, memberCoupon2)));
         when(couponService.readByIdFromReaderWithCache(couponId1)).thenReturn(Optional.of(coupon1));
         when(couponService.readByIdFromReaderWithCache(couponId2)).thenReturn(Optional.of(coupon2));
 
         mockMvc.perform(get("/coupons/member/{memberId}", memberId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(couponId1))
-                .andExpect(jsonPath("$[0].name").value("coupon_name_1"))
-                .andExpect(jsonPath("$[1].id").value(couponId2))
-                .andExpect(jsonPath("$[1].name").value("coupon_name_2"));
+                .andExpect(jsonPath("$.couponResponses[0].id").value(couponId1))
+                .andExpect(jsonPath("$.couponResponses[0].name").value("coupon_name_1"))
+                .andExpect(jsonPath("$.couponResponses[1].id").value(couponId2))
+                .andExpect(jsonPath("$.couponResponses[1].name").value("coupon_name_2"));
     }
 }

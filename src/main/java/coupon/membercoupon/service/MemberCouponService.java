@@ -8,13 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import coupon.coupon.service.CouponService;
 import coupon.member.service.MemberService;
 import coupon.membercoupon.domain.MemberCoupon;
+import coupon.membercoupon.domain.MemberCoupons;
 import coupon.membercoupon.respository.MemberCouponRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class MemberCouponService {
-    private static final long MAXIMUM_SAME_MEMBER_COUPON_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
     private final MemberService memberService;
@@ -41,14 +41,14 @@ public class MemberCouponService {
     }
 
     private void validateMaxFiveCouponsPerMember(Long memberId, Long couponId) {
-        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberIdAndCouponId(memberId, couponId);
-        if (memberCoupons.size() >= MAXIMUM_SAME_MEMBER_COUPON_COUNT) {
+        MemberCoupons memberCoupons = new MemberCoupons(memberCouponRepository.findAllByMemberIdAndCouponId(memberId, couponId));
+        if (memberCoupons.hasSizeFiveOrMore()) {
             throw new IllegalArgumentException("한 명의 회원이 동일한 쿠폰을 사용한 쿠폰을 포함하여 5장 초과로 발급할 수 없습니다.");
         }
     }
 
     @Transactional
-    public List<MemberCoupon> readAllByMemberId(Long memberId) {
-        return memberCouponRepository.findAllByMemberId(memberId);
+    public MemberCoupons readAllByMemberId(Long memberId) {
+        return new MemberCoupons(memberCouponRepository.findAllByMemberId(memberId));
     }
 }

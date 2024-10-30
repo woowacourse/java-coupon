@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import coupon.coupon.controller.dto.CouponResponse;
+import coupon.coupon.controller.dto.CouponResponses;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.service.CouponService;
-import coupon.membercoupon.domain.MemberCoupon;
+import coupon.membercoupon.domain.MemberCoupons;
 import coupon.membercoupon.service.MemberCouponService;
 import lombok.RequiredArgsConstructor;
 
@@ -25,25 +26,20 @@ public class CouponController {
     private final MemberCouponService memberCouponService;
 
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<List<CouponResponse>> getCouponsByMember(@PathVariable Long memberId) {
-        List<MemberCoupon> memberCoupons = memberCouponService.readAllByMemberId(memberId);
-        List<CouponResponse> couponResponses = getCouponsFromMemberCoupons(memberCoupons);
+    public ResponseEntity<CouponResponses> getCouponsByMember(@PathVariable Long memberId) {
+        MemberCoupons memberCoupons = memberCouponService.readAllByMemberId(memberId);
+        CouponResponses couponResponses = getCouponsFromMemberCoupons(memberCoupons);
 
         return ResponseEntity.ok(couponResponses);
     }
 
-    private List<CouponResponse> getCouponsFromMemberCoupons(List<MemberCoupon> memberCoupons) {
-        List<Long> couponIds = memberCoupons.stream()
-                .map(MemberCoupon::getCouponId)
-                .toList();
-
+    private CouponResponses getCouponsFromMemberCoupons(MemberCoupons memberCoupons) {
+        List<Long> couponIds = memberCoupons.getCouponIds();
         List<Coupon> coupons = couponIds.stream()
                 .map(couponService::readByIdFromReaderWithCache)
                 .flatMap(Optional::stream)
                 .toList();
 
-        return coupons.stream()
-                .map(coupon -> new CouponResponse(coupon))
-                .toList();
+        return CouponResponses.from(coupons);
     }
 }
