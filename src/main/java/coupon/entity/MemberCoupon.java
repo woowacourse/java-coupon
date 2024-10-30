@@ -39,4 +39,8 @@ public class MemberCoupon extends BaseEntity {
     public static MemberCoupon issueOf(Member member, Long couponId, LocalDateTime issuedAt) {
         return new MemberCoupon(null, couponId, member, false, issuedAt, issuedAt.plusDays(7));
     }
+
+    public boolean isUsableCoupon() {
+        return !isUsed;
+    }
 }

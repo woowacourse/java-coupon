@@ -52,7 +52,7 @@ public class Member extends BaseEntity {
 
     public List<MemberCoupon> getUnusedMemberCoupons() {
         return memberCoupons.stream()
-                .filter(memberCoupon -> !memberCoupon.getIsUsed())
+                .filter(MemberCoupon::isUsableCoupon)
                 .toList();
     }
 }
