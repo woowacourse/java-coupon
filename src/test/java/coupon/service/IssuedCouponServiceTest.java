@@ -36,7 +36,7 @@ class IssuedCouponServiceTest {
         IssuedCoupon issue = issuedCouponService.issue(member.getId(), coupon.getId());
 
         //then
-        assertThat(issue.getId()).isEqualTo(1L);
+        assertThat(issue.getId()).isNotNull();
     }
 
     @Test

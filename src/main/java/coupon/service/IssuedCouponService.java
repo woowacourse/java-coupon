@@ -8,9 +8,11 @@ import coupon.repository.IssuedCouponRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class IssuedCouponService {
 
     private static final int MAX_ISSUABLE_COUPON_SIZE = 5;
@@ -19,6 +21,7 @@ public class IssuedCouponService {
     private final IssuedCouponRepository issuedCouponRepository;
     private final CouponService couponService;
 
+    @Transactional
     public IssuedCoupon issue(Long memberId, Long couponId) {
         Coupon coupon = couponService.getCoupon(couponId);
         Member member = memberService.getMember(memberId);

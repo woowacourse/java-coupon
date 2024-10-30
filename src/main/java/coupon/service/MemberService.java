@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -17,7 +18,6 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    @Transactional
     public Member getMember(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow();
