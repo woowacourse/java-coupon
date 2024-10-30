@@ -1,6 +1,5 @@
 package coupon.repository;
 
-import coupon.domain.Coupon;
 import coupon.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 

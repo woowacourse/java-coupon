@@ -1,15 +1,11 @@
 package coupon.service;
 
-import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
 import coupon.dto.MemberCouponResponse;
-import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
-import coupon.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,7 +28,8 @@ public class MemberCouponService {
         Member member = memberService.read(memberId);
         List<MemberCoupon> memberCoupons = memberCouponRepository.findByMember(member);
         return memberCoupons.stream()
-                .map(memberCoupon -> MemberCouponResponse.of(memberCoupon, couponService.read(memberCoupon.getCouponId())))
+                .map(memberCoupon -> MemberCouponResponse.of(memberCoupon,
+                        couponService.read(memberCoupon.getCouponId())))
                 .toList();
     }
 
