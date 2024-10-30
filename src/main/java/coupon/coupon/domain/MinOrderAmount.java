@@ -10,8 +10,7 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MinOrderAmount {
 
-    private static final int MIN_ORDER_AMOUNT = 5_000;
-    private static final int MAX_ORDER_AMOUNT = 100_000;
+    private static final int MIN_ORDER_AMOUNT = 0;
 
     private int minOrderAmount;
 
@@ -21,8 +20,8 @@ public class MinOrderAmount {
     }
 
     private void validateOrderAmount(int orderAmount) {
-        if (orderAmount < MIN_ORDER_AMOUNT || MAX_ORDER_AMOUNT < orderAmount) {
-            throw new IllegalArgumentException("최소 주문 금액은 %d원 이상 ~ %d원 이하여야 합니다.".formatted(MIN_ORDER_AMOUNT, MAX_ORDER_AMOUNT));
+        if (orderAmount < MIN_ORDER_AMOUNT) {
+            throw new IllegalArgumentException("최소 주문 금액이 %d원 보다 작을 수 없습니다.".formatted(MIN_ORDER_AMOUNT));
         }
     }
 
