@@ -19,8 +19,8 @@ public class MemberCouponService {
 
     private static final int MAX_MEMBER_COUPON_COUNT = 5;
 
-    private MemberCouponRepository memberCouponRepository;
-    private CouponLookupService couponLookupService;
+    private final MemberCouponRepository memberCouponRepository;
+    private final CouponLookupService couponLookupService;
 
     @Transactional
     public void create(MemberCoupon memberCoupon) {
