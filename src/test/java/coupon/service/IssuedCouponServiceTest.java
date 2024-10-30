@@ -6,7 +6,6 @@ import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.domain.IssuedCoupon;
 import coupon.domain.Member;
-import coupon.repository.MemberRepository;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class IssueServiceTest {
+class IssuedCouponServiceTest {
 
     @Autowired
-    private IssueService issueService;
+    private IssuedCouponService issuedCouponService;
 
     @Autowired
     private MemberService memberService;
@@ -34,7 +33,7 @@ class IssueServiceTest {
         Member member = memberService.save(new Member());
 
         //when
-        IssuedCoupon issue = issueService.issue(member.getId(), coupon.getId());
+        IssuedCoupon issue = issuedCouponService.issue(member.getId(), coupon.getId());
 
         //then
         assertThat(issue.getId()).isEqualTo(1L);
@@ -49,14 +48,14 @@ class IssueServiceTest {
         Member member = memberService.save(new Member());
 
         //when
-        issueService.issue(member.getId(), coupon.getId());
-        issueService.issue(member.getId(), coupon.getId());
-        issueService.issue(member.getId(), coupon.getId());
-        issueService.issue(member.getId(), coupon.getId());
-        issueService.issue(member.getId(), coupon.getId());
+        issuedCouponService.issue(member.getId(), coupon.getId());
+        issuedCouponService.issue(member.getId(), coupon.getId());
+        issuedCouponService.issue(member.getId(), coupon.getId());
+        issuedCouponService.issue(member.getId(), coupon.getId());
+        issuedCouponService.issue(member.getId(), coupon.getId());
 
         //then
-        assertThat(issueService.getIssuedCouponBy(member.getId()))
+        assertThat(issuedCouponService.getIssuedCouponBy(member.getId()))
                 .hasSize(5)
                 .allMatch(issuedCouponResponse -> issuedCouponResponse.couponResponse().id() == coupon.getId());
     }

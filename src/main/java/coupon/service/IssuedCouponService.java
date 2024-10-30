@@ -5,14 +5,13 @@ import coupon.domain.IssuedCoupon;
 import coupon.domain.Member;
 import coupon.dto.IssuedCouponResponse;
 import coupon.repository.IssuedCouponRepository;
-import coupon.repository.MemberRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class IssueService {
+public class IssuedCouponService {
 
     private static final int MAX_ISSUABLE_COUPON_SIZE = 5;
 
