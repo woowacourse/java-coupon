@@ -8,8 +8,8 @@ import coupon.domain.coupon.DiscountAmount;
 import coupon.domain.coupon.MemberCoupon;
 import java.time.LocalDateTime;
 
-public record MemberCouponsRequest(
-        CouponName name,
+public record MemberCouponsResponse(
+        CouponName couponName,
         DiscountAmount discountAmount,
         MinimumOrderAmount minimumOrderAmount,
         Category category,
@@ -18,11 +18,11 @@ public record MemberCouponsRequest(
         LocalDateTime expiredAt
 ) {
 
-    public static MemberCouponsRequest of(
+    public static MemberCouponsResponse of(
             Coupon coupon,
             MemberCoupon memberCoupon
     ) {
-        return new MemberCouponsRequest(
+        return new MemberCouponsResponse(
                 coupon.getName(),
                 coupon.getDiscountAmount(),
                 coupon.getMinimumOrderAmount(),

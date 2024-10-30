@@ -5,7 +5,7 @@ import coupon.domain.coupon.CouponRepository;
 import coupon.domain.coupon.MemberCoupon;
 import coupon.domain.coupon.MemberCouponRepository;
 import coupon.exception.CouponException;
-import coupon.service.coupon.dto.MemberCouponsRequest;
+import coupon.service.coupon.dto.MemberCouponsResponse;
 import coupon.support.CouponCache;
 import coupon.support.TransactionSupport;
 import java.time.LocalDateTime;
@@ -57,9 +57,7 @@ public class CouponService {
     @Transactional
     public MemberCoupon issue(Long memberId, Long couponId) {
         LocalDateTime issuedAt = LocalDateTime.now();
-        Coupon coupon = transactionSupport.executeNewTransaction(
-                () -> couponRepository.findById(couponId).orElseThrow(() -> new CouponException("존재하지 않는 쿠폰입니다."))
-        );
+        Coupon coupon = getCouponWriter(couponId);
 
         validateIssueCount(memberId, couponId);
 
@@ -75,13 +73,13 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemberCouponsRequest> getMemberCoupons(Long memberId) {
+    public List<MemberCouponsResponse> getMemberCoupons(Long memberId) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
         Map<Long, Coupon> coupons = getCoupons(memberCoupons);
 
         return memberCoupons.stream()
-                .map(memberCoupon -> MemberCouponsRequest.of(coupons.get(memberCoupon.getCouponId()), memberCoupon))
-                .collect(Collectors.toList());
+                .map(memberCoupon -> MemberCouponsResponse.of(coupons.get(memberCoupon.getCouponId()), memberCoupon))
+                .toList();
     }
 
     private Map<Long, Coupon> getCoupons(List<MemberCoupon> memberCoupons) {
