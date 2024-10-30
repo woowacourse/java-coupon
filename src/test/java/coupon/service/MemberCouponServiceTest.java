@@ -79,7 +79,8 @@ class MemberCouponServiceTest {
 
         assertThatThrownBy(() -> memberCouponService.create(memberCouponRequest))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(ExceptionMessage.OVER_FIVE_COUPON.getMessage());
+                .hasMessage(String.format(ExceptionMessage.OVER_FIVE_COUPON.getMessage(),
+                        MemberCouponService.MAX_MEMBER_COUPON_COUNT));
     }
 
     @DisplayName("쿠폰 발급 기간 외에는 쿠폰을 발급할 수 없다")
