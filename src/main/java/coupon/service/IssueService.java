@@ -40,7 +40,7 @@ public class IssueService {
         return issuedCoupons.stream()
                 .map(issuedCoupon -> IssuedCouponResponse.from(
                         couponService.getCoupon(issuedCoupon.getCouponId()),
-                        issuedCoupon.getMember()
+                        issuedCoupon
                 ))
                 .toList();
     }
