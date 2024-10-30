@@ -12,7 +12,8 @@ class CouponNameTest {
         String invalidName = "쿠".repeat(31);
 
         assertThatThrownBy(() -> new CouponName(invalidName))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("쿠폰 이름은 30자 이하여야 합니다.");
     }
 
     @Test

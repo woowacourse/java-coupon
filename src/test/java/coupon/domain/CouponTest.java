@@ -20,7 +20,8 @@ class CouponTest {
         DiscountAmount discountAmount = new DiscountAmount(discountValue);
         MinOrderAmount minOrderAmount = new MinOrderAmount(minOrderValue);
         assertThatThrownBy(() -> new Coupon(COUPON_NAME, discountAmount, minOrderAmount, Category.FOOD, ISSUABLE_PERIOD))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("할인율은 3% 이상 20% 이하여야 합니다.");
     }
 
     @Test

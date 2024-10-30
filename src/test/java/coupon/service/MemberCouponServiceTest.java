@@ -68,7 +68,8 @@ class MemberCouponServiceTest {
             }
 
             assertThatThrownBy(() -> memberCouponService.issue(coupon, member))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("회원별 최대 5장까지 발급이 가능합니다.");
         }
     }
 

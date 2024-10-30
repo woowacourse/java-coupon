@@ -13,6 +13,7 @@ class IssuablePeriodTest {
         LocalDateTime endTime = startTime.minusHours(1);
 
         assertThatThrownBy(() -> new IssuablePeriod(startTime, endTime))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("시작일이 종료일보다 이후일 수 없습니다.");
     }
 }
