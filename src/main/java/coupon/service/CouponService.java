@@ -12,7 +12,6 @@ import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
 import java.time.LocalDate;
-import java.util.List;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -76,15 +75,6 @@ public class CouponService {
     private Member getMember(long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버입니다."));
-    }
-
-
-    @Transactional(readOnly = true)
-    public List<MemberCouponResponse> getMemberCoupon(long memberId) {
-        return memberCouponRepository.findAllByMemberId(memberId)
-                .stream()
-                .map(this::toMemberCouponResponse)
-                .toList();
     }
 
     private MemberCouponResponse toMemberCouponResponse(MemberCoupon memberCoupon) {
