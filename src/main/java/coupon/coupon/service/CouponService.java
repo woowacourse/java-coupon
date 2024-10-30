@@ -1,5 +1,6 @@
 package coupon.coupon.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.cache.annotation.CachePut;
@@ -22,6 +23,14 @@ public class CouponService {
     @CachePut(value = CACHE_NAMES, key = "#result.id")
     public Coupon createWithCache(Coupon coupon) {
         return couponRepository.save(coupon);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Coupon> readAllByIdsFromReaderWithCache(List<Long> couponIds) {
+        return couponIds.stream()
+                .map(this::readByIdFromReaderWithCache)
+                .flatMap(Optional::stream)
+                .toList();
     }
 
     @Transactional(readOnly = true)

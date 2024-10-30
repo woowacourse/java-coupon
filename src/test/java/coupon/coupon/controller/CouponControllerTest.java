@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,8 +46,7 @@ public class CouponControllerTest {
         Coupon coupon2 = new Coupon(couponId2, "coupon_name_2", 1000L, 10000L, "FOOD", LocalDateTime.now(), LocalDateTime.now());
 
         when(memberCouponService.readAllByMemberId(memberId)).thenReturn(new MemberCoupons(List.of(memberCoupon1, memberCoupon2)));
-        when(couponService.readByIdFromReaderWithCache(couponId1)).thenReturn(Optional.of(coupon1));
-        when(couponService.readByIdFromReaderWithCache(couponId2)).thenReturn(Optional.of(coupon2));
+        when(couponService.readAllByIdsFromReaderWithCache(List.of(couponId1, couponId2))).thenReturn(List.of(coupon1, coupon2));
 
         mockMvc.perform(get("/coupons/member/{memberId}", memberId)
                         .contentType(MediaType.APPLICATION_JSON))

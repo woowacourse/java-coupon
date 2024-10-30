@@ -1,7 +1,6 @@
 package coupon.coupon.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import coupon.coupon.controller.dto.CouponResponse;
 import coupon.coupon.controller.dto.CouponResponses;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.service.CouponService;
@@ -35,10 +33,7 @@ public class CouponController {
 
     private CouponResponses getCouponsFromMemberCoupons(MemberCoupons memberCoupons) {
         List<Long> couponIds = memberCoupons.getCouponIds();
-        List<Coupon> coupons = couponIds.stream()
-                .map(couponService::readByIdFromReaderWithCache)
-                .flatMap(Optional::stream)
-                .toList();
+        List<Coupon> coupons = couponService.readAllByIdsFromReaderWithCache(couponIds);
 
         return CouponResponses.from(coupons);
     }
