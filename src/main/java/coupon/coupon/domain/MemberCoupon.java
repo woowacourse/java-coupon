@@ -30,4 +30,12 @@ public class MemberCoupon {
     private LocalDateTime issuedAt;
 
     private LocalDateTime expiresAt;
+
+    public MemberCoupon(long couponId, long memberId, boolean used, LocalDateTime issuedAt, LocalDateTime expiresAt) {
+        this.couponId = couponId;
+        this.memberId = memberId;
+        this.used = used;
+        this.issuedAt = issuedAt;
+        this.expiresAt = expiresAt;
+    }
 }
