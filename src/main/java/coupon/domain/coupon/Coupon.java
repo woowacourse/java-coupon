@@ -32,7 +32,7 @@ public class Coupon {
         this(null, name, discountPolicy, couponCategory, couponPeriod);
     }
 
-    private Coupon(
+    public Coupon(
             Long id,
             Name name,
             DiscountPolicy discountPolicy,
@@ -44,6 +44,10 @@ public class Coupon {
         this.discountPolicy = discountPolicy;
         this.couponCategory = couponCategory;
         this.couponPeriod = couponPeriod;
+    }
+
+    public boolean isIdOf(Long id) {
+        return this.id.equals(id);
     }
 
     public String getRawName() {

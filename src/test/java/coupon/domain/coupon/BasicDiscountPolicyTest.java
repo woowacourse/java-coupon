@@ -73,26 +73,4 @@ class BasicDiscountPolicyTest {
                 .hasMessage("최소 주문 금액은 5,000원 이상 100,000원 이하여야 합니다.");
     }
 
-    private static class TestDiscountPolicy extends BasicDiscountPolicy {
-
-        private final int discountMoney;
-
-        private final int minOrderMoney;
-
-        public TestDiscountPolicy(int discountMoney, int minOrderMoney) {
-            super(discountMoney, minOrderMoney);
-            this.discountMoney = discountMoney;
-            this.minOrderMoney = minOrderMoney;
-        }
-
-        @Override
-        public int getDiscountMoney() {
-            return discountMoney;
-        }
-
-        @Override
-        public int getMinOrderMoney() {
-            return minOrderMoney;
-        }
-    }
 }

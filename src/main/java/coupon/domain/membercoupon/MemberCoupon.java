@@ -1,16 +1,24 @@
 package coupon.domain.membercoupon;
 
+import coupon.domain.coupon.Coupon;
+import coupon.domain.member.Member;
+import coupon.infra.db.MemberCouponEntity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor
 public class MemberCoupon {
 
     private final Long id;
 
-    private final Long couponId;
+    private final Coupon coupon;
 
-    private final Long memberId;
+    private final Member member;
 
     private final boolean use;
 
@@ -18,13 +26,24 @@ public class MemberCoupon {
 
     private final LocalDate endDate;
 
-    public MemberCoupon(Long id, Long couponId, Long memberId, boolean use, LocalDate startDate, LocalDate endDate) {
-        this.id = id;
-        this.couponId = couponId;
-        this.memberId = memberId;
-        this.use = use;
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public MemberCoupon(Coupon coupon, Member member, boolean use, LocalDate startDate, LocalDate endDate) {
+        this(null, coupon, member, use, startDate, endDate);
+    }
+
+    public static MemberCoupon of(MemberCouponEntity entity, Coupon coupon, Member member) {
+
+        if (!member.isIdOf(entity.getMemberId()) || !coupon.isIdOf(entity.getCouponId())) {
+            throw new IllegalArgumentException("매개변수간 일관성이 지켜지지 않았습니다.");
+        }
+
+        return new MemberCoupon(
+                entity.getId(),
+                coupon,
+                member,
+                entity.isAlreadyUse(),
+                entity.getStartDate(),
+                entity.getEndDate()
+        );
     }
 
     public boolean isUsable(LocalDateTime base) {
@@ -37,5 +56,31 @@ public class MemberCoupon {
                 LocalTime.of(0, 0, 0, 0)
         );
         return !use && base.isAfter(startDateTimeExclude) && base.isBefore(endDateTimeExclude);
+    }
+
+    public Long getCouponId() {
+        return coupon.getId();
+    }
+
+    public Long getMemberId() {
+        return member.getId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        MemberCoupon that = (MemberCoupon) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
