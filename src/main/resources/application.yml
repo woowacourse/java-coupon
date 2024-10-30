@@ -38,3 +38,13 @@ coupon.datasource:
     username: root
     password: root
     maximumPoolSize: 10
+
+logging:
+  level:
+    org:
+      springframework:
+        cache: DEBUG
+        data:
+          redis:
+            cache: DEBUG
+
