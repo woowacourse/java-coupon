@@ -17,7 +17,7 @@ public class Coupon {
     private Long id;
 
     @Embedded
-    private Name name;
+    private CouponName name;
 
     @Embedded
     private DiscountAmount discountAmount;
@@ -32,7 +32,7 @@ public class Coupon {
     private Period period;
 
     public Coupon(String name, int discountAmount, int minOrderAmount, String category, LocalDate startDate, LocalDate endDate) {
-        this.name = new Name(name);
+        this.name = new CouponName(name);
         this.discountAmount = new DiscountAmount(discountAmount, minOrderAmount);
         this.minOrderAmount = new MinOrderAmount(minOrderAmount);
         this.category = Category.from(category);

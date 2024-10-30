@@ -8,13 +8,13 @@ import java.util.Objects;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Name {
+public class CouponName {
 
     private static final int MAX_LENGTH_OF_NAME = 30;
 
     private String name;
 
-    public Name(String name) {
+    public CouponName(String name) {
         validateName(name);
         this.name = name;
     }
@@ -36,7 +36,7 @@ public class Name {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Name name1 = (Name) o;
+        CouponName name1 = (CouponName) o;
         return Objects.equals(name, name1.name);
     }
 
