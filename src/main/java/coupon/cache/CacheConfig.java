@@ -36,7 +36,7 @@ public class CacheConfig {
         return RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(keySerializationPair)
                 .serializeValuesWith(valueSerializationPair)
-                .entryTtl(Duration.ofDays(1L))
+                .entryTtl(Duration.ofHours(1L))
                 .disableCachingNullValues();
     }
 
