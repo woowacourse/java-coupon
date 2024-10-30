@@ -15,10 +15,17 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
     private final WriterDbReader writerDbReader;
+    private final CouponCacheManager couponCacheManager;
 
     @Transactional
     public void create(Coupon coupon) {
         couponRepository.save(coupon);
+    }
+
+    @Transactional
+    public void update(Coupon coupon) {
+        couponRepository.save(coupon);
+        couponCacheManager.update(coupon);
     }
 
     public Coupon getCoupon(Long id) {

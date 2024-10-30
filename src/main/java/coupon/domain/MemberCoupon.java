@@ -59,4 +59,12 @@ public class MemberCoupon {
         LocalDate otherDate = time.toLocalDate();
         return endDate.isBefore(otherDate) || endDate.equals(otherDate);
     }
+
+    public void loadCoupon(Coupon coupon) {
+        this.coupon = coupon;
+    }
+
+    public Long getCouponId() {
+        return coupon.getId();
+    }
 }
