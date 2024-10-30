@@ -46,7 +46,10 @@ public class DataSourceConfig {
     }
 
     private Map<Object, Object> getDataSourceMap(DataSource writeDataSource, DataSource readDataSource) {
-        return Map.of(WRITE, writeDataSource, READ, readDataSource);
+        return Map.of(
+                WRITE, writeDataSource,
+                READ, readDataSource
+        );
     }
 
     @Bean
