@@ -2,7 +2,6 @@ package coupon.coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponCategory;
@@ -96,6 +95,8 @@ class MemberCouponServiceTest {
     void readMemberCoupons() {
         // given
         Member member = new Member("사용자");
+        Member anotherMember = new Member("다른사용자");
+
         Coupon coupon = new Coupon(
                 "쿠폰",
                 CouponCategory.FASHION,
@@ -110,6 +111,9 @@ class MemberCouponServiceTest {
 
         MemberCoupon memberCoupon = new MemberCoupon(savedMember, savedCoupon, LocalDateTime.now().plusDays(5L));
         memberCouponService.issueMemberCoupon(memberCoupon);
+
+        MemberCoupon anotherMemberCoupon = new MemberCoupon(anotherMember, savedCoupon, LocalDateTime.now().plusDays(5L));
+        memberCouponService.issueMemberCoupon(anotherMemberCoupon);
 
         // when
         List<MemberCouponResponse> memberCoupons = memberCouponService.readMemberCoupons(member);
