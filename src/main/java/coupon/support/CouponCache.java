@@ -1,24 +1,21 @@
 package coupon.support;
 
 import coupon.domain.coupon.Coupon;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import lombok.AllArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class CouponCache {
 
-    private final Map<Long, Coupon> cache = new ConcurrentHashMap<>();
+    private final RedisTemplate<String, Coupon> redisTemplate;
 
-    public Coupon getCoupon(Long id) {
-        return cache.get(id);
+    public Coupon get(Long couponId) {
+        return redisTemplate.opsForValue().get(String.valueOf(couponId));
     }
 
-    public void putCoupon(Long id, Coupon coupon) {
-        cache.put(id, coupon);
-    }
-
-    public void removeCoupon(Long id) {
-        cache.remove(id);
+    public void put(Long couponId, Coupon coupon) {
+        redisTemplate.opsForValue().set(String.valueOf(couponId), coupon);
     }
 }

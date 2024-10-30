@@ -11,7 +11,6 @@ import coupon.support.TransactionSupport;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -30,21 +29,24 @@ public class CouponService {
     private final TransactionSupport transactionSupport;
 
     @Transactional
-    public void create(Coupon coupon) {
-        couponRepository.save(coupon);
-        couponCache.putCoupon(coupon.getId(), coupon);
+    public Coupon create(Coupon coupon) {
+        Coupon saved = couponRepository.save(coupon);
+        couponCache.put(saved.getId(), saved);
+        return saved;
     }
 
     @Transactional(readOnly = true)
     public Coupon getCoupon(Long id) {
-        Coupon cachedCoupon = couponCache.getCoupon(id);
+        Coupon cachedCoupon = couponCache.get(id);
         if (cachedCoupon != null) {
             return cachedCoupon;
         }
 
         Coupon coupon = couponRepository.findById(id)
                 .orElseGet(() -> getCouponWriter(id));
-        couponCache.putCoupon(id, coupon);
+        if (coupon != null) {
+            couponCache.put(id, coupon);
+        }
         return coupon;
     }
 
@@ -75,20 +77,25 @@ public class CouponService {
     @Transactional(readOnly = true)
     public List<MemberCouponsResponse> getMemberCoupons(Long memberId) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
-        Map<Long, Coupon> coupons = getCoupons(memberCoupons);
+        if (memberCoupons.isEmpty()) {
+            memberCoupons = getMemberCouponWriter(memberId);
+        }
 
+        Map<Long, Coupon> coupons = getCoupons(memberCoupons);
         return memberCoupons.stream()
                 .map(memberCoupon -> MemberCouponsResponse.of(coupons.get(memberCoupon.getCouponId()), memberCoupon))
                 .toList();
+    }
+
+    private List<MemberCoupon> getMemberCouponWriter(Long memberId) {
+        return transactionSupport.executeNewTransaction(() -> memberCouponRepository.findAllByMemberId(memberId));
     }
 
     private Map<Long, Coupon> getCoupons(List<MemberCoupon> memberCoupons) {
         return memberCoupons.stream()
                 .map(MemberCoupon::getCouponId)
                 .distinct()
-                .map(couponRepository::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .map(this::getCoupon)
                 .collect(Collectors.toMap(Coupon::getId, Function.identity()));
     }
 }
