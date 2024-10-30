@@ -23,9 +23,9 @@ public class MemberCouponService {
     }
 
     private void validateIssuedMemberCouponCount(MemberCoupon memberCoupon) {
-        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByCouponAndMember(
-                memberCoupon.getCoupon(),
-                memberCoupon.getMember()
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByCouponIdAndMemberId(
+                memberCoupon.getCouponId(),
+                memberCoupon.getMemberId()
         );
 
         if (memberCoupons.size() >= 5) {
@@ -35,10 +35,10 @@ public class MemberCouponService {
 
     @Transactional(readOnly = true)
     public List<MemberCouponResponse> readMemberCoupons(Member member) {
-        return memberCouponRepository.findAllByMember(member).stream()
+        return memberCouponRepository.findAllByMemberId(member.getId()).stream()
                 .map(memberCoupon -> MemberCouponResponse.from(
                                 memberCoupon,
-                                couponService.readCoupon(memberCoupon.getCoupon().getId())
+                                couponService.readCoupon(memberCoupon.getCouponId())
                         )
                 ).toList();
     }
