@@ -45,7 +45,7 @@ public class CouponControllerTest {
         Coupon coupon1 = new Coupon(couponId1, "coupon_name_1", 1000L, 10000L, "FOOD", LocalDateTime.now(), LocalDateTime.now());
         Coupon coupon2 = new Coupon(couponId2, "coupon_name_2", 1000L, 10000L, "FOOD", LocalDateTime.now(), LocalDateTime.now());
 
-        when(memberCouponService.readAllByMemberId(memberId)).thenReturn(new MemberCoupons(List.of(memberCoupon1, memberCoupon2)));
+        when(memberCouponService.readAllByMemberId(memberId)).thenReturn(List.of(memberCoupon1, memberCoupon2));
         when(couponService.readAllByIdsFromReaderWithCache(List.of(couponId1, couponId2))).thenReturn(List.of(coupon1, coupon2));
 
         mockMvc.perform(get("/coupons/member/{memberId}", memberId)

@@ -1,11 +1,14 @@
 package coupon.membercoupon.service;
 
+import java.util.List;
+
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import coupon.coupon.service.CouponService;
 import coupon.member.service.MemberService;
+import coupon.membercoupon.controller.dto.MemberCouponResponses;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.domain.MemberCoupons;
 import coupon.membercoupon.respository.MemberCouponRepository;
@@ -49,7 +52,7 @@ public class MemberCouponService {
 
     @Transactional
     @Cacheable(value = CACHE_NAMES, key = "#memberId")
-    public MemberCoupons readAllByMemberId(Long memberId) {
-        return new MemberCoupons(memberCouponRepository.findAllByMemberId(memberId));
+    public List<MemberCoupon> readAllByMemberId(Long memberId) {
+        return memberCouponRepository.findAllByMemberId(memberId);
     }
 }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,7 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.service.CouponService;
 import coupon.member.domain.Member;
 import coupon.member.service.MemberService;
+import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.domain.MemberCoupons;
 
 @SpringBootTest
@@ -81,9 +83,9 @@ public class MemberCouponServiceTest {
         memberCouponService.create(anotherMember.getId(), coupon.getId());
 
         // when
-        MemberCoupons memberCoupons = memberCouponService.readAllByMemberId(member.getId());
+        List<MemberCoupon> memberCoupons = memberCouponService.readAllByMemberId(member.getId());
 
         // then
-        assertThat(memberCoupons.getMemberCoupons()).hasSize(1);
+        assertThat(memberCoupons).hasSize(1);
     }
 }
