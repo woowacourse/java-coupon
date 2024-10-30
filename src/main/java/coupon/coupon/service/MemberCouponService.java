@@ -43,7 +43,7 @@ public class MemberCouponService {
         int memberCouponCount = memberCouponRepository.countByCouponIdAndMemberId(
                 memberCouponRequest.couponId(), memberCouponRequest.memberId());
         if (memberCouponCount >= MAX_MEMBER_COUPON_COUNT) {
-            throw new IllegalArgumentException(String.format(ExceptionMessage.OVER_FIVE_COUPON.getMessage(),
+            throw new IllegalArgumentException(String.format(ExceptionMessage.OVER_COUPON_MAX_COUNT.getMessage(),
                     MAX_MEMBER_COUPON_COUNT));
         }
     }

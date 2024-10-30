@@ -79,7 +79,7 @@ class MemberCouponServiceTest {
 
         assertThatThrownBy(() -> memberCouponService.create(memberCouponRequest))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(String.format(ExceptionMessage.OVER_FIVE_COUPON.getMessage(),
+                .hasMessage(String.format(ExceptionMessage.OVER_COUPON_MAX_COUNT.getMessage(),
                         MemberCouponService.MAX_MEMBER_COUPON_COUNT));
     }
 
