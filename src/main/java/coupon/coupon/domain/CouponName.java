@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class CouponName {
 
-    public static final int MAX_NAME_LENGTH = 30;
+    static final int MAX_NAME_LENGTH = 30;
 
     private final String name;
 

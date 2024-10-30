@@ -3,7 +3,6 @@ package coupon.coupon.entity;
 import coupon.BaseEntity;
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.domain.CouponName;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,7 @@ public class CouponEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = CouponName.MAX_NAME_LENGTH)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "discount_amount", nullable = false)
