@@ -28,13 +28,13 @@ public class MemberCouponWriter {
         Coupon coupon = couponEntity.toDomain();
         AvailablePeriod availablePeriod = new AvailablePeriod(coupon.getIssuedPeriod());
         MemberCoupon memberCoupon = new MemberCoupon(true, availablePeriod);
-        MemberCouponEntity newMemberCoupon = new MemberCouponEntity(couponId, memberEntity, memberCoupon);
+        MemberCouponEntity newMemberCoupon = new MemberCouponEntity(couponId, memberEntity.getId(), memberCoupon);
         MemberCouponEntity savedMemberCoupon = memberCouponRepository.save(newMemberCoupon);
         return savedMemberCoupon.getCouponId();
     }
 
     private void validateCanIssuable(MemberEntity memberEntity) {
-        int issuedCount = memberCouponRepository.findByMemberEntity(memberEntity).size();
+        int issuedCount = memberCouponRepository.findAllByMemberId(memberEntity.getId()).size();
         if (issuedCount >= MAX_AVAILABLE_COUNT) {
             throw new RuntimeException("쿠폰의 최대 발급 개수를 넘었습니다. [%d]".formatted(MAX_AVAILABLE_COUNT));
         }

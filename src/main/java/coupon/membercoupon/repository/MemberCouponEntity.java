@@ -1,13 +1,11 @@
 package coupon.membercoupon.repository;
 
-import coupon.member.repository.MemberEntity;
 import coupon.membercoupon.domain.MemberCoupon;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -29,8 +27,8 @@ public class MemberCouponEntity {
     @Column(name = "coupon_id", nullable = false)
     private Long couponId;
 
-    @ManyToOne(optional = false)
-    private MemberEntity memberEntity;
+    @Column(name = "memberEntity_id", nullable = false)
+    private Long memberId;
 
     @Column(name = "available", nullable = false)
     private Boolean available;
@@ -41,8 +39,8 @@ public class MemberCouponEntity {
     @Column(name = "end", nullable = false)
     private LocalDateTime end;
 
-    public MemberCouponEntity(Long couponId, MemberEntity memberEntity, MemberCoupon memberCoupon) {
-        this(null, couponId, memberEntity, memberCoupon.isAvailable(), memberCoupon.getAvailableStartDate(),
+    public MemberCouponEntity(Long couponId, Long memberId, MemberCoupon memberCoupon) {
+        this(null, couponId, memberId, memberCoupon.isAvailable(), memberCoupon.getAvailableStartDate(),
                 memberCoupon.getAvailableEndDate());
     }
 }

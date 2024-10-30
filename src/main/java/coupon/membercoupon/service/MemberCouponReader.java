@@ -22,7 +22,7 @@ public class MemberCouponReader {
     @Transactional(readOnly = true)
     public List<MemberCouponResponse> findByMember(MemberEntity memberEntity) {
         List<MemberCouponEntity> memberCouponEntities = dataAccessSupporter.executeWriteDataBase(
-                () -> memberCouponRepository.findByMemberEntity(memberEntity));
+                () -> memberCouponRepository.findAllByMemberId(memberEntity.getId()));
         return memberCouponEntities.stream()
                 .map(memberCoupon ->
                         new MemberCouponResponse(couponReader.findById(memberCoupon.getCouponId()), memberCoupon))
