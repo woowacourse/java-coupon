@@ -46,6 +46,10 @@ services:
     networks:
       coupon_dock_net:
         ipv4_address: 172.20.0.20
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+
 
 networks:
   coupon_dock_net:
