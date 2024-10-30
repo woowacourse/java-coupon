@@ -11,6 +11,9 @@ public final class MemberCouponCache {
 
     private static final Map<Long, List<MemberCoupon>> CACHED_MEMBER_COUPONS = new HashMap<>();
 
+    private MemberCouponCache() {
+    }
+
     public static void add(Long memberId, MemberCoupon memberCoupon) {
         List<MemberCoupon> memberCoupons = CACHED_MEMBER_COUPONS.getOrDefault(memberId, new ArrayList<>());
         memberCoupons.add(memberCoupon);
