@@ -1,6 +1,7 @@
 package coupon.domain;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@EqualsAndHashCode
 public class Coupon {
 
 	private  static final int MAX_NAME_LENGTH = 30;
