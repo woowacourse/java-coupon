@@ -1,7 +1,7 @@
 package coupon.service;
 
 import coupon.domain.Member;
-import coupon.service.writer.MemberWriterService;
+import coupon.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,11 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberService {
 
-    private final MemberWriterService writerService;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public Member createMember(String name) {
         final Member member = new Member(name);
-        return writerService.create(member);
+        return memberRepository.save(member);
     }
 }
