@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class IssueService {
 
     private static final int MAX_ISSUABLE_COUPON_SIZE = 5;
+
     private final MemberService memberService;
     private final IssuedCouponRepository issuedCouponRepository;
     private final CouponService couponService;
