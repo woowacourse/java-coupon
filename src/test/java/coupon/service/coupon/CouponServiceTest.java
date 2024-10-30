@@ -9,14 +9,11 @@ import coupon.domain.coupon.MemberCoupon;
 import coupon.exception.CouponException;
 import coupon.service.coupon.dto.MemberCouponsResponse;
 import java.util.List;
-import java.util.Set;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -26,19 +23,8 @@ public class CouponServiceTest {
     @Autowired
     private CouponService couponService;
 
-    @Autowired
-    private RedisTemplate<String, Coupon> redisTemplate;
-
     @Value("${coupon.cache.prefix}")
     private String couponKeyPrefix;
-
-    @AfterEach
-    void tearDown() {
-        Set<String> keys = redisTemplate.keys(couponKeyPrefix + "*");
-        if (keys != null && !keys.isEmpty()) {
-            redisTemplate.delete(keys);
-        }
-    }
 
     @Test
     void replicationLagTest() {

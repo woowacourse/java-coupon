@@ -3,21 +3,20 @@ package coupon.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import coupon.domain.coupon.Coupon;
 import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @EnableCaching
@@ -33,6 +32,9 @@ public class CouponRedisConfig {
 
     @Value("${coupon.cache.prefix}")
     private String couponKeyPrefix;
+
+    @Value("${coupon.cache.ttl-second}")
+    private int ttlSecond;
 
     @Bean
     public LettuceConnectionFactory connectionFactory() {
@@ -58,21 +60,21 @@ public class CouponRedisConfig {
         return new GenericJackson2JsonRedisSerializer(objectMapper);
     }
 
-    @Bean
-    public RedisTemplate<String, Coupon> redisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, Coupon> template = new RedisTemplate<>();
-        template.setConnectionFactory(connectionFactory);
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(couponJackson2JsonRedisSerializer());
-        return template;
-    }
 
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofHours(1))
+                .entryTtl(Duration.ofSeconds(ttlSecond))
                 .serializeValuesWith(SerializationPair.fromSerializer(couponJackson2JsonRedisSerializer()))
                 .prefixCacheNameWith(couponKeyPrefix + KEY_SEPARATOR)
                 .disableCachingNullValues();
+    }
+
+    @Bean
+    public CacheManager cacheManager(RedisConnectionFactory connectionFactory,
+                                     RedisCacheConfiguration cacheConfiguration) {
+        return RedisCacheManager.builder(connectionFactory)
+                .cacheDefaults(cacheConfiguration)
+                .build();
     }
 }

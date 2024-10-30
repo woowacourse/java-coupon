@@ -11,4 +11,5 @@ coupon:
     reader:
       jdbcUrl: jdbc:mysql://localhost:33307/test?characterEncoding=UTF-8&serverTimezone=UTC
   cache:
-    prefix: test:coupon
+    prefix: test
+    ttl-second: 30

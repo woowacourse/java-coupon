@@ -6,7 +6,6 @@ import coupon.domain.coupon.MemberCoupon;
 import coupon.domain.coupon.MemberCouponRepository;
 import coupon.exception.CouponException;
 import coupon.service.coupon.dto.MemberCouponsResponse;
-import coupon.support.CouponCache;
 import coupon.support.TransactionSupport;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +13,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,25 +26,19 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponCache couponCache;
     private final TransactionSupport transactionSupport;
 
     @Transactional
+    @CachePut(value = "coupon", key = "#coupon.id")
     public Coupon create(Coupon coupon) {
         return couponRepository.save(coupon);
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "coupon", key = "#id")
     public Coupon getCoupon(Long id) {
-        Coupon cachedCoupon = couponCache.get(id);
-        if (cachedCoupon != null) {
-            return cachedCoupon;
-        }
-
-        Coupon coupon = couponRepository.findById(id)
+        return couponRepository.findById(id)
                 .orElseGet(() -> getCouponWriter(id));
-        couponCache.put(id, coupon);
-        return coupon;
     }
 
     private Coupon getCouponWriter(Long id) {

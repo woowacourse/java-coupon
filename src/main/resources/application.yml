@@ -40,3 +40,4 @@ coupon:
       maximumPoolSize: 10
   cache:
     prefix: coupon
+    ttl-second: 3600
