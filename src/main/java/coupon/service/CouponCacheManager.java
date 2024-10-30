@@ -18,6 +18,11 @@ public class CouponCacheManager {
     private final CouponRepository couponRepository;
     private final CachedCouponRepository cachedCouponRepository;
 
+    public void update(Coupon coupon) {
+        cachedCouponRepository.findById(coupon.getId())
+                .ifPresent(cachedCoupon -> cachedCouponRepository.save(new CachedCoupon(coupon)));
+    }
+
     public List<Coupon> finAllByIds(Set<Long> couponIds) {
         List<Coupon> cachedCoupons = findCachedCoupons(couponIds);
 
