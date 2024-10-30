@@ -1,6 +1,5 @@
 package coupon.coupon.domain;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -33,7 +32,6 @@ public class Coupon {
     @Embedded
     private MinimumOrderAmount minimumOrderAmount;
 
-    @Column
     @Enumerated(EnumType.STRING)
     private Category category;
 
@@ -78,16 +76,11 @@ public class Coupon {
             return false;
         }
         Coupon coupon = (Coupon) o;
-        return Objects.equals(id, coupon.id)
-                && Objects.equals(couponName, coupon.couponName)
-                && Objects.equals(discountAmount, coupon.discountAmount)
-                && Objects.equals(minimumOrderAmount, coupon.minimumOrderAmount)
-                && category == coupon.category
-                && Objects.equals(issuablePeriod, coupon.issuablePeriod);
+        return Objects.equals(id, coupon.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, couponName, discountAmount, minimumOrderAmount, category, issuablePeriod);
+        return Objects.hash(id);
     }
 }
