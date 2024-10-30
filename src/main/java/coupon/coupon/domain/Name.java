@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class Name {
 
+    private static final int MAX_SIZE = 30;
+
     @Column(length = 30, nullable = false)
     private String name;
 
@@ -19,8 +21,8 @@ public class Name {
     }
 
     private void validate(String name) {
-        if(name.isBlank()){
-            throw new IllegalArgumentException("Name cannot be blank");
+        if (name.isBlank() || name.length() > MAX_SIZE) {
+            throw new IllegalArgumentException("invalid name: " + name);
         }
     }
 }
