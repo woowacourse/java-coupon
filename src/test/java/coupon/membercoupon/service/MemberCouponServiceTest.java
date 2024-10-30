@@ -17,7 +17,6 @@ import coupon.coupon.service.CouponService;
 import coupon.member.domain.Member;
 import coupon.member.service.MemberService;
 import coupon.membercoupon.domain.MemberCoupon;
-import coupon.membercoupon.domain.MemberCoupons;
 
 @SpringBootTest
 public class MemberCouponServiceTest {

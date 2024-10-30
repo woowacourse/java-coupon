@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import coupon.coupon.service.CouponService;
 import coupon.member.service.MemberService;
-import coupon.membercoupon.controller.dto.MemberCouponResponses;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.domain.MemberCoupons;
 import coupon.membercoupon.respository.MemberCouponRepository;
