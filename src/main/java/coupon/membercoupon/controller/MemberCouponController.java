@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import coupon.membercoupon.controller.dto.MemberCouponResponse;
 import coupon.membercoupon.controller.dto.MemberCouponResponses;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.service.MemberCouponService;
@@ -24,12 +23,6 @@ public class MemberCouponController {
     @GetMapping("/member/{memberId}")
     public ResponseEntity<MemberCouponResponses> getMemberCouponsByMemberId(@PathVariable Long memberId) {
         List<MemberCoupon> memberCoupons = memberCouponService.readAllByMemberId(memberId);
-        return ResponseEntity.ok(getMemberCouponResponses(memberCoupons));
-    }
-
-    private MemberCouponResponses getMemberCouponResponses(List<MemberCoupon> memberCoupons) {
-        return new MemberCouponResponses(memberCoupons.stream()
-                .map(MemberCouponResponse::new)
-                .toList());
+        return ResponseEntity.ok(MemberCouponResponses.from(memberCoupons));
     }
 }
