@@ -1,4 +1,10 @@
 spring:
+  cache:
+    type: redis
+    redis:
+      time-to-live: 360000
+      host: localhost
+      port: 36379
   jpa:
     hibernate:
       naming:
@@ -6,13 +12,13 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
         default_batch_fetch_size: 128
         id.new_generator_mappings: true
         format_sql: true
         show_sql: false
         use_sql_comments: true
-        hbm2ddl.auto: create
+        hbm2ddl.auto: update
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false

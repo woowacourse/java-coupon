@@ -1,8 +1,8 @@
 package coupon.domain.member_coupon;
 
 import coupon.domain.coupon.Coupon;
-import coupon.domain.member.Member;
 import coupon.exception.CouponIssueDateException;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -11,10 +11,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class MemberCoupon {
     private static final int DEFAULT_USING_PERIOD = 6;
 
@@ -22,9 +24,8 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Member member;
+    @Column(name = "member_id")
+    private long memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coupon_id")
@@ -36,21 +37,29 @@ public class MemberCoupon {
 
     private LocalDate expiredAt;
 
-    public static MemberCoupon issue(Member member, Coupon coupon) {
+    public static MemberCoupon issue(long mebmerId, Coupon coupon) {
         LocalDate issuedAt = LocalDate.now();
-        if(!coupon.issueAvailable(issuedAt)) {
+        if (!coupon.issueAvailable(issuedAt)) {
             throw new CouponIssueDateException();
         }
 
         LocalDate expiredAt = issuedAt.plusDays(DEFAULT_USING_PERIOD);
-        return new MemberCoupon(member, coupon, false, issuedAt, expiredAt);
+        return new MemberCoupon(mebmerId, coupon, false, issuedAt, expiredAt);
     }
 
-    public MemberCoupon(Member member, Coupon coupon, boolean isUsed, LocalDate issuedAt, LocalDate expiredAt) {
-        this.member = member;
+    public MemberCoupon(long memberId, Coupon coupon, boolean isUsed, LocalDate issuedAt, LocalDate expiredAt) {
+        this.memberId = memberId;
         this.coupon = coupon;
         this.isUsed = isUsed;
         this.issuedAt = issuedAt;
         this.expiredAt = expiredAt;
+    }
+
+    public String getCouponName() {
+        return coupon.getCouponName();
+    }
+
+    public long getCouponId() {
+        return coupon.getId();
     }
 }

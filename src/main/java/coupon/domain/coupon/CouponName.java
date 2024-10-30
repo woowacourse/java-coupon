@@ -2,8 +2,10 @@ package coupon.domain.coupon;
 
 import coupon.exception.CouponNameValidationException;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 @Embeddable
+@Getter
 public class CouponName {
     public static final int MAX_LENGTH = 30;
 

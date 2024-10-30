@@ -1,5 +1,6 @@
 package coupon.service.coupon;
 
+import coupon.config.cache.RedisKey;
 import coupon.domain.coupon.Category;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.discount.DiscountPolicy;
@@ -7,6 +8,7 @@ import coupon.domain.coupon.discount.DiscountType;
 import coupon.domain.coupon.repository.CouponRepository;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponService {
 
     private final CouponRepository couponRepository;
+    private final RedisTemplate redisTemplate;
 
     @Transactional
     public Coupon createCoupon(String name, int discountPrice, int minOrderPrice,
@@ -23,7 +26,11 @@ public class CouponService {
         Coupon coupon = new Coupon(name, discountType, minDiscountRange, maxDiscountRange, discountPrice, minOrderPrice, category, issueStartDate,
                 issueEndDate);
 
-        return couponRepository.save(coupon);
+        Coupon savedCoupon = couponRepository.save(coupon);
+        String couponKey = RedisKey.COUPON.getKey(savedCoupon.getId());
+        redisTemplate.opsForValue().set(couponKey, savedCoupon);
+
+        return savedCoupon;
     }
 
     /**
