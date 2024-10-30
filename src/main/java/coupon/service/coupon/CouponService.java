@@ -30,9 +30,7 @@ public class CouponService {
 
     @Transactional
     public Coupon create(Coupon coupon) {
-        Coupon saved = couponRepository.save(coupon);
-        couponCache.put(saved.getId(), saved);
-        return saved;
+        return couponRepository.save(coupon);
     }
 
     @Transactional(readOnly = true)
@@ -44,9 +42,7 @@ public class CouponService {
 
         Coupon coupon = couponRepository.findById(id)
                 .orElseGet(() -> getCouponWriter(id));
-        if (coupon != null) {
-            couponCache.put(id, coupon);
-        }
+        couponCache.put(id, coupon);
         return coupon;
     }
 
