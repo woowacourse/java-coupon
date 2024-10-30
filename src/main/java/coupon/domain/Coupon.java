@@ -153,9 +153,8 @@ public class Coupon {
         }
     }
 
-    public boolean canIssue() {
-        LocalDate now = LocalDate.now();
-        return now.isAfter(startIssueDate) && now.isBefore(endIssueDate);
+    public boolean canIssue(LocalDate issueDate) {
+        return issueDate.isAfter(startIssueDate) && issueDate.isBefore(endIssueDate);
     }
 
     public Long getId() {

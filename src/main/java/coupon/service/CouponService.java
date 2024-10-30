@@ -12,6 +12,7 @@ import coupon.repository.CategoryRepository;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -59,7 +60,7 @@ public class CouponService {
     }
 
     private void validate(Coupon coupon, Member member) {
-        if (!coupon.canIssue()) {
+        if (!coupon.canIssue(LocalDate.now())) {
             throw new IllegalArgumentException("쿠폰을 발급할 수 있는 기간이 아닙니다.");
         }
 
