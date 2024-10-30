@@ -1,7 +1,6 @@
 package coupon.membercoupon.domain;
 
 import coupon.coupon.domain.Coupon;
-import coupon.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -24,9 +23,8 @@ public class MemberCoupon {
     @JoinColumn(name = "coupon_id")
     private Coupon coupon;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private long memberId;
 
     @Enumerated(value = EnumType.STRING)
     private UsageStatus usageStatus;
@@ -34,9 +32,9 @@ public class MemberCoupon {
     @Embedded
     private UsablePeriod usablePeriod;
 
-    public MemberCoupon(Coupon coupon, Member member, LocalDate issuanceDate) {
+    public MemberCoupon(Coupon coupon, long memberId, LocalDate issuanceDate) {
         this.coupon = coupon;
-        this.member = member;
+        this.memberId = memberId;
         this.usageStatus = UsageStatus.NON_USE;
         this.usablePeriod = new UsablePeriod(issuanceDate);
     }
