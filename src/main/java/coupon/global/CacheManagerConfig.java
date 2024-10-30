@@ -24,7 +24,7 @@ import java.time.Duration;
 @EnableCaching
 public class CacheManagerConfig {
 
-    private static final Duration CACHE_TTL = Duration.ofDays(7);
+    private static final Duration CACHE_TTL = Duration.ofDays(1);
 
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
