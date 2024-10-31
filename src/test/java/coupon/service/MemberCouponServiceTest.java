@@ -78,7 +78,7 @@ public class MemberCouponServiceTest {
         MemberCouponResponse memberCouponResponse = memberCouponResponses.get(0);
 
         assertAll(
-                () -> assertThat(memberCouponResponse.memberCoupon().getMember()).isEqualTo(member),
+                () -> assertThat(memberCouponResponse.memberCoupon().getMemberId()).isEqualTo(member.getId()),
                 () -> assertThat(memberCouponResponse.coupon().getId()).isEqualTo(coupon.getId())
         );
     }

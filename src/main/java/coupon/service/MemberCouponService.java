@@ -1,6 +1,5 @@
 package coupon.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -28,16 +27,12 @@ public class MemberCouponService {
     @Transactional
     public void create(Member member, long couponId) {
         validate(member, couponId);
-        MemberCoupon memberCoupon = new MemberCoupon(couponId,
-                false,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMonths(1),
-                member);
+        MemberCoupon memberCoupon = new MemberCoupon(couponId, member.getId());
         memberCouponRepository.save(memberCoupon);
     }
 
     private void validate(Member member, long couponId) {
-        if (memberCouponRepository.countByMemberAndCouponId(member, couponId) >= COUPON_LIMIT) {
+        if (memberCouponRepository.countByMemberIdAndCouponId(member.getId(), couponId) >= COUPON_LIMIT) {
             throw new IllegalArgumentException(String.format("발급 가능한 수량은 최대 %d 개 입니다", COUPON_LIMIT));
         }
     }

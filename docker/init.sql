@@ -18,10 +18,8 @@ CREATE TABLE coupon (
 CREATE TABLE membercoupon (
                               id BIGINT AUTO_INCREMENT PRIMARY KEY,
                               coupon_id BIGINT NOT NULL,
+                              member_id BIGINT NOT NULL,
                               is_used BOOLEAN NOT NULL,
                               created_at DATETIME(6) NOT NULL,
-                              expired_at DATETIME(6) NOT NULL,
-                              member_id BIGINT NOT NULL,
-                              FOREIGN KEY (member_id) REFERENCES member(id)
+                              expired_at DATETIME(6) NOT NULL
 );
-
