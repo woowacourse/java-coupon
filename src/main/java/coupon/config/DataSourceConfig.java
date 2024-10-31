@@ -1,9 +1,7 @@
 package coupon.config;
 
 import com.zaxxer.hikari.HikariDataSource;
-import java.util.HashMap;
-import java.util.Map;
-import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +10,10 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "coupon")
@@ -35,9 +37,10 @@ public class DataSourceConfig {
 
     @Bean(name = ROUTING_DATA_SOURCE)
     @DependsOn({WRITER_DATA_SOURCE, READER_DATA_SOURCE})
-    public DataSource routingDataSource() {
-        DataSource writerDataSource = writerDataSource();
-        DataSource readerDataSource = readerDataSource();
+    public DataSource routingDataSource(
+            @Qualifier(WRITER_DATA_SOURCE) DataSource writerDataSource,
+            @Qualifier(READER_DATA_SOURCE) DataSource readerDataSource
+    ) {
         Map<Object, Object> dataSources = new HashMap<>();
         dataSources.put(DataSourceType.WRITER, writerDataSource);
         dataSources.put(DataSourceType.READER, readerDataSource);
@@ -50,7 +53,7 @@ public class DataSourceConfig {
     @Bean
     @Primary
     @DependsOn(ROUTING_DATA_SOURCE)
-    public DataSource dataSource() {
-        return new LazyConnectionDataSourceProxy(routingDataSource());
+    public DataSource dataSource(@Qualifier(ROUTING_DATA_SOURCE) DataSource routingDataSource) {
+        return new LazyConnectionDataSourceProxy(routingDataSource);
     }
 }

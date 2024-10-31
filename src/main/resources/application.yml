@@ -16,19 +16,25 @@ spring:
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
+  data:
+    redis:
+      host: localhost
+      port: 36379
+  cache:
+    type: redis
 
 coupon.datasource:
   writer:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    jdbc-url: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
     username: root
     password: root
     maximum-pool-size: 10
   reader:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://localhost:33307/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    jdbc-url: jdbc:mysql://localhost:33307/coupon?characterEncoding=UTF-8&serverTimezone=UTC&useSSL=false
     username: root
     password: root
     maximum-pool-size: 10
