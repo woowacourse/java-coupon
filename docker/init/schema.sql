@@ -22,12 +22,9 @@ CREATE TABLE IF NOT EXISTS coupon
 CREATE TABLE IF NOT EXISTS member_coupon
 (
     id         BIGINT   NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    coupon_id  BIGINT   NOT NULL,
     member_id  BIGINT   NOT NULL,
-    isUsed     BOOLEAN  NOT NULL,
+    coupon_id  BIGINT   NOT NULL,
+    used       BOOLEAN  NOT NULL,
     issued_at  DATETIME NOT NULL,
-    expired_at DATETIME NOT NULL,
-
-    FOREIGN KEY (coupon_id) REFERENCES coupon (id) ON DELETE CASCADE,
-    FOREIGN KEY (member_id) REFERENCES member (id) ON DELETE CASCADE
+    expired_at DATETIME NOT NULL
 ) ENGINE = InnoDB;

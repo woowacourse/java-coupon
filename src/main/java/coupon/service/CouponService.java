@@ -4,6 +4,7 @@ import coupon.domain.coupon.Coupon;
 import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import java.util.Optional;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "coupons", key = "#couponId")
     public Coupon getCoupon(Long couponId) {
         return findCoupon(couponId).orElseGet(() -> routingMasterTemplate.apply(
                 () -> findCoupon(couponId).orElseThrow(() -> new CouponException("존재하지 않는 쿠폰입니다."))));
