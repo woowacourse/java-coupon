@@ -19,20 +19,19 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Coupon coupon;
+    private Long couponId;
 
     @ManyToOne
     private Member member;
 
     private boolean used;
-//회원에게 발급된 쿠폰은 발급일 포함 7일 동안 사용 가능하다. 만료 일의 23:59:59.999999 까지 사용할 수 있다.
+
     private LocalDateTime issuedAt;
 
     private LocalDateTime expiredAt;
 
-    public MemberCoupon(Coupon coupon, Member member, boolean used, LocalDateTime issuedAt, LocalDateTime expiredAt) {
-        this.coupon = coupon;
+    public MemberCoupon(Long couponId, Member member, boolean used, LocalDateTime issuedAt, LocalDateTime expiredAt) {
+        this.couponId = couponId;
         this.member = member;
         this.used = used;
         this.issuedAt = issuedAt;
@@ -45,7 +44,7 @@ public class MemberCoupon {
         if (!coupon.issuable()) {
             throw new IllegalStateException("쿠폰을 발급할 수 없는 상태입니다: " + coupon);
         }
-        return new MemberCoupon(coupon, member, false, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
+        return new MemberCoupon(coupon.getId(), member, false, LocalDateTime.now(), LocalDateTime.now().plusDays(7));
     }
 
     public void use() {
