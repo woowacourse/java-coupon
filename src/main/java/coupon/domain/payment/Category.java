@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.domain.payment;
 
 import java.util.Arrays;
 import java.util.Map;
