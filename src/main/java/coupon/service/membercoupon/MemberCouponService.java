@@ -1,7 +1,9 @@
-package coupon.domain.membercoupon;
+package coupon.service.membercoupon;
 
 import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
+import coupon.domain.membercoupon.MemberCoupon;
+import coupon.domain.membercoupon.MemberCouponRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
