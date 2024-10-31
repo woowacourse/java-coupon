@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberCouponService {
 
+    private static final int MEMBER_COUPON_COUNT_LIMIT = 5;
+
     private final MemberCouponRepository memberCouponRepository;
     private final CouponService couponService;
 
@@ -28,7 +30,7 @@ public class MemberCouponService {
                 memberCoupon.getMemberId()
         );
 
-        if (memberCoupons.size() >= 5) {
+        if (memberCoupons.size() >= MEMBER_COUPON_COUNT_LIMIT) {
             throw new IllegalArgumentException("이미 5개 이상 발급된 쿠폰입니다.");
         }
     }
