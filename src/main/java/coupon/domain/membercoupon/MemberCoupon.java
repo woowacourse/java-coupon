@@ -3,10 +3,13 @@ package coupon.domain.membercoupon;
 import coupon.domain.BaseEntity;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -26,6 +29,7 @@ public class MemberCoupon extends BaseEntity {
     private Member member;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "coupon_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Coupon coupon;
 
     private boolean isUsed = false;

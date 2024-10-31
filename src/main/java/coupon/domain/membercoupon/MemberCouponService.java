@@ -23,7 +23,6 @@ public class MemberCouponService {
         return memberCouponRepository.save(memberCoupon);
     }
 
-
     @Transactional(readOnly = true)
     @Cacheable(value = CACHE_NAME, key = "#root.args[0]", unless = "#root.args[0] == null")
     public List<MemberCoupon> getMemberCoupons(Long memberId) {
