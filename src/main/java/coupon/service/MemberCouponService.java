@@ -27,7 +27,7 @@ public class MemberCouponService {
     @Transactional
     public MemberCoupon create(Member member, Coupon coupon) {
         int sameCouponSize = memberCouponRepository.countMemberCouponByMemberIdAndCouponId(member.getId(), coupon.getId());
-        if (sameCouponSize > MAX_SAME_COUPON_SIZE) {
+        if (sameCouponSize >= MAX_SAME_COUPON_SIZE) {
             throw new IllegalArgumentException("Same coupon size exceeded");
         }
         MemberCoupon issue = MemberCoupon.issue(member.getId(), coupon.getId(), coupon.getIssueStartDate());
