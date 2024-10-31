@@ -12,7 +12,7 @@ class MinimumAmountTest {
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2, 3, 21, 22, 23, 100})
     void throwsExceptionWhenNotInRange(int amount) {
-        String expectedMessage = "최소 주문 금액은 %d 이상 %d 이하여야 합니다. 입력값 : ".formatted(5_000, 100_000 ) + amount;
+        String expectedMessage = "최소 주문 금액은 %d 이상 %d 이하여야 합니다. 입력값 : ".formatted(5_000, 100_000) + amount;
 
         assertThatThrownBy(() -> new MinimumAmount(amount))
                 .isInstanceOf(IllegalArgumentException.class)

@@ -33,14 +33,12 @@ public class MemberCoupon {
 
     public MemberCoupon(
             Long couponId,
-            Long memberId,
-            boolean isUsed,
-            LocalDateTime createdAt
+            Long memberId
     ) {
         this.couponId = couponId;
         this.memberId = memberId;
-        this.isUsed = isUsed;
-        this.createdAt = createdAt;
+        this.isUsed = false;
+        this.createdAt = LocalDateTime.now();
         this.expiredAt = LocalDateTime.of(createdAt.toLocalDate().plusDays(VALID_PERIOD), LocalTime.MAX);
     }
 }
