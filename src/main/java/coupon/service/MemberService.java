@@ -8,7 +8,6 @@ import coupon.dto.MemberCouponResponse;
 import coupon.exception.CouponException;
 import coupon.repository.MemberRepository;
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public List<MemberCouponResponse> getCoupons(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new CouponException("해당 사용자가 존재하지 않습니다."));
 
         return member.getMemberCoupons().stream()
                 .map(memberCoupon -> MemberCouponResponse.of(memberCoupon,
@@ -39,7 +38,7 @@ public class MemberService {
     @Transactional
     public MemberCoupon issueCoupon(Long memberId, Long couponId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
+                .orElseThrow(() -> new CouponException("해당 사용자가 존재하지 않습니다."));
         Coupon coupon = couponService.getCoupon(couponId);
 
         validateMaxCouponCount(member, coupon);

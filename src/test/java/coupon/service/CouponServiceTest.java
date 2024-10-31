@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import coupon.domain.Category;
 import coupon.domain.Coupon;
+import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ class CouponServiceTest {
         Long notExistCouponId = 9999999L;
 
         assertThatThrownBy(() -> couponService.getCoupon(notExistCouponId))
-                .isInstanceOf(NoSuchElementException.class)
+                .isInstanceOf(CouponException.class)
                 .hasMessage("쿠폰이 존재하지 않습니다.");
     }
 
