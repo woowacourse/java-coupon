@@ -21,12 +21,13 @@ public class UserCouponService {
     public void issue(Coupon coupon, User user) {
         if (canIssue(coupon, user)) {
             userCouponRepository.save(new UserCoupon(coupon.getId(), user, false, LocalDate.now()));
+            return;
         }
         throw new IllegalStateException("Coupon issued over 5");
     }
 
     private boolean canIssue(Coupon coupon, User user) {
-        return userCouponRepository.countByUserAndCouponId(user, coupon.getId()) <= MAX_ISSUE_COUNT;
+        return userCouponRepository.countByCouponIdAndUser(coupon.getId(), user) < MAX_ISSUE_COUNT;
     }
 
     public List<UserCoupon> getUserCoupons(User user) {
