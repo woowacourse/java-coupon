@@ -13,10 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCouponService {
 
+    private final String CACHE_NAME = "memberCouponCache";
     private final MemberCouponRepository memberCouponRepository;
 
     @Transactional
-    @CachePut(value = "memberCouponCache", key = "#result.id")
+    @CachePut(value = CACHE_NAME, key = "#result.id")
     public MemberCoupon create(Member member, Coupon coupon) {
         MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
         return memberCouponRepository.save(memberCoupon);
@@ -24,7 +25,7 @@ public class MemberCouponService {
 
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "memberCouponCache", key = "#root.args[0]", unless = "#root.args[0] == null")
+    @Cacheable(value = CACHE_NAME, key = "#root.args[0]", unless = "#root.args[0] == null")
     public List<MemberCoupon> getMemberCoupons(Long memberId) {
         return memberCouponRepository.findAllByMemberId(memberId);
     }
