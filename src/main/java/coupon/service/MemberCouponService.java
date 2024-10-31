@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
 import coupon.domain.member.MemberCoupon;
 import coupon.repository.CouponCache;
@@ -21,6 +22,8 @@ public class MemberCouponService {
     private static final int COUPON_LIMIT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
+    private final CouponRepository couponRepository;
+    private final CouponService couponService;
 
     @Transactional
     public void create(Member member, long couponId) {
@@ -45,8 +48,16 @@ public class MemberCouponService {
         return memberCoupons.stream()
                 .map(memberCoupon -> new MemberCouponResponse(
                         memberCoupon,
-                        CouponCache.getCoupon(memberCoupon.getCouponId()))
+                        getCoupon(memberCoupon.getCouponId()))
                 )
                 .toList();
+    }
+
+    private Coupon getCoupon(long couponId) {
+        Coupon coupon = CouponCache.getCoupon(couponId);
+        if (coupon == null) {
+            coupon = couponService.getCoupon(couponId);
+        }
+        return coupon;
     }
 }
