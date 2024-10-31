@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserCouponService {
 
-    public static final int MAX_COUNT = 5;
+    private static final int MAX_COUNT = 5;
     private final UserCouponRepository userCouponRepository;
     private final ReaderRepository readerRepository;
 
@@ -30,7 +30,7 @@ public class UserCouponService {
 
     private void validateCouponCount(long userId) {
         List<UserCouponEntity> userCouponEntities = userCouponRepository.findAllByUserId(userId);
-        if(userCouponEntities.size() > MAX_COUNT) {
+        if(userCouponEntities.size() >= MAX_COUNT) {
             throw new IllegalArgumentException("발급받을 수 있는 쿠폰의 수를 초과했습니다.");
         }
     }
