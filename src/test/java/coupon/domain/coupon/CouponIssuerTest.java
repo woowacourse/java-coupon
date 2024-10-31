@@ -19,11 +19,11 @@ class CouponIssuerTest {
     void issue_coupon() {
         // given
         final Coupon coupon = Dummy.createCoupon("coupon");
-        final CouponIssuer sut = new CouponIssuer(coupon);
         final Member member = new Member(1L, "fram");
+        final CouponIssuer sut = new CouponIssuer(coupon, member);
 
         // when
-        final Coupon actual = sut.issue(member, List.of());
+        final Coupon actual = sut.issue(List.of());
 
         // then
         assertThat(actual.getCouponName()).isEqualTo(coupon.getCouponName());
@@ -34,11 +34,11 @@ class CouponIssuerTest {
     void validate_coupon() {
         // given
         final Coupon coupon = Dummy.createCoupon("coupon");
-        final CouponIssuer sut = new CouponIssuer(coupon);
         final Member member = new Member(1L, "fram");
+        final CouponIssuer sut = new CouponIssuer(coupon, member);
 
         // when & then
-        assertThatThrownBy(() -> sut.issue(member, List.of(coupon, coupon, coupon, coupon, coupon)))
+        assertThatThrownBy(() -> sut.issue(List.of(coupon, coupon, coupon, coupon, coupon)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

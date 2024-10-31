@@ -27,8 +27,8 @@ public class CouponIssueService {
         final Coupon coupon = couponRepository.fetchById(couponId);
         final List<Coupon> issuedCoupons = couponRepository.fetchByCouponName(coupon.getCouponName());
         issuedCoupons.addAll(InMemoryCouponCache.getAll(coupon.getCouponName()));
-        final CouponIssuer issuer = new CouponIssuer(coupon);
-        final Coupon issueCoupon = issuer.issue(member, issuedCoupons);
+        final CouponIssuer issuer = new CouponIssuer(coupon, member);
+        final Coupon issueCoupon = issuer.issue(issuedCoupons);
         InMemoryCouponCache.insert(issueCoupon);
     }
 
