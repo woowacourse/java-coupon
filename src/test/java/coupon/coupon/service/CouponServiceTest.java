@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponCategory;
 import java.time.LocalDateTime;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ class CouponServiceTest {
     public CouponServiceTest(CouponService couponService, CacheManager cacheManager) {
         this.couponService = couponService;
         this.cacheManager = cacheManager;
+    }
+
+    @AfterEach
+    void tearDown() {
+        cacheManager.getCache("coupons").clear();
     }
 
     @DisplayName("쿠폰 서비스 복제 지연 테스트")
