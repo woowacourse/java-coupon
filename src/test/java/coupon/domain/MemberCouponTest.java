@@ -15,7 +15,9 @@ class MemberCouponTest {
         Boolean isNotUsed = Boolean.FALSE;
         LocalDateTime issuedDateTime = LocalDateTime.now().minusDays(8L);
 
-        assertThatThrownBy(() -> new MemberCoupon(coupon, isNotUsed, issuedDateTime))
+        Member member = new Member("리건");
+
+        assertThatThrownBy(() -> new MemberCoupon(coupon.getId(), member.getId(), isNotUsed, issuedDateTime))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("쿠폰이 만료되었습니다.");
     }

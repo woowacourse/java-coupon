@@ -2,11 +2,9 @@ package coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,8 +19,11 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Coupon coupon;
+    @Column(nullable = false)
+    private Long couponId;
+
+    @Column(nullable = false)
+    private Long memberId;
 
     @Column(nullable = false)
     private Boolean isUsed;
@@ -33,9 +34,10 @@ public class MemberCoupon {
     @Column(nullable = false)
     private LocalDateTime limitDateTime;
 
-    public MemberCoupon(Coupon coupon, Boolean isUsed, LocalDateTime issuedDateTime) {
+    public MemberCoupon(Long couponId, Long memberId, Boolean isUsed, LocalDateTime issuedDateTime) {
         validateIsExpired(issuedDateTime);
-        this.coupon = coupon;
+        this.couponId = couponId;
+        this.memberId = memberId;
         this.isUsed = isUsed;
         this.issuedDateTime = issuedDateTime;
         this.limitDateTime = getExpiredDate(issuedDateTime);
