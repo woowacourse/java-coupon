@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Getter
 public class CouponIssuanceDate {
@@ -21,5 +22,18 @@ public class CouponIssuanceDate {
         if (!issuanceEndDate.isEqual(issuanceStartDate) && !issuanceEndDate.isAfter(issuanceStartDate)) {
             throw new IllegalArgumentException("Issuance End Date cannot be earlier than Issuance Start Date");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CouponIssuanceDate that)) return false;
+        return Objects.equals(issuanceStartDate, that.issuanceStartDate) &&
+                Objects.equals(issuanceEndDate, that.issuanceEndDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(issuanceStartDate, issuanceEndDate);
     }
 }
