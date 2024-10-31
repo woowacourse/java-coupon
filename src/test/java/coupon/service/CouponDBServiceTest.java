@@ -16,7 +16,7 @@ import coupon.service.db.reader.CouponReader;
 import coupon.service.db.writer.CouponWriter;
 import java.util.Objects;
 import java.util.Optional;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +42,8 @@ class CouponDBServiceTest {
     @MockBean
     CouponReader couponReader;
 
-    @AfterEach
-    void tearDown(){
+    @BeforeEach
+    void setUp(){
         Objects.requireNonNull(cacheManager.getCache(CACHE_NAME))
                 .clear();
     }
