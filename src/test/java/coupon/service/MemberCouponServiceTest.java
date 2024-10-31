@@ -117,4 +117,18 @@ class MemberCouponServiceTest {
                 () -> assertThat(actual.get(0).id()).isEqualTo(issuedCoupon.getId())
         );
     }
+
+    @DisplayName("멤버에 쿠폰을 발행하면 캐시가 비워진다")
+    @Test
+    void evictCache_When_Issue_MemberCoupon() {
+        Member member = memberRepository.save(MemberFixture.MEMBER_FIXTURE);
+        Coupon coupon = couponRepository.save(CouponFixture.COUPON_FIXTURE);
+
+        MemberCoupon issuedCoupon = memberCouponService.issue(member, coupon);
+
+        Object actual = Objects.requireNonNull(cacheManager.getCache(CACHE_NAME))
+                .get(member.getId());
+
+        assertThat(actual).isNull();
+    }
 }
