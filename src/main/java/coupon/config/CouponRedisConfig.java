@@ -1,9 +1,11 @@
 package coupon.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.Duration;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -20,6 +22,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext.Seria
 
 @Configuration
 @EnableCaching
+@RequiredArgsConstructor
 public class CouponRedisConfig {
 
     private static final String KEY_SEPARATOR = ":";
@@ -35,6 +38,8 @@ public class CouponRedisConfig {
 
     @Value("${coupon.cache.ttl-second}")
     private int ttlSecond;
+
+    private final ObjectMapper objectMapper;
 
     @Bean
     public LettuceConnectionFactory connectionFactory() {
@@ -55,7 +60,7 @@ public class CouponRedisConfig {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.activateDefaultTyping(
                 BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build(),
-                ObjectMapper.DefaultTyping.EVERYTHING
+                DefaultTyping.NON_FINAL
         );
         return new GenericJackson2JsonRedisSerializer(objectMapper);
     }
