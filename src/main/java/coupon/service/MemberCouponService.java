@@ -31,8 +31,8 @@ public class MemberCouponService {
     }
 
     public MemberCoupon issue(Member member, Coupon coupon) {
-        MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
         validateIssuedCount(member, coupon);
+        MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
         return memberCouponRepository.save(memberCoupon);
     }
 
