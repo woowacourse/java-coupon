@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
@@ -20,7 +21,7 @@ import coupon.domain.repository.MemberRepository;
 import coupon.domain.repository.PaymentRepository;
 import coupon.support.Dummy;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class CouponIssueServiceTest {
 
     @Autowired
