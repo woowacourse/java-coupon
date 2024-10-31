@@ -2,6 +2,7 @@ package coupon.coupon.service;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.repository.CouponRepository;
+import coupon.global.cache.CacheConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class CouponReader {
 
     private final CouponRepository couponRepository;
 
-    @Cacheable(cacheNames = "coupons", key = "#couponId")
+    @Cacheable(cacheNames = CacheConstants.COUPON_CACHE_NAME, key = "#couponId")
     @Transactional(readOnly = true)
     public Coupon getCoupon(long couponId) {
         return couponRepository.findById(couponId)

@@ -3,7 +3,6 @@ package coupon.coupon.service;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.dto.CouponRequest;
 import coupon.coupon.dto.CouponResponse;
-import coupon.coupon.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
