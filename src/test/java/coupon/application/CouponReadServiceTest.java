@@ -11,6 +11,8 @@ import coupon.domain.coupon.CouponRepository;
 import coupon.domain.coupon.DiscountAmount;
 import coupon.domain.coupon.IssuancePeriod;
 import coupon.domain.coupon.MinimumOrderAmount;
+import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,15 @@ class CouponReadServiceTest {
 
     @Autowired
     private CouponReadService couponReadService;
+
+    @Autowired
+    private EntityManager entityManager;
+
+    @BeforeEach
+    void setUp() {
+        couponRepository.deleteAll();
+        entityManager.createNativeQuery("ALTER TABLE Coupon AUTO_INCREMENT = 1").executeUpdate();
+    }
 
     @Test
     @DisplayName("쿠폰 식별자로 쿠폰을 조회한다.")

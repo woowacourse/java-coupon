@@ -1,6 +1,5 @@
 package coupon.application;
 
-import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
 import coupon.domain.membercoupon.MemberCoupon;
 import coupon.domain.membercoupon.MemberCouponRepository;
@@ -28,9 +27,9 @@ public class MemberCouponWriteService {
 
     private void validate(MemberCoupon memberCoupon) {
         Member member = memberCoupon.getMember();
-        Coupon coupon = memberCoupon.getCoupon();
+        Long couponId = memberCoupon.getCouponId();
 
-        Long issuanceCount = memberCouponRepository.countByMember_IdAndCoupon_Id(member.getId(), coupon.getId());
+        Long issuanceCount = memberCouponRepository.countByMember_IdAndCouponId(member.getId(), couponId);
 
         if (issuanceCount > MAX_ISSUANCE_COUNT) {
             throw new IllegalArgumentException("동일한 쿠폰을 사용한 쿠폰을 포함하여 최대 " + MAX_ISSUANCE_COUNT + "장까지 발급할 수 있습니다.");

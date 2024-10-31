@@ -24,7 +24,7 @@ public class MemberCouponReadService {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
 
         return memberCoupons.stream()
-                .map(memberCoupon -> getCouponById(memberCoupon.getCoupon().getId())
+                .map(memberCoupon -> getCouponById(memberCoupon.getCouponId())
                         .map(coupon -> MemberCouponResponse.of(memberCoupon, coupon))
                         .orElseThrow(IllegalArgumentException::new)
                 )

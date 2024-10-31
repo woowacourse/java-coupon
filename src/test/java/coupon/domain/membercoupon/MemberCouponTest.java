@@ -28,7 +28,7 @@ class MemberCouponTest {
                 Category.FOOD,
                 new IssuancePeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
 
-        assertThatThrownBy(() -> new MemberCoupon(1L, coupon, new Member(1L), false, createdAt))
+        assertThatThrownBy(() -> new MemberCoupon(1L, coupon.getId(), new Member(1L), false, createdAt))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

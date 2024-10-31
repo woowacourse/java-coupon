@@ -62,7 +62,7 @@ class MemberCouponWriteServiceTest {
                 new IssuancePeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
         MemberCoupon memberCoupon = new MemberCoupon(
                 1L,
-                coupon,
+                coupon.getId(),
                 member,
                 false,
                 LocalDateTime.now().minusDays(1)
@@ -88,7 +88,7 @@ class MemberCouponWriteServiceTest {
         for (int i = 0; i < 6; i++) {
             MemberCoupon memberCoupon = new MemberCoupon(
                     null,
-                    coupon,
+                    coupon.getId(),
                     member,
                     false,
                     LocalDateTime.now().minusDays(1)
@@ -99,7 +99,7 @@ class MemberCouponWriteServiceTest {
         assertThatThrownBy(() -> {
             MemberCoupon memberCoupon = new MemberCoupon(
                     null,
-                    coupon,
+                    coupon.getId(),
                     member,
                     false,
                     LocalDateTime.now().minusDays(1)

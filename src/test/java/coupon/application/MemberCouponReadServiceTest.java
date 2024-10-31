@@ -4,9 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import coupon.domain.coupon.Category;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponName;
+import coupon.domain.coupon.CouponRepository;
 import coupon.domain.coupon.DiscountAmount;
 import coupon.domain.coupon.IssuancePeriod;
 import coupon.domain.coupon.MinimumOrderAmount;
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.CacheManager;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -36,15 +39,20 @@ class MemberCouponReadServiceTest {
     private MemberRepository memberRepository;
 
     @Autowired
+    private CouponRepository couponRepository;
+
+    @Autowired
     private EntityManager entityManager;
 
     @BeforeEach
     void setUp() {
         memberCouponRepository.deleteAll();
         memberRepository.deleteAll();
+        couponRepository.deleteAll();
         entityManager.createNativeQuery("ALTER TABLE MemberCoupon AUTO_INCREMENT = 1")
                 .executeUpdate();
         entityManager.createNativeQuery("ALTER TABLE Member AUTO_INCREMENT = 1").executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE Coupon AUTO_INCREMENT = 1").executeUpdate();
     }
 
     @Test
@@ -59,11 +67,12 @@ class MemberCouponReadServiceTest {
                 new MinimumOrderAmount(new BigDecimal(30_000)),
                 Category.FOOD,
                 new IssuancePeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
+        couponRepository.save(coupon);
 
         for (int i = 0; i < 3; i++) {
             MemberCoupon memberCoupon = new MemberCoupon(
                     null,
-                    coupon,
+                    coupon.getId(),
                     member,
                     false,
                     LocalDateTime.now().minusDays(1)
