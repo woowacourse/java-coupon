@@ -3,11 +3,8 @@ package coupon.repository;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
-
 import coupon.domain.coupon.Coupon;
 
-@Repository
 public class CouponCache {
 
     private static final Map<Long, Coupon> COUPON_CACHE = new HashMap<>();
