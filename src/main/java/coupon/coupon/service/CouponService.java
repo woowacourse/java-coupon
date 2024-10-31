@@ -4,6 +4,7 @@ import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.DiscountPolicy;
 import coupon.coupon.repository.CouponEntity;
 import coupon.coupon.repository.CouponRepository;
+import coupon.coupon.service.dto.CouponCreationRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,5 @@ public class CouponService {
                 request.issuableDate(), request.expirationDate()
         );
         return couponRepository.save(CouponEntity.from(coupon));
-    }
-
-    @Transactional(readOnly = true)
-    public CouponEntity getCoupon(long id) {
-        return couponRepository.findByIdOrThrow(id);
     }
 }

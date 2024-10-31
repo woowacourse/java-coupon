@@ -1,4 +1,4 @@
-package coupon.coupon.service;
+package coupon.coupon.service.policy;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -8,7 +8,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class DiscountAmountPolicyTest {
 
-    private final DiscountAmountPolicy discountAmountPolicy = new DiscountAmountPolicy();
+    private final DiscountAmountPolicy discountAmountPolicy = new DiscountAmountPolicy(
+            new DiscountAmountPolicyProperties(1000, 10_000, 500)
+    );
 
     @ParameterizedTest
     @ValueSource(longs = {500, 999, 10_001, 10_500})

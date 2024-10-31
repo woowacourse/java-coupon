@@ -1,15 +1,15 @@
 package coupon.coupon.domain;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Objects;
 import lombok.Getter;
 
 @Getter
 public class IssuedCoupon {
 
-    private static final Duration USABLE_PERIOD = Duration.ofDays(7);
+    private static final Period USABLE_PERIOD = Period.ofDays(7);
 
     private final Coupon coupon;
     private final LocalDateTime issuedAt;
