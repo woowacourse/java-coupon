@@ -17,7 +17,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)//, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<MemberCoupon> memberCoupons = new ArrayList<>();
 
     public Member() {
