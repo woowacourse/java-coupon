@@ -26,6 +26,10 @@ public class Period {
         }
     }
 
+    public boolean isNotBetweenIssuancePeriod(LocalDate issuanceDate) {
+        return issuanceDate.isBefore(startDate) || issuanceDate.isAfter(endDate);
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }

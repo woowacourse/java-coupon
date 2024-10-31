@@ -38,4 +38,12 @@ public class MemberCoupon {
         this.usageStatus = UsageStatus.NON_USE;
         this.usablePeriod = new UsablePeriod(issuanceDate);
     }
+
+    public LocalDate getIssuanceDate() {
+        return usablePeriod.getIssuanceDate();
+    }
+
+    public LocalDate getExpirationDate() {
+        return usablePeriod.getExpirationDate();
+    }
 }

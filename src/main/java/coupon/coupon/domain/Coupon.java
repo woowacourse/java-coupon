@@ -39,6 +39,10 @@ public class Coupon {
         this.period = new Period(startDate, endDate);
     }
 
+    public boolean isNotBetweenIssuancePeriod(LocalDate issuanceDate) {
+        return period.isNotBetweenIssuancePeriod(issuanceDate);
+    }
+
     public Long getId() {
         return id;
     }
