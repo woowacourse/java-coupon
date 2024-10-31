@@ -1,6 +1,5 @@
 package coupon.coupon.service;
 
-import coupon.coupon.domain.Coupon;
 import coupon.coupon.dto.CouponRequest;
 import coupon.coupon.dto.CouponResponse;
 import coupon.fixture.CouponFixture;
@@ -20,16 +19,17 @@ class CouponServiceTest {
     @Test
     void 복제지연테스트() {
         CouponRequest request = CouponFixture.COUPON_CREATE_REQUEST();
+
         CouponResponse response = couponService.create(request);
 
-        Coupon savedCoupon = couponService.getCoupon(response.id());
-        assertThat(savedCoupon).isNotNull();
+        assertThat(couponService.getCoupon(response.id())).isNotNull();
     }
 
     @Test
     @DisplayName("쿠폰을 생성할 수 있다.")
     void create() {
         CouponRequest request = CouponFixture.COUPON_CREATE_REQUEST();
+
         CouponResponse response = couponService.create(request);
 
         assertThat(response).isNotNull();

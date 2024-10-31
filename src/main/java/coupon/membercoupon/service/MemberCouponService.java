@@ -1,7 +1,7 @@
 package coupon.membercoupon.service;
 
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.repository.CouponRepository;
+import coupon.coupon.service.CouponReader;
 import coupon.member.domain.Member;
 import coupon.member.repository.MemberRepository;
 import coupon.membercoupon.domain.MemberCoupon;
@@ -23,7 +23,7 @@ public class MemberCouponService {
 
     private final MemberCouponRepository memberCouponRepository;
     private final MemberRepository memberRepository;
-    private final CouponRepository couponRepository;
+    private final CouponReader couponReader;
 
     @Transactional
     public MemberCouponResponse issueCoupon(MemberCouponRequest request) {
@@ -69,8 +69,7 @@ public class MemberCouponService {
     }
 
     private Coupon getCoupon(long couponId) {
-        return couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 쿠폰 아이디와 일치하는 쿠폰을 찾을 수 없습니다. 입력된 id:" + couponId));
+        return couponReader.getCoupon(couponId);
     }
 
     private Member getMember(long memberId) {
