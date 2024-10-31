@@ -5,12 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponCategory;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 
 @SpringBootTest
@@ -60,9 +58,10 @@ class CouponServiceTest {
         Coupon savedCoupon = couponService.createCoupon(coupon);
 
         // then
-        ValueWrapper actual = Objects.requireNonNull(cacheManager.getCache("coupons"))
-                .get(savedCoupon.getId());
-        assertThat(actual).isNotNull();
+        Coupon actual = (Coupon) cacheManager.getCache("coupons")
+                .get(savedCoupon.getId())
+                .get();
+        assertThat(actual.getId()).isEqualTo(savedCoupon.getId());
     }
 
     @DisplayName("쿠폰 서비스는 쿠폰을 읽을 때 RedisCache에서 정보를 꺼내온다.")
