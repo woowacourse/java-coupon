@@ -9,6 +9,9 @@ public class CouponCache {
 
     private static final Map<Long, Coupon> COUPON_CACHE = new HashMap<>();
 
+    private CouponCache() {
+    }
+
     public static Coupon getCoupon(Long id) {
         return COUPON_CACHE.get(id);
     }
