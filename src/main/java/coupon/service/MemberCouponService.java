@@ -11,6 +11,7 @@ import coupon.dto.MemberCouponResponses;
 import coupon.repository.MemberCouponRepository;
 import coupon.service.db.CouponDBService;
 import java.util.List;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class MemberCouponService {
         this.couponDBService = couponDBService;
     }
 
+    @CacheEvict(value = CACHE_NAME, key = "#member.id")
     public MemberCoupon issue(Member member, Coupon coupon) {
         validateIssuedCount(member, coupon);
         MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
