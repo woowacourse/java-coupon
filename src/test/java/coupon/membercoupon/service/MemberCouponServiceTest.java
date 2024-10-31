@@ -47,7 +47,8 @@ class MemberCouponServiceTest {
 
         MemberCouponResponse response = memberCouponService.issueCoupon(request);
 
-        assertThat(response.memberId()).isEqualTo(member.getId());
+        long memberId = response.memberResponse().id();
+        assertThat(memberId).isEqualTo(member.getId());
     }
 
     @Test
