@@ -24,22 +24,18 @@ class CouponInMemoryRepositoryTest {
     @Autowired
     private CouponInMemoryRepository couponInMemoryRepository;
 
-    @BeforeEach
-    void setUp() {
-        couponInMemoryRepository.clearCache();
-    }
-
     @Test
     @DisplayName("쿠폰이 존재하면 캐시에서 해당 쿠폰을 가져올 수 있다.")
-    @Transactional
     void getCoupon() {
         // given
         LocalDateTime issuableFrom = LocalDateTime.of(2024, 8, 16, 0, 0, 0);
         LocalDateTime issuableTo = LocalDateTime.of(2024, 8, 17, 0, 0, 0);
         Coupon coupon = new Coupon("천원 할인 쿠폰", 1000, 5000, Category.FOOD, issuableFrom, issuableTo);
         couponRepository.save(coupon);
+        couponInMemoryRepository.getCoupon(coupon.getId()); // cache
 
         // when
+        couponRepository.delete(coupon);
         Coupon cachedCoupon = couponInMemoryRepository.getCoupon(coupon.getId());
 
         // then
