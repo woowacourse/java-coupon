@@ -2,6 +2,7 @@ package coupon.membercoupon.service;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.repository.CouponRepository;
+import coupon.member.domain.Member;
 import coupon.member.repository.MemberRepository;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.dto.MemberCouponRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,19 +30,13 @@ public class MemberCouponService {
         long couponId = request.couponId();
         long memberId = request.memberId();
         Coupon coupon = getCoupon(couponId);
+        Member member = getMember(memberId);
 
-        validateMemberExists(memberId);
         validateIssuedCouponSize(couponId, memberId);
         validateIssuancePeriod(coupon, request.issuanceDate());
 
-        MemberCoupon issuedMemberCoupon = memberCouponRepository.save(request.toEntity(coupon));
-        return MemberCouponResponse.from(issuedMemberCoupon);
-    }
-
-    private void validateMemberExists(long memberId) {
-        if (!memberRepository.existsById(memberId)) {
-            throw new IllegalArgumentException("일치하는 멤버를 찾을 수 없습니다.");
-        }
+        MemberCoupon issuedMemberCoupon = memberCouponRepository.save(request.toEntity());
+        return MemberCouponResponse.of(issuedMemberCoupon, coupon, member);
     }
 
     private void validateIssuedCouponSize(long couponId, long memberId) {
@@ -57,8 +53,28 @@ public class MemberCouponService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<MemberCouponResponse> findAllMemberCoupon(long memberId) {
+        return memberCouponRepository.findAllByMemberId(memberId)
+                .stream()
+                .map(this::toMemberCouponResponse)
+                .toList();
+    }
+
+    private MemberCouponResponse toMemberCouponResponse(MemberCoupon memberCoupon) {
+        Coupon coupon = getCoupon(memberCoupon.getCouponId());
+        Member member = getMember(memberCoupon.getMemberId());
+
+        return MemberCouponResponse.of(memberCoupon, coupon, member);
+    }
+
     private Coupon getCoupon(long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 쿠폰 아이디와 일치하는 쿠폰을 찾을 수 없습니다. 입력된 id:" + couponId));
+    }
+
+    private Member getMember(long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 멤버를 찾을 수 없습니다."));
     }
 }

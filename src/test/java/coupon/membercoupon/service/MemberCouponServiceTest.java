@@ -8,13 +8,16 @@ import coupon.member.domain.Member;
 import coupon.member.repository.MemberRepository;
 import coupon.membercoupon.dto.MemberCouponRequest;
 import coupon.membercoupon.dto.MemberCouponResponse;
+import coupon.membercoupon.repository.MemberCouponRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -24,6 +27,9 @@ class MemberCouponServiceTest {
 
     @Autowired
     private MemberCouponService memberCouponService;
+
+    @Autowired
+    private MemberCouponRepository memberCouponRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -92,5 +98,17 @@ class MemberCouponServiceTest {
         assertThatThrownBy(() -> memberCouponService.issueCoupon(request))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("쿠폰을 발급 가능한 날짜가 아닙니다.");
+    }
+
+    @Transactional
+    @Test
+    @DisplayName("회원의 쿠폰 목록을 조회할 수 있다.")
+    void findAllMemberCoupon() {
+        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.getId(), member.getId());
+        memberCouponRepository.save(request.toEntity());
+
+        List<MemberCouponResponse> result = memberCouponService.findAllMemberCoupon(member.getId());
+
+        assertThat(result).hasSize(1);
     }
 }
