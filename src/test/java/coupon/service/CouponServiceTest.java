@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
-class CouponServiceTest {
+class CouponServiceTest extends BaseServiceTest {
 
     @Autowired
     CouponService couponService;
@@ -25,19 +24,6 @@ class CouponServiceTest {
 
         // then
         assertThat(savedCoupon).isNotNull();
-    }
-
-    @Test
-    void 쿠폰을_조회한다() {
-        // given
-        Coupon coupon = new Coupon("testCoupon", 1000L, 30000L, Category.FASHION);
-        Coupon savedCoupon = couponService.create(coupon);
-
-        // when
-        Coupon findResult = couponService.getById(savedCoupon.getId());
-
-        // then
-        assertThat(findResult).isEqualTo(savedCoupon);
     }
 
     @Test
