@@ -72,7 +72,7 @@ class CouponServiceTest {
         // Writer DB로부터 직접 데이터를 확인하여 일관성을 보장합니다.
         List<MemberCoupon> memberCoupons = couponService.getMemberCouponsFromWriter(member);
         assertThat(memberCoupons).hasSize(1);
-        assertThat(memberCoupons.get(0).getCoupon().getName()).isEqualTo("Test Coupon 2");
+        assertThat(memberCoupons.get(0).getCouponId()).isEqualTo(coupon.getId());
     }
 
     @Test

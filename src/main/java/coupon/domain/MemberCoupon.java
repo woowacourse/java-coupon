@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,13 +21,9 @@ public class MemberCoupon {
     @Column(name = "member_coupon_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
+    private Long couponId;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    private Long memberId;
 
     @Column(nullable = false)
     private Boolean isUsed = false;
@@ -41,8 +35,8 @@ public class MemberCoupon {
     private LocalDateTime expiresOn;
 
     public MemberCoupon(Coupon coupon, Member member, LocalDateTime issuedOn, LocalDateTime expiresOn) {
-        this.coupon = coupon;
-        this.member = member;
+        this.couponId = coupon.getId();
+        this.memberId = member.getId();
         this.issuedOn = issuedOn;
         this.expiresOn = expiresOn;
     }

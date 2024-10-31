@@ -7,9 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,8 +44,17 @@ public class Coupon {
     @Column(nullable = false)
     private int availableCount;
 
-    @OneToMany(mappedBy = "coupon")
-    private List<MemberCoupon> memberCoupons;
+    public Coupon(
+            String name,
+            int discountAmount,
+            int minimumOrderAmount,
+            Category category,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            int availableCount
+    ) {
+        this(null, name, discountAmount, minimumOrderAmount, category, startDate, endDate, availableCount);
+    }
 
     public Coupon(
             Long id,
@@ -70,18 +77,6 @@ public class Coupon {
         this.availableCount = availableCount;
     }
 
-    public Coupon(
-            String name,
-            int discountAmount,
-            int minimumOrderAmount,
-            Category category,
-            LocalDateTime startDate,
-            LocalDateTime endDate,
-            int availableCount
-    ) {
-        this(null, name, discountAmount, minimumOrderAmount, category, startDate, endDate, availableCount);
-    }
-
     private void validateCoupon(
             String name,
             int discountAmount,
@@ -96,12 +91,6 @@ public class Coupon {
         validateCategory(category);
         validateDate(startDate, endDate);
         validateAvailableCount(availableCount);
-    }
-
-    private void validateAvailableCount(int availableCount) {
-        if (availableCount < 0) {
-            throw new IllegalArgumentException("발급 가능한 쿠폰 수량은 0 이상이어야 합니다.");
-        }
     }
 
     private void validateName(String name) {
@@ -141,6 +130,12 @@ public class Coupon {
     private void validateDate(LocalDateTime startDate, LocalDateTime endDate) {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작일은 종료일 이전일 수 없습니다.");
+        }
+    }
+
+    private void validateAvailableCount(int availableCount) {
+        if (availableCount < 0) {
+            throw new IllegalArgumentException("발급 가능한 쿠폰 수량은 0 이상이어야 합니다.");
         }
     }
 
