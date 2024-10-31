@@ -1,11 +1,13 @@
 package coupon.domain;
 
+import java.io.Serializable;
+
 import coupon.exception.InvalidMinimumOrderAmount;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class MinimumOrderAmount {
+public class MinimumOrderAmount implements Serializable {
 
     private final long value;
 

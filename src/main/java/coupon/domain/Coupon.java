@@ -1,14 +1,16 @@
 package coupon.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public class Coupon {
+@AllArgsConstructor
+public class Coupon implements Serializable {
 
     private final CouponName name;
     private final DiscountAmount discountAmount;
@@ -16,6 +18,7 @@ public class Coupon {
     private final DiscountRate discountRate;
     private final ValidityPeriod validityPeriod;
 
+    @JsonCreator
     public Coupon(
             final String name,
             final long discountAmount,

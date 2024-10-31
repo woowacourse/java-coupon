@@ -1,10 +1,12 @@
 package coupon.domain;
 
+import java.io.Serializable;
+
 import coupon.exception.InvalidCouponDiscountRate;
 import lombok.Getter;
 
 @Getter
-public class DiscountRate {
+public class DiscountRate implements Serializable {
 
     public static final int MIN_VALUE = 3;
     public static final int MAX_VALUE = 20;
