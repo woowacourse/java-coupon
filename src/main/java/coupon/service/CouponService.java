@@ -1,5 +1,6 @@
 package coupon.service;
 
+import coupon.aop.Cacheable;
 import coupon.aop.ReplicationDelayHandler;
 import coupon.domain.Coupon;
 import coupon.domain.dto.CouponCreateRequest;
@@ -22,6 +23,7 @@ public class CouponService {
     }
 
     @ReplicationDelayHandler
+    @Cacheable
     public Coupon get(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 쿠폰이 존재하지 않습니다."));
