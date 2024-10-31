@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import coupon.domain.cache.InMemoryCouponCache;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponIssuer;
 import coupon.domain.member.Member;
 import coupon.domain.repository.CouponRepository;
-import coupon.domain.repository.InMemoryCouponRepository;
 import coupon.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -26,13 +26,13 @@ public class CouponIssueService {
         final Member member = memberRepository.fetchById(memberId);
         final Coupon coupon = couponRepository.fetchById(couponId);
         final List<Coupon> issuedCoupons = couponRepository.fetchByCouponName(coupon.getCouponName());
-        issuedCoupons.addAll(InMemoryCouponRepository.getAll(coupon.getCouponName()));
+        issuedCoupons.addAll(InMemoryCouponCache.getAll(coupon.getCouponName()));
         final CouponIssuer issuer = new CouponIssuer(coupon);
         final Coupon issueCoupon = issuer.issue(member, issuedCoupons);
-        InMemoryCouponRepository.insert(issueCoupon);
+        InMemoryCouponCache.insert(issueCoupon);
     }
 
     public List<Coupon> findAllIssuedCoupon(final long memberId) {
-        return InMemoryCouponRepository.getByMemberId(memberId);
+        return InMemoryCouponCache.getByMemberId(memberId);
     }
 }

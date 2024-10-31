@@ -1,4 +1,4 @@
-package coupon.domain.repository;
+package coupon.domain.cache;
 
 import java.util.List;
 import java.util.Map;
@@ -8,11 +8,11 @@ import org.springframework.dao.DataAccessResourceFailureException;
 
 import coupon.domain.coupon.Coupon;
 
-public class InMemoryCouponRepository {
+public class InMemoryCouponCache {
 
     private static final Map<Long, Coupon> coupons = new ConcurrentHashMap<>();
 
-    private InMemoryCouponRepository() {
+    private InMemoryCouponCache() {
     }
 
     public static void insert(final Coupon coupon) {

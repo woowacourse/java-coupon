@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
+import coupon.domain.cache.InMemoryCouponCache;
 import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
 import coupon.domain.payment.Category;
 import coupon.domain.payment.Payment;
 import coupon.domain.repository.CouponRepository;
-import coupon.domain.repository.InMemoryCouponRepository;
 import coupon.domain.repository.MemberRepository;
 import coupon.domain.repository.PaymentRepository;
 import coupon.support.Dummy;
@@ -55,7 +55,7 @@ class CouponIssueServiceTest {
         couponIssueService.issueNewCoupon(member.getId(), coupon.getId());
 
         // then
-        assertThat(InMemoryCouponRepository.getByMemberId(member.getId()))
+        assertThat(InMemoryCouponCache.getByMemberId(member.getId()))
                 .hasSize(1);
     }
 
