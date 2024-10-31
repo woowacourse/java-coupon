@@ -13,4 +13,8 @@ public enum CouponCategory {
     CouponCategory(String category) {
         this.category = category;
     }
+
+    public String getCategory() {
+        return category;
+    }
 }
