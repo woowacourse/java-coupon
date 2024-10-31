@@ -4,30 +4,51 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Objects;
 
+@Getter
 @Entity
 public class MemberCoupon {
 
-    private static final int USEABLE_DAYS = 7;
+    public static final int USABLE_COUPON = 7;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long couponId;
-    private Long memberId;
+    private long couponId;
+    private long memberId;
     private boolean used;
-    private LocalDate publishedAt;
-    private LocalDate expiredAt;
+    private LocalDateTime issuedAt;
+    private LocalDateTime expiredAt;
 
     protected MemberCoupon() {
-
     }
 
-    public MemberCoupon(boolean used, LocalDate publishedAt) {
-        this.used = used;
-        this.publishedAt = publishedAt;
-        this.expiredAt = publishedAt.plusDays(USEABLE_DAYS);
+    public MemberCoupon(long couponId, long memberId) {
+        this.couponId = couponId;
+        this.memberId = memberId;
+        this.used = false;
+        this.issuedAt = LocalDateTime.now();
+        this.expiredAt = LocalDateTime.of(
+                issuedAt.plusDays(USABLE_COUPON).toLocalDate(),
+                LocalTime.MIN
+        );
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MemberCoupon that = (MemberCoupon) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

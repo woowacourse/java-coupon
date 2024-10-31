@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class CouponTest {
 
@@ -26,12 +27,14 @@ class CouponTest {
         Coupon coupon = new Coupon(name, price, minimumOrderAmount, category, startAt, endAt);
 
         // Then
-        assertThat(coupon.getName()).isEqualTo(name);
-        assertThat(coupon.getDiscount().getPrice()).isEqualTo(price);
-        assertThat(coupon.getMinimumOrderAmount()).isEqualTo(minimumOrderAmount);
-        assertThat(coupon.getCategory()).isEqualTo(category);
-        assertThat(coupon.getStartAt()).isEqualTo(startAt);
-        assertThat(coupon.getEndAt()).isEqualTo(endAt);
+        assertAll(
+                () -> assertThat(coupon.getName()).isEqualTo(name),
+                () -> assertThat(coupon.getDiscount().getPrice()).isEqualTo(price),
+                () -> assertThat(coupon.getMinimumOrderAmount()).isEqualTo(minimumOrderAmount),
+                () -> assertThat(coupon.getCategory()).isEqualTo(category),
+                () -> assertThat(coupon.getStartAt()).isEqualTo(startAt),
+                () -> assertThat(coupon.getEndAt()).isEqualTo(endAt)
+        );
     }
 
     @Test
