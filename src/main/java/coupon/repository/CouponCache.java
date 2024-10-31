@@ -1,13 +1,13 @@
 package coupon.repository;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import coupon.domain.coupon.Coupon;
 
 public class CouponCache {
 
-    private static final Map<Long, Coupon> COUPON_CACHE = new HashMap<>();
+    private static final Map<Long, Coupon> COUPON_CACHE = new ConcurrentHashMap<>();
 
     private CouponCache() {
     }
