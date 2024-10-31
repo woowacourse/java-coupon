@@ -10,6 +10,10 @@ import java.time.LocalDateTime;
 
 public class CouponFixtureGenerator {
 
+    public static Coupon generate() {
+        return generate(1_000, 10_000);
+    }
+
     public static Coupon generate(int rawDiscountAmount, int rawMinOrderAmount) {
         Name name = new Name("테스트 쿠폰");
         DiscountAmount discountAmount = new DiscountAmount(rawDiscountAmount);

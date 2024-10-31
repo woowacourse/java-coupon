@@ -36,11 +36,16 @@ public class MemberCoupon {
     @Column(name = "expires_at", columnDefinition = "TIMESTAMP(6)")
     private LocalDateTime expiresAt;
 
-    public MemberCoupon(long couponId, long memberId) {
+    public MemberCoupon(Long id, long couponId, long memberId, boolean used, LocalDateTime issuedAt) {
+        this.id = id;
         this.couponId = couponId;
         this.memberId = memberId;
-        this.used = false;
-        this.issuedAt = LocalDateTime.now();
+        this.used = used;
+        this.issuedAt = issuedAt;
         this.expiresAt = issuedAt.plusDays(6).with(LocalTime.MAX);
+    }
+
+    public MemberCoupon(long couponId, long memberId) {
+        this(null, couponId, memberId, false, LocalDateTime.now());
     }
 }
