@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = PROTECTED)
 public class UserCoupon {
 
-    public static final int EXPIRED_LIMIT = 7;
+    private static final int EXPIRED_LIMIT = 7;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

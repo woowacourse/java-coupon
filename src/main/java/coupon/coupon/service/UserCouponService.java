@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserCouponService {
 
-    public static final int MAX_ISSUE_COUNT = 5;
+    private static final int MAX_ISSUE_COUNT = 5;
     private final UserCouponRepository userCouponRepository;
 
     public void issue(Coupon coupon, User user) {
