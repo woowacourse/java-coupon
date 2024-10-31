@@ -67,8 +67,8 @@ class MemberCouponRepositoryTest {
 
     protected void saveMemberCoupon() {
         MemberCouponEntity memberCouponEntity = new MemberCouponEntity(
-                couponId,
                 memberId,
+                couponId,
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(7)
