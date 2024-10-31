@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-@ActiveProfiles("multiDataSourceTest")
+@ActiveProfiles({"multiDataSourceTest", "prod"})
 public class DataSourceRoutingTest {
 
     private static final String WRITER_DB_URL = "jdbc:h2:mem:writer";

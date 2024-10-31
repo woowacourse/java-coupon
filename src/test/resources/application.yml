@@ -7,4 +7,6 @@ spring:
   data:
     redis:
       port: 36379
+  profiles:
+    active: test
 

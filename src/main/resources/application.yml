@@ -24,7 +24,8 @@ spring:
   data:
     redis:
       port: 36379
-
+  profiles:
+    active: prod
 
 coupon.datasource:
   writer:
