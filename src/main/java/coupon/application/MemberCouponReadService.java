@@ -1,6 +1,8 @@
 package coupon.application;
 
 import java.util.List;
+import java.util.Optional;
+import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponRepository;
 import coupon.domain.membercoupon.MemberCoupon;
 import coupon.domain.membercoupon.MemberCouponRepository;
@@ -22,10 +24,15 @@ public class MemberCouponReadService {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
 
         return memberCoupons.stream()
-                .map(memberCoupon -> couponRepository.findById(memberCoupon.getCoupon().getId())
+                .map(memberCoupon -> getCouponById(memberCoupon.getCoupon().getId())
                         .map(coupon -> MemberCouponResponse.of(memberCoupon, coupon))
                         .orElseThrow(IllegalArgumentException::new)
                 )
                 .toList();
+    }
+
+    @Cacheable(cacheNames = "coupon", key = "#id")
+    public Optional<Coupon> getCouponById(Long id) {
+        return couponRepository.findById(id);
     }
 }
