@@ -33,7 +33,7 @@ public class RedisCacheConfig {
 
     private PolymorphicTypeValidator createTypeValidator() {
         return BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType(Object.class)
+                .allowIfSubType("coupon.domain")
                 .build();
     }
 
