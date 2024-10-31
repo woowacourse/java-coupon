@@ -1,10 +1,10 @@
 package coupon.config.cache.redis;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.Duration;
@@ -19,7 +19,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -59,11 +58,11 @@ public class RedisConfig {
 
     private ObjectMapper getRedisObjectMapper() {
             ObjectMapper objectMapper = new ObjectMapper()
+                    .registerModule(new JavaTimeModule()) //LocalDateTime 호환을 위한 모듈 추가
                     .setVisibility(PropertyAccessor.ALL, Visibility.NONE)
-                    .setVisibility(PropertyAccessor.FIELD, Visibility.ANY); //getter가 아닌 field로 직렬/역직렬화 하기
-
-            //localDateTime 호환을 위한 모듈 추가
-            objectMapper.registerModule(new JavaTimeModule());
+                    .setVisibility(PropertyAccessor.FIELD, Visibility.ANY) //1순위 : field로 직렬/역직렬화 하기
+                    .setVisibility(PropertyAccessor.CREATOR, Visibility.PUBLIC_ONLY) //2순위 : 생성자
+                    .configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, true); //자기 참조 시 무한루프 방지 (default 설정)
 
             //직렬화 시 type 정보를 저장할 scope 지정
             objectMapper.activateDefaultTyping(
