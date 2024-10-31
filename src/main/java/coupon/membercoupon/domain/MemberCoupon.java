@@ -18,13 +18,14 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "coupon_id")
+    @Column(name = "coupon_id")
     private long couponId;
 
-    @JoinColumn(name = "member_id")
+    @Column(name = "member_id")
     private long memberId;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "usage_status")
     private UsageStatus usageStatus;
 
     @Embedded
