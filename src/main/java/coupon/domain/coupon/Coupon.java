@@ -12,8 +12,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Coupon {
 
     @Id
@@ -77,32 +79,7 @@ public class Coupon {
         return duration.isBetween(issuedAt);
     }
 
-    @JsonIgnore
     public DiscountRatio getDiscountRatio() {
         return new DiscountRatio(100 * discountPrice.getPrice() / saleOrderPrice.getPrice());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public CouponName getName() {
-        return name;
-    }
-
-    public DiscountPrice getDiscountPrice() {
-        return discountPrice;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public SaleOrderPrice getSaleOrderPrice() {
-        return saleOrderPrice;
-    }
-
-    public IssueDuration getDuration() {
-        return duration;
     }
 }
