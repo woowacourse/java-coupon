@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class CouponService {
 
-    public static final int MAX_READ_ATTEMPT = 2;
     private final CouponRepository couponRepository;
 
     @Transactional
@@ -23,7 +22,7 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "coupon", key = "#id", cacheManager = "cacheManager", condition = "#id != null")
+    @Cacheable(value = "coupon", key = "#p0")
     public Coupon getCoupon(final long id) {
         final CouponEntity couponEntity = couponRepository.findById(id)
                 .orElseThrow(() -> new NotFoundCouponException("쿠폰을 찾을 수 없습니다."));

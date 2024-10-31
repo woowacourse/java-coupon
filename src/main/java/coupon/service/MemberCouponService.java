@@ -37,7 +37,7 @@ public class MemberCouponService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "member-coupon", key = "#memberId", cacheManager = "cacheManager", condition = "#memberId != null")
+    @Cacheable(value = "member-coupon", key = "#p0")
     public List<CouponInfoResponse> getCouponsByMember(final long memberId) {
         final List<MemberCouponEntity> memberCoupons = memberCouponRepository.findByMemberId(memberId);
         return memberCoupons.stream()
