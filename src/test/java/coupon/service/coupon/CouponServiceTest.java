@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -22,9 +21,6 @@ public class CouponServiceTest {
 
     @Autowired
     private CouponService couponService;
-
-    @Value("${coupon.cache.prefix}")
-    private String couponKeyPrefix;
 
     @Test
     void replicationLagTest() {
@@ -50,12 +46,22 @@ public class CouponServiceTest {
 
     @DisplayName("한 회원에게 동일한 쿠폰을 6개 이상 발급하면 예외가 발생한다.")
     @Test
-    void issueFailed() {
+    void issueFailedSixIssue() {
         Coupon coupon = CouponFixture.FOOD_COUPON.create();
         couponService.create(coupon);
         for (int i = 0; i < 5; i++) {
             couponService.issue(1L, coupon.getId());
         }
+
+        assertThatThrownBy(() -> couponService.issue(1L, coupon.getId()))
+                .isInstanceOf(CouponException.class);
+    }
+
+    @DisplayName("한 회원에게 동일한 쿠폰을 6개 이상 발급하면 예외가 발생한다.")
+    @Test
+    void issueFailedPastWeek() {
+        Coupon coupon = CouponFixture.PAST_WEEK_COUPON.create();
+        couponService.create(coupon);
 
         assertThatThrownBy(() -> couponService.issue(1L, coupon.getId()))
                 .isInstanceOf(CouponException.class);

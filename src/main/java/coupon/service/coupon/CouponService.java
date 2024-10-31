@@ -53,9 +53,16 @@ public class CouponService {
         Coupon coupon = getCouponWriter(couponId);
 
         validateIssueCount(memberId, couponId);
+        validateCouponIssuable(coupon, issuedAt);
 
         MemberCoupon memberCoupon = new MemberCoupon(memberId, coupon, issuedAt);
         return memberCouponRepository.save(memberCoupon);
+    }
+
+    private void validateCouponIssuable(Coupon coupon, LocalDateTime issuedAt) {
+        if (!coupon.isIssuable(issuedAt)) {
+            throw new CouponException("쿠폰 발급 기간이 아닙니다.");
+        }
     }
 
     private void validateIssueCount(Long memberId, Long couponId) {

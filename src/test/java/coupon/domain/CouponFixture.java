@@ -6,8 +6,9 @@ import java.time.LocalDate;
 
 public enum CouponFixture {
 
-    FOOD_COUPON("food coupon", 10000, 1000, Category.FOOD, LocalDate.now(), LocalDate.now().plusDays(7)),
-    FASHION_COUPON("fashion coupon", 20000, 2000, Category.FASHION, LocalDate.now(), LocalDate.now().plusDays(7));
+    FOOD_COUPON("food coupon", 10000, 1000, Category.FOOD, Constants.TODAY, Constants.TODAY.plusDays(7)),
+    FASHION_COUPON("fashion coupon", 20000, 2000, Category.FASHION, Constants.TODAY, Constants.TODAY.plusDays(7)),
+    PAST_WEEK_COUPON("past week coupon", 10000, 1000, Category.FOOD, Constants.TODAY.minusDays(7), Constants.TODAY.minusDays(1));
 
     private final String name;
     private final int minimumOrderAmount;
@@ -28,5 +29,10 @@ public enum CouponFixture {
 
     public Coupon create() {
         return new Coupon(name, minimumOrderAmount, discountAmount, category, beginDate, endDate);
+    }
+
+    private static class Constants {
+        private static final LocalDate TODAY = LocalDate.now();
+
     }
 }

@@ -56,8 +56,4 @@ public class MemberCoupon {
     private LocalDateTime getExpiredAt(LocalDateTime issuedAt) {
         return LocalDateTime.of(issuedAt.toLocalDate().plusDays(COUPON_USABLE_DATE), LocalTime.MAX);
     }
-
-    public boolean isExpired() {
-        return !expiredAt.isAfter(LocalDateTime.now());
-    }
 }

@@ -39,8 +39,6 @@ public class CouponRedisConfig {
     @Value("${coupon.cache.ttl-second}")
     private int ttlSecond;
 
-    private final ObjectMapper objectMapper;
-
     @Bean
     public LettuceConnectionFactory connectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration(redisHost, redisPort);
