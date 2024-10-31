@@ -18,6 +18,7 @@ public class UserCouponService {
 
     public static final int MAX_COUNT = 5;
     private final UserCouponRepository userCouponRepository;
+    private final ReaderRepository readerRepository;
 
     @Transactional
     @CachePut(value = "coupon", key = "#result.id")
@@ -36,7 +37,7 @@ public class UserCouponService {
     @Cacheable(value = "coupon", key = "#id")
     @Transactional(readOnly = true)
     public List<UserCoupon> getUserCoupons(long userId) {
-        List<UserCouponEntity> userCouponEntities = userCouponRepository.findAllByUserId(userId);
+        List<UserCouponEntity> userCouponEntities = readerRepository.findUserCouponsByUserId(userId);
         return userCouponEntities.stream()
                 .map(EntityDomainMapper::mapToUserCoupon)
                 .toList();
