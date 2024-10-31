@@ -14,7 +14,7 @@ public record MemberCouponResponse(long id,
     public static MemberCouponResponse from(MemberCoupon issuedMemberCoupon) {
         return new MemberCouponResponse(
                 issuedMemberCoupon.getId(),
-                issuedMemberCoupon.getCoupon().getId(),
+                issuedMemberCoupon.getCouponId(),
                 issuedMemberCoupon.getMemberId(),
                 issuedMemberCoupon.getUsageStatus().isUse(),
                 issuedMemberCoupon.getIssuanceDate(),
