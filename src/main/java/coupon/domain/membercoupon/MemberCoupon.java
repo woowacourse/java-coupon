@@ -2,7 +2,6 @@ package coupon.domain.membercoupon;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,9 +24,8 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Coupon coupon;
+    @Column(nullable = false)
+    private Long couponId;
 
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,14 +42,14 @@ public class MemberCoupon {
 
     public MemberCoupon(
             Long id,
-            Coupon coupon,
+            Long couponId,
             Member member,
             Boolean isUsed,
             LocalDateTime createdAt
     ) {
         validateExpiration(createdAt);
         this.id = id;
-        this.coupon = coupon;
+        this.couponId = couponId;
         this.member = member;
         this.isUsed = isUsed;
         this.createdAt = createdAt;
@@ -67,5 +65,10 @@ public class MemberCoupon {
 
     private LocalDateTime getExpiresAt(LocalDateTime createdAt) {
         return createdAt.plusDays(7).with(LocalTime.MAX);
+    }
+
+    public boolean isAvailable() {
+        LocalDateTime now = LocalDateTime.now();
+        return !now.isAfter(expiresAt);
     }
 }

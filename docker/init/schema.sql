@@ -17,11 +17,10 @@ CREATE TABLE Member (
 
 CREATE TABLE MemberCoupon (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    coupon_id BIGINT NOT NULL,
+    couponId BIGINT NOT NULL,
     member_id BIGINT NOT NULL,
     is_used BOOLEAN NOT NULL,
     created_at DATETIME NOT NULL,
     expires_at DATETIME NOT NULL,
-    CONSTRAINT fk_coupon FOREIGN KEY (coupon_id) REFERENCES Coupon(id),
     CONSTRAINT fk_member FOREIGN KEY (member_id) REFERENCES Member(id)
 );
