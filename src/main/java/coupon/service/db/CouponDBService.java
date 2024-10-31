@@ -24,7 +24,7 @@ public class CouponDBService {
         this.transactionRouter = transactionRouter;
     }
 
-    @CachePut(value = CACHE_NAME, key = "#coupon.id")
+    @CachePut(value = CACHE_NAME, key = "#result.id")
     public Coupon create(Coupon coupon) {
         return couponWriter.save(coupon);
     }
