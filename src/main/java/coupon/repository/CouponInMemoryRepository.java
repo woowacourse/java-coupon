@@ -3,6 +3,7 @@ package coupon.repository;
 import coupon.domain.Coupon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Repository;
 import redis.clients.jedis.JedisPooled;
 import java.util.NoSuchElementException;
@@ -11,7 +12,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class CouponInMemoryRepository {
 
-    private static final Jackson2JsonRedisSerializer<Coupon> serializer = new Jackson2JsonRedisSerializer<>(Coupon.class);
+    private static final RedisSerializer<Coupon> serializer = new Jackson2JsonRedisSerializer<>(Coupon.class);
 
     private final JedisPooled jedis;
     private final CouponRepository couponRepository;
