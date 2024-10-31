@@ -2,6 +2,8 @@ package coupon.service;
 
 import coupon.domain.MemberCoupon;
 import coupon.dto.MemberCouponRequest;
+import coupon.dto.MemberCouponResponse;
+import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class MemberCouponService {
     public static final int MAXIMUM_ISSUABLE_COUPONS_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
+    private final CouponRepository couponRepository;
 
     @Transactional
     public MemberCoupon issueCoupon(MemberCouponRequest memberCouponRequest) {
@@ -33,9 +36,13 @@ public class MemberCouponService {
     }
 
     @Transactional
-    public List<MemberCoupon> getIssuedMemberCoupons(Long memberId) {
+    public List<MemberCouponResponse> getIssuedMemberCoupons(Long memberId) {
         log.info("Find issued member coupons by member id: {}", memberId);
 
-        return memberCouponRepository.findAllByMemberId(memberId);
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
+        return memberCoupons.stream()
+                .map(memberCoupon -> MemberCouponResponse.of(couponRepository.findById(memberCoupon.getCouponId())
+                        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다.")), memberCoupon))
+                .toList();
     }
 }

@@ -2,6 +2,7 @@ package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import coupon.domain.Category;
@@ -9,7 +10,9 @@ import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.dto.CouponRequest;
 import coupon.dto.MemberCouponRequest;
+import coupon.dto.MemberCouponResponse;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +42,12 @@ public class MemberCouponServiceTest {
                 LocalDateTime.now());
         memberCouponService.issueCoupon(memberCouponRequest);
 
-        assertThat(memberCouponService.getIssuedMemberCoupons(member.getId()))
-                .hasSize(1);
+        List<MemberCouponResponse> memberCoupons = memberCouponService.getIssuedMemberCoupons(member.getId());
+        assertAll(
+                () -> assertThat(memberCoupons).isNotNull(),
+                () -> assertThat(memberCoupons).hasSize(1),
+                () -> assertThat(memberCoupons.get(0).couponName()).isEqualTo("크리스마스 쿠폰")
+        );
     }
 
     @Test
