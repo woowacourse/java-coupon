@@ -1,8 +1,8 @@
 package coupon.controller;
 
-import coupon.domain.Coupon;
 import coupon.domain.MemberCoupon;
 import coupon.dto.CouponIssueRequest;
+import coupon.dto.MemberCouponResponse;
 import coupon.service.MemberService;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +23,7 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}/coupons")
-    public List<Coupon> getCoupons(@PathVariable Long memberId) {
+    public List<MemberCouponResponse> getCoupons(@PathVariable Long memberId) {
         return memberService.getCoupons(memberId);
 
     }

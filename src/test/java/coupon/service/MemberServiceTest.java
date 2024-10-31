@@ -8,6 +8,7 @@ import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
+import coupon.dto.MemberCouponResponse;
 import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
@@ -43,7 +44,7 @@ class MemberServiceTest {
         Coupon saveCoupon = couponRepository.save(coupon);
         memberCouponRepository.save(new MemberCoupon(saveCoupon.getId(), saveMember));
 
-        List<Coupon> coupons = memberService.getCoupons(saveMember.getId());
+        List<MemberCouponResponse> coupons = memberService.getCoupons(saveMember.getId());
 
         assertThat(coupons).hasSize(1);
     }

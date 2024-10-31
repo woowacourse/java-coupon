@@ -4,8 +4,8 @@ import coupon.aspect.ImmediateRead;
 import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
+import coupon.dto.MemberCouponResponse;
 import coupon.exception.CouponException;
-import coupon.repository.CouponRepository;
 import coupon.repository.MemberRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,34 +15,32 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberService {
 
+    private final CouponService couponService;
     private final MemberRepository memberRepository;
-    private final CouponRepository couponRepository;
 
-    public MemberService(MemberRepository memberRepository, CouponRepository couponRepository) {
+    public MemberService(CouponService couponService, MemberRepository memberRepository) {
+        this.couponService = couponService;
         this.memberRepository = memberRepository;
-        this.couponRepository = couponRepository;
     }
 
     @ImmediateRead
     @Transactional(readOnly = true)
-    public List<Coupon> getCoupons(Long memberId) {
+    public List<MemberCouponResponse> getCoupons(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
 
-        List<Long> couponIds = member.getMemberCoupons().stream()
-                .map(MemberCoupon::getCouponId)
-                .distinct()
+        return member.getMemberCoupons().stream()
+                .map(memberCoupon -> MemberCouponResponse.of(memberCoupon,
+                        couponService.getCoupon(memberCoupon.getCouponId())))
                 .toList();
 
-        return couponRepository.findByIdIn(couponIds);
     }
 
     @Transactional
     public MemberCoupon issueCoupon(Long memberId, Long couponId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
-        Coupon coupon = couponRepository.findById(couponId)
-                .orElseThrow(() -> new NoSuchElementException("해당 쿠폰이 존재하지 않습니다."));
+        Coupon coupon = couponService.getCoupon(couponId);
 
         validateMaxCouponCount(member, coupon);
 
