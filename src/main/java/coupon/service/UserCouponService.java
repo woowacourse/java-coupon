@@ -3,6 +3,7 @@ package coupon.service;
 import coupon.domain.usercoupon.UserCoupon;
 import coupon.entity.UserCouponEntity;
 import coupon.mapper.EntityDomainMapper;
+import coupon.repository.ReaderRepository;
 import coupon.repository.UserCouponRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,8 +22,8 @@ public class UserCouponService {
     private final ReaderRepository readerRepository;
 
     @Transactional
-    @CachePut(value = "coupon", key = "#result.id")
-    public UserCouponEntity create(long userId, long couponId, LocalDateTime expireDateTime) {
+    @CachePut(value = "newUserCoupon", key = "#result.id")
+    public UserCouponEntity issueCoupon(long userId, long couponId, LocalDateTime expireDateTime) {
         validateCouponCount(userId);
         return userCouponRepository.save(new UserCouponEntity(userId, couponId, false, expireDateTime));
     }
@@ -34,7 +35,7 @@ public class UserCouponService {
         }
     }
 
-    @Cacheable(value = "coupon", key = "#id")
+    @Cacheable(value = "userCoupons", key = "#userId")
     @Transactional(readOnly = true)
     public List<UserCoupon> getUserCoupons(long userId) {
         List<UserCouponEntity> userCouponEntities = readerRepository.findUserCouponsByUserId(userId);
