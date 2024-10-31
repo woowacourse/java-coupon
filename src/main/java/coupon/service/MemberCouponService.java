@@ -4,6 +4,7 @@ import coupon.domain.coupon.Coupon;
 import coupon.domain.membercoupon.MemberCoupon;
 import coupon.dto.response.FindMemberCouponResponse;
 import coupon.repository.MemberCouponRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class MemberCouponService {
     public void save(long couponId, long memberId) {
         MemberCoupon memberCoupon = new MemberCoupon(couponId, memberId);
         validateIssuanceLimit(couponId, memberId);
+        validateIssuancePeriod(couponId);
         memberCouponRepository.save(memberCoupon);
     }
 
@@ -29,6 +31,17 @@ public class MemberCouponService {
         int issuanceCount = memberCouponRepository.countByCouponIdAndMemberId(couponId, memberId);
         if (issuanceCount >= ISSUANCE_LIMIT) {
             throw new IllegalArgumentException("회원은 동일한 쿠폰을 최대 " + ISSUANCE_LIMIT + "장까지 발급할 수 있습니다.");
+        }
+    }
+
+    private void validateIssuancePeriod(long couponId) {
+        Coupon coupon = readCouponService.findById(couponId);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startAt = coupon.getIssuancePeriod().getStartAt();
+        LocalDateTime endAt = coupon.getIssuancePeriod().getEndAt();
+
+        if (now.isBefore(startAt) || now.isAfter(endAt)) {
+            throw new IllegalArgumentException("해당 쿠폰은 " + startAt + "부터 " + endAt + "까지 발급할 수 있습니다.");
         }
     }
 
