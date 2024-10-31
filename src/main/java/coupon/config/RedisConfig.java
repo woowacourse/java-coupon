@@ -54,6 +54,7 @@ public class RedisConfig {
     private RedisCacheConfiguration getRedisCacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofHours(CACHE_TTL_IN_HOURS))
+                .enableTimeToIdle()
                 .disableCachingNullValues();
     }
 }
