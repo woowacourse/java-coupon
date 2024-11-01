@@ -2,8 +2,8 @@ package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
+import coupon.domain.Coupon;
 import coupon.dto.CouponRequest;
-import coupon.dto.CouponResponse;
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class CouponServiceTest {
 
+    CouponService couponService;
+    MemberService memberService;
+
     @Autowired
-    private CouponService couponService;
+    public CouponServiceTest(CouponService couponService,
+                             MemberService memberService) {
+        this.couponService = couponService;
+        this.memberService = memberService;
+    }
 
     @Test
     @DisplayName("복제 지연 테스트")
@@ -27,8 +34,8 @@ class CouponServiceTest {
                 LocalDate.now(),
                 LocalDate.now().plusDays(7));
 
-        CouponResponse couponResponse = couponService.create(couponRequest);
-        assertThatCode(() -> couponService.getCoupon(couponResponse.id()))
+        Coupon coupon = couponService.create(couponRequest);
+        assertThatCode(() -> couponService.getCoupon(coupon.getId()))
                 .doesNotThrowAnyException();
     }
 }

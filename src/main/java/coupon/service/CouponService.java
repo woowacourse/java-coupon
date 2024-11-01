@@ -3,46 +3,37 @@ package coupon.service;
 import coupon.domain.Category;
 import coupon.domain.Coupon;
 import coupon.dto.CouponRequest;
-import coupon.dto.CouponResponse;
-import coupon.global.ReplicationLagFallback;
 import coupon.repository.CategoryRepository;
 import coupon.repository.CouponRepository;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CouponService {
+    private static final String COUPON_CACHE_NAME = "coupon";
 
     private final CouponRepository couponRepository;
     private final CategoryRepository categoryRepository;
-    private final ReplicationLagFallback replicationLagFallback;
 
-    public CouponService(CouponRepository couponRepository,
-                         CategoryRepository categoryRepository,
-                         ReplicationLagFallback replicationLagFallback) {
+    public CouponService(CouponRepository couponRepository, CategoryRepository categoryRepository) {
         this.couponRepository = couponRepository;
         this.categoryRepository = categoryRepository;
-        this.replicationLagFallback = replicationLagFallback;
     }
 
+    @CachePut(cacheNames = COUPON_CACHE_NAME, key = "#result.id")
     @Transactional
-    public CouponResponse create(CouponRequest couponRequest) {
+    public Coupon create(CouponRequest couponRequest) {
         Category category = categoryRepository.findById(couponRequest.categoryId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
 
-        Coupon newCoupon = couponRepository.save(couponRequest.toEntity(category));
-
-        return CouponResponse.from(newCoupon);
+        return couponRepository.save(couponRequest.toEntity(category));
     }
 
+    @Cacheable(cacheNames = COUPON_CACHE_NAME, key = "#couponId")
     @Transactional(readOnly = true)
-    public CouponResponse getCoupon(Long couponId) {
-        Coupon coupon = couponRepository.findById(couponId)
-                .orElseGet(() -> replicationLagFallback.readFromWriter(() -> findById(couponId)));
-        return CouponResponse.from(coupon);
-    }
-
-    private Coupon findById(Long couponId) {
+    public Coupon getCoupon(long couponId) {
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰입니다."));
     }

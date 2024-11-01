@@ -49,6 +49,12 @@ public class Coupon {
     protected Coupon() {
     }
 
+    public Coupon(Long id, String name, Long minimumAmount, Long discountAmount, LocalDate startIssueDate,
+                  LocalDate endIssueDate, Category category) {
+        this(name, minimumAmount, discountAmount, startIssueDate, endIssueDate, category);
+        this.id = id;
+    }
+
     public Coupon(
             String name,
             Long minimumAmount,
@@ -145,6 +151,18 @@ public class Coupon {
         if (category == null) {
             throw new IllegalArgumentException("카테고리는 필수입니다.");
         }
+    }
+
+    public boolean canIssue(LocalDate issueDate) {
+        return isEqual(issueDate) || isBetween(issueDate);
+    }
+
+    private boolean isBetween(LocalDate issueDate) {
+        return issueDate.isAfter(startIssueDate) && issueDate.isBefore(endIssueDate);
+    }
+
+    private boolean isEqual(LocalDate issueDate) {
+        return issueDate.isEqual(startIssueDate) && issueDate.isEqual(endIssueDate);
     }
 
     public Long getId() {

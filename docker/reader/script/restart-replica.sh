@@ -11,4 +11,6 @@ echo "master_log_pos: ${master_log_pos}"
 ## change master and start slave
 query="change master to master_host='172.20.0.10', master_user='replUser', master_password='replPassword', master_log_file='${master_log_file}', master_log_pos=${master_log_pos}, master_port=3306, master_delay=1"
 /usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "${query}"
+/usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "GRANT REPLICATION SLAVE ON *.* TO 'replUser'@'172.20.0.11' IDENTIFIED BY 'replPassword'"
+/usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "FLUSH PRIVILEGES"
 /usr/bin/mysql -uroot -p'root' -S /var/run/mysqld/mysqld.sock -e "start slave"

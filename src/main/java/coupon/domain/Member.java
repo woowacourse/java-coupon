@@ -29,4 +29,8 @@ public class Member {
             throw new IllegalArgumentException("사용자의 이름은 필수입니다.");
         }
     }
+
+    public Long getId() {
+        return id;
+    }
 }
