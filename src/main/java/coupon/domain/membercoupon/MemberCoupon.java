@@ -26,6 +26,7 @@ public class MemberCoupon extends BaseEntity {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
 
     @ManyToOne(optional = false)
