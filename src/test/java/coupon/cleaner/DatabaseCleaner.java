@@ -21,12 +21,17 @@ public class DatabaseCleaner {
     public void execute() {
         entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
         clearCoupon();
+        clearMemberCoupon();
         entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate();
         clearCache();
     }
 
     private void clearCoupon() {
         entityManager.createNativeQuery("TRUNCATE TABLE coupon").executeUpdate();
+    }
+
+    private void clearMemberCoupon() {
+        entityManager.createNativeQuery("TRUNCATE TABLE member_coupon").executeUpdate();
     }
 
     private void clearCache() {

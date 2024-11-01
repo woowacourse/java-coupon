@@ -1,5 +1,6 @@
 package coupon;
 
+import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -26,5 +27,20 @@ public class LockService {
             return;
         }
         log.info("Could not acquire lock.");
+    }
+
+    public <T> T executeWithLock(Long id, Supplier<T> supplier) {
+        RLock lock = redissonClient.getLock("lock:coupon:" + id);
+        boolean isLocked = lock.tryLock();
+        if (isLocked) {
+            try {
+                return supplier.get();
+            } finally {
+                lock.unlock();
+                log.info("Lock released.");
+            }
+        }
+        log.info("Could not acquire lock.");
+        return supplier.get();
     }
 }

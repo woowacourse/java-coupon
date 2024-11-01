@@ -12,7 +12,7 @@ class MemberTest {
     @ValueSource(strings = {"a", "1234567890"})
     @ParameterizedTest
     void nameSuccess(String name) {
-        assertThatCode(() -> new Member(name))
+        assertThatCode(() -> new Member(1L, name))
                 .doesNotThrowAnyException();
     }
 
@@ -20,7 +20,7 @@ class MemberTest {
     @ValueSource(strings = {"", " ", "  ", "\t", "12345678901"})
     @ParameterizedTest
     void nameFail(String name) {
-        assertThatCode(() -> new Member(name))
+        assertThatCode(() -> new Member(1L, name))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
