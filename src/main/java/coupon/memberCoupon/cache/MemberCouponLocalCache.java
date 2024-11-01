@@ -4,7 +4,6 @@ import coupon.coupon.domain.Coupon;
 import coupon.member.domain.Member;
 import coupon.memberCoupon.domain.MemberCoupon;
 import coupon.memberCoupon.dto.MemberCouponResponse;
-import coupon.memberCoupon.repository.MemberCouponCacheKey;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

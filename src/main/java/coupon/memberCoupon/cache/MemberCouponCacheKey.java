@@ -1,4 +1,4 @@
-package coupon.memberCoupon.repository;
+package coupon.memberCoupon.cache;
 
 import coupon.coupon.domain.Coupon;
 import coupon.member.domain.Member;
