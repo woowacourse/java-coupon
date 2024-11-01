@@ -4,12 +4,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.entity.Coupon;
 import coupon.entity.CouponCategory;
+import coupon.exception.CouponException;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class CouponValidatorTest {
@@ -44,7 +46,7 @@ class CouponValidatorTest {
                     .validTo(defaultValidTo)
                     .build();
             assertThatThrownBy(() -> couponValidator.validate(coupon))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(CouponException.class);
         }
 
         @DisplayName("이름은 빈 값일 수 없다.")
@@ -59,7 +61,7 @@ class CouponValidatorTest {
                     .validTo(defaultValidTo)
                     .build();
             assertThatThrownBy(() -> couponValidator.validate(coupon))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(CouponException.class);
         }
 
         @DisplayName("이름은 30자 까지만 허용된다.")
@@ -74,7 +76,7 @@ class CouponValidatorTest {
                     .validTo(defaultValidTo)
                     .build();
             assertThatThrownBy(() -> couponValidator.validate(coupon))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(CouponException.class);
         }
     }
 
@@ -96,7 +98,7 @@ class CouponValidatorTest {
                         .build();
 
                 assertThatThrownBy(() -> couponValidator.validate(coupon))
-                        .isInstanceOf(IllegalArgumentException.class);
+                        .isInstanceOf(CouponException.class);
             }
 
             @DisplayName("할인 금액은 500원 단위여야 한다.")
@@ -112,7 +114,7 @@ class CouponValidatorTest {
                         .build();
 
                 assertThatThrownBy(() -> couponValidator.validate(coupon))
-                        .isInstanceOf(IllegalArgumentException.class);
+                        .isInstanceOf(CouponException.class);
             }
 
             @DisplayName("최소 주문 금액은 5,000원 이상 100,000원 이하이다.")
@@ -129,7 +131,24 @@ class CouponValidatorTest {
                         .build();
 
                 assertThatThrownBy(() -> couponValidator.validate(coupon))
-                        .isInstanceOf(IllegalArgumentException.class);
+                        .isInstanceOf(CouponException.class);
+            }
+
+            @DisplayName("할인율은 3% 이상 20% 이하이다.")
+            @ParameterizedTest
+            @CsvSource(value = {"2_500, 100000", "10_000, 47_600"}, delimiter = ',')
+            void invalidDiscountRate(int discountAmount, int minimumOrderAmount) {
+                Coupon coupon =  Coupon.builder()
+                        .name(defaultName)
+                        .discountAmount(discountAmount)
+                        .minimumOrderAmount(minimumOrderAmount)
+                        .category(defaultCategory)
+                        .validFrom(defaultValidFrom)
+                        .validTo(defaultValidTo)
+                        .build();
+
+                assertThatThrownBy(() -> couponValidator.validate(coupon))
+                        .isInstanceOf(CouponException.class);
             }
     }
 
@@ -151,7 +170,7 @@ class CouponValidatorTest {
 
 
             assertThatThrownBy(() -> couponValidator.validate(coupon))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(CouponException.class);
         }
     }
 
@@ -172,7 +191,7 @@ class CouponValidatorTest {
                     .build();
 
             assertThatThrownBy(() -> couponValidator.validate(coupon))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(CouponException.class);
         }
 
         @DisplayName("종료일은 null일 수 없다.")
@@ -188,7 +207,7 @@ class CouponValidatorTest {
                     .build();
 
             assertThatThrownBy(() -> couponValidator.validate(coupon))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(CouponException.class);
         }
 
         @DisplayName("시작일은 종료일 이전이어야 한다.")
@@ -204,7 +223,7 @@ class CouponValidatorTest {
                     .build();
 
             assertThatThrownBy(() -> couponValidator.validate(coupon))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(CouponException.class);
         }
     }
 }

@@ -6,16 +6,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "member_coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class MemberCoupon {
 
     private static final int COUPON_EXPIRATION_DAYS = 6;
@@ -28,9 +29,7 @@ public class MemberCoupon {
     @JoinColumn(name = "members_id")
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id")
-    private Coupon coupon;
+    private long couponId;
 
     private boolean used;
 
@@ -39,9 +38,10 @@ public class MemberCoupon {
     private LocalDate expiredAt;
 
     @Builder
-    public MemberCoupon(Member member, Coupon coupon) {
+    public MemberCoupon(Member member, long couponId) {
         this.member = member;
-        this.coupon = coupon;
+        this.couponId = couponId;
+        this.used = false;
         this.issuedAt = LocalDate.now();
         this.expiredAt = issuedAt.plusDays(COUPON_EXPIRATION_DAYS);
     }
