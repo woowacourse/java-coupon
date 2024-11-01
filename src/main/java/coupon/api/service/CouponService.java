@@ -63,8 +63,18 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     public Coupon searchCoupon(Long couponId) {
-        return couponRedisRepository.findCoupon(couponId)
+        return lookasideCoupon(couponId);
+    }
+
+    private Coupon lookasideCoupon(Long couponId) {
+        Coupon coupon = couponRedisRepository.findCoupon(couponId)
+                .or(() -> couponRepository.findCouponById(couponId))
                 .orElseThrow(CouponNotFoundException::new);
+
+        if (coupon.isIssuableCoupon()) {
+            couponRedisRepository.addCoupon(coupon);
+        }
+        return coupon;
     }
 
     private StorageCouponResponse makeStorageCoupon(MemberCoupon memberCoupon) {
