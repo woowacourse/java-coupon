@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataSourceRoutingSupport {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public <T> T changeToWrite(Supplier<T> action) {
-        return action.get();
+    public <T> T changeToWrite(Supplier<T> supplier) {
+        return supplier.get();
     }
 }
