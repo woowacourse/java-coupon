@@ -9,9 +9,9 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableCaching
@@ -37,7 +37,7 @@ public class CacheConfig {
         return new CaffeineCache(
                 cache.getCacheName(),
                 Caffeine.newBuilder()
-                        .expireAfterWrite(cache.getExpiredAfterWrite(), TimeUnit.MINUTES)
+                        .expireAfterWrite(Duration.ofMinutes(cache.getExpiredAfterWrite()))
                         .maximumSize(cache.getMaximumSize())
                         .recordStats()
                         .build()
