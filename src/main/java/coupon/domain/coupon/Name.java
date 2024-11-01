@@ -3,8 +3,10 @@ package coupon.domain.coupon;
 import coupon.exception.NameLengthExceedException;
 import coupon.exception.EmptyNameException;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 class Name {
     private static final int MAX_LENGTH = 30;
 

@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 class Duration {
     private final LocalDateTime beginAt;
     private final LocalDateTime endAt;

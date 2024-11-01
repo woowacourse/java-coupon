@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "member_coupon")
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberCoupon {
+public class MemberCouponEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

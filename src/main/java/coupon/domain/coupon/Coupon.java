@@ -2,7 +2,9 @@ package coupon.domain.coupon;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.ToString;
 
+@ToString
 @Getter(AccessLevel.PACKAGE)
 public class Coupon {
     private Name name;
