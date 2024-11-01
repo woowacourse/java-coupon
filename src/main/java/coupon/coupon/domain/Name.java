@@ -4,10 +4,12 @@ import static lombok.AccessLevel.PROTECTED;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = PROTECTED)
+@Getter
 public class Name {
 
     private static final int MAX_SIZE = 30;
