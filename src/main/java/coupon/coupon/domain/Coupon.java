@@ -10,10 +10,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
+@Getter
 public class Coupon {
 
     private static int MIN_DISCOUNT_RATE = 3;
@@ -58,9 +60,5 @@ public class Coupon {
 
     public int calculateDiscountRate(int discount, int order) {
         return 100 * discount / order;
-    }
-
-    public Long getId() {
-        return id;
     }
 }

@@ -3,6 +3,7 @@ package coupon.coupon.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -12,7 +13,8 @@ class CouponTest {
     @ParameterizedTest
     @CsvSource({"250,10000",
             "2100,10000"})
-    void validate(int discount, int order) {
+    @DisplayName("할인율은 3%이상 20%이하만 가능하다")
+    void discountRate(int discount, int order) {
         assertThatThrownBy(
                 () -> new Coupon("test", discount, order, null, LocalDate.now(), LocalDate.now())
         ).isInstanceOf(IllegalArgumentException.class);
@@ -51,6 +53,4 @@ class CouponTest {
                 () -> new Coupon("test", 1000, 10000, null, LocalDate.now().plusDays(2), LocalDate.now())
         ).isInstanceOf(IllegalArgumentException.class);
     }
-
-
 }

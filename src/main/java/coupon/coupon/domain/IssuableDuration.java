@@ -5,10 +5,12 @@ import static lombok.AccessLevel.PROTECTED;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = PROTECTED)
+@Getter
 public class IssuableDuration {
 
     @Column(nullable = false)
