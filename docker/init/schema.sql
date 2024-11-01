@@ -11,3 +11,19 @@ CREATE TABLE IF NOT EXISTS coupon (
   start_date DATETIME NOT NULL,
   end_date DATETIME NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE user_coupon (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    coupon_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    active BOOLEAN NOT NULL,
+    issued_at DATETIME NOT NULL,
+    expires_at DATETIME NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
+

@@ -3,6 +3,7 @@ package coupon.service;
 import coupon.domain.Coupon;
 import coupon.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,10 +16,11 @@ public class CouponService {
     private final CouponRepository couponRepository;
 
     @Transactional
-    public void create(Coupon coupon) {
-        couponRepository.save(coupon);
+    public Coupon createCoupon(Coupon coupon) {
+        return couponRepository.save(coupon);
     }
 
+    @Cacheable(value = "coupons", key = "#couponId")
     public Coupon getCoupon(Long couponId) {
         return couponReadService.getCoupon(couponId)
                 .orElseGet(() -> couponWriteService.getCoupon(couponId));
