@@ -54,7 +54,7 @@ class CouponCommandServiceTest {
     @Test
     void issue() {
         Member member = memberRepository.save(new Member("트레"));
-        Coupon coupon = couponRepository.save(new Coupon("천원 할인",
+        Coupon coupon = couponCommandService.save(new SaveCouponRequest("천원 할인",
                 1000, 10000,
                 LocalDate.now().minusDays(2), LocalDate.now().plusDays(2),
                 "FASHION"));

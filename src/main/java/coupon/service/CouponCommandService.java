@@ -4,7 +4,6 @@ import coupon.domain.Coupon;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
 import coupon.dto.request.SaveCouponRequest;
-import coupon.dto.response.FindMyCouponsResponse;
 import coupon.exception.CouponException;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
@@ -21,7 +20,6 @@ public class CouponCommandService {
 
     private static final int MAX_ISSUE_COUNT = 5;
 
-    private final MemberCouponQueryService memberCouponQueryService;
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
 
@@ -36,16 +34,13 @@ public class CouponCommandService {
                 request.category()));
     }
 
-    @CachePut(value = "coupons", key = "#member.id")
-    public List<FindMyCouponsResponse> issue(Member member, Coupon coupon) {
+    @CachePut(value = "memberCoupons", key = "#member.id")
+    public List<MemberCoupon> issue(Member member, Coupon coupon) {
         if (memberCouponRepository.countByMemberIdAndCouponId(member.getId(), coupon.getId()) >= MAX_ISSUE_COUNT) {
             throw new CouponException("동일한 쿠폰은 최대 %d장까지 발행할 수 있습니다.".formatted(MAX_ISSUE_COUNT));
         }
 
-        MemberCoupon memberCoupon = new MemberCoupon(member, coupon);
-        List<FindMyCouponsResponse> issuedCoupons = memberCouponQueryService.findByMemberId(member.getId());
-        issuedCoupons.add(new FindMyCouponsResponse(coupon, memberCoupon));
-        memberCouponRepository.save(memberCoupon);
-        return issuedCoupons;
+        memberCouponRepository.save(new MemberCoupon(member, coupon));
+        return memberCouponRepository.findAllByMemberId(member.getId());
     }
 }

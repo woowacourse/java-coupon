@@ -2,11 +2,11 @@ package coupon.service;
 
 import coupon.domain.MemberCoupon;
 import coupon.dto.response.FindMyCouponsResponse;
-import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +17,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberCouponQueryService {
 
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponRepository couponRepository;
+    private final CouponQueryService couponQueryService;
 
-    @Cacheable(value = "coupons", key = "#memberId")
     public List<FindMyCouponsResponse> findByMemberId(long memberId) {
-        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
+        MemberCouponQueryService proxy = (MemberCouponQueryService) AopContext.currentProxy();
+        List<MemberCoupon> cachedMemberCoupons = proxy.findAllByMemberIdFromCache(memberId);
+
+        if (cachedMemberCoupons.isEmpty()) {
+            List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
+            return toEntity(memberCoupons);
+        }
+
+        return toEntity(cachedMemberCoupons);
+    }
+
+    @Cacheable(value = "memberCoupons", key = "#memberId")
+    public List<MemberCoupon> findAllByMemberIdFromCache(long memberId) {
+        return Collections.unmodifiableList(Collections.emptyList());
+    }
+
+    private List<FindMyCouponsResponse> toEntity(List<MemberCoupon> memberCoupons) {
         return memberCoupons.stream()
                 .map(memberCoupon -> new FindMyCouponsResponse(
-                        couponRepository.getByCouponId(memberCoupon.getCouponId()), memberCoupon))
-                .collect(Collectors.toList());
+                        couponQueryService.findById(memberCoupon.getCouponId()), memberCoupon))
+                .toList();
     }
 }
