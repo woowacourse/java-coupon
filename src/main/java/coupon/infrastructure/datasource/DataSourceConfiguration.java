@@ -40,8 +40,8 @@ public class DataSourceConfiguration {
     @Bean
     @DependsOn({WRITE_DATASOURCE, READ_DATASOURCE})
     public DataSource routingDataSource(
-            @Qualifier("writeDataSource") DataSource writeDataSource,
-            @Qualifier("readDataSource") DataSource readDataSource
+            @Qualifier(WRITE_DATASOURCE) DataSource writeDataSource,
+            @Qualifier(READ_DATASOURCE) DataSource readDataSource
     ) {
         final ReadOnlyDataSourceRouter routingDataSource = new ReadOnlyDataSourceRouter();
         final Map<Object, Object> dataSourceMap = Map.of(

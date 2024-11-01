@@ -8,12 +8,14 @@ import jakarta.persistence.Id;
 
 import coupon.infrastructure.audit.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Member extends BaseTimeEntity {
 
     @Id
@@ -23,4 +25,8 @@ public class Member extends BaseTimeEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    public Member(String name) {
+        this.name = name;
+    }
 }

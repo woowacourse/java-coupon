@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import coupon.infrastructure.audit.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "coupon")
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class Coupon extends BaseTimeEntity {
 
     @Id

@@ -16,7 +16,10 @@ spring:
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
-
+  data:
+    redis:
+      port: 36379
+      host: localhost
 coupon.datasource:
   writer:
     type: com.zaxxer.hikari.HikariDataSource
