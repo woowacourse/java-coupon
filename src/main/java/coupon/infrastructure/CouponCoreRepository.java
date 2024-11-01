@@ -22,14 +22,25 @@ public class CouponCoreRepository implements CouponRepository {
 
     @Override
     public Coupon findById(long id) {
+        return findInCacheOrElseLoad(id);
+    }
+
+    private Coupon findInCacheOrElseLoad(long id) {
         Coupon cachedCoupon = couponCacheRepository.findById(id);
         if (cachedCoupon != null) {
             return cachedCoupon;
         }
+        return loadFromDatabaseAndCache(id);
+    }
 
+    private Coupon loadFromDatabaseAndCache(long id) {
         Coupon coupon = couponJpaRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("id에 해당하는 쿠폰이 존재하지 않습니다."));
-        couponCacheRepository.save(coupon);
+        cacheCoupon(coupon);
         return coupon;
+    }
+
+    private void cacheCoupon(Coupon coupon) {
+        couponCacheRepository.save(coupon);
     }
 }
