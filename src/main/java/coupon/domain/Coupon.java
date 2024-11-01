@@ -1,18 +1,27 @@
 package coupon.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
+@Table(name = "coupon")
 @NoArgsConstructor
 public class Coupon {
 
@@ -28,8 +37,8 @@ public class Coupon {
     @Column(name = "name", columnDefinition = "varchar(30)", nullable = false)
     private String name;
 
-    @Column(name = "cateory", nullable = false)
-    @Enumerated
+    @Column(name = "category", nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private Category category;
 
     @Column(name = "discount_amount")
@@ -39,12 +48,17 @@ public class Coupon {
     @Column(name = "minimum_order_price")
     private MinimumOrderPrice minimumOrderPrice;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @CreationTimestamp
     @Column(name = "issue_started_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueStartedAt;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @CreationTimestamp
     @Column(name = "issue_ended_at", columnDefinition = "DATETIME(6)")
     private LocalDateTime issueEndedAt;
-
 
     public Coupon(String name, Category category, int discountAmount, int minimumOrderPrice,
                   LocalDateTime issueStartedAt, LocalDateTime issueEndedAt) {
