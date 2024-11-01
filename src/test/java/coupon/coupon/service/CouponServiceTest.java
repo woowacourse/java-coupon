@@ -10,7 +10,6 @@ import coupon.coupon.domain.CouponRepository;
 import coupon.coupon.domain.MemberCouponRepository;
 import coupon.coupon.dto.CouponResponse;
 import coupon.member.domain.MemberRepository;
-import coupon.member.service.MemberService;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,8 +28,6 @@ class CouponServiceTest {
 
     @Autowired
     private CouponRepository couponRepository;
-    @Autowired
-    private MemberService memberService;
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
