@@ -35,9 +35,8 @@ public class MemberCouponService {
     }
 
     private void validateMemberCouponLimit(List<MemberCoupon> memberCoupons) {
-        int memberCouponLimit = 5;
-        if (memberCoupons.size() >= memberCouponLimit) {
-            throw new IllegalArgumentException(String.format("이미 %d장의 쿠폰을 발급받았습니다.", memberCouponLimit));
+        if (memberCoupons.size() >= MemberCoupon.ISSUED_COUPON_LIMIT) {
+            throw new IllegalArgumentException(String.format("이미 %d장의 쿠폰을 발급받았습니다.", MemberCoupon.ISSUED_COUPON_LIMIT));
         }
     }
 
