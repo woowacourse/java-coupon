@@ -1,5 +1,6 @@
 package coupon.service.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import coupon.domain.Coupon;
@@ -14,7 +15,7 @@ public record CouponInfoResponse(
         boolean isUsed,
         LocalDateTime issuedDate,
         LocalDateTime expirationDate
-) {
+) implements Serializable {
 
     public static CouponInfoResponse of(MemberCoupon memberCoupon, Coupon coupon) {
         return new CouponInfoResponse(

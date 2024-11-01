@@ -1,13 +1,15 @@
 package coupon.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public class MemberCoupon {
+@AllArgsConstructor
+public class MemberCoupon implements Serializable {
 
     private final long memberId;
     private final long couponId;
