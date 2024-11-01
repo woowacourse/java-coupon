@@ -42,10 +42,10 @@ public class MemberCoupon {
     @Column(name = "is_used", nullable = false)
     private boolean isUsed;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime created_at;
 
-    @Column(name = "expires_at", nullable = false)
+    @Column(name = "expires_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime expiresAt;
 
     public MemberCoupon(Member member, CouponEntity couponEntity) {

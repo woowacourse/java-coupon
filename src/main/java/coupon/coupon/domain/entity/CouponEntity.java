@@ -47,10 +47,10 @@ public class CouponEntity {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @Column(name = "issued_at", nullable = false)
+    @Column(name = "issued_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime issuedAt;
 
-    @Column(name = "expires_at", nullable = false)
+    @Column(name = "expires_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime expiresAt;
 
     public CouponEntity(Coupon coupon) {
