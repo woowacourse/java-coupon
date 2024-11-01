@@ -9,32 +9,36 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberCouponService {
 
+    private static final int MAX_ISSUABLE_COUPON_COUNTS = 5;
+
     private final MemberCouponRepository memberCouponRepository;
     private final CouponService couponService;
-    private final RedisCacheService redisCacheService;
     private final LockService lockService;
+    private final NewTransactionExecutor<List<MemberCoupon>> newTransactionExecutor;
 
     @Transactional
     public void issue(Long couponId, Member member) {
-        // 회원과 쿠폰 번호로 사용한거 안 한거 합쳐서 5개 미만이면, 4개 이하면 발급.
+        validateIssuedCouponCounts(couponId, member);
+        MemberCoupon memberCoupon = new MemberCoupon(couponId, member.getId());
+        lockService.executeWithLock(memberCoupon.getId(), () -> memberCouponRepository.save(memberCoupon));
+    }
+
+    private void validateIssuedCouponCounts(Long couponId, Member member) {
         Long issuedMemberCouponCount = lockService.executeWithLock(member.getId(), () -> memberCouponRepository.countMemberCouponsByCouponIdAndMemberId(couponId, member.getId()));
-        if (issuedMemberCouponCount < 5) {
-            MemberCoupon memberCoupon = new MemberCoupon(couponId, member.getId());
-            lockService.executeWithLock(memberCoupon.getId(), () -> memberCouponRepository.save(memberCoupon));
-            return;
+        if (MAX_ISSUABLE_COUPON_COUNTS <= issuedMemberCouponCount) {
+            throw new IllegalStateException("Issued member coupon counts already exceeded.");
         }
-        throw new IllegalStateException("Issued member coupon counts already exceeded.");
     }
 
     @Transactional(readOnly = true)
-    public List<MemberCoupon> getMemberCoupons(Member member) {
-//        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(member.getId());
-//        memberCoupons.stream()
-//                .map(mc -> {
-//                    Coupon coupon = couponService.getCoupon(mc.getCouponId());
-//                    // 쿠폰과 맴버 쿠폰을 합쳐서 DTO 생성 후 반환.
-//                    // 메서드 매개변수 DTO로 변환해야됨.
-//                });
-        return null;
+    public List<MemberCouponResponse> getMemberCoupons(Long couponId, Long memberId) {
+        Coupon coupon = couponService.getCoupon(couponId);
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByCouponAndMember(couponId, memberId);
+        if (memberCoupons.isEmpty()) {
+            memberCoupons = newTransactionExecutor.execute(() -> memberCouponRepository.findAllByCouponAndMember(couponId, memberId));
+        }
+        return memberCoupons.stream()
+                .map(memberCoupon -> new MemberCouponResponse(coupon, memberCoupon))
+                .toList();
     }
 }
