@@ -2,10 +2,11 @@ package coupon.domain;
 
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class CouponName {
+public class CouponName implements Serializable {
 
     private static final int MAXIMUM_VALID_LENGTH = 30;
 

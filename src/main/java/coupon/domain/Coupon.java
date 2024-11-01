@@ -7,12 +7,13 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
 @Entity
-public class Coupon {
+public class Coupon implements Serializable {
 
     private static final BigDecimal LOWEST_ALLOWED_DISCOUNT_RATE = BigDecimal.valueOf(3);
     private static final BigDecimal HIGHEST_ALLOWED_DISCOUNT_RATE = BigDecimal.valueOf(20);
