@@ -1,6 +1,7 @@
 package coupon.member.domain;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import coupon.coupon.domain.entity.CouponEntity;
@@ -30,21 +30,29 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "member")
-    @ManyToOne(optional = false)
-    private Member member;
+    @JoinColumn(name = "member_id")
+    private Long memberId;
 
-    @JoinColumn(name = "coupon")
-    @ManyToOne(optional = false)
-    private CouponEntity couponEntity;
+    @JoinColumn(name = "coupon_id")
+    private Long couponId;
 
     @Column(name = "is_used", nullable = false)
     private boolean isUsed;
 
-    @Column(name = "expires_at", nullable = false)
+    @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
+    private LocalDateTime created_at;
+
+    @Column(name = "expires_at", nullable = false, columnDefinition = "DATETIME(6)")
     private LocalDateTime expiresAt;
 
-    public MemberCoupon(Member member, CouponEntity couponEntity, LocalDateTime expiresAt) {
-        this(null, member, couponEntity, false, expiresAt);
+    public MemberCoupon(Member member, CouponEntity couponEntity) {
+        this(null,
+                member.getId(),
+                couponEntity.getId(),
+                false,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+                        .plusDays(7)
+                        .with(LocalTime.MAX));
     }
 }

@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS coupon
     minimum_order_price INT          NOT NULL,
     discount_percent    DOUBLE       NOT NULL,
     category            VARCHAR(255) NOT NULL,
-    issued_at           DATETIME     NOT NULL,
-    expires_at          DATETIME     NOT NULL
+    issued_at           DATETIME(6)  NOT NULL,
+    expires_at          DATETIME(6)  NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS member
@@ -22,10 +22,9 @@ CREATE TABLE IF NOT EXISTS member
 CREATE TABLE IF NOT EXISTS member_coupon
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    member     BIGINT   NOT NULL,
-    coupon     BIGINT   NOT NULL,
-    is_used    BOOLEAN  NOT NULL,
-    expires_at DATETIME NOT NULL,
-    FOREIGN KEY (member) REFERENCES member (id),
-    FOREIGN KEY (coupon) REFERENCES coupon (id)
+    member_id  BIGINT      NOT NULL,
+    coupon_id  BIGINT      NOT NULL,
+    is_used    BOOLEAN     NOT NULL,
+    created_at DATETIME(6) NOT NULL,
+    expires_at DATETIME(6) NOT NULL
 );
