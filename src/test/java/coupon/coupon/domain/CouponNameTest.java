@@ -4,21 +4,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 class CouponNameTest {
 
-    @Test
-    @DisplayName("실패 : 이름이 빈칸")
-    void failEmptyName() {
-        assertThatThrownBy(() -> new CouponName(""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("쿠폰 이름은 필수입니다.");
-    }
-
-    @Test
-    @DisplayName("실패 : 이름이 Null")
-    void failNullName() {
-        assertThatThrownBy(() -> new CouponName(null))
+    @ParameterizedTest
+    @NullAndEmptySource
+    @DisplayName("실패 : 이름이 NULL이거나 빈칸")
+    void failEmptyName(String s) {
+        assertThatThrownBy(() -> new CouponName(s))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("쿠폰 이름은 필수입니다.");
     }
