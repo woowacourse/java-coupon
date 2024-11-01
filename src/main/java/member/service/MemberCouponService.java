@@ -50,7 +50,7 @@ public class MemberCouponService {
 		return memberCoupons;
 	}
 
-	private MemberCouponResponse generateMemberCoupon(MemberCoupon memberCoupon) {
+	public MemberCouponResponse generateMemberCoupon(MemberCoupon memberCoupon) {
 		Coupon coupon = CouponCache.get(memberCoupon.getCouponId());
 		if(coupon == null) {
 			coupon = couponRepository.findById(memberCoupon.getCouponId())
