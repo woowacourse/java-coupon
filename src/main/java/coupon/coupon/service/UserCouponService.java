@@ -1,5 +1,6 @@
 package coupon.coupon.service;
 
+import coupon.coupon.UserCouponResponse;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.UserCoupon;
 import coupon.coupon.repository.UserCouponRepository;
@@ -16,7 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserCouponService {
 
     private static final int MAX_ISSUE_COUNT = 5;
+
     private final UserCouponRepository userCouponRepository;
+
+    private final CouponService couponService;
 
     public void issue(Coupon coupon, User user) {
         if (canIssue(coupon, user)) {
@@ -30,8 +34,16 @@ public class UserCouponService {
         return userCouponRepository.countByCouponIdAndUser(coupon.getId(), user) < MAX_ISSUE_COUNT;
     }
 
-    public List<UserCoupon> getUserCoupons(User user) {
-        return userCouponRepository.findByUser(user);
+    @Transactional(readOnly = true)
+    public List<UserCouponResponse> getUserCouponInfo(User user) {
+        List<UserCoupon> userCoupons = userCouponRepository.findByUser(user);
+        return userCoupons.stream()
+                .map(
+                        userCoupon -> UserCouponResponse.of(
+                                userCoupon,
+                                couponService.getCoupon(userCoupon.getCouponId())
+                        )
+                )
+                .toList();
     }
-
 }
