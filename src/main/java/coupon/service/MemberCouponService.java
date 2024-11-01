@@ -37,7 +37,6 @@ public class MemberCouponService {
         }
     }
 
-    @Transactional(readOnly = true)
     public List<MemberCouponResponse> readAll(long id) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(id);
         return memberCoupons.stream()
