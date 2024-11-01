@@ -57,7 +57,7 @@ class CouponServiceTest extends IntegrationTestSupport {
         couponService.issue(1L, coupon.getId());
         entityManager.clear();
 
-        List<MemberCoupon> result = routingSupport.requireNew(() -> memberCouponRepository.findAll());
+        List<MemberCoupon> result = routingSupport.changeToWrite(() -> memberCouponRepository.findAll());
         assertThat(result).hasSize(1);
     }
 
@@ -71,7 +71,7 @@ class CouponServiceTest extends IntegrationTestSupport {
 
         couponService.create(coupon);
 
-        Coupon savedCoupon = routingSupport.requireNew(() -> couponService.getCoupon(coupon.getId()));
+        Coupon savedCoupon = routingSupport.changeToWrite(() -> couponService.getCoupon(coupon.getId()));
         assertThat(savedCoupon).isNotNull();
     }
 
