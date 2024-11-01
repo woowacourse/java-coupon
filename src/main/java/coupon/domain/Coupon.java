@@ -154,7 +154,15 @@ public class Coupon {
     }
 
     public boolean canIssue(LocalDate issueDate) {
+        return isEqual(issueDate) || isBetween(issueDate);
+    }
+
+    private boolean isBetween(LocalDate issueDate) {
         return issueDate.isAfter(startIssueDate) && issueDate.isBefore(endIssueDate);
+    }
+
+    private boolean isEqual(LocalDate issueDate) {
+        return issueDate.isEqual(startIssueDate) && issueDate.isEqual(endIssueDate);
     }
 
     public Long getId() {

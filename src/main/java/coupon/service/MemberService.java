@@ -19,4 +19,10 @@ public class MemberService {
     public Member create(MemberRequest memberRequest) {
         return memberRepository.save(memberRequest.toEntity());
     }
+
+    @Transactional
+    public Member getMember(long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버입니다."));
+    }
 }
