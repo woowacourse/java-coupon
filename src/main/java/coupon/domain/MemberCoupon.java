@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class MemberCoupon {
 
@@ -19,24 +21,24 @@ public class MemberCoupon {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private final Long id;
-    private final Long couponId;
-    private final Long memberId;
-    private final LocalDateTime grantedAt;
-    private final LocalDateTime expireAt;
+    private Long id;
+    private Long couponId;
+    private Long memberId;
+    private LocalDateTime grantedAt;
+    private LocalDateTime expireAt;
     private boolean isUsed;
 
-    public MemberCoupon(Long id, Long couponId, Long memberId, boolean isUsed, LocalDateTime grantedAt) {
+    public MemberCoupon(Long id, Long couponId, Long memberId, LocalDateTime grantedAt) {
         this.id = id;
         this.couponId = couponId;
         this.memberId = memberId;
-        this.isUsed = isUsed;
+        this.isUsed = false;
         this.grantedAt = grantedAt;
         this.expireAt = calculateExpireDateTime();
     }
 
-    public MemberCoupon(Long couponId, Long memberId, boolean isUsed, LocalDateTime grantedAt) {
-        this(null, couponId, memberId, isUsed, grantedAt);
+    public MemberCoupon(Long couponId, Long memberId, LocalDateTime grantedAt) {
+        this(null, couponId, memberId, grantedAt);
     }
 
     public boolean isUsable(LocalDateTime requestTime) {
