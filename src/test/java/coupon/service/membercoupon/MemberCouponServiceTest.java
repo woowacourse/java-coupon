@@ -1,4 +1,4 @@
-package coupon.service.coupon;
+package coupon.service.membercoupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -7,8 +7,7 @@ import coupon.entity.coupon.Coupon;
 import coupon.entity.coupon.CouponCategory;
 import coupon.entity.membercoupon.MemberCoupon;
 import coupon.exception.membercoupon.CannotCreateMemberCouponException;
-import coupon.service.membercoupon.MemberCouponResponse;
-import coupon.service.membercoupon.MemberCouponService;
+import coupon.service.coupon.CouponService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
