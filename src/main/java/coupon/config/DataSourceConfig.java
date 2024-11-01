@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "coupon.coupon.repository")
+@EnableJpaRepositories(basePackages = {"coupon.coupon.repository", "coupon.member.repository"})
 public class DataSourceConfig {
 
     private static final String WRITER_DATA_SOURCE = "writerDataSource";
