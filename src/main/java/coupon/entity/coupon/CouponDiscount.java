@@ -1,8 +1,8 @@
-package coupon.entity;
+package coupon.entity.coupon;
 
-import coupon.exception.CouponDiscountAmountException;
-import coupon.exception.CouponDiscountRateException;
-import coupon.exception.CouponMinimumOrderAmountException;
+import coupon.exception.coupon.CouponDiscountAmountException;
+import coupon.exception.coupon.CouponDiscountRateException;
+import coupon.exception.coupon.CouponMinimumOrderAmountException;
 import jakarta.persistence.Embeddable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;

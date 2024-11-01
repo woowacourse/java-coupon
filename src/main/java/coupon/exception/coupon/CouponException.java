@@ -1,4 +1,4 @@
-package coupon.exception;
+package coupon.exception.coupon;
 
 
 public class CouponException extends RuntimeException {

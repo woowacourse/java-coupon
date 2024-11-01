@@ -1,11 +1,11 @@
-package coupon.service;
+package coupon.service.coupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import coupon.entity.Coupon;
-import coupon.entity.CouponCategory;
-import coupon.exception.CouponNotFoundException;
+import coupon.entity.coupon.Coupon;
+import coupon.entity.coupon.CouponCategory;
+import coupon.exception.coupon.CouponNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,7 +37,7 @@ public class CouponServiceTest {
         Long id = couponService.create(coupon);
 
         // then
-        assertThat(couponService.getCouponFromWriterDatabase(id).getName().getName()).isEqualTo(rightName);
+        assertThat(couponService.getCouponWithoutReplicaLag(id).getName().getName()).isEqualTo(rightName);
     }
 
     @Test

@@ -1,4 +1,4 @@
-package coupon.entity;
+package coupon.entity.coupon;
 
 import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
