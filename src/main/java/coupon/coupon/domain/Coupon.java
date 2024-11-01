@@ -50,6 +50,7 @@ public class Coupon {
     private CouponIssuancePeriod issuancePeriod;
 
     public Coupon(
+            Long id,
             String name,
             Long discountAmount,
             Long minimumOrderAmount,
@@ -58,11 +59,23 @@ public class Coupon {
             LocalDateTime endDate
     ) {
         validateDiscountRate(discountAmount, minimumOrderAmount);
+        this.id = id;
         this.name = new CouponName(name);
         this.discountAmount = new CouponDiscountAmount(discountAmount);
         this.minimumOrderAmount = new CouponMinimumOrderAmount(minimumOrderAmount);
         this.category = CouponCategory.getCategory(category);
         this.issuancePeriod = new CouponIssuancePeriod(startDate, endDate);
+    }
+
+    public Coupon(
+            String name,
+            Long discountAmount,
+            Long minimumOrderAmount,
+            String category,
+            LocalDateTime startDate,
+            LocalDateTime endDate
+    ) {
+        this(null, name, discountAmount, minimumOrderAmount, category, startDate, endDate);
     }
 
     private void validateDiscountRate(Long discountAmount, Long minimumOrderAmount) {

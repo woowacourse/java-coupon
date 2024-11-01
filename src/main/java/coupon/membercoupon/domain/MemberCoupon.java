@@ -8,15 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
-import org.springframework.cglib.core.Local;
-
-import coupon.coupon.domain.Coupon;
-import coupon.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,13 +25,11 @@ public class MemberCoupon {
     @Column(name = "member_coupon_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
+    @Column(name = "coupon_id", nullable = false)
+    private Long couponId;
 
     @Column(name = "is_used", nullable = false)
     private Boolean isUsed;
@@ -49,11 +40,15 @@ public class MemberCoupon {
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
 
-    public MemberCoupon(Member member, Coupon coupon, Boolean isUsed) {
-        this.member = member;
-        this.coupon = coupon;
+    public MemberCoupon(Long memberId, Long couponId) {
+        this(memberId, couponId, false);
+    }
+
+    public MemberCoupon(Long memberId, Long couponId, Boolean isUsed) {
+        this.memberId = memberId;
+        this.couponId = couponId;
         this.isUsed = isUsed;
         this.issuedAt = LocalDateTime.now();
-        this.expiresAt = this.issuedAt.plusDays(7).with(LocalTime.MAX);
+        this.expiresAt = this.issuedAt.plusDays(6).with(LocalTime.MAX);
     }
 }

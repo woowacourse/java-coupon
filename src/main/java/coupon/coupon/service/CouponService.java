@@ -1,5 +1,8 @@
 package coupon.coupon.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -23,9 +26,16 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
+    public List<Coupon> readAllByIdsFromReaderWithCache(List<Long> couponIds) {
+        return couponIds.stream()
+                .map(this::readByIdFromReaderWithCache)
+                .flatMap(Optional::stream)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     @Cacheable(value = CACHE_NAMES, key = "#couponId")
-    public Coupon readByIdFromReaderWithCache(Long couponId) {
-        return couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("해당하는 ID의 쿠폰이 없습니다."));
+    public Optional<Coupon> readByIdFromReaderWithCache(Long couponId) {
+        return couponRepository.findById(couponId);
     }
 }
