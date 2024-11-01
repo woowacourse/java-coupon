@@ -4,15 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.domain.Coupon;
+import coupon.dto.request.SaveCouponRequest;
 import coupon.exception.CouponException;
-import coupon.repository.CouponRepository;
 import java.time.LocalDate;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 @SpringBootTest
 class CouponQueryServiceTest {
@@ -21,21 +19,12 @@ class CouponQueryServiceTest {
     private CouponQueryService couponQueryService;
 
     @Autowired
-    private CouponRepository couponRepository;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @AfterEach
-    void tearDown() {
-        jdbcTemplate.update("DELETE FROM coupon");
-        jdbcTemplate.update("ALTER TABLE coupon AUTO_INCREMENT = 1");
-    }
+    private CouponCommandService couponCommandService;
 
     @DisplayName("성공: 존재하는 ID로 조회, 복제 지연 해결")
     @Test
     void findById() {
-        Coupon saved = couponRepository.save(new Coupon("천원 할인 쿠폰", 1000, 10000,
+        Coupon saved = couponCommandService.save(new SaveCouponRequest("천원 할인 쿠폰", 1000, 10000,
                 LocalDate.now().minusDays(5), LocalDate.now().plusDays(5), "FOOD"));
 
         Coupon found = couponQueryService.findById(saved.getId());

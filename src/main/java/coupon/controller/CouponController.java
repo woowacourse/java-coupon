@@ -1,7 +1,7 @@
 package coupon.controller;
 
 import coupon.domain.Coupon;
-import coupon.dto.SaveCouponRequest;
+import coupon.dto.request.SaveCouponRequest;
 import coupon.service.CouponCommandService;
 import coupon.service.CouponQueryService;
 import java.net.URI;
@@ -23,7 +23,7 @@ public class CouponController {
 
     @PostMapping("/save")
     public ResponseEntity<Void> save(SaveCouponRequest request) {
-        long couponId = couponCommandService.save(request);
+        long couponId = couponCommandService.save(request).getId();
         return ResponseEntity.created(URI.create("/coupons/" + couponId))
                 .build();
     }
