@@ -47,7 +47,7 @@ public class DataSourceConfig {
     @Bean
     @Primary
     public DataSource dataSource() {
-        return new LazyConnectionDataSourceProxy(routeDataSource(writeDataSource(), readDataSource()));
+        return new LazyConnectionDataSourceProxy(routeDataSource(readDataSource(), writeDataSource()));
     }
 
     private DataSource createDataSource() {
