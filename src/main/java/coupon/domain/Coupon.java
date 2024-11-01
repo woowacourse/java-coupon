@@ -1,14 +1,16 @@
 package coupon.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public class Coupon {
+@AllArgsConstructor
+public class Coupon implements Serializable {
 
     private final CouponName name;
     private final DiscountAmount discountAmount;
@@ -16,33 +18,18 @@ public class Coupon {
     private final DiscountRate discountRate;
     private final ValidityPeriod validityPeriod;
 
+    @JsonCreator
     public Coupon(
             final String name,
             final long discountAmount,
             final long minimumOrderAmount,
             final LocalDateTime startDate,
-            final LocalDateTime expirationDate
+            final LocalDateTime endDate
     ) {
         this.name = new CouponName(name);
         this.discountAmount = new DiscountAmount(discountAmount);
         this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
         this.discountRate = new DiscountRate(this.discountAmount, this.minimumOrderAmount);
-        this.validityPeriod = new ValidityPeriod(startDate, expirationDate);
-    }
-
-    @Builder
-    private Coupon(
-            final String name,
-            final long discountAmount,
-            final long minimumOrderAmount,
-            final long discountRate,
-            final LocalDateTime startDate,
-            final LocalDateTime expirationDate
-    ) {
-        this.name = new CouponName(name);
-        this.discountAmount = new DiscountAmount(discountAmount);
-        this.minimumOrderAmount = new MinimumOrderAmount(minimumOrderAmount);
-        this.discountRate = new DiscountRate(discountRate);
-        this.validityPeriod = new ValidityPeriod(startDate, expirationDate);
+        this.validityPeriod = new ValidityPeriod(startDate, endDate);
     }
 }

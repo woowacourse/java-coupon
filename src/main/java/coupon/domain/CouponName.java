@@ -1,10 +1,12 @@
 package coupon.domain;
 
+import java.io.Serializable;
+
 import coupon.exception.InvalidCouponNameException;
 import lombok.Getter;
 
 @Getter
-public class CouponName {
+public class CouponName implements Serializable {
 
     public static final int MAX_LENGTH = 30;
 

@@ -1,4 +1,4 @@
-package coupon.repository;
+package coupon.repository.entity;
 
 import java.time.LocalDateTime;
 
@@ -7,15 +7,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import coupon.domain.Coupon;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "COUPON")
 @Entity
 public class CouponEntity {
 
@@ -32,35 +33,43 @@ public class CouponEntity {
     @Column(name = "MINIMUM_ORDER_AMOUNT", nullable = false)
     private Long minimumOrderAmount;
 
-    @Column(name = "DISCOUNT_RATE", nullable = false)
-    private Long discountRate;
-
     @Column(name = "START_DATE", nullable = false)
     private LocalDateTime startDate;
 
-    @Column(name = "EXPIRATION_DATE", nullable = false)
-    private LocalDateTime expirationDate;
+    @Column(name = "END_DATE", nullable = false)
+    private LocalDateTime endDate;
+
+    public CouponEntity(
+            final String name,
+            final Long discountAmount,
+            final Long minimumOrderAmount,
+            final LocalDateTime startDate,
+            final LocalDateTime endDate
+    ) {
+        this.name = name;
+        this.discountAmount = discountAmount;
+        this.minimumOrderAmount = minimumOrderAmount;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     public static CouponEntity toEntity(final Coupon coupon) {
         return new CouponEntity(
-                null,
                 coupon.getName().getValue(),
                 coupon.getDiscountAmount().getValue(),
                 coupon.getMinimumOrderAmount().getValue(),
-                coupon.getDiscountRate().getValue(),
                 coupon.getValidityPeriod().getStartDate(),
-                coupon.getValidityPeriod().getExpirationDate()
+                coupon.getValidityPeriod().getEndDate()
         );
     }
 
     public Coupon toDomain() {
-        return Coupon.builder()
-                .name(name)
-                .discountAmount(discountAmount)
-                .discountRate(discountRate)
-                .minimumOrderAmount(minimumOrderAmount)
-                .startDate(startDate)
-                .expirationDate(expirationDate)
-                .build();
+        return new Coupon(
+                name,
+                discountAmount,
+                minimumOrderAmount,
+                startDate,
+                endDate
+        );
     }
 }
