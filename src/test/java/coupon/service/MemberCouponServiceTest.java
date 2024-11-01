@@ -23,8 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 @TestPropertySource(properties = "spring.profiles.active=test")
 class MemberCouponServiceTest {
 
@@ -57,8 +59,6 @@ class MemberCouponServiceTest {
     @AfterEach
     void tearDown() {
         Objects.requireNonNull(cacheManager.getCache("coupon")).clear();
-        couponRepository.deleteAll();
-        memberCouponRepository.deleteAll();
     }
 
     @DisplayName("회원에게 쿠폰을 발급한다.")

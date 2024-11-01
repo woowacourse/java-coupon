@@ -15,8 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 @TestPropertySource(properties = "spring.profiles.active=test")
 class CouponServiceTest {
 
@@ -32,7 +34,6 @@ class CouponServiceTest {
     @AfterEach
     void tearDown() {
         Objects.requireNonNull(cacheManager.getCache("coupon")).clear();
-        couponRepository.deleteAll();
     }
 
     @Test
