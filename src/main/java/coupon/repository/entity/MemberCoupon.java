@@ -1,15 +1,17 @@
 package coupon.repository.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class MemberCoupon {
@@ -18,23 +20,28 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Coupon coupon;
 
     private Boolean isUsed;
 
-    @CreatedDate
     private LocalDateTime issuedAt;
 
     private LocalDateTime endedAt;
 
-    public MemberCoupon(Member member, Coupon coupon, Boolean isUsed) {
+    public MemberCoupon(Member member, Coupon coupon) {
         this.member = member;
         this.coupon = coupon;
-        this.isUsed = isUsed;
+        this.isUsed = false;
+        this.issuedAt = LocalDateTime.now();
         this.endedAt = issuedAt.plusDays(6);
+    }
+
+    public MemberCoupon updateCoupon(Coupon coupon) {
+        this.coupon = coupon;
+        return this;
     }
 }
