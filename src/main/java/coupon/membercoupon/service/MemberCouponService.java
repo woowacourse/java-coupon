@@ -40,7 +40,7 @@ public class MemberCouponService {
     }
 
     private void validateIssuedCouponSize(long couponId, long memberId) {
-        Long size = memberCouponRepository.countByCouponIdAndMemberId(couponId, memberId);
+        long size = memberCouponRepository.countByCouponIdAndMemberId(couponId, memberId);
 
         if (size >= MAX_NUMBER_OF_COUPONS_ISSUED) {
             throw new IllegalArgumentException("한 명의 회원에게 동일한 쿠폰을 최대 %d장까지 발급 가능합니다.".formatted(MAX_NUMBER_OF_COUPONS_ISSUED));
