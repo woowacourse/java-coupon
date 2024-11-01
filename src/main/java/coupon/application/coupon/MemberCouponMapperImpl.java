@@ -14,6 +14,7 @@ import coupon.domain.Coupon;
 import coupon.domain.CouponDiscountApply;
 import coupon.domain.CouponIssuableDuration;
 import coupon.domain.MemberCoupon;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -40,8 +41,17 @@ class MemberCouponMapperImpl implements MemberCouponMapper {
                 .collect(Collectors.toSet());
 
         return ids.stream()
-                .map(it -> routingSupport.changeToWrite(getCouponSupplier(it)))
+                .map(this::getFromReadOrElseWrite)
                 .toList();
+    }
+
+    private Coupon getFromReadOrElseWrite(Long id) {
+        Supplier<Coupon> couponSupplier = getCouponSupplier(id);
+        try {
+            return couponSupplier.get();
+        } catch (EntityNotFoundException e) {
+            return routingSupport.changeToWrite(couponSupplier);
+        }
     }
 
     private Supplier<Coupon> getCouponSupplier(Long couponId) {
