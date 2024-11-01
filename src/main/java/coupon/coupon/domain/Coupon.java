@@ -17,6 +17,8 @@ import coupon.CouponException;
 @Entity
 public class Coupon {
 
+    public static final String COUPON_ISSUE_MESSAGE = "쿠폰을 발급할 수 있는 기한이 지났습니다.";
+
     public static final String CATEGORY_NON_NULL_MESSAGE = "카테고리를 선택해주세요.";
     private static final BigDecimal MINIMUM_DISCOUNT_RATE = BigDecimal.valueOf(3);
     private static final BigDecimal MAXIMUM_DISCOUNT_RATE = BigDecimal.valueOf(20);
@@ -76,8 +78,10 @@ public class Coupon {
         }
     }
 
-    public boolean isUnableToIssue(LocalDateTime issuedAt) {
-        return term.doesNotContain(issuedAt);
+    public void issue(LocalDateTime issuedAt) {
+        if (term.doesNotContain(issuedAt)) {
+            throw new CouponException(COUPON_ISSUE_MESSAGE);
+        }
     }
 
     public Long getId() {

@@ -7,14 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import coupon.CouponException;
 import coupon.coupon.domain.Coupon;
 import coupon.member.domain.Member;
 
 @Entity
 public class MemberCoupon {
 
-    public static final String COUPON_ISSUE_MESSAGE = "쿠폰을 발급할 수 있는 기한이 지났습니다.";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,14 +45,8 @@ public class MemberCoupon {
 
     public static MemberCoupon issue(Member member, Coupon coupon) {
         LocalDateTime issuedAt = LocalDateTime.now();
-        validate(coupon, issuedAt);
+        coupon.issue(issuedAt);
         return new MemberCoupon(member, coupon, issuedAt);
-    }
-
-    private static void validate(Coupon coupon, LocalDateTime issuedAt) {
-        if (coupon.isUnableToIssue(issuedAt)) {
-            throw new CouponException(COUPON_ISSUE_MESSAGE);
-        }
     }
 
     private LocalDateTime calculateExpiredAt(LocalDateTime issuedAt) {

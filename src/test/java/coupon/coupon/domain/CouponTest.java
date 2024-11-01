@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import coupon.CouponException;
 import coupon.fixture.CouponFixture;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -79,35 +78,19 @@ class CouponTest {
                 .hasMessage("카테고리를 선택해주세요.");
     }
 
-    @DisplayName("주어진 날짜에 쿠폰을 발급할 수 없으면 참을 반환한다.")
+
+    @DisplayName("쿠폰 발급 기한 외의 날짜에 발급을 시도하면 예외가 발생한다.")
     @Test
-    void unableToIssue() {
+    void cannotIssue() {
         // given
         LocalDateTime issuedAt = LocalDateTime.now();
         LocalDate startAt = LocalDate.now().plusDays(1);
-        LocalDate endAt = LocalDate.now().plusDays(2);
+        LocalDate endAt = LocalDate.now().plusDays(10);
         Coupon coupon = CouponFixture.create(startAt, endAt);
 
         // when
-        boolean result = coupon.isUnableToIssue(issuedAt);
-
-        // then
-        assertThat(result).isTrue();
-    }
-
-    @DisplayName("주어진 날짜에 쿠폰을 발급할 수 없으면 참을 반환한다.")
-    @Test
-    void ableToIssue() {
-        // given
-        LocalDateTime issuedAt = LocalDateTime.now();
-        LocalDate startAt = LocalDate.now();
-        LocalDate endAt = LocalDate.now().plusDays(2);
-        Coupon coupon = CouponFixture.create(startAt, endAt);
-
-        // when
-        boolean result = coupon.isUnableToIssue(issuedAt);
-
-        // then
-        assertThat(result).isFalse();
+        assertThatThrownBy(() -> coupon.issue(issuedAt))
+                .isInstanceOf(CouponException.class)
+                .hasMessage("쿠폰을 발급할 수 있는 기한이 지났습니다.");
     }
 }
