@@ -6,7 +6,6 @@ import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
 import coupon.dto.CouponRequest;
 import coupon.dto.MemberCouponRequest;
-import coupon.dto.MemberCouponResponse;
 import coupon.repository.CategoryRepository;
 import coupon.repository.CouponRepository;
 import coupon.repository.MemberCouponRepository;
@@ -75,10 +74,5 @@ public class CouponService {
     private Member getMember(long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버입니다."));
-    }
-
-    private MemberCouponResponse toMemberCouponResponse(MemberCoupon memberCoupon) {
-        Coupon coupon = getCoupon(memberCoupon.getCouponId());
-        return MemberCouponResponse.of(memberCoupon, coupon);
     }
 }
