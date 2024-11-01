@@ -16,12 +16,12 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
-    @CachePut(value = CACHE_NAME, key = "#result.id", unless = "#result == null")
+    @CachePut(value = CACHE_NAME, key = "#result.id")
     public Coupon create(final Coupon coupon) {
         return couponRepository.save(coupon);
     }
 
-    @Cacheable(value = CACHE_NAME, key = "#id")
+    @Cacheable(value = CACHE_NAME, key = "#id", unless = "#result == null")
     public Coupon getCoupon(final Long id) {
         return couponRepository.fetchById(id);
     }
