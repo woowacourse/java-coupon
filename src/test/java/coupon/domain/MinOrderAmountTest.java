@@ -13,7 +13,8 @@ class MinOrderAmountTest {
     @ValueSource(ints = {4999, 100001})
     void 최소_주문_금액이_5000원_이상_100000원_이하가_아니면_예외가_발생한다(int amount) {
         assertThatThrownBy(() -> new MinOrderAmount(amount))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("최소 주문 금액은 5000원 이상 100000원 이하여야 합니다.");
     }
 
     @Test

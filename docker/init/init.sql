@@ -8,6 +8,21 @@ CREATE TABLE IF NOT EXISTS coupon (
     discount_amount BIGINT NOT NULL,
     min_order_amount BIGINT NOT NULL,
     category ENUM('FASHION', 'ELECTRONICS', 'FURNITURE', 'FOOD') NOT NULL,
-    start_date DATETIME NOT NULL,
-    end_date DATETIME NOT NULL
+    start_at TIMESTAMP(6) NOT NULL,
+    end_at TIMESTAMP(6) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS member (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    account VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS member_coupon (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    coupon_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    is_used TINYINT(1) NOT NULL DEFAULT 0,
+    issued_at TIMESTAMP(6) NOT NULL,
+    expired_at TIMESTAMP(6) NOT NULL
 );
