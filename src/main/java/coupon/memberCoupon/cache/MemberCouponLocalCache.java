@@ -20,7 +20,7 @@ public class MemberCouponLocalCache {
     public void put(Member member, Coupon coupon, MemberCoupon memberCoupon) {
         MemberCouponCacheKey memberCouponCacheKey = new MemberCouponCacheKey(member, coupon);
 
-        if (CACHE.get(memberCouponCacheKey) == null) {
+        if (!CACHE.containsKey(memberCouponCacheKey)) {
             Set<MemberCoupon> memberCouponCacheValue = new HashSet<>();
             memberCouponCacheValue.add(memberCoupon);
 
@@ -31,11 +31,7 @@ public class MemberCouponLocalCache {
     }
 
     public Set<MemberCoupon> get(Member member, Coupon coupon) {
-        Set<MemberCoupon> memberCoupons = CACHE.get(new MemberCouponCacheKey(member, coupon));
-        if (memberCoupons == null) {
-            return Set.of();
-        }
-        return memberCoupons;
+        return CACHE.getOrDefault(new MemberCouponCacheKey(member, coupon), Set.of());
     }
 
     public Set<MemberCouponResponse> getAllByMember(Member member) {
