@@ -23,7 +23,7 @@ public class MemberCoupon extends BaseEntity {
     @Column(name = "coupon_id", nullable = false)
     private Long couponId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
@@ -38,5 +38,9 @@ public class MemberCoupon extends BaseEntity {
 
     public static MemberCoupon issueOf(Member member, Long couponId, LocalDateTime issuedAt) {
         return new MemberCoupon(null, couponId, member, false, issuedAt, issuedAt.plusDays(7));
+    }
+
+    public boolean isUsableCoupon() {
+        return !isUsed;
     }
 }

@@ -2,16 +2,15 @@ package coupon.entity;
 
 import coupon.domain.coupon.Category;
 import coupon.domain.coupon.CouponDomain;
+import coupon.domain.coupon.UserStorageCoupon;
 import coupon.entity.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
+@ToString
 @Getter
 @Table(name = "coupon")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -50,5 +49,18 @@ public class Coupon extends BaseEntity {
                 coupon.getStartDate(),
                 coupon.getEndDate()
         );
+    }
+
+    public UserStorageCoupon toUserStorageCoupon() {
+        return UserStorageCoupon.of(this);
+    }
+
+    public int issueDayDeadLine() {
+        return issueEndDate.compareTo(LocalDate.now());
+    }
+
+    public boolean notEndDateCoupon() {
+        LocalDate now = LocalDate.now();
+        return now.isBefore(getIssueEndDate());
     }
 }
