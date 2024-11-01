@@ -20,6 +20,12 @@ spring:
   sql:
     init:
       mode: always
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 36379
 
 coupon.datasource:
   writer:
