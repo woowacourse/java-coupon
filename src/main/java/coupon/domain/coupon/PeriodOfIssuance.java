@@ -3,10 +3,12 @@ package coupon.domain.coupon;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class PeriodOfIssuance {
 
     private LocalDate startDate;
@@ -16,6 +18,10 @@ public class PeriodOfIssuance {
         validate(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public boolean contains(LocalDate date) {
+        return !startDate.isAfter(date) && !endDate.isBefore(date);
     }
 
     private void validate(LocalDate startDate, LocalDate endDate) {

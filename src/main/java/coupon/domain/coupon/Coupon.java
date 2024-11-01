@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
     private Long id;
     @Embedded
     private Name name;
@@ -35,5 +35,9 @@ public class Coupon {
         this(null, new Name(name), new MinimumOrderAmount(minimumOrderAmount),
                 new DiscountAmount(discountAmount, minimumOrderAmount), Category.valueOf(category),
                 new PeriodOfIssuance(startDate, endDate));
+    }
+
+    public boolean canIssueAt(LocalDate date) {
+        return periodOfIssuance.contains(date);
     }
 }
