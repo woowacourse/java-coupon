@@ -29,10 +29,14 @@ coupon.datasource:
     username: root
     password: root
     maximumPoolSize: 10
+
+  profiles:
+    active: "writer"
+
   reader:
     type: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://localhost:33307/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    jdbcUrl: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
     maximumPoolSize: 10

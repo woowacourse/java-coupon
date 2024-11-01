@@ -2,14 +2,17 @@ package coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
-public class MinimumOrderPrice {
+@Getter
+public class MinimumOrderPrice implements Serializable {
 
     private static final int MIN_PRICE = 5_000;
     private static final int MAX_PRICE = 100_000;

@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,8 +18,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "Coupon")
-public class Coupon {
+public class Coupon implements Serializable {
 
+    public static final String CACHE_NAME = "CouponCache";
     private static final int MIN_DISCOUNT_PERCENT = 3;
     private static final int MAX_DISCOUNT_PERCENT = 20;
 
