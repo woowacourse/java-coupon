@@ -1,8 +1,11 @@
 package coupon.membercoupon;
 
 import coupon.coupon.Coupon;
+import coupon.coupon.CouponIssuanceDatePassedException;
+import coupon.coupon.CouponNotFoundException;
 import coupon.coupon.CouponRepository;
 import coupon.member.Member;
+import coupon.member.MemberNotFoundException;
 import coupon.member.MemberRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +26,9 @@ public class MemberCouponService {
     @CacheEvict(value = "memberCoupon", key = "#memberId")
     public MemberCoupon issueMemberCoupon(long couponId, long memberId) {
         Coupon coupon = couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("일치하는 쿠폰 정보가 없습니다. couponId : " + couponId));
+                .orElseThrow(() -> new CouponNotFoundException(couponId));
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("일치하는 회원 정보가 없습니다. memberId : " + memberId));
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
         validateIssuedMemberCouponCount(member.getId());
         validateCouponIssuable(coupon);
         return memberCouponRepository.save(new MemberCoupon(coupon.getId(), member.getId()));
@@ -34,13 +37,13 @@ public class MemberCouponService {
     private void validateIssuedMemberCouponCount(long memberId) {
         int issuedCount = memberCouponRepository.findAllByMemberId(memberId).size();
         if (issuedCount >= 5) {
-            throw new IllegalArgumentException("쿠폰은 최대 5장까지 발급할 수 있습니다. memberId : " + memberId);
+            throw new MemberCouponIssuedOverException(memberId);
         }
     }
 
     private void validateCouponIssuable(Coupon coupon) {
         if (!coupon.isCouponIssuable()) {
-            throw new IllegalArgumentException("쿠폰의 발급 가능일이 지났습니다. couponEndDate : " + coupon.getEndDate());
+            throw new CouponIssuanceDatePassedException(coupon.getId());
         }
     }
 
@@ -48,7 +51,7 @@ public class MemberCouponService {
     @Cacheable(value = "memberCoupon", key = "#memberId")
     public MemberCouponResponse findMemberCoupons(long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("일치하는 회원 정보가 없습니다. memberId : " + memberId));
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
 
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(member.getId());
         List<CouponResponse> couponResponses = memberCoupons.stream()

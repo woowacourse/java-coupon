@@ -2,12 +2,13 @@ package coupon.membercoupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import coupon.coupon.Category;
 import coupon.coupon.Coupon;
+import coupon.coupon.CouponIssuanceDatePassedException;
+import coupon.coupon.CouponNotFoundException;
 import coupon.coupon.CouponRepository;
 import coupon.member.Member;
 import coupon.member.MemberRepository;
@@ -27,7 +28,7 @@ class MemberCouponServiceTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private  MemberCouponService memberCouponService;
+    private MemberCouponService memberCouponService;
 
     @Test
     void 회원_쿠폰_발급() {
@@ -52,7 +53,7 @@ class MemberCouponServiceTest {
 
         // when, then
         assertThatThrownBy(() -> memberCouponService.issueMemberCoupon(wrongCouponId, member.getId()))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CouponNotFoundException.class);
     }
 
     @Test
@@ -64,7 +65,7 @@ class MemberCouponServiceTest {
 
         // when, then
         assertThatThrownBy(() -> memberCouponService.issueMemberCoupon(coupon.getId(), wrongMemberId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CouponNotFoundException.class);
     }
 
     @Test
@@ -80,7 +81,7 @@ class MemberCouponServiceTest {
 
         // when, then
         assertThatThrownBy(() -> memberCouponService.issueMemberCoupon(coupon.getId(), member.getId()))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(CouponIssuanceDatePassedException.class);
     }
 
     @Test
@@ -98,7 +99,7 @@ class MemberCouponServiceTest {
 
         // when, then
         assertThatThrownBy(() -> memberCouponService.issueMemberCoupon(coupon.getId(), member.getId()))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(MemberCouponIssuedOverException.class);
     }
 
     @Test

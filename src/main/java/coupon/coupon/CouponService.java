@@ -18,6 +18,6 @@ public class CouponService {
     @Transactional(readOnly = true)
     public Coupon find(long couponId) {
         return couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("쿠폰을 찾을 수 없습니다. couponId : " + couponId));
+                .orElseThrow(() -> new CouponNotFoundException(couponId));
     }
 }
