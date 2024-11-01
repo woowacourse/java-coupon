@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.coupons.domain;
 
 import java.util.Objects;
 import jakarta.persistence.Column;

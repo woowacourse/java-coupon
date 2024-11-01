@@ -1,16 +1,15 @@
-package coupon.domain;
+package coupon.membercoupon.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import coupon.member.Member;
+import jakarta.persistence.Table;
+import coupon.coupons.domain.Coupon;
+import coupon.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,18 +17,17 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "member_coupon")
 public class MemberCoupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
+    @Column(nullable = false)
+    private Long couponId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column(nullable = false)
+    private Long memberId;
 
     @Column(nullable = false)
     private Boolean isUsed;
@@ -40,13 +38,17 @@ public class MemberCoupon {
     @Column(nullable = false)
     private LocalDateTime expiresAt;
 
-    public MemberCoupon(Coupon coupon, Member member, LocalDateTime issuedAt) {
+    public MemberCoupon(Long couponId, Long memberId, LocalDateTime issuedAt) {
         validateIssuedAt(issuedAt);
-        this.coupon = coupon;
-        this.member = member;
+        this.couponId = couponId;
+        this.memberId = memberId;
         this.isUsed = false;
         this.issuedAt = issuedAt;
         this.expiresAt = calculateExpiryDate(issuedAt);
+    }
+
+    public MemberCoupon(Coupon coupon, Member member, LocalDateTime issuedAt) {
+        this(coupon.getId(), member.getId(), issuedAt);
     }
 
     private void validateIssuedAt(LocalDateTime issuedAt) {
