@@ -20,6 +20,7 @@ spring:
     redis:
       host: localhost
       port: 36379
+      ttl: 5m
 
 coupon.datasource:
   writer:

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
+import org.springframework.test.context.jdbc.Sql;
 
 import coupon.domain.Coupon;
 import coupon.domain.Member;
@@ -22,6 +23,7 @@ import coupon.repository.MemberCouponRepository;
 import coupon.repository.MemberRepository;
 
 @SpringBootTest
+@Sql("classpath:init.sql")
 class MemberCouponServiceTest {
 
     @Autowired
@@ -41,33 +43,21 @@ class MemberCouponServiceTest {
 
     private Member member;
     private Coupon coupon1;
-    private Coupon coupon2;
-    private Coupon coupon3;
-    private Coupon coupon4;
-    private Coupon coupon5;
 
     @BeforeEach
     void setUp() {
         member = memberRepository.save(MemberFixture.member);
         coupon1 = couponRepository.save(CouponFixture.coupon_1);
-        coupon2 = couponRepository.save(CouponFixture.coupon_1);
-        coupon3 = couponRepository.save(CouponFixture.coupon_1);
-        coupon4 = couponRepository.save(CouponFixture.coupon_1);
-        coupon5 = couponRepository.save(CouponFixture.coupon_1);
 
         var cache = cacheManager.getCache("coupon");
         cache.put(coupon1.getId(), coupon1);
-        cache.put(coupon1.getId(), coupon2);
-        cache.put(coupon1.getId(), coupon3);
-        cache.put(coupon1.getId(), coupon4);
-        cache.put(coupon1.getId(), coupon5);
 
         var memberCoupons = List.of(
                 new MemberCoupon(member, coupon1),
-                new MemberCoupon(member, coupon2),
-                new MemberCoupon(member, coupon3),
-                new MemberCoupon(member, coupon4),
-                new MemberCoupon(member, coupon5)
+                new MemberCoupon(member, coupon1),
+                new MemberCoupon(member, coupon1),
+                new MemberCoupon(member, coupon1),
+                new MemberCoupon(member, coupon1)
         );
         memberCouponRepository.saveAll(memberCoupons);
     }
@@ -77,10 +67,10 @@ class MemberCouponServiceTest {
 
         @Test
         void success() {
-            Coupon coupon2 = couponRepository.save(CouponFixture.coupon_2);
-            var actual = sut.issueMemberCoupon(member, coupon2);
+            Coupon newCoupon = couponRepository.save(CouponFixture.coupon_2);
+            var actual = sut.issueMemberCoupon(member, newCoupon);
 
-            assertThat(actual.getCouponId()).isEqualTo(coupon2.getId());
+            assertThat(actual.getCouponId()).isEqualTo(newCoupon.getId());
             assertThat(actual.getMemberId()).isEqualTo(member.getId());
         }
 
@@ -100,6 +90,16 @@ class MemberCouponServiceTest {
             var actual = sut.findAllCouponByMember(member);
 
             assertThat(actual).hasSize(5);
+        }
+
+        @Test
+        void delayTest() {
+            Coupon newCoupon = couponRepository.save(CouponFixture.coupon_2);
+            sut.issueMemberCoupon(member, newCoupon);
+
+            var actual = sut.findAllCouponByMember(member);
+
+            assertThat(actual).hasSize(6);
         }
     }
 }

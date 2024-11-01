@@ -29,7 +29,5 @@ create table if not exists member_coupon
     coupon_id       bigint,
     id              bigint      not null auto_increment,
     member_id       bigint,
-    primary key (id),
-    foreign key (member_id) references member (id),
-    foreign key (coupon_id) references coupon (id)
+    primary key (id)
 );
