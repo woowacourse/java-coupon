@@ -1,6 +1,5 @@
 package coupon.coupon.service;
 
-import coupon.coupon.domain.CouponRepository;
 import coupon.coupon.domain.MemberCoupon;
 import coupon.coupon.domain.MemberCouponRepository;
 import coupon.coupon.dto.MemberCouponCreateRequest;
@@ -21,21 +20,20 @@ public class MemberCouponService {
 
     private final MemberCouponRepository memberCouponRepository;
     private final MemberRepository memberRepository;
-    private final CouponRepository couponRepository;
+    private final CouponService couponService;
 
     @Transactional
     public MemberCouponResponse createMemberCoupon(final MemberCouponCreateRequest memberCouponCreateRequest) {
         final var member = memberRepository.findById(memberCouponCreateRequest.memberId())
                 .orElseThrow(() -> new CouponApplicationException("존재하지 않는 멤버입니다"));
-        final var coupon = couponRepository.findById(memberCouponCreateRequest.couponId())
-                .orElseThrow(() -> new CouponApplicationException("존재하지 않는 쿠폰입니다"));
+        final var couponResponse = couponService.getCoupon(memberCouponCreateRequest.couponId());
 
-        final var memberCouponCount = memberCouponRepository.countByOwnerAndCouponId(member, coupon.getId());
+        final var memberCouponCount = memberCouponRepository.countByOwnerAndCouponId(member, couponResponse.id());
         if (memberCouponCount > MAX_ISSUE_COUNT) {
             throw new CouponApplicationException("같은 쿠폰은 " + MAX_ISSUE_COUNT + "횟수 이상 발급할 수 없습니다");
         }
 
-        final var memberCoupon = memberCouponRepository.save(new MemberCoupon(member, coupon.getId()));
+        final var memberCoupon = memberCouponRepository.save(new MemberCoupon(member, couponResponse.id()));
         return MemberCouponResponse.from(memberCoupon);
     }
 
