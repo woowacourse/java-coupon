@@ -3,6 +3,9 @@ package coupon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import coupon.domain.coupon.ProductCategory;
+import coupon.repository.CouponRepository;
+import coupon.repository.MemberCouponRepository;
+import coupon.repository.MemberRepository;
 import coupon.repository.entity.Coupon;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +19,22 @@ public class CouponServiceTest {
     @Autowired
     private CouponService couponService;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private CouponRepository couponRepository;
+
+    @Autowired
+    private MemberCouponRepository memberCouponRepository;
+
     private Coupon coupon;
 
     @BeforeEach
     void setUp() {
+        memberCouponRepository.deleteAll();
+        couponRepository.deleteAll();
+        memberRepository.deleteAll();
         coupon = new Coupon("coupon_name",
                 1000,
                 10000,
