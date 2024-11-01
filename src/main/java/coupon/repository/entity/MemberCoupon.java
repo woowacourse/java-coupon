@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,7 +23,6 @@ public class MemberCoupon {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     private Coupon coupon;
 
@@ -40,5 +38,10 @@ public class MemberCoupon {
         this.isUsed = false;
         this.issuedAt = LocalDateTime.now();
         this.endedAt = issuedAt.plusDays(6);
+    }
+
+    public MemberCoupon updateCoupon(Coupon coupon) {
+        this.coupon = coupon;
+        return this;
     }
 }

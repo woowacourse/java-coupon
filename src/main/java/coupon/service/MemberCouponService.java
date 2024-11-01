@@ -49,8 +49,14 @@ public class MemberCouponService {
     public List<MemberCoupon> getMemberCoupons(Member member) {
         return readerService.read(() -> {
             List<MemberCoupon> memberCoupons = memberCouponRepository.findByMember(member);
-            memberCoupons.forEach(mc -> mc.setCoupon(couponService.getCoupon(mc.getCoupon().getId())));
-            return memberCoupons;
+            return memberCoupons.stream()
+                    .map(this::updateCoupon)
+                    .toList();
         });
+    }
+
+    private MemberCoupon updateCoupon(MemberCoupon memberCoupon) {
+        Coupon coupon = couponService.getCoupon(memberCoupon.getCoupon().getId());
+        return memberCoupon.updateCoupon(coupon);
     }
 }
