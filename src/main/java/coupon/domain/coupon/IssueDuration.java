@@ -7,9 +7,10 @@ import java.time.LocalDateTime;
 @Embeddable
 public class IssueDuration {
 
+    @Column(name = "start_at")
     private LocalDateTime startAt;
 
-    @Column(name= "end_at")
+    @Column(name = "end_at")
     private LocalDateTime endAt;
 
     public IssueDuration(LocalDateTime startAt, LocalDateTime endAt) {
@@ -21,9 +22,22 @@ public class IssueDuration {
     protected IssueDuration() {
     }
 
+    public boolean isBetween(LocalDateTime issuedAt) {
+        return (issuedAt.isAfter(startAt) || issuedAt.isEqual(startAt))
+                && (issuedAt.isBefore(endAt) || issuedAt.isEqual(endAt));
+    }
+
     private void validate(LocalDateTime startAt, LocalDateTime endAt) {
         if (startAt.isAfter(endAt)) {
             throw new IllegalArgumentException("시작 시점은 종료 시점보다 이전이어야 합니다");
         }
+    }
+
+    public LocalDateTime getStartAt() {
+        return startAt;
+    }
+
+    public LocalDateTime getEndAt() {
+        return endAt;
     }
 }

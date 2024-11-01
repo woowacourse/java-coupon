@@ -21,7 +21,7 @@ public class DiscountRatio {
         }
     }
 
-    public double getRatio() {
+    public int getRatio() {
         return ratio;
     }
 }

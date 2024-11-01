@@ -1,7 +1,9 @@
 package coupon.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import coupon.domain.coupon.IssueDuration;
 import java.time.LocalDateTime;
@@ -28,5 +30,21 @@ class IssueDurationTest {
 
         assertThatCode(() -> new IssueDuration(startAt, endAt))
                 .doesNotThrowAnyException();
+    }
+
+    @DisplayName("발급 기간 내의 시간인지 알 수 있다")
+    @Test
+    void isBetweenDuration() {
+        LocalDateTime startAt = LocalDateTime.now();
+        LocalDateTime endAt = startAt.plusNanos(1L);
+        LocalDateTime inBoundTime = startAt;
+        LocalDateTime outBoundTime = startAt.minusNanos(1L);
+
+        IssueDuration duration = new IssueDuration(startAt, endAt);
+
+        assertAll(
+                () -> assertThat(duration.isBetween(inBoundTime)).isTrue(),
+                () -> assertThat(duration.isBetween(outBoundTime)).isFalse()
+        );
     }
 }
