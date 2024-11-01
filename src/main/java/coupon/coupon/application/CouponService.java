@@ -1,8 +1,10 @@
 package coupon.coupon.application;
 
+
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
@@ -21,6 +23,7 @@ public class CouponService {
         return couponRepository.save(coupon);
     }
 
+    @Transactional(readOnly = true)
     @Cacheable(value = CACHE_NAME, key = "#id", unless = "#result == null")
     public Coupon getCoupon(final Long id) {
         return couponRepository.fetchById(id);
