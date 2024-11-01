@@ -26,7 +26,5 @@ CREATE TABLE IF NOT EXISTS member_coupon
     coupon_id  BIGINT      NOT NULL,
     is_used    BOOLEAN     NOT NULL,
     created_at DATETIME(6) NOT NULL,
-    expires_at DATETIME(6) NOT NULL,
-    FOREIGN KEY (member) REFERENCES member (id),
-    FOREIGN KEY (coupon) REFERENCES coupon (id)
+    expires_at DATETIME(6) NOT NULL
 );
