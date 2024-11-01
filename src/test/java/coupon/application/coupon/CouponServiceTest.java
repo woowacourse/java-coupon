@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
 import java.util.List;
+import coupon.DataSourceRoutingSupport;
 import coupon.domain.Coupon;
 import coupon.domain.CouponCategory;
 import coupon.domain.CouponIssuableDuration;
@@ -17,7 +18,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 class CouponServiceTest extends IntegrationTestSupport {
 
@@ -30,6 +30,9 @@ class CouponServiceTest extends IntegrationTestSupport {
     @Autowired
     private EntityManager entityManager;
 
+    @Autowired
+    private DataSourceRoutingSupport routingSupport;
+
     @Test
     @DisplayName("존재하지 않는 쿠폰은 발급할 수 없다.")
     void cantIssue() {
@@ -41,7 +44,6 @@ class CouponServiceTest extends IntegrationTestSupport {
     }
 
     @Test
-    @Transactional
     @DisplayName("사용자 쿠폰을 발급한다.")
     void issue() {
         Coupon coupon = createCoupon();
@@ -49,7 +51,7 @@ class CouponServiceTest extends IntegrationTestSupport {
         couponService.issue(1L, coupon.getId());
         entityManager.clear();
 
-        List<MemberCoupon> result = memberCouponRepository.findAll();
+        List<MemberCoupon> result = routingSupport.changeToWrite(() -> memberCouponRepository.findAll());
         assertThat(result).hasSize(1);
     }
 
@@ -63,7 +65,7 @@ class CouponServiceTest extends IntegrationTestSupport {
 
         couponService.create(coupon);
 
-        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        Coupon savedCoupon = routingSupport.changeToWrite(() -> couponService.getCoupon(coupon.getId()));
         assertThat(savedCoupon).isNotNull();
     }
 

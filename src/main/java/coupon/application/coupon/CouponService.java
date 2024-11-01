@@ -43,15 +43,9 @@ public class CouponService {
         couponRepository.save(coupon);
     }
 
-    @Transactional
-    public Coupon getCoupon(Long couponId) {
-        return couponRepository.findById(couponId)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 쿠폰입니다."));
-    }
-
     @Cacheable(key = "#couponId", value = "coupon", cacheManager = "couponCacheManager")
     @Transactional(readOnly = true)
-    public Coupon getReadCoupon(Long couponId) {
+    public Coupon getCoupon(Long couponId) {
         log.info("쿠폰 캐시 미스 발생 couponId = {}", couponId);
 
         return couponRepository.findById(couponId)

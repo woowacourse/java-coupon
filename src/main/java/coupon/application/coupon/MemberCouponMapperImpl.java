@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import coupon.DataSourceRoutingSupport;
 import coupon.application.membercoupon.IssuedCouponResponse;
 import coupon.application.membercoupon.MemberCouponMapper;
 import coupon.application.membercoupon.MemberCouponResponse;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Component;
 class MemberCouponMapperImpl implements MemberCouponMapper {
 
     private final CouponService couponService;
+    private final DataSourceRoutingSupport routingSupport;
 
     @Override
     public List<MemberCouponResponse> map(List<MemberCoupon> memberCoupons) {
@@ -37,8 +40,12 @@ class MemberCouponMapperImpl implements MemberCouponMapper {
                 .collect(Collectors.toSet());
 
         return ids.stream()
-                .map(couponService::getReadCoupon)
+                .map(it -> routingSupport.changeToWrite(getCouponSupplier(it)))
                 .toList();
+    }
+
+    private Supplier<Coupon> getCouponSupplier(Long couponId) {
+        return () -> couponService.getCoupon(couponId);
     }
 
     private Map<Long, IssuedCouponResponse> createIssuedCouponMap(List<Coupon> coupons) {

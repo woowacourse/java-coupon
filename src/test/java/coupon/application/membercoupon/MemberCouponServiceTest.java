@@ -16,7 +16,6 @@ import coupon.support.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 class MemberCouponServiceTest extends IntegrationTestSupport {
 
@@ -27,7 +26,6 @@ class MemberCouponServiceTest extends IntegrationTestSupport {
     private MemberCouponService memberCouponService;
 
     @Test
-    @Transactional
     @DisplayName("회원의 쿠폰 목록을 조회한다.")
     void getMemberCoupons() {
         Coupon coupon1 = createCoupon();
