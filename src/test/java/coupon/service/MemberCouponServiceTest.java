@@ -38,11 +38,12 @@ class MemberCouponServiceTest {
         memberCouponRepository.save(new MemberCoupon(1L, 1L));
         memberCouponRepository.save(new MemberCoupon(1L, 1L));
         memberCouponRepository.save(new MemberCoupon(1L, 1L));
+        int maxCouponCount = 5;
 
         //when & then
-        assertThatThrownBy(() -> memberCouponService.issue(1L, 1L))
+        assertThatThrownBy(() -> memberCouponService.issue(1L, 1L, maxCouponCount))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessage("쿠폰 발급은 최대 5개까지만 가능합니다.");
+                .hasMessage("쿠폰 발급은 최대 " + maxCouponCount + "개까지만 가능합니다.");
     }
 
     @Transactional
