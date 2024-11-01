@@ -1,11 +1,13 @@
 package coupon.infrastructure;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import coupon.domain.Coupon;
 import coupon.domain.CouponRepository;
 import lombok.RequiredArgsConstructor;
 
+@Primary
 @Repository
 @RequiredArgsConstructor
 public class CouponCoreRepository implements CouponRepository {
@@ -20,7 +22,7 @@ public class CouponCoreRepository implements CouponRepository {
 
     @Override
     public Coupon findById(long id) {
-        Coupon cachedCoupon = couponCacheRepository.getCachedCoupon(id);
+        Coupon cachedCoupon = couponCacheRepository.findById(id);
         if (cachedCoupon != null) {
             return cachedCoupon;
         }
