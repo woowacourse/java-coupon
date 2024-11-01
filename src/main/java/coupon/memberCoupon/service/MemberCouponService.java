@@ -41,13 +41,13 @@ public class MemberCouponService {
 
         MemberCoupon newMemberCoupon = MemberCoupon.create(targetMember, targetCoupon);
         MemberCoupon memberCoupon = memberCouponRepository.save(newMemberCoupon);
-        memberCouponLocalCache.put(targetMember, targetCoupon, memberCoupon);
+        memberCouponLocalCache.put(targetMember.getId(), targetCoupon.getId(), memberCoupon);
 
         return memberCoupon.getId();
     }
 
     private void validateIssueCount(Member targetMember, Coupon targetCoupon) {
-        int memberCouponCount = memberCouponLocalCache.get(targetMember, targetCoupon).size();
+        int memberCouponCount = memberCouponLocalCache.get(targetMember.getId(), targetCoupon.getId()).size();
         if (memberCouponCount >= MAXIMUM_ISSUE_COUNT) {
             throw new IllegalStateException(String.format("동일한 쿠폰은 최대 %d장 까지만 발급할 수 있습니다.", MAXIMUM_ISSUE_COUNT));
         }
@@ -56,6 +56,6 @@ public class MemberCouponService {
     @Transactional(readOnly = true)
     public Set<MemberCouponResponse> findAllMemberCouponsByMemberId(Long targetMemberId) {
         Member targetMember = memberRepository.getById(targetMemberId);
-        return memberCouponLocalCache.getAllByMember(targetMember);
+        return memberCouponLocalCache.getAllByMemberId(targetMember.getId());
     }
 }

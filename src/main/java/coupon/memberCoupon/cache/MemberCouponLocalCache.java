@@ -1,7 +1,5 @@
 package coupon.memberCoupon.cache;
 
-import coupon.coupon.domain.Coupon;
-import coupon.member.domain.Member;
 import coupon.memberCoupon.domain.MemberCoupon;
 import coupon.memberCoupon.dto.MemberCouponResponse;
 import java.util.HashMap;
@@ -16,8 +14,8 @@ public class MemberCouponLocalCache {
 
     private static final Map<MemberCouponCacheKey, Set<MemberCoupon>> CACHE = new HashMap<>();
 
-    public void put(Member member, Coupon coupon, MemberCoupon memberCoupon) {
-        MemberCouponCacheKey memberCouponCacheKey = new MemberCouponCacheKey(member, coupon);
+    public void put(Long memberId, Long couponId, MemberCoupon memberCoupon) {
+        MemberCouponCacheKey memberCouponCacheKey = new MemberCouponCacheKey(memberId, couponId);
 
         if (!CACHE.containsKey(memberCouponCacheKey)) {
             Set<MemberCoupon> memberCouponCacheValue = new HashSet<>();
@@ -29,15 +27,15 @@ public class MemberCouponLocalCache {
         CACHE.get(memberCouponCacheKey).add(memberCoupon);
     }
 
-    public Set<MemberCoupon> get(Member member, Coupon coupon) {
-        return CACHE.getOrDefault(new MemberCouponCacheKey(member, coupon), Set.of());
+    public Set<MemberCoupon> get(Long memberId, Long couponId) {
+        return CACHE.getOrDefault(new MemberCouponCacheKey(memberId, couponId), Set.of());
     }
 
-    public Set<MemberCouponResponse> getAllByMember(Member member) {
+    public Set<MemberCouponResponse> getAllByMemberId(Long memberId) {
         return CACHE.entrySet().stream()
-                .filter(entry -> entry.getKey().getMember().equals(member))
+                .filter(entry -> entry.getKey().getMemberId().equals(memberId))
                 .flatMap(entry -> entry.getValue().stream()
-                        .map(memberCoupon -> MemberCouponResponse.create(entry.getKey().getCoupon(), memberCoupon)))
+                        .map(memberCoupon -> MemberCouponResponse.create(entry.getKey().getCouponId(), memberCoupon)))
                 .collect(Collectors.toSet());
     }
 }

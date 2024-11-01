@@ -1,19 +1,17 @@
 package coupon.memberCoupon.cache;
 
-import coupon.coupon.domain.Coupon;
-import coupon.member.domain.Member;
 import java.util.Objects;
 import lombok.Getter;
 
 @Getter
 public class MemberCouponCacheKey {
 
-    private Member member;
-    private Coupon coupon;
+    private Long memberId;
+    private Long couponId;
 
-    public MemberCouponCacheKey(Member member, Coupon coupon) {
-        this.member = member;
-        this.coupon = coupon;
+    public MemberCouponCacheKey(Long memberId, Long couponId) {
+        this.memberId = memberId;
+        this.couponId = couponId;
     }
 
     @Override
@@ -25,11 +23,11 @@ public class MemberCouponCacheKey {
             return false;
         }
         MemberCouponCacheKey that = (MemberCouponCacheKey) o;
-        return Objects.equals(member.getId(), that.member.getId()) && Objects.equals(coupon.getId(), that.coupon.getId());
+        return Objects.equals(memberId, that.getMemberId()) && Objects.equals(couponId, that.getCouponId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(member.getId(), coupon.getId());
+        return Objects.hash(memberId, couponId);
     }
 }

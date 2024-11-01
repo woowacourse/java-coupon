@@ -22,7 +22,7 @@ class MemberCouponLocalCacheTest extends IsolatedTest {
         Member member = memberRepository.save(new Member());
         Coupon coupon = couponRepository.save(new Coupon());
 
-        assertThat(memberCouponLocalCache.get(member, coupon)).isEmpty();
+        assertThat(memberCouponLocalCache.get(member.getId(), coupon.getId())).isEmpty();
     }
 
     @DisplayName("캐시에 저장한 데이터를 조회할 수 있다.")
@@ -32,9 +32,9 @@ class MemberCouponLocalCacheTest extends IsolatedTest {
         Coupon coupon = couponRepository.save(new Coupon());
         MemberCoupon memberCoupon = MemberCoupon.create(member, coupon);
 
-        memberCouponLocalCache.put(member, coupon, memberCoupon);
+        memberCouponLocalCache.put(member.getId(), coupon.getId(), memberCoupon);
 
-        assertThat(memberCouponLocalCache.get(member, coupon)).isNotEmpty();
+        assertThat(memberCouponLocalCache.get(member.getId(), coupon.getId())).isNotEmpty();
     }
 
     @DisplayName("두 개의 데이터를 저장하면 캐시의 크기는 2이다.")
@@ -45,9 +45,9 @@ class MemberCouponLocalCacheTest extends IsolatedTest {
         MemberCoupon memberCoupon1 = memberCouponRepository.save(MemberCoupon.create(member, coupon));
         MemberCoupon memberCoupon2 = memberCouponRepository.save(MemberCoupon.create(member, coupon));
 
-        memberCouponLocalCache.put(member, coupon, memberCoupon1);
-        memberCouponLocalCache.put(member, coupon, memberCoupon2);
+        memberCouponLocalCache.put(member.getId(), coupon.getId(), memberCoupon1);
+        memberCouponLocalCache.put(member.getId(), coupon.getId(), memberCoupon2);
 
-        assertThat(memberCouponLocalCache.get(member, coupon)).hasSize(2);
+        assertThat(memberCouponLocalCache.get(member.getId(), coupon.getId())).hasSize(2);
     }
 }
