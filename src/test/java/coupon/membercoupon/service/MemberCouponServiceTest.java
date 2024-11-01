@@ -1,14 +1,14 @@
 package coupon.membercoupon.service;
 
-import coupon.coupon.domain.Coupon;
-import coupon.coupon.repository.CouponRepository;
+import coupon.coupon.dto.CouponResponse;
+import coupon.coupon.service.CouponService;
 import coupon.fixture.CouponFixture;
 import coupon.fixture.MemberCouponFixture;
-import coupon.member.domain.Member;
-import coupon.member.repository.MemberRepository;
+import coupon.member.dto.MemberRequest;
+import coupon.member.dto.MemberResponse;
+import coupon.member.service.MemberService;
 import coupon.membercoupon.dto.MemberCouponRequest;
 import coupon.membercoupon.dto.MemberCouponResponse;
-import coupon.membercoupon.repository.MemberCouponRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,38 +29,35 @@ class MemberCouponServiceTest {
     private MemberCouponService memberCouponService;
 
     @Autowired
-    private MemberCouponRepository memberCouponRepository;
+    private MemberService memberService;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private CouponService couponService;
 
-    @Autowired
-    private CouponRepository couponRepository;
-
-    private Coupon coupon;
-    private Member member;
+    private CouponResponse coupon;
+    private MemberResponse member;
 
     @BeforeEach
     void setUp() {
-        coupon = couponRepository.save(CouponFixture.FASHION_COUPON());
-        member = memberRepository.save(new Member("name"));
+        coupon = couponService.create(CouponFixture.COUPON_CREATE_REQUEST());
+        member = memberService.create(new MemberRequest("name"));
     }
 
     @Test
     @DisplayName("회원에게 쿠폰을 발급할 수 있다.")
     void issueCoupon() {
-        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.getId(), member.getId());
+        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.id(), member.id());
 
         MemberCouponResponse response = memberCouponService.issueCoupon(request);
 
         long memberId = response.memberResponse().id();
-        assertThat(memberId).isEqualTo(member.getId());
+        assertThat(memberId).isEqualTo(member.id());
     }
 
     @Test
     @DisplayName("일치하는 쿠폰 아이디가 없다면 예외가 발생한다.")
     void invalidCouponId() {
-        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(0, member.getId());
+        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(0, member.id());
 
         assertThatThrownBy(() -> memberCouponService.issueCoupon(request))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -70,7 +67,7 @@ class MemberCouponServiceTest {
     @Test
     @DisplayName("일치하는 멤버 아이디가 없다면 예외가 발생한다.")
     void invalidMemberId() {
-        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.getId(), 0);
+        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.id(), 0);
 
         assertThatThrownBy(() -> memberCouponService.issueCoupon(request))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -80,7 +77,7 @@ class MemberCouponServiceTest {
     @Test
     @DisplayName("한 명의 회원에게 동일한 쿠폰을 5장을 초과하여 발급하려 하면 예외가 발생한다.")
     void invalidIssuedCouponSize() {
-        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.getId(), member.getId());
+        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.id(), member.id());
         for (int i = 0; i < 5; i++) {
             memberCouponService.issueCoupon(request);
         }
@@ -93,7 +90,7 @@ class MemberCouponServiceTest {
     @Test
     @DisplayName("쿠폰을 발급 가능한 날짜가 아니면 예외가 발생한다.")
     void invalidIssuancePeriod() {
-        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.getId(), member.getId(), LocalDate.now().minusDays(1));
+        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.id(), member.id(), LocalDate.now().minusDays(1));
 
         assertThatThrownBy(() -> memberCouponService.issueCoupon(request))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -104,10 +101,10 @@ class MemberCouponServiceTest {
     @Test
     @DisplayName("회원의 쿠폰 목록을 조회할 수 있다.")
     void findAllMemberCoupon() {
-        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.getId(), member.getId());
-        memberCouponRepository.save(request.toEntity());
+        MemberCouponRequest request = MemberCouponFixture.MEMBER_COUPON_REQUEST(coupon.id(), member.id());
+        memberCouponService.issueCoupon(request);
 
-        List<MemberCouponResponse> result = memberCouponService.findAllMemberCoupon(member.getId());
+        List<MemberCouponResponse> result = memberCouponService.findAllMemberCoupon(member.id());
 
         assertThat(result).hasSize(1);
     }
