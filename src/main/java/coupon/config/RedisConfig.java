@@ -1,5 +1,8 @@
 package coupon.config;
 
+import java.time.Duration;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +23,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @EnableCaching
 public class RedisConfig {
 
+    @Value("${spring.data.redis.ttl}")
+    private Duration ttl;
+
     @Bean
     public CacheManager userCacheManager(final RedisConnectionFactory connectionFactory) {
         final RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
@@ -27,7 +33,8 @@ public class RedisConfig {
                         RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(new GenericJackson2JsonRedisSerializer(getRedisObjectMapper())))
-                .disableCachingNullValues();
+                .disableCachingNullValues()
+                .entryTtl(ttl);
 
         return RedisCacheManager
                 .RedisCacheManagerBuilder
