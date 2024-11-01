@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberCouponService {
 
     private final MemberCouponRepository memberCouponRepository;
-    private final CacheService cacheService;
 
     @Transactional
     public MemberCoupon create(Member member, Coupon coupon) {
