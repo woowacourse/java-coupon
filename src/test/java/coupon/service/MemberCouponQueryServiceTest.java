@@ -27,14 +27,13 @@ class MemberCouponQueryServiceTest {
     @Autowired
     private MemberCouponQueryService memberCouponQueryService;
 
-    @DisplayName("")
+    @DisplayName("멤버 ID를 통해 발급된 쿠폰 정보를 찾을 수 있다.")
     @Test
     void findByMemberId() {
         Member member = memberRepository.save(new Member("teni"));
         Coupon coupon = couponCommandService.save(new SaveCouponRequest("천원 할인 쿠폰", 1000, 10000,
                 LocalDate.now().minusDays(5), LocalDate.now().plusDays(5), "FOOD"));
 
-        // 5개 저장
         couponCommandService.issue(member, coupon);
         couponCommandService.issue(member, coupon);
         couponCommandService.issue(member, coupon);
