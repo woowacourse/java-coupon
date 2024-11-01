@@ -4,28 +4,34 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import coupon.domain.Coupon;
 import coupon.domain.CouponRepository;
 import coupon.domain.Member;
 import coupon.domain.MemberCoupon;
+import coupon.domain.MemberCouponRepository;
 import coupon.domain.MemberRepository;
 import coupon.fixture.CouponFixture;
+import coupon.support.CouponMockRepository;
+import coupon.support.MemberCouponMockRepository;
+import coupon.support.MemberMockRepository;
 
-@SpringBootTest
 public class MemberCouponServiceTest {
 
-    @Autowired
     MemberCouponService memberCouponService;
-
-    @Autowired
     MemberRepository memberRepository;
-
-    @Autowired
     CouponRepository couponRepository;
+    MemberCouponRepository memberCouponRepository;
+
+    @BeforeEach
+    void setUp() {
+        memberRepository = new MemberMockRepository();
+        couponRepository = new CouponMockRepository();
+        memberCouponRepository = new MemberCouponMockRepository();
+        memberCouponService = new MemberCouponService(memberCouponRepository, couponRepository);
+    }
 
     @Test
     void 회원에게_쿠폰을_발급한다() {

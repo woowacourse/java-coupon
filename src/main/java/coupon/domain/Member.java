@@ -24,6 +24,11 @@ public class Member {
     @Column(name = "name")
     private String name;
 
+    public Member(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Member(String name) {
         this.name = name;
     }

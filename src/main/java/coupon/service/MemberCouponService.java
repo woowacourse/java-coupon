@@ -32,7 +32,7 @@ public class MemberCouponService {
         return memberCouponRepository.save(memberCoupon);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Coupon> getMemberCoupons(long memberId) {
         List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
 
