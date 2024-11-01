@@ -11,10 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import coupon.domain.coupon.Coupon;
-import coupon.domain.coupon.ProductionCategory;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.ProductionCategory;
+import coupon.coupon.service.CouponService;
 import coupon.mock.FakeCouponRepository;
-import coupon.service.dto.request.CouponCreateRequest;
+import coupon.coupon.service.dto.request.CouponCreateRequest;
 import coupon.util.ProdTransactionExecutor;
 
 class CouponServiceTest {

@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.ProductionCategory;
+
 class CouponTest {
 
     @DisplayName("같은 값의 CouponName을 가지고 있는 쿠폰 객체들을 동등성 비교 하면 true를 반환한다.")

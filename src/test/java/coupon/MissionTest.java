@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import coupon.domain.coupon.Coupon;
-import coupon.domain.coupon.ProductionCategory;
-import coupon.infrastructure.repository.CouponJpaRepository;
-import coupon.service.CouponService;
-import coupon.service.dto.request.CouponCreateRequest;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.domain.ProductionCategory;
+import coupon.coupon.infrastructure.repository.CouponJpaRepository;
+import coupon.coupon.service.CouponService;
+import coupon.coupon.service.dto.request.CouponCreateRequest;
 
 @SpringBootTest
 class MissionTest {

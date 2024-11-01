@@ -12,6 +12,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import coupon.coupon.domain.IssuancePeriod;
+
 class IssuancePeriodTest {
 
     @DisplayName("유효한 쿠폰 시작일, 종료일을 입력되면 객체를 생성한다.")

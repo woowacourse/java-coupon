@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
+import coupon.coupon.domain.CouponName;
+
 class CouponNameTest {
 
     @DisplayName("유효한 쿠폰 이름을 입력되면 객체를 생성한다.")
