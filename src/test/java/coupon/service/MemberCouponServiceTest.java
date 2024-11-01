@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,21 +102,5 @@ class MemberCouponServiceTest {
                 () -> assertThat(actual).hasSize(5),
                 () -> assertThat(actual).containsExactlyInAnyOrder(coupon1, coupon2, coupon3, coupon4, coupon5)
         );
-    }
-
-    @Disabled
-    @Test
-    @DisplayName("복제지연테스트")
-    void replicationLag() {
-        // given
-        var member = memberRepository.save(Fixtures.member_2);
-        var coupon = couponRepository.save(Fixtures.coupon_2);
-        sut.issueMemberCoupon(member, coupon);
-
-        // when
-        var actual = sut.findAllCouponByMember(member);
-
-        // then
-        assertThat(actual).isNotEmpty();
     }
 }
