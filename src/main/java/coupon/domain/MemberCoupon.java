@@ -1,6 +1,5 @@
 package coupon.domain;
 
-import coupon.domain.coupon.Coupon;
 import coupon.domain.member.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,20 +10,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class MemberCoupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_id")
-    private Coupon coupon;
+    private Long couponId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -32,12 +31,20 @@ public class MemberCoupon {
     private LocalDate issueDate;
     private LocalDate expirationDate;
 
-    public MemberCoupon(Long id, Coupon coupon, Member member, boolean used, LocalDate issueDate) {
-        this.id = id;
-        this.coupon = coupon;
+    public MemberCoupon(Long couponId, Member member, boolean used, LocalDate issueDate) {
+        this.couponId = couponId;
         this.member = member;
         this.used = used;
         this.issueDate = issueDate;
         this.expirationDate = issueDate.plusDays(6);
+    }
+
+    public static MemberCoupon issue(Member member, Long couponId) {
+        return new MemberCoupon(
+                couponId,
+                member,
+                false,
+                LocalDate.now()
+        );
     }
 }

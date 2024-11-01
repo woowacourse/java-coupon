@@ -1,13 +1,15 @@
 package coupon.domain.member;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class MemberName {
 
     private static final int MAX_LENGTH = 30;
 
-    private final String name;
+    private String name;
 
     public MemberName(String name) {
         validate(name);
