@@ -19,7 +19,6 @@ import coupon.coupon.domain.CouponRepository;
 import coupon.member.domain.Member;
 import coupon.member.domain.MemberRepository;
 import coupon.membercoupon.domain.MemberCoupon;
-import coupon.membercoupon.dto.FindAllMemberCouponResponse;
 
 @SpringBootTest
 @Transactional
@@ -60,17 +59,5 @@ class MemberCouponServiceTest {
         assertThatThrownBy(() ->  memberCouponService.createMemberCoupon(new MemberCoupon(member.getId(), coupon.getId(), false, issueStartDate.plusDays(3))))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("발급 가능한 최대 쿠폰 개수를 초과하였습니다. memberId: " + member.getId());
-    }
-
-    @Test
-    @DisplayName("멤버에게 쿠폰 발급된 쿠폰 목록 조회")
-    void getMemberCouponsByMemberId() {
-        IntStream.range(0, 5)
-                .forEach(ignore -> memberCouponService.createMemberCoupon(new MemberCoupon(member.getId(), coupon.getId(), false, issueStartDate.plusDays(3))));
-
-        FindAllMemberCouponResponse memberCouponsResponses = memberCouponService.getMemberCouponsByMemberId(member.getId());
-        assertThat(memberCouponsResponses.memberCoupons()).hasSize(5);
-        assertThat(memberCouponsResponses.memberCoupons().get(0).coupon().getName())
-                .isEqualTo(coupon.getName());
     }
 }

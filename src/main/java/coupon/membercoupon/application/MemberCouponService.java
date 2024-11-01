@@ -1,16 +1,14 @@
 package coupon.membercoupon.application;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import coupon.coupon.application.CouponService;
-import coupon.coupon.domain.Coupon;
 import coupon.membercoupon.domain.MemberCoupon;
 import coupon.membercoupon.domain.MemberCouponRepository;
-import coupon.membercoupon.dto.FindAllMemberCouponResponse;
+import coupon.membercoupon.domain.MemberCoupons;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,11 +18,10 @@ public class MemberCouponService {
     private static final int MAX_COUPON_COUNT = 5;
 
     private final MemberCouponRepository memberCouponRepository;
-    private final CouponService couponService;
 
-    public void createMemberCoupon(MemberCoupon memberCoupon) {
+    public MemberCoupon createMemberCoupon(MemberCoupon memberCoupon) {
         validateIssuedCouponCount(memberCoupon.getMemberId());
-        memberCouponRepository.save(memberCoupon);
+        return memberCouponRepository.save(memberCoupon);
     }
 
     private void validateIssuedCouponCount(Long memberId) {
@@ -33,11 +30,9 @@ public class MemberCouponService {
         }
     }
 
-    public FindAllMemberCouponResponse getMemberCouponsByMemberId(Long memberId) {
-        List<MemberCoupon> memberCoupons = memberCouponRepository.findByMemberId(memberId);
-        Map<MemberCoupon, Coupon> memberCouponWithCoupons = memberCoupons.stream()
-                .collect(Collectors.toMap(mc -> mc, mc -> couponService.getCoupon(mc.getCouponId())));
-
-        return FindAllMemberCouponResponse.of(memberCouponWithCoupons);
+    @Transactional
+    public MemberCoupons getMemberCouponsByMemberId(Long memberId) {
+        List<MemberCoupon> memberCoupons = memberCouponRepository.findAllByMemberId(memberId);
+        return new MemberCoupons(memberCoupons);
     }
 }

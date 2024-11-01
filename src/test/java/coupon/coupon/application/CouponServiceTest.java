@@ -1,10 +1,8 @@
 package coupon.coupon.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import jakarta.transaction.Transactional;
 
@@ -14,7 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
@@ -45,7 +43,7 @@ class CouponServiceTest {
     @DisplayName("쿠폰 서비스: 캐시 관련 로직 테스트")
     class CacheCouponTest {
 
-        @MockBean
+        @SpyBean
         private CouponRepository couponRepository;
 
         @BeforeEach
@@ -68,13 +66,11 @@ class CouponServiceTest {
         @DisplayName("쿠폰 조회: 캐시 적용 확인")
         void getCouponShouldUseCachedData() {
             Coupon coupon = CouponFixture.createCouponWithId();
-            when(couponRepository.save(any(Coupon.class))).thenReturn(coupon);
-            when(couponRepository.fetchById(coupon.getId())).thenReturn(coupon);
 
             Coupon savedCoupon = couponService.create(coupon);
-            Coupon cachedCoupon = couponService.getCoupon(coupon.getId());
+            Coupon cachedCoupon = couponService.getCoupon(savedCoupon.getId());
 
-            // 캐시로 인해 db 레포는 호출되어지 않아야 함
+            // 캐시로 인해 db 레포는 호출되지 않아야 함
             verify(couponRepository, never()).fetchById(coupon.getId());
             assertThat(savedCoupon.getId()).isEqualTo(cachedCoupon.getId());
         }
