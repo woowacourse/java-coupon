@@ -13,8 +13,8 @@ class MemberCouponTest {
     @DisplayName("회원에게 발급된 쿠폰은 발급일 포함 7일 동안 사용 가능")
     void issuedCouponPeriod() {
         // given
-        var coupon = new Coupon();
-        var member = new Member();
+        var coupon = new Coupon(1L, new CouponName("우테코 수료 쿠폰"), 0L, null, 0L, null, null);
+        var member = new Member(1L, new MemberName("초롱"));
         var issuedAt = LocalDateTime.now();
 
         // when
