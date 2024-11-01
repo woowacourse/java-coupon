@@ -16,18 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCouponService {
 
+    public static final int MAX_SAME_COUPON_COUNT = 5;
+
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
 
     @Transactional
     public long issueCoupon(MemberCouponRequest memberCouponRequest) {
-        int sameMemberCouponCount = memberCouponRepository.countAllByMemberIdAndCouponId(
-                memberCouponRequest.memberId(), memberCouponRequest.couponId()
-        );
-
-        if (sameMemberCouponCount > 5) {
-            throw new IllegalArgumentException("동일한 쿠폰은 5장까지 발급할 수 있어요.");
-        }
+        validateSameCouponCount(memberCouponRequest);
 
         MemberCoupon issuedMemberCoupon = memberCouponRepository.save(
                 new MemberCoupon(
@@ -50,5 +46,15 @@ public class MemberCouponService {
                     return MemberCouponResponse.fromDomain(coupon, memberCoupon);
                 })
                 .toList();
+    }
+
+    private void validateSameCouponCount(MemberCouponRequest memberCouponRequest) {
+        int sameMemberCouponCount = memberCouponRepository.countAllByMemberIdAndCouponId(
+                memberCouponRequest.memberId(), memberCouponRequest.couponId()
+        );
+
+        if (sameMemberCouponCount >= MAX_SAME_COUPON_COUNT) {
+            throw new IllegalArgumentException(String.format("동일한 쿠폰은 %d장까지 발급할 수 있어요.", MAX_SAME_COUPON_COUNT));
+        }
     }
 }
