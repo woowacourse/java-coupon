@@ -1,6 +1,7 @@
 package coupon.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -67,6 +68,16 @@ public class Coupon {
         this.category = category;
     }
 
+    public Coupon(Long id, String name, int discountAmount, int minimumOrderAmount, LocalDateTime startDate, LocalDateTime endDate, Category category) {
+        this.id = id;
+        this.name = name;
+        this.discountAmount = discountAmount;
+        this.minimumOrderAmount = minimumOrderAmount;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.category = category;
+    }
+
     private void validateName(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("쿠폰 이름은 반드시 존재해야 합니다.");
@@ -115,5 +126,20 @@ public class Coupon {
         }
         discountRate = new DiscountRate(discountAmount, minimumOrderAmount);
         return discountRate.intValue();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Coupon coupon = (Coupon)o;
+        return Objects.equals(id, coupon.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

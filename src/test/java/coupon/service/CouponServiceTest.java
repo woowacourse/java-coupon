@@ -16,10 +16,12 @@ public class CouponServiceTest {
     private CouponService couponService;
 
     @Test
-    void 복제지연테스트() {
+    void 복제지연테스트() throws InterruptedException {
         // given
         Coupon coupon = CouponFixture.create();
         couponService.create(coupon);
+
+        Thread.sleep(3000);
 
         // when
         Coupon foundCoupon = couponService.getCoupon(coupon.getId());

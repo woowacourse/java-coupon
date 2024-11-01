@@ -8,8 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import coupon.domain.Coupon;
+import coupon.domain.CouponRepository;
 import coupon.fixture.CouponFixture;
-import coupon.repository.CouponRepository;
 
 @SpringBootTest
 public class RedisTemplateTest {

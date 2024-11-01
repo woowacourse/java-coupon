@@ -1,21 +1,15 @@
-package coupon.repository;
+package coupon.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-import coupon.domain.Coupon;
 import coupon.fixture.CouponFixture;
+import coupon.support.CouponMockRepository;
 
-@Transactional
-@SpringBootTest
 class CouponRepositoryTest {
 
-    @Autowired
-    CouponRepository couponRepository;
+    CouponRepository couponRepository = new CouponMockRepository();
 
     @Test
     void 쿠폰을_저장한다() {
