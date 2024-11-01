@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@RedisHash(value = "cached_coupon")
+@RedisHash(value = "cached_coupon", timeToLive = 86400L)
 public class CachedCouponEntity implements Serializable {
 
     @Id
