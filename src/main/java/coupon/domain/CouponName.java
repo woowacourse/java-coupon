@@ -1,12 +1,12 @@
 package coupon.domain;
 
-import lombok.EqualsAndHashCode;
+import java.util.Objects;
+
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
-@EqualsAndHashCode
 public class CouponName {
 
     private static final int MAX_LENGTH = 30;
@@ -25,5 +25,21 @@ public class CouponName {
         if (value.strip().length() > MAX_LENGTH) {
             throw new IllegalArgumentException(String.format("쿠폰 이름이 최대 길이 %s를 초과합니다.", MAX_LENGTH));
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof final CouponName name)) {
+            return false;
+        }
+        return Objects.equals(getValue(), name.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getValue());
     }
 }

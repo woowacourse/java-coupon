@@ -42,7 +42,6 @@ public class MemberCouponEntity extends BaseTimeEntity {
     @Column(name = "EXPIRES_AT", nullable = false)
     private LocalDateTime expiresAt;
 
-
     public MemberCouponEntity(final CouponEntity coupon, final long memberId) {
         this.coupon = coupon;
         this.memberId = memberId;
@@ -50,8 +49,6 @@ public class MemberCouponEntity extends BaseTimeEntity {
         this.issuedAt = LocalDateTime.now();
         this.expiresAt = issuedAt.plusDays(7).toLocalDate().atTime(LocalTime.MAX);
     }
-
-    // TODO 롬복 사용해서 이퀄 앤 해시 코드 생각하기
 
     @Override
     public boolean equals(final Object o) {

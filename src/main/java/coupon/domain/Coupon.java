@@ -1,8 +1,12 @@
 package coupon.domain;
 
+import java.util.Objects;
+
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class Coupon {
 
     private static final int MIN_DISCOUNT_RATE = 3;
@@ -12,13 +16,15 @@ public class Coupon {
     private final DiscountAmount discountAmount;
     private final MinOrderAmount minOrderAmount;
     private final IssuancePeriod issuancePeriod;
+    private final Category category;
 
     public Coupon(final CouponName name, final DiscountAmount discountAmount, final MinOrderAmount minOrderAmount,
-                  final IssuancePeriod issuancePeriod) {
+                  final IssuancePeriod issuancePeriod, final Category category) {
         this.name = name;
         this.discountAmount = discountAmount;
         this.minOrderAmount = minOrderAmount;
         this.issuancePeriod = issuancePeriod;
+        this.category = category;
     }
 
     public double calculateDiscountRate() {
@@ -28,5 +34,25 @@ public class Coupon {
                     String.format("할인율은 %s 이상 %s 이하여야 합니다. 현재 할인율 %s", MIN_DISCOUNT_RATE, MAX_DISCOUNT_RATE, result));
         }
         return result;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof final Coupon coupon)) {
+            return false;
+        }
+        return Objects.equals(getName(), coupon.getName())
+               && Objects.equals(getDiscountAmount(), coupon.getDiscountAmount())
+               && Objects.equals(getMinOrderAmount(), coupon.getMinOrderAmount())
+               && Objects.equals(getIssuancePeriod(), coupon.getIssuancePeriod())
+               && getCategory() == coupon.getCategory();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getDiscountAmount(), getMinOrderAmount(), getIssuancePeriod(), getCategory());
     }
 }
