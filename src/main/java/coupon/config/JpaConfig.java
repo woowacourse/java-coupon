@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -23,9 +24,10 @@ public class JpaConfig {
     private String propertyHbm2ddlAuto;
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("writerDataSource") DataSource writerDataSource) {
+    @DependsOn("routerDataSource")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("routerDataSource") DataSource routingDataSource) {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(writerDataSource);
+        em.setDataSource(routingDataSource);
         em.setPackagesToScan("coupon.domain");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

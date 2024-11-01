@@ -41,24 +41,8 @@ public class Coupon {
     @Column(nullable = false)
     private LocalDateTime endDate;
 
-    public Coupon(
-            Long id,
-            String name,
-            int discountAmount,
-            int minimumOrderAmount,
-            Category category,
-            LocalDateTime startDate,
-            LocalDateTime endDate
-    ) {
-        validateCoupon(name, discountAmount, minimumOrderAmount, category, startDate, endDate);
-        this.id = id;
-        this.name = name;
-        this.discountAmount = discountAmount;
-        this.minimumOrderAmount = minimumOrderAmount;
-        this.category = category;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+    @Column(nullable = false)
+    private int availableCount;
 
     public Coupon(
             String name,
@@ -66,9 +50,31 @@ public class Coupon {
             int minimumOrderAmount,
             Category category,
             LocalDateTime startDate,
-            LocalDateTime endDate
+            LocalDateTime endDate,
+            int availableCount
     ) {
-        this(null, name, discountAmount, minimumOrderAmount, category, startDate, endDate);
+        this(null, name, discountAmount, minimumOrderAmount, category, startDate, endDate, availableCount);
+    }
+
+    public Coupon(
+            Long id,
+            String name,
+            int discountAmount,
+            int minimumOrderAmount,
+            Category category,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            int availableCount
+    ) {
+        validateCoupon(name, discountAmount, minimumOrderAmount, category, startDate, endDate, availableCount);
+        this.id = id;
+        this.name = name;
+        this.discountAmount = discountAmount;
+        this.minimumOrderAmount = minimumOrderAmount;
+        this.category = category;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.availableCount = availableCount;
     }
 
     private void validateCoupon(
@@ -77,12 +83,14 @@ public class Coupon {
             int minimumOrderAmount,
             Category category,
             LocalDateTime startDate,
-            LocalDateTime endDate
+            LocalDateTime endDate,
+            int availableCount
     ) {
         validateName(name);
         validateDiscount(discountAmount, minimumOrderAmount);
         validateCategory(category);
         validateDate(startDate, endDate);
+        validateAvailableCount(availableCount);
     }
 
     private void validateName(String name) {
@@ -123,5 +131,18 @@ public class Coupon {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작일은 종료일 이전일 수 없습니다.");
         }
+    }
+
+    private void validateAvailableCount(int availableCount) {
+        if (availableCount < 0) {
+            throw new IllegalArgumentException("발급 가능한 쿠폰 수량은 0 이상이어야 합니다.");
+        }
+    }
+
+    public void decrementAvailableCount() {
+        if (availableCount <= 0) {
+            throw new IllegalArgumentException("발급 가능한 쿠폰 수량이 부족합니다.");
+        }
+        availableCount--;
     }
 }
