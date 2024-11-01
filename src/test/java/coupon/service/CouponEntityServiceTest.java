@@ -48,6 +48,7 @@ public class CouponEntityServiceTest {
     void delayedData() {
         CouponEntity couponEntity = couponService.create(coupon);
 
+
         Assertions.assertThatThrownBy(() -> jdbcTemplate.queryForObject(
                         "select * from coupon where id = ?", CouponEntity.class, couponEntity.getId()))
                 .isInstanceOf(EmptyResultDataAccessException.class);

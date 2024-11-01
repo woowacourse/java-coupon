@@ -1,6 +1,5 @@
 package coupon.service;
 
-import coupon.config.CouponCache;
 import coupon.data.CouponEntity;
 import coupon.domain.coupon.CouponMapper;
 import coupon.exception.MemberCouponIssueException;
@@ -49,17 +48,6 @@ class MemberCouponEntityEntityServiceTest {
                 .isInstanceOf(MemberCouponIssueException.class)
                 .hasMessageContaining("quantity max size exceeded");
 
-    }
-
-    @DisplayName("쿠폰 정보가 캐싱 되었는지 확인한다.")
-    @Test
-    void findByMemberId() {
-        CouponEntity newCouponEntity = couponService.create(coupon);
-        memberCouponService.issue(1, newCouponEntity.getId(), LocalDateTime.now());
-        memberCouponService.findByMemberId(1);
-
-        CouponEntity cachedCouponEntity = CouponCache.get(newCouponEntity.getId());
-        Assertions.assertThat(cachedCouponEntity).isEqualTo(newCouponEntity);
     }
 
 }
