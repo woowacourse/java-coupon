@@ -3,7 +3,6 @@ package coupon.member.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -68,7 +67,7 @@ class MemberCouponFacadeServiceTest {
         MemberCoupon memberCoupon = memberCouponFacadeService.create(request);
 
         // then
-        assertThat(memberCoupon.getMember().getId()).isEqualTo(testMember.getId());
-        assertThat(memberCoupon.getCouponEntity().getId()).isEqualTo(testCoupon.getId());
+        assertThat(memberCoupon.getMemberId()).isEqualTo(testMember.getId());
+        assertThat(memberCoupon.getCouponId()).isEqualTo(testCoupon.getId());
     }
 }

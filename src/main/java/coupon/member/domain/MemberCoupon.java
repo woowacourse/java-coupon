@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import coupon.coupon.domain.entity.CouponEntity;
@@ -32,12 +31,10 @@ public class MemberCoupon {
     private Long id;
 
     @JoinColumn(name = "member_id")
-    @ManyToOne(optional = false)
-    private Member member;
+    private Long memberId;
 
     @JoinColumn(name = "coupon_id")
-    @ManyToOne(optional = false)
-    private CouponEntity couponEntity;
+    private Long couponId;
 
     @Column(name = "is_used", nullable = false)
     private boolean isUsed;
@@ -50,8 +47,8 @@ public class MemberCoupon {
 
     public MemberCoupon(Member member, CouponEntity couponEntity) {
         this(null,
-                member,
-                couponEntity,
+                member.getId(),
+                couponEntity.getId(),
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now()

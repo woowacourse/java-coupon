@@ -12,6 +12,6 @@ import coupon.member.domain.MemberCoupon;
 @Repository
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
-    @Query("SELECT mc.couponEntity.id FROM MemberCoupon mc WHERE mc.member.id = :memberId")
+    @Query("SELECT mc.couponId FROM MemberCoupon mc WHERE mc.memberId = :memberId")
     List<Long> findAllIdByMemberId(@Param("memberId") Long memberId);
 }
