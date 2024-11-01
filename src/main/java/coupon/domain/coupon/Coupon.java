@@ -1,4 +1,4 @@
-package coupon.domain;
+package coupon.domain.coupon;
 
 import java.time.LocalDate;
 
@@ -70,6 +70,10 @@ public class Coupon {
         this.category = category;
     }
 
+    public boolean isIssuableDate(LocalDate date) {
+        return issuancePeriod.isInRange(date);
+    }
+
     public Long getId() {
         return id;
     }
@@ -96,5 +100,13 @@ public class Coupon {
 
     public Category getCategory() {
         return category;
+    }
+
+    @Override
+    public String toString() {
+        return "Coupon{" +
+                "id=" + id +
+                ", name=" + name.getName() +
+                '}';
     }
 }
