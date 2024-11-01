@@ -105,12 +105,12 @@ class MemberCouponServiceTest {
         assertAll(
                 () -> assertThatThrownBy(
                         () -> memberCouponService.issueCoupon(coupon.getId(), member.getId(),
-                                coupon.getStartDate().minusDays(10)))
+                                coupon.getStartDate().minusDays(1)))
                         .isInstanceOf(IllegalArgumentException.class)
                         .hasMessageContaining("시작일, 만료일"),
                 () -> assertThatThrownBy(
                         () -> memberCouponService.issueCoupon(coupon.getId(), member.getId(),
-                                coupon.getEndDate().plusDays(10)))
+                                coupon.getEndDate().plusDays(1)))
                         .isInstanceOf(IllegalArgumentException.class)
                         .hasMessageContaining("시작일, 만료일")
         );
