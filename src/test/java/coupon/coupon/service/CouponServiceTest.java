@@ -7,6 +7,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import coupon.coupon.domain.Category;
 import coupon.coupon.domain.Coupon;
 import coupon.coupon.domain.CouponRepository;
+import coupon.coupon.domain.MemberCouponRepository;
+import coupon.coupon.dto.CouponResponse;
+import coupon.member.domain.MemberRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,9 +28,15 @@ class CouponServiceTest {
 
     @Autowired
     private CouponRepository couponRepository;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private MemberCouponRepository memberCouponRepository;
 
     @AfterEach
     void tearDown() {
+        memberCouponRepository.deleteAllInBatch();
+        memberRepository.deleteAllInBatch();
         couponRepository.deleteAllInBatch();
     }
 
@@ -186,7 +195,7 @@ class CouponServiceTest {
 
         // when
         long savedId = couponService.create(coupon);
-        Coupon savedCoupon = couponService.findById(savedId);
+        CouponResponse savedCoupon = couponService.findById(savedId);
 
         // then
         assertThat(savedCoupon).isNotNull();

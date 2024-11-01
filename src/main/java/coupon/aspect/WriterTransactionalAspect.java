@@ -1,4 +1,4 @@
-package aspect;
+package coupon.aspect;
 
 import coupon.config.DataSourceContextHolder;
 import coupon.config.DataSourceType;
@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class WriterTransactionalAspect {
 
-    @Before("@annotation(aspect.WriterTransactional)")
+    @Before("@annotation(coupon.aspect.WriterTransactional)")
     public void switchToWriterDB() {
         DataSourceContextHolder.setDataSourceType(DataSourceType.WRITER);
     }
 
-    @AfterReturning("@annotation(aspect.WriterTransactional)")
-    @AfterThrowing("@annotation(aspect.WriterTransactional)")
+    @AfterReturning("@annotation(coupon.aspect.WriterTransactional)")
+    @AfterThrowing("@annotation(coupon.aspect.WriterTransactional)")
     public void clearDataSourceAfterExecution() {
         DataSourceContextHolder.clear();
     }
