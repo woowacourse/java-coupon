@@ -3,7 +3,7 @@ package coupon.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -33,9 +33,9 @@ class MemberCouponTest {
     @Test
     @DisplayName("쿠폰의 사용 기간이 지나면 쿠폰을 사용할 수 없다.")
     void validateDuration() {
-        LocalDateTime today = LocalDateTime.now();
-        LocalDateTime weekAgo = today.minusDays(7);
-        LocalDateTime expiresAt = weekAgo.plusDays(6);
+        LocalDate today = LocalDate.now();
+        LocalDate weekAgo = today.minusDays(7);
+        LocalDate expiresAt = weekAgo.plusDays(6);
         MemberCoupon memberCoupon = new MemberCoupon(null, 1L, 1L, false, weekAgo, expiresAt);
 
         assertThatThrownBy(memberCoupon::use)
@@ -47,9 +47,9 @@ class MemberCouponTest {
     @DisplayName("쿠폰의 사용 가능 기간은 발행일 포함 7일이다.")
     void usableDuration() {
         MemberCoupon memberCoupon = MemberCoupon.issue(1L, 1L);
+        LocalDate actual = memberCoupon.getExpiresAt();
+        LocalDate expected = LocalDate.now().plusDays(6);
 
-        LocalDateTime afterSixDay = LocalDateTime.now().plusDays(6);
-        int actual = memberCoupon.getExpiresAt().getDayOfMonth();
-        assertThat(actual).isEqualTo(afterSixDay.getDayOfMonth());
+        assertThat(actual).isEqualTo(expected);
     }
 }

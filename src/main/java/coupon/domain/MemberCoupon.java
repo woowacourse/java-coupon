@@ -1,6 +1,6 @@
 package coupon.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,14 +33,14 @@ public class MemberCoupon {
     private Boolean isUsed;
 
     @Column(name = "issued_at", nullable = false)
-    private LocalDateTime issuedAt;
+    private LocalDate issuedAt;
 
     @Column(name = "expires_at", nullable = true)
-    private LocalDateTime expiresAt;
+    private LocalDate expiresAt;
 
     public static MemberCoupon issue(Long couponId, Long memberId) {
-        LocalDateTime today = LocalDateTime.now();
-        LocalDateTime expiresAt = today.plusDays(USABLE_DAY);
+        LocalDate today = LocalDate.now();
+        LocalDate expiresAt = today.plusDays(USABLE_DAY);
 
         return new MemberCoupon(null, couponId, memberId, false, today, expiresAt);
     }
@@ -59,7 +59,7 @@ public class MemberCoupon {
     }
 
     private void validateUsableDate() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
 
         if (now.isAfter(expiresAt)) {
             throw new IllegalStateException("사용 기간이 지난 쿠폰입니다.");
