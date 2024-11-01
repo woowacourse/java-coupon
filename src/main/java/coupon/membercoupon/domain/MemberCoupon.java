@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import coupon.infrastructure.audit.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class MemberCoupon extends BaseTimeEntity {
 
     @Id
