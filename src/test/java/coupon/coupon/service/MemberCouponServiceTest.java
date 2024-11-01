@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class MemberCouponServiceTest {
@@ -35,6 +37,8 @@ class MemberCouponServiceTest {
     private MemberRepository memberRepository;
     @Autowired
     private MemberCouponRepository memberCouponRepository;
+    @Autowired
+    private CacheManager cacheManager;
 
     private Coupon coupon;
     private Member member;
@@ -59,6 +63,12 @@ class MemberCouponServiceTest {
         memberCouponRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
         couponRepository.deleteAllInBatch();
+        for (String cacheName : cacheManager.getCacheNames()) {
+            Cache cache = cacheManager.getCache(cacheName);
+            if (cache != null) {
+                cache.clear();
+            }
+        }
     }
 
     @DisplayName("회원에게 쿠폰을 발급한다.")
