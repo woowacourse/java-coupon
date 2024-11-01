@@ -14,7 +14,7 @@ spring:
         format_sql: true
         show_sql: true
         use_sql_comments: true
-        hbm2ddl.auto: create
+        hbm2ddl.auto: validate
         check_nullability: true
         query.in_clause_parameter_padding: true
     open-in-view: false
@@ -31,14 +31,14 @@ coupon.datasource:
   writer:
     type: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC&createDatabaseIfNotExist=true
+    jdbcUrl: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
     maximumPoolSize: 10
   reader:
     type: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://localhost:33307/coupon?characterEncoding=UTF-8&serverTimezone=UTC&createDatabaseIfNotExist=true
+    jdbcUrl: jdbc:mysql://localhost:33307/coupon?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
     maximumPoolSize: 10
