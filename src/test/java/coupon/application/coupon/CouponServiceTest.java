@@ -18,6 +18,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.Cache.ValueWrapper;
+import org.springframework.data.redis.cache.RedisCacheManager;
 
 class CouponServiceTest extends IntegrationTestSupport {
 
@@ -32,6 +35,9 @@ class CouponServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private DataSourceRoutingSupport routingSupport;
+
+    @Autowired
+    private RedisCacheManager cacheManager;
 
     @Test
     @DisplayName("존재하지 않는 쿠폰은 발급할 수 없다.")
@@ -51,7 +57,7 @@ class CouponServiceTest extends IntegrationTestSupport {
         couponService.issue(1L, coupon.getId());
         entityManager.clear();
 
-        List<MemberCoupon> result = routingSupport.changeToWrite(() -> memberCouponRepository.findAll());
+        List<MemberCoupon> result = routingSupport.requireNew(() -> memberCouponRepository.findAll());
         assertThat(result).hasSize(1);
     }
 
@@ -65,7 +71,7 @@ class CouponServiceTest extends IntegrationTestSupport {
 
         couponService.create(coupon);
 
-        Coupon savedCoupon = routingSupport.changeToWrite(() -> couponService.getCoupon(coupon.getId()));
+        Coupon savedCoupon = routingSupport.requireNew(() -> couponService.getCoupon(coupon.getId()));
         assertThat(savedCoupon).isNotNull();
     }
 
@@ -83,6 +89,27 @@ class CouponServiceTest extends IntegrationTestSupport {
         assertThatThrownBy(() -> couponService.issue(1L, coupon1.getId()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("더 이상 해당 쿠폰을 발급할 수 없습니다.");
+    }
+
+    @Test
+    @DisplayName("캐시가 미스되는 경우 데이터베이스에서 쿠폰을 조회하여 캐시에 적재한다.")
+    void readCouponWithCacheMiss() {
+        Coupon coupon = createCoupon();
+        couponService.create(coupon);
+        Long couponId = coupon.getId();
+
+        ValueWrapper empty = getCacheValue(couponId);
+        assertThat(empty).isNull();
+
+        couponService.getCoupon(couponId);
+        ValueWrapper afterCaching = getCacheValue(couponId);
+        assertThat(afterCaching).isNotNull();
+    }
+
+    private ValueWrapper getCacheValue(Long couponId) {
+        Cache couponCache = cacheManager.getCache("coupon");
+
+        return couponCache.get(couponId);
     }
 
     private void issueCoupons(Long memberId, Coupon coupon, int times) {
