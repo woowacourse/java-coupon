@@ -33,7 +33,7 @@ public class IssuedCouponService {
     private void validateIssuedCouponNumber(Coupon coupon, Member member) {
         List<IssuedCoupon> allByCouponAndMember = issuedCouponRepository.findAllByCouponIdAndMember(coupon.getId(),
                 member);
-        if (allByCouponAndMember.size() > MAX_ISSUABLE_COUPON_SIZE) {
+        if (allByCouponAndMember.size() >= MAX_ISSUABLE_COUPON_SIZE) {
             throw new IllegalArgumentException("쿠폰은 최대 %d장 발급할 수 있습니다.".formatted(MAX_ISSUABLE_COUPON_SIZE));
         }
     }

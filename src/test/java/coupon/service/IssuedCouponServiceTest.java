@@ -1,6 +1,7 @@
 package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import coupon.domain.Category;
 import coupon.domain.Coupon;
@@ -40,7 +41,7 @@ class IssuedCouponServiceTest {
     }
 
     @Test
-    @DisplayName("쿠폰 조회 테스트")
+    @DisplayName("쿠폰은 다섯장까지 발급할 수 있다.")
     void getIssuedCouponsTest() {
         //given
         Coupon coupon = couponService.create(
@@ -58,5 +59,25 @@ class IssuedCouponServiceTest {
         assertThat(issuedCouponService.getIssuedCouponBy(member.getId()))
                 .hasSize(5)
                 .allMatch(issuedCouponResponse -> issuedCouponResponse.couponResponse().id() == coupon.getId());
+    }
+
+    @Test
+    @DisplayName("쿠폰은 최대 다섯개까지 발급할 수 있다.")
+    void issueMaxTest() {
+        //given
+        Coupon coupon = couponService.create(
+                new Coupon("name", 1000, 10000, Category.FASHION, LocalDate.now(), LocalDate.now().plusDays(7)));
+        Member member = memberService.save(new Member());
+
+        //when
+        issuedCouponService.issue(member.getId(), coupon.getId());
+        issuedCouponService.issue(member.getId(), coupon.getId());
+        issuedCouponService.issue(member.getId(), coupon.getId());
+        issuedCouponService.issue(member.getId(), coupon.getId());
+        issuedCouponService.issue(member.getId(), coupon.getId());
+
+        //then
+        assertThatThrownBy(() -> issuedCouponService.issue(member.getId(), coupon.getId()))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
