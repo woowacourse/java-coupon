@@ -48,28 +48,20 @@ public class RedisCacheConfig {
     }
 
     private RedisSerializer<Object> getJsonRedisSerializer() {
-        ObjectMapper objectMapper = new ObjectMapper()
+        return new GenericJackson2JsonRedisSerializer(objectMapper());
+    }
+
+    private ObjectMapper objectMapper() {
+        return new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .registerModule(new JavaTimeModule())
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .activateDefaultTyping(getPolymorphicTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-
-        return new GenericJackson2JsonRedisSerializer(objectMapper);
     }
 
     private BasicPolymorphicTypeValidator getPolymorphicTypeValidator() {
         return BasicPolymorphicTypeValidator.builder()
                 .allowIfBaseType(Object.class)
                 .build();
-    }
-
-    @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper()
-                .findAndRegisterModules()
-                .enable(SerializationFeature.INDENT_OUTPUT)
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .registerModule(new JavaTimeModule());
     }
 }
