@@ -9,13 +9,18 @@ import coupon.domain.CouponRepository;
 public class CouponMockRepository implements CouponRepository {
 
     private final AtomicLong id = new AtomicLong(1L);
-    private final HashMap<AtomicLong, Coupon> coupons = new HashMap<>();
+    private final HashMap<Long, Coupon> coupons = new HashMap<>();
 
     @Override
     public Coupon save(Coupon coupon) {
-        Coupon newCoupon = new Coupon(id.getAndAdd(1L), coupon.getName(), coupon.getDiscountAmount(), coupon.getMinimumOrderAmount(), coupon.getStartDate(), coupon.getEndDate(), coupon.getCategory());
-        coupons.put(id, newCoupon);
-        return newCoupon;
+        if (coupon.getId() == null) {
+            long newId = id.getAndIncrement();
+            Coupon newCoupon = new Coupon(newId, coupon.getName(), coupon.getDiscountAmount(), coupon.getMinimumOrderAmount(), coupon.getStartDate(), coupon.getEndDate(), coupon.getCategory());
+            coupons.put(newId, newCoupon);
+            return newCoupon;
+        }
+        coupons.put(coupon.getId(), coupon);
+        return coupon;
     }
 
     @Override
