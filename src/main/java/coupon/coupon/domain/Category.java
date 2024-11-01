@@ -1,4 +1,4 @@
-package coupon.coupon;
+package coupon.coupon.domain;
 
 public enum Category {
 

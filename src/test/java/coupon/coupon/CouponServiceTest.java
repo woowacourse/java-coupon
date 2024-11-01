@@ -2,6 +2,9 @@ package coupon.coupon;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import coupon.coupon.domain.Category;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.service.CouponService;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,7 @@ class CouponServiceTest {
 
         // when
         couponService.create(coupon);
-        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
+        Coupon savedCoupon = couponService.find(coupon.getId());
 
         // then
         assertThat(savedCoupon).isNotNull();

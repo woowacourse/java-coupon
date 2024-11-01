@@ -1,4 +1,4 @@
-package coupon.coupon;
+package coupon.coupon.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -63,6 +63,11 @@ public class Coupon {
         this.category = category;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public boolean isCouponIssuable() {
+        LocalDate today = LocalDate.now();
+        return today.equals(endDate.toLocalDate()) || today.isBefore(endDate.toLocalDate());
     }
 
     private void validateCouponName(String name) {
