@@ -9,12 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class CouponEntity {
@@ -37,4 +35,15 @@ public class CouponEntity {
     private LocalDate issueStartDate;
 
     private LocalDate issueEndDate;
+
+    public CouponEntity(String name, long discountAmount, long minOrderAmount, int discountRange,
+                        Category category, LocalDate issueStartDate, LocalDate issueEndDate) {
+        this.name = name;
+        this.discountAmount = discountAmount;
+        this.minOrderAmount = minOrderAmount;
+        this.discountRange = discountRange;
+        this.category = category;
+        this.issueStartDate = issueStartDate;
+        this.issueEndDate = issueEndDate;
+    }
 }

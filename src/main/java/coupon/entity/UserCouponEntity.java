@@ -30,4 +30,11 @@ public class UserCouponEntity {
     private LocalDateTime usedDateTime;
 
     private LocalDateTime expiredDateTime;
+
+    public UserCouponEntity(long userId, long couponId, boolean used, LocalDateTime expiredDateTime) {
+        this.userId = userId;
+        this.couponId = couponId;
+        this.used = used;
+        this.expiredDateTime = expiredDateTime;
+    }
 }
