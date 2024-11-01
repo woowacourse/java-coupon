@@ -1,10 +1,6 @@
 package coupon.repository;
 
-import coupon.domain.Coupon;
-import coupon.domain.DiscountLateValidator;
-import coupon.domain.DiscountValidator;
-import coupon.domain.MinimumOrderPriceValidator;
-import coupon.util.SessionUtil;
+import coupon.domain.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,17 +9,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class CouponWriter {
-    private final DiscountValidator discountValidator;
+    private final CouponIssuer couponIssuer;
     private final CouponRepository couponRepository;
-    private final DiscountLateValidator discountLateValidator;
-    private final MinimumOrderPriceValidator minimumOrderPriceValidator;
-    private final SessionUtil sessionUtil;
+    private final CouponCacheRepository couponCacheRepository;
 
     public Coupon create(final Coupon coupon) {
-        sessionUtil.logSessionStatus("create");
-        discountValidator.validate(coupon.getDiscountPrice());
-        discountLateValidator.validate(coupon.calculateDiscountRate());
-        minimumOrderPriceValidator.validate(coupon.getMinimumOrderPrice());
-        return couponRepository.save(coupon);
+        final Coupon savedCoupon = couponRepository.save(couponIssuer.issueCoupon(coupon));
+        couponCacheRepository.save(savedCoupon);
+        return savedCoupon;
     }
 }
