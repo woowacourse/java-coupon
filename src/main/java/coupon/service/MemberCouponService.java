@@ -39,11 +39,4 @@ public class MemberCouponService {
             throw new IllegalArgumentException(String.format("이미 %d장의 쿠폰을 발급받았습니다.", MemberCoupon.ISSUED_COUPON_LIMIT));
         }
     }
-
-    public List<MemberCoupon> findAllByMember(Member member) {
-        List<MemberCouponEntity> issuedMemberCoupons = memberCouponRepository.findAllByMemberId(member.getId());
-        return issuedMemberCoupons.stream()
-                .map(memberCoupon -> memberCoupon.toDomain(member, cacheService.getCoupon(memberCoupon)))
-                .toList();
-    }
 }

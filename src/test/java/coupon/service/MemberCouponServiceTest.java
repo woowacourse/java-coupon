@@ -1,13 +1,10 @@
 package coupon.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import coupon.domain.Coupon;
 import coupon.domain.Member;
-import coupon.domain.MemberCoupon;
 import coupon.entity.CouponEntity;
 import coupon.entity.MemberEntity;
 import coupon.repository.CouponRepository;
@@ -80,25 +77,6 @@ class MemberCouponServiceTest {
         assertThatThrownBy(() -> memberCouponService.create(member, coupon))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미 5장의 쿠폰을 발급받았습니다.");
-    }
-
-    @DisplayName("회원이 발급받은 쿠폰을 조회한다.")
-    @Test
-    void findAllByMemberTest() throws Exception {
-        // given
-        IntStream.range(0, 3).forEach(i -> memberCouponService.create(member, coupons.get(i)));
-        waitForSeconds(3);
-
-        // when
-        List<MemberCoupon> memberCoupons = memberCouponService.findAllByMember(member);
-
-        // then
-        assertAll(
-                () -> assertThat(memberCoupons).hasSize(3),
-                () -> assertThat(memberCoupons)
-                        .extracting(MemberCoupon::getCoupon)
-                        .containsExactlyElementsOf(coupons)
-        );
     }
 
     void waitForSeconds(int seconds) throws Exception {
