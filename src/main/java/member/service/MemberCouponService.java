@@ -31,7 +31,12 @@ public class MemberCouponService {
 	}
 
 	private void validateIssuable(long couponId, long memberId) {
-		List<MemberCoupon> memberCoupons = memberCouponRepository.findByCouponIdAndMemberId(couponId, memberId);
+		List<MemberCoupon> memberCoupons;
+		try{
+			memberCoupons = memberCouponRepository.findByCouponIdAndMemberId(couponId, memberId);
+		}catch (Exception e){
+			throw new IllegalArgumentException("존재하지 않는 쿠폰, 멤버입니다.");
+		}
 		if(memberCoupons.size() >= MAXIMUM_ISSUABLE_MEMBER_COUPON) {
 			throw new IllegalArgumentException("최대 발급 갯수를 초과했습니다.");
 		}
