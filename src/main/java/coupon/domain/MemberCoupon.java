@@ -58,12 +58,8 @@ public class MemberCoupon {
         this.expiresAt = initExpiresAt(issuedAt);
     }
 
-    private static LocalDateTime initExpiresAt(LocalDateTime issuedAt) {
+    private LocalDateTime initExpiresAt(LocalDateTime issuedAt) {
         return issuedAt.plusDays(EXPIRATION_DAYS).with(LocalTime.MAX);
-    }
-
-    public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expiresAt);
     }
 
     public void use() {
@@ -74,5 +70,9 @@ public class MemberCoupon {
             throw new IllegalArgumentException("만료된 쿠폰입니다. couponId : " + couponId);
         }
         isUsed = true;
+    }
+
+    private boolean isExpired() {
+        return LocalDateTime.now().isAfter(expiresAt);
     }
 }
