@@ -70,10 +70,9 @@ public class MemberCouponServiceTest {
     }
 
     @Test
-    void 쿠폰과_회원에게_발급된_쿠폰을_조회한다() throws InterruptedException {
+    void 쿠폰과_회원에게_발급된_쿠폰을_조회한다() {
         memberCouponService.create(member, coupon.getId());
 
-        Thread.sleep(3000);
         List<MemberCouponResponse> memberCouponResponses = memberCouponService.readAll(member.getId());
         MemberCouponResponse memberCouponResponse = memberCouponResponses.get(0);
 
