@@ -39,7 +39,7 @@ class CouponServiceTest {
                 LocalDateTime.of(2024, 10, 17, 10, 10),
                 LocalDateTime.of(2024, 10, 18, 10, 10));
         CouponEntity coupon = couponService.create(couponRequest);
-        CouponEntity savedCoupon = couponService.getCoupon(coupon.getId());
+        CouponEntity savedCoupon = couponService.getCouponById(coupon.getId());
         assertThat(savedCoupon).isNotNull();
     }
 }

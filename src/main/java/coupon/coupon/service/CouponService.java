@@ -1,5 +1,7 @@
 package coupon.coupon.service;
 
+import java.util.List;
+
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -39,8 +41,14 @@ public class CouponService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "couponCache", key = "#root.args[0]", unless = "#root.args[0] == null")
-    public CouponEntity getCoupon(Long id) {
+    public CouponEntity getCouponById(Long id) {
         return couponRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID가 " + id + "인 쿠폰은 존재하지 않습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "couponCache", key = "#root.args[0]", unless = "#root.args[0] == null")
+    public List<CouponEntity> getAllInCouponId(List<Long> ids) {
+        return couponRepository.findByIdIn(ids);
     }
 }
