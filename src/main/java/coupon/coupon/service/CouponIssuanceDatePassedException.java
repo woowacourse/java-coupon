@@ -1,4 +1,4 @@
-package coupon.coupon;
+package coupon.coupon.service;
 
 public class CouponIssuanceDatePassedException extends RuntimeException {
     public CouponIssuanceDatePassedException(long couponId) {

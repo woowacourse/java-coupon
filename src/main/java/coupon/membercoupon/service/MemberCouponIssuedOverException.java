@@ -1,4 +1,4 @@
-package coupon.membercoupon;
+package coupon.membercoupon.service;
 
 public class MemberCouponIssuedOverException extends RuntimeException {
     public MemberCouponIssuedOverException(long memberId) {

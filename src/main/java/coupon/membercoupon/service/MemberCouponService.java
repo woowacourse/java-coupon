@@ -1,12 +1,13 @@
-package coupon.membercoupon;
+package coupon.membercoupon.service;
 
-import coupon.coupon.Coupon;
-import coupon.coupon.CouponIssuanceDatePassedException;
-import coupon.coupon.CouponNotFoundException;
-import coupon.coupon.CouponRepository;
-import coupon.member.Member;
-import coupon.member.MemberNotFoundException;
-import coupon.member.MemberRepository;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.service.CouponIssuanceDatePassedException;
+import coupon.coupon.service.CouponNotFoundException;
+import coupon.coupon.service.CouponRepository;
+import coupon.member.domain.Member;
+import coupon.member.service.MemberNotFoundException;
+import coupon.member.service.MemberRepository;
+import coupon.membercoupon.domain.MemberCoupon;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;

@@ -1,4 +1,4 @@
-package coupon.membercoupon;
+package coupon.membercoupon.service;
 
 import java.time.LocalDate;
 

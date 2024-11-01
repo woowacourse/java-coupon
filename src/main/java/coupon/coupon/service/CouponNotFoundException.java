@@ -1,4 +1,4 @@
-package coupon.coupon;
+package coupon.coupon.service;
 
 public class CouponNotFoundException extends RuntimeException {
     public CouponNotFoundException(long couponId) {

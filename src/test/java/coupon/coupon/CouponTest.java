@@ -3,6 +3,8 @@ package coupon.coupon;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
+import coupon.coupon.domain.Category;
+import coupon.coupon.domain.Coupon;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 

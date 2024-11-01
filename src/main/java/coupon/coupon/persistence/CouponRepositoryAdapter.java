@@ -1,7 +1,9 @@
-package coupon.coupon;
+package coupon.coupon.persistence;
 
 import coupon.config.DataSourceContextHolder;
 import coupon.config.DataSourceType;
+import coupon.coupon.domain.Coupon;
+import coupon.coupon.service.CouponRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;

@@ -1,4 +1,4 @@
-package coupon.member;
+package coupon.member.service;
 
 public class MemberNotFoundException extends RuntimeException {
     public MemberNotFoundException(long memberId) {
