@@ -20,12 +20,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class CacheConfig {
 
+    private static final long TTL_TIME = 30L;
+
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(mapper())))
-                .entryTtl(Duration.ofMinutes(30L))
+                .entryTtl(Duration.ofMinutes(TTL_TIME))
                 .enableTimeToIdle();
 
         return RedisCacheManager.builder(redisConnectionFactory)
