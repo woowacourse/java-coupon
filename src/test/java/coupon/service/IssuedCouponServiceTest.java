@@ -27,7 +27,7 @@ class IssuedCouponServiceTest {
 
     @Test
     @DisplayName("쿠폰 발급 테스트")
-    void issueTest() throws InterruptedException {
+    void issueTest() {
         //given
         Coupon coupon = couponService.create(
                 new Coupon("name", 1000, 10000, Category.FASHION, LocalDate.now(), LocalDate.now().plusDays(7)));

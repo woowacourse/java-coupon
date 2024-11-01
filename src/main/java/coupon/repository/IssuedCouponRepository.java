@@ -1,6 +1,5 @@
 package coupon.repository;
 
-import coupon.domain.Coupon;
 import coupon.domain.IssuedCoupon;
 import coupon.domain.Member;
 import java.util.List;
