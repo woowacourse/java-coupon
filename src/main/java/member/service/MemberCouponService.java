@@ -5,6 +5,7 @@ import coupon.repository.CouponCache;
 import coupon.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import member.domain.MemberCoupon;
+import member.dto.MemberCouponResponse;
 import member.repository.MemberCouponCache;
 import member.repository.MemberCouponRepository;
 
@@ -44,12 +45,12 @@ public class MemberCouponService {
 		return memberCoupons;
 	}
 
-	private MemberCoupon generateMemberCoupon(MemberCoupon memberCoupon) {
+	private MemberCouponResponse generateMemberCoupon(MemberCoupon memberCoupon) {
 		Coupon coupon = CouponCache.get(memberCoupon.getCouponId());
 		if(coupon == null) {
 			coupon = couponRepository.findById(memberCoupon.getCouponId())
 				.orElseThrow(() -> new IllegalArgumentException("쿠폰이 없습니다."));
 		}
-		return memberCoupon;
+		return new MemberCouponResponse(memberCoupon, coupon);
 	}
 }
