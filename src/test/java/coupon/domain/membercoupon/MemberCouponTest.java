@@ -15,7 +15,7 @@ class MemberCouponTest {
     })
     void 멤버_쿠폰을_생성하면_만료_일은_발급_일을_포함한_7일_이후이다(LocalDateTime issuedAt, LocalDateTime expiredAt) {
         // when
-        MemberCoupon memberCoupon = new MemberCoupon(null, null, issuedAt);
+        MemberCoupon memberCoupon = new MemberCoupon(issuedAt, 1L, 1L);
 
         // then
         assertThat(memberCoupon.getExpiredAt()).isEqualTo(expiredAt);

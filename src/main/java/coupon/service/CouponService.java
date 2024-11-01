@@ -4,6 +4,7 @@ import coupon.domain.coupon.Coupon;
 import coupon.domain.coupon.CouponRepository;
 import coupon.support.TransactionSupport;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public class CouponService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "coupons", key = "#couponId")
     public Coupon getCoupon(Long couponId) {
         return couponRepository.findById(couponId)
                 .orElseGet(() -> getCouponWithWriter(couponId));

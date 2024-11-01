@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,6 +61,12 @@ public class Coupon {
         if (discountRate < MIN_DISCOUNT_RATE || discountRate > MAX_DISCOUNT_RATE) {
             throw new IllegalArgumentException("할인율은 %d%% 이상 %d%% 이하여야 합니다."
                     .formatted(MIN_DISCOUNT_RATE, MAX_DISCOUNT_RATE));
+        }
+    }
+
+    public void issue(LocalDateTime now) {
+        if (!issuePeriod.isIssuable(now)) {
+            throw new IllegalArgumentException("쿠폰 발급 기간이 아닙니다.");
         }
     }
 }

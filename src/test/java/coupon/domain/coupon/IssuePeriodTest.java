@@ -1,5 +1,6 @@
 package coupon.domain.coupon;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -79,5 +80,35 @@ class IssuePeriodTest {
         assertThatThrownBy(() -> new IssuePeriod(issueStartedDate, issueEndedDate))
                 .isExactlyInstanceOf(IllegalArgumentException.class)
                 .hasMessage("발급 시작일은 종료일보다 빠를 수 없습니다.");
+    }
+
+    @Test
+    void 발급_가능한_기간이_아니면_false를_반환한다() {
+        // given
+        LocalDate issueStartedDate = LocalDate.parse("2024-10-14");
+        LocalDate issueEndedDate = LocalDate.parse("2024-10-15");
+        IssuePeriod issuePeriod = new IssuePeriod(issueStartedDate, issueEndedDate);
+        LocalDateTime now = LocalDateTime.parse("2024-10-16T00:00:00");
+
+        // when
+        boolean issuable = issuePeriod.isIssuable(now);
+
+        // then
+        assertThat(issuable).isFalse();
+    }
+
+    @Test
+    void 발급_가능한_기간이면_true를_반환한다() {
+        // given
+        LocalDate issueStartedDate = LocalDate.parse("2024-10-14");
+        LocalDate issueEndedDate = LocalDate.parse("2024-10-15");
+        IssuePeriod issuePeriod = new IssuePeriod(issueStartedDate, issueEndedDate);
+        LocalDateTime now = LocalDateTime.parse("2024-10-14T00:00:00.000001");
+
+        // when
+        boolean issuable = issuePeriod.isIssuable(now);
+
+        // then
+        assertThat(issuable).isTrue();
     }
 }
