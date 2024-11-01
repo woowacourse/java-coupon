@@ -17,7 +17,9 @@ public enum ExceptionType {
     COUPON_CATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "존재하지 않는 쿠폰 카테고리입니다."),
     COUPON_DATE_INVALID(HttpStatus.BAD_REQUEST, "쿠폰 시작일은 종료일보다 이전이거나 같아야 합니다."),
     COUPON_DISCOUNT_RATE(HttpStatus.BAD_REQUEST, "쿠폰 할인율은 3% 이상 20% 이하여야 합니다."),
-    COUPON_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 쿠폰입니다.");
+    COUPON_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 쿠폰입니다."),
+    ISSUE_MAX_COUNT_EXCEED(HttpStatus.BAD_REQUEST, "한 회원에게 동일한 쿠폰을 5장 보다 많이 발급할 수 없습니다."),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다.");
 
     private final HttpStatus status;
     private final String message;

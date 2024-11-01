@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Embeddable
 public class UsagePeriod {
 
-    private static final int VALID_DURATION = 7;
+    private static final int VALID_DURATION = 6;
 
     @Column(name = "issue_date", columnDefinition = "DATETIME(6)", nullable = false)
     private LocalDateTime issueDate;

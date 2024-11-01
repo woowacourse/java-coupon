@@ -1,6 +1,6 @@
 package coupon.domain.membercoupon;
 
-import coupon.domain.coupon.Coupon;
+import java.time.LocalDateTime;
 import coupon.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -25,9 +25,8 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
+    @Column(name = "coupon_id", nullable = false)
+    private Long couponId;
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
@@ -39,13 +38,17 @@ public class MemberCoupon {
     @Embedded
     private UsagePeriod usagePeriod;
 
-    public MemberCoupon(Coupon coupon, Member member, boolean isActive, UsagePeriod usagePeriod) {
-        this(null, coupon, member, isActive, usagePeriod);
+    public MemberCoupon(Long couponId, Member member, LocalDateTime issueDate) {
+        this(null, couponId, member, true, new UsagePeriod(issueDate));
     }
 
-    public MemberCoupon(Long id, Coupon coupon, Member member, boolean isActive, UsagePeriod usagePeriod) {
+    public MemberCoupon(Long couponId, Member member, UsagePeriod usagePeriod) {
+        this(null, couponId, member, true, usagePeriod);
+    }
+
+    public MemberCoupon(Long id, Long couponId, Member member, boolean isActive, UsagePeriod usagePeriod) {
         this.id = id;
-        this.coupon = coupon;
+        this.couponId = couponId;
         this.member = member;
         this.isActive = isActive;
         this.usagePeriod = usagePeriod;

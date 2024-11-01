@@ -26,7 +26,7 @@ public class DatabaseCleaner {
         String sql = """
                 SELECT CONCAT('TRUNCATE TABLE ', TABLE_NAME, ';') AS q
                 FROM INFORMATION_SCHEMA.TABLES
-                WHERE TABLE_SCHEMA = 'coupons'
+                WHERE TABLE_SCHEMA = 'coupon'
                 """;
 
         return em.createNativeQuery(sql).getResultList();
