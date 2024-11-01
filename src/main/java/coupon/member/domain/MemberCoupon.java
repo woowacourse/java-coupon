@@ -31,16 +31,19 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "member")
+    @JoinColumn(name = "member_id")
     @ManyToOne(optional = false)
     private Member member;
 
-    @JoinColumn(name = "coupon")
+    @JoinColumn(name = "coupon_id")
     @ManyToOne(optional = false)
     private CouponEntity couponEntity;
 
     @Column(name = "is_used", nullable = false)
     private boolean isUsed;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime created_at;
 
     @Column(name = "expires_at", nullable = false)
     private LocalDateTime expiresAt;
@@ -50,6 +53,7 @@ public class MemberCoupon {
                 member,
                 couponEntity,
                 false,
+                LocalDateTime.now(),
                 LocalDateTime.now()
                         .plusDays(7)
                         .with(LocalTime.MAX));

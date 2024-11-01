@@ -22,9 +22,10 @@ CREATE TABLE IF NOT EXISTS member
 CREATE TABLE IF NOT EXISTS member_coupon
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    member     BIGINT   NOT NULL,
-    coupon     BIGINT   NOT NULL,
+    member_id  BIGINT   NOT NULL,
+    coupon_id  BIGINT   NOT NULL,
     is_used    BOOLEAN  NOT NULL,
+    created_at DATETIME NOT NULL,
     expires_at DATETIME NOT NULL,
     FOREIGN KEY (member) REFERENCES member (id),
     FOREIGN KEY (coupon) REFERENCES coupon (id)
