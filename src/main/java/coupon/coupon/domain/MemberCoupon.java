@@ -32,30 +32,29 @@ public class MemberCoupon extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member owner;
 
-    @JoinColumn(name = "coupon_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Coupon coupon;
+    @Column(name = "coupon_id", nullable = false)
+    private Long couponId;
 
     @Column(name = "used", nullable = false)
     private boolean used;
 
     @Column(name = "issued_at", nullable = false)
-    private LocalDate issued_at;
+    private LocalDate issuedAt;
 
     @Column(name = "expired_at", nullable = false)
     private LocalDate expiredAt;
 
-    public MemberCoupon(Long id, Member owner, Coupon coupon) {
+    public MemberCoupon(Long id, Member owner, Long couponId) {
         this.id = id;
         this.owner = owner;
-        this.coupon = coupon;
+        this.couponId = couponId;
         this.used = false;
-        this.issued_at = LocalDate.now();
-        this.expiredAt = issued_at.plusDays(VALID_DAY + 1);
+        this.issuedAt = LocalDate.now();
+        this.expiredAt = issuedAt.plusDays(VALID_DAY + 1);
     }
 
-    public MemberCoupon(final Member owner, final Coupon coupon) {
-        this(null, owner, coupon);
+    public MemberCoupon(final Member owner, final Long couponId) {
+        this(null, owner, couponId);
     }
 
     public boolean isValid() {

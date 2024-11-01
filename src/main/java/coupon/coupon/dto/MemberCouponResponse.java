@@ -4,13 +4,13 @@ import coupon.coupon.domain.MemberCoupon;
 
 public record MemberCouponResponse(
         Long id,
-        CouponResponse couponResponse,
+        Long couponResponse,
         boolean used
 ) {
     public static MemberCouponResponse from(final MemberCoupon memberCoupon) {
         return new MemberCouponResponse(
                 memberCoupon.getId(),
-                CouponResponse.from(memberCoupon.getCoupon()),
+                memberCoupon.getCouponId(),
                 memberCoupon.isUsed()
         );
     }

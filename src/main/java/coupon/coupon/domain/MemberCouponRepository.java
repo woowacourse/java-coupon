@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
-    int countByOwnerAndCoupon(Member owner, Coupon coupon);
+    int countByOwnerAndCouponId(Member owner, Long coupon);
 
     List<MemberCoupon> findMemberCouponByOwner(Member member);
 }

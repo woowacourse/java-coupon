@@ -30,12 +30,12 @@ public class MemberCouponService {
         final var coupon = couponRepository.findById(memberCouponCreateRequest.couponId())
                 .orElseThrow(() -> new CouponApplicationException("존재하지 않는 쿠폰입니다"));
 
-        final var memberCouponCount = memberCouponRepository.countByOwnerAndCoupon(member, coupon);
+        final var memberCouponCount = memberCouponRepository.countByOwnerAndCouponId(member, coupon.getId());
         if (memberCouponCount > MAX_ISSUE_COUNT) {
             throw new CouponApplicationException("같은 쿠폰은 " + MAX_ISSUE_COUNT + "횟수 이상 발급할 수 없습니다");
         }
 
-        final var memberCoupon = memberCouponRepository.save(new MemberCoupon(member, coupon));
+        final var memberCoupon = memberCouponRepository.save(new MemberCoupon(member, coupon.getId()));
         return MemberCouponResponse.from(memberCoupon);
     }
 
