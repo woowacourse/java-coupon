@@ -10,7 +10,7 @@ import coupon.membercoupon.domain.MemberCoupon;
 @Service
 public class CacheService {
 
-    public static final String NO_COUPON_MESSAGE = "요청하신 쿠폰을 찾을 수 없어요.";
+    private static final String NO_COUPON_MESSAGE = "요청하신 쿠폰을 찾을 수 없어요.";
     private final CouponRepository couponRepository;
 
     public CacheService(CouponRepository couponRepository) {
@@ -28,7 +28,6 @@ public class CacheService {
     }
 
     private Coupon getCouponById(Long id) {
-        return couponRepository.findById(id)
-                .orElseThrow(() -> new CouponException(NO_COUPON_MESSAGE));
+        return couponRepository.findById(id).orElseThrow(() -> new CouponException(NO_COUPON_MESSAGE));
     }
 }
