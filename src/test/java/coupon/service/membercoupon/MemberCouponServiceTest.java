@@ -11,8 +11,13 @@ import coupon.service.coupon.CouponService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,6 +69,55 @@ public class MemberCouponServiceTest {
         // when & then
         assertThatThrownBy(() -> memberCouponService.create(exceedingCoupon))
                 .isInstanceOf(CannotCreateMemberCouponException.class);
+    }
+
+    @Test
+    void 한명의_회원에게_동일한_쿠폰을_5장째_발급할_때_동시성을_고려한다() {
+        // given
+        Long memberId = UUID.randomUUID().getMostSignificantBits();
+        Long couponId = UUID.randomUUID().getMostSignificantBits();
+        for (int i = 0; i < 4; i++) {
+            MemberCoupon memberCoupon = new MemberCoupon(
+                    memberId,
+                    couponId,
+                    false,
+                    LocalDate.of(2000, 4, 7)
+            );
+            memberCouponService.create(memberCoupon);
+        }
+
+        Callable<Long> task = () -> {
+            MemberCoupon memberCoupon = new MemberCoupon(
+                    memberId,
+                    couponId,
+                    false,
+                    LocalDate.of(2000, 4, 7)
+            );
+            return memberCouponService.create(memberCoupon);
+        };
+
+        // when
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        List<Future<Long>> futures = new ArrayList<>();
+        futures.add(executor.submit(task));
+        futures.add(executor.submit(task));
+        executor.shutdown();
+
+        // then
+        int successCount = 0;
+        int failureCount = 0;
+        for (Future<Long> future : futures) {
+            try {
+                future.get();
+                successCount++;
+            } catch (Exception e) {
+                assertThat(e.getCause()).isInstanceOf(CannotCreateMemberCouponException.class);
+                failureCount++;
+            }
+        }
+
+        assertThat(successCount).isEqualTo(1);
+        assertThat(failureCount).isEqualTo(1);
     }
 
     @Test

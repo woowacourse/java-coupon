@@ -18,7 +18,7 @@ public class MemberCouponService {
 
     private final MemberCouponRepository memberCouponRepository;
     private final CouponService couponService;
-    
+
     @Transactional
     public Long create(MemberCoupon memberCoupon) {
         validate(memberCoupon);
@@ -27,8 +27,11 @@ public class MemberCouponService {
     }
 
     private void validate(MemberCoupon memberCoupon) {
-        if (memberCouponRepository.countByMemberIdAndCouponId(memberCoupon.getMemberId(), memberCoupon.getCouponId())
-                == MAX_MEMBER_COUPON_CREATE_COUNT) {
+        List<MemberCoupon> existingCoupons = memberCouponRepository.findByMemberIdAndCouponIdWithLock(
+                memberCoupon.getMemberId(),
+                memberCoupon.getCouponId()
+        );
+        if (existingCoupons.size() >= MAX_MEMBER_COUPON_CREATE_COUNT) {
             throw new CannotCreateMemberCouponException();
         }
     }
