@@ -18,12 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberCouponService {
 
+    private static final String CACHE_MEMBER_COUPON_NAME = "memberCoupon";
+
     private final MemberRepository memberRepository;
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
 
     @Transactional
-    @CacheEvict(value = "memberCoupon", key = "#memberId")
+    @CacheEvict(value = CACHE_MEMBER_COUPON_NAME, key = "#memberId")
     public MemberCoupon issueMemberCoupon(long couponId, long memberId) {
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(() -> new CouponNotFoundException(couponId));
@@ -48,7 +50,7 @@ public class MemberCouponService {
     }
 
     @Transactional
-    @Cacheable(value = "memberCoupon", key = "#memberId")
+    @Cacheable(value = CACHE_MEMBER_COUPON_NAME, key = "#memberId")
     public MemberCouponResponse findMemberCoupons(long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));

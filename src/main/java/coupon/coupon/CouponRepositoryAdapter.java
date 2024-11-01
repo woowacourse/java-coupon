@@ -13,17 +13,19 @@ import org.springframework.transaction.support.TransactionTemplate;
 @RequiredArgsConstructor
 public class CouponRepositoryAdapter implements CouponRepository {
 
+    private static final String CACHE_COUPON_NAME = "coupon";
+
     private final CouponJpaRepository couponJpaRepository;
     private final TransactionTemplate transactionTemplate;
 
     @Override
-    @CachePut(value = "coupon", key = "#coupon.id")
+    @CachePut(value = CACHE_COUPON_NAME, key = "#coupon.id")
     public Coupon save(Coupon coupon) {
         return couponJpaRepository.save(coupon);
     }
 
     @Override
-    @Cacheable(value = "coupon", key = "#couponId")
+    @Cacheable(value = CACHE_COUPON_NAME, key = "#couponId")
     public Optional<Coupon> findById(long couponId) {
         return couponJpaRepository.findById(couponId)
                 .or(() -> getCouponByWriterDB(couponId));
