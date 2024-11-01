@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,9 @@ public class RedisConfig {
 
     @Value("${spring.data.redis.password}")
     private String password;
+
+    @Value("${spring.data.redis.ttl}")
+    private long TTL;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
@@ -58,6 +62,7 @@ public class RedisConfig {
 
         return RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(keySerializationPair)
-                .serializeValuesWith(valueSerializationPair);
+                .serializeValuesWith(valueSerializationPair)
+                .entryTtl(Duration.ofMinutes(TTL));
     }
 }
