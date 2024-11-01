@@ -1,5 +1,5 @@
 package coupon.domain;
 
-public interface DiscountPolicy {
+public interface MemberCouponPolicy {
     void validate();
 }

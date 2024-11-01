@@ -7,9 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -29,28 +32,30 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
-    private Coupon coupon;
+    @Column(name = "member_id", nullable = false)
+    private long memberId;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    @Column(name = "coupon_id", nullable = false)
+    private long couponId;
 
     @Column(nullable = false)
     private boolean used;
 
     @Column(name = "issued_at", nullable = false)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime issuedAt;
 
     @Column(name = "expire_at", nullable = false)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime expireAt;
 
-    public MemberCoupon(
-            Coupon coupon,
-            Member member,
-            LocalDateTime issuedAt
-    ) {
-        this(null, coupon, member, false, issuedAt, issuedAt.plusDays(VALID_DAYS));
+    public MemberCoupon(Member member, Coupon coupon) {
+        this(member, coupon, LocalDateTime.now());
+    }
+
+    public MemberCoupon(Member member, Coupon coupon, LocalDateTime issuedAt) {
+        this(null, member.getId(), coupon.getId(), false, issuedAt, issuedAt.plusDays(VALID_DAYS));
     }
 }

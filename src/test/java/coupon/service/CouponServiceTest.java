@@ -1,4 +1,4 @@
-package coupon;
+package coupon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import coupon.domain.Category;
 import coupon.domain.Coupon;
-import coupon.service.CouponService;
 
 @SpringBootTest
 public class CouponServiceTest {
@@ -28,12 +27,12 @@ public class CouponServiceTest {
                 Category.FASHION,
                 LocalDate.now(),
                 LocalDate.now().plusDays(1L));
-        coupon = sut.create(coupon);
+        var saved = sut.create(coupon);
 
         // when
-        var savedCoupon = sut.getCoupon(coupon.getId());
+        var actual = sut.getCoupon(saved.getId());
 
         // then
-        assertThat(savedCoupon).isNotNull();
+        assertThat(actual).isNotNull();
     }
 }

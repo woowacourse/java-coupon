@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "coupon")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id")
 public class Coupon {
@@ -65,8 +65,8 @@ public class Coupon {
                 category,
                 minimumOrderPrice,
                 new IssuePeriod(issueStartAt, issueEndAt),
-                new DefaultDiscountPolicy());
+                new DefaultDiscountPolicy(discountAmount, minimumOrderPrice));
         Objects.requireNonNull(category, "카테고리를 입력해야 합니다.");
-        discountPolicy.validate(discountAmount, minimumOrderPrice);
+        discountPolicy.validate();
     }
 }

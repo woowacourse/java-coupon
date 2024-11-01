@@ -1,5 +1,13 @@
 package coupon.domain;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Getter
 public class DefaultDiscountPolicy implements DiscountPolicy {
 
     private static final long DISCOUNT_AMOUNT_UNIT = 500L;
@@ -12,8 +20,11 @@ public class DefaultDiscountPolicy implements DiscountPolicy {
     private static final long DISCOUNT_RATE_MIN = 3L;
     private static final long DISCOUNT_RATE_MAX = 20L;
 
+    private long discountAmount;
+    private long minimumOrderPrice;
+
     @Override
-    public void validate(long discountAmount, long minimumOrderPrice) {
+    public void validate() {
         requireDiscountAmountInBound(discountAmount);
         requireDiscountAmountUnitMatch(discountAmount);
         requireMinimumOrderPriceInBound(minimumOrderPrice);
