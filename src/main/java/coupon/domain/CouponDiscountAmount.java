@@ -5,13 +5,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-record CouponDiscountAmount(@Column(name = "coupon_discount_amount", nullable = false) BigDecimal value) {
+public record CouponDiscountAmount(@Column(name = "coupon_discount_amount", nullable = false) BigDecimal value) {
 
     private static final BigDecimal DISCOUNT_AMOUNT_UNIT = new BigDecimal(500);
     private static final BigDecimal MAXIMUM_DISCOUNT_MONEY = new BigDecimal("10000");
     private static final BigDecimal MINIMUM_DISCOUNT_MONEY = new BigDecimal("1000");
 
-    CouponDiscountAmount {
+    public CouponDiscountAmount {
         validateMinimumAmount(value);
         validateMaximumAmount(value);
         validateAmountUnit(value);
