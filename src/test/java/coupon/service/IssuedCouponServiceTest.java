@@ -62,7 +62,7 @@ class IssuedCouponServiceTest {
     }
 
     @Test
-    @DisplayName("쿠폰은 최대 다섯개까지 발급할 수 있다.")
+    @DisplayName("쿠폰은 5장을 초과하여 발급할 수 없다.")
     void issueMaxTest() {
         //given
         Coupon coupon = couponService.create(
