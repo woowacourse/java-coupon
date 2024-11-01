@@ -25,7 +25,6 @@ import coupon.fixture.CouponFixture;
 import coupon.member.domain.Member;
 import coupon.member.domain.MemberRepository;
 import coupon.membercoupon.domain.MemberCoupon;
-import coupon.membercoupon.domain.MemberCouponRepository;
 import coupon.membercoupon.domain.MemberCoupons;
 import coupon.membercoupon.dto.FindAllMemberCouponResponse;
 
@@ -41,8 +40,6 @@ class MemberCouponFacadeTest {
     private CouponService couponService;
     @Autowired
     private MemberCouponFacade memberCouponFacade;
-    @Autowired
-    private MemberCouponRepository memberCouponRepository;
 
     private Member member;
     private Coupon coupon;
@@ -81,13 +78,15 @@ class MemberCouponFacadeTest {
         @DisplayName("쿠폰 조회: 캐시 적용 확인")
         void getCouponShouldUseCachedData() {
             Coupon savedCoupon = couponService.create(CouponFixture.createCouponWithId());
-            MemberCoupon memberCoupon = new MemberCoupon(member.getId(), savedCoupon.getId(), false, issueStartDate.plusDays(3));
+            MemberCoupon memberCoupon = new MemberCoupon(member.getId(), savedCoupon.getId(), false,
+                    issueStartDate.plusDays(3));
             memberCouponService.createMemberCoupon(memberCoupon);
 
             FindAllMemberCouponResponse response = memberCouponFacade.getMemberCouponsByMemberId(member.getId());
 
             verify(couponRepository, never()).fetchById(savedCoupon.getId());
-            assertThat(response).isEqualTo(FindAllMemberCouponResponse.of(new MemberCoupons(memberCoupon), new Coupons(savedCoupon)));
+            assertThat(response).isEqualTo(
+                    FindAllMemberCouponResponse.of(new MemberCoupons(memberCoupon), new Coupons(savedCoupon)));
         }
     }
 }
