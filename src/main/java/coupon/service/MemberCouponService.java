@@ -8,7 +8,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
@@ -40,17 +39,18 @@ public class MemberCouponService {
         }
     }
 
-    @Transactional
-    public MemberCoupon getMemberCoupon(Long memberCouponId) {
+    private MemberCoupon getMemberCoupon(Long memberCouponId) {
         log.info("쿠폰 발급 정보 조회: {}", memberCouponId);
         return memberCouponRepository.findById(memberCouponId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 쿠폰 발급 정보입니다: %d".formatted(memberCouponId)));
     }
 
-    @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public List<MemberCoupon> getMemberCoupons(Member member) {
-        List<MemberCoupon> memberCoupons = memberCouponRepository.findByMember(member);
-        memberCoupons.forEach(mc -> mc.setCoupon(couponService.getCoupon(mc.getCoupon().getId())));
-        return memberCoupons;
+        return readerService.read(() -> {
+            List<MemberCoupon> memberCoupons = memberCouponRepository.findByMember(member);
+            memberCoupons.forEach(mc -> mc.setCoupon(couponService.getCoupon(mc.getCoupon().getId())));
+            return memberCoupons;
+        });
     }
 }

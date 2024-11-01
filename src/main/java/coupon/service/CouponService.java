@@ -32,7 +32,6 @@ public class CouponService {
         }
     }
 
-    @Transactional
     public Coupon getCoupon(Long couponId) {
         log.info("쿠폰 조회: {}", couponId);
         return COUPON_CACHE.computeIfAbsent(couponId, id -> couponRepository.findById(id)
