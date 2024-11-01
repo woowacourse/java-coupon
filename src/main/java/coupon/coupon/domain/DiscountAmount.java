@@ -1,5 +1,6 @@
 package coupon.coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ public class DiscountAmount {
 
     private static final int MIN_DISCOUNT_AMOUNT = 0;
 
+    @Column(name = "discount_amount")
     private int discountAmount;
 
     public DiscountAmount(int discountAmount) {

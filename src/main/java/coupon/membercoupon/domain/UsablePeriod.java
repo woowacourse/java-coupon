@@ -1,7 +1,9 @@
 package coupon.membercoupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -9,11 +11,15 @@ import java.util.Objects;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class UsablePeriod {
 
     private static final int VALUE_FOR_DAYS_TO_ADD = 6;
 
+    @Column(name = "issuance_date")
     private LocalDate issuanceDate;
+
+    @Column(name = "expiration_date")
     private LocalDate expirationDate;
 
     public UsablePeriod(LocalDate issuanceDate) {

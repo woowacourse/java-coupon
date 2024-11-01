@@ -1,5 +1,6 @@
 package coupon.coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,10 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Period {
 
+    @Column(name = "start_date")
     private LocalDate startDate;
+
+    @Column(name = "end_date")
     private LocalDate endDate;
 
     public Period(LocalDate startDate, LocalDate endDate) {
@@ -24,6 +28,10 @@ public class Period {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작일은 종료일보다 이전이어야 합니다.");
         }
+    }
+
+    public boolean isNotBetweenIssuancePeriod(LocalDate issuanceDate) {
+        return issuanceDate.isBefore(startDate) || issuanceDate.isAfter(endDate);
     }
 
     public LocalDate getStartDate() {

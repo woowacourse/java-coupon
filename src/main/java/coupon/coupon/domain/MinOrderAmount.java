@@ -1,5 +1,6 @@
 package coupon.coupon.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ public class MinOrderAmount {
 
     private static final int MIN_ORDER_AMOUNT = 0;
 
+    @Column(name = "min_order_amount")
     private int minOrderAmount;
 
     public MinOrderAmount(int minOrderAmount) {
