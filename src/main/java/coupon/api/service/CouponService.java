@@ -71,7 +71,7 @@ public class CouponService {
                 .or(() -> couponRepository.findCouponById(couponId))
                 .orElseThrow(CouponNotFoundException::new);
 
-        if (coupon.isIssuableCoupon()) {
+        if (coupon.notEndDateCoupon()) {
             couponRedisRepository.addCoupon(coupon);
         }
         return coupon;
