@@ -1,4 +1,4 @@
-package coupon.coupon.domain;
+package coupon.membercoupon.domain;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -7,8 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import coupon.coupon.domain.Coupon;
+import coupon.member.domain.Member;
 
 @Entity
 public class MemberCoupon {
@@ -17,13 +17,11 @@ public class MemberCoupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "coupon_id")
-    private Coupon coupon;
+    @Column(nullable = false)
+    private Long memberId;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "member_id")
-    private Member member;
+    @Column(nullable = false)
+    private Long couponId;
 
     @Column(nullable = false)
     private boolean used;
@@ -37,20 +35,22 @@ public class MemberCoupon {
     protected MemberCoupon() {
     }
 
-    public MemberCoupon(Coupon coupon, Member member) {
-        this.coupon = coupon;
-        this.member = member;
+    private MemberCoupon(Member member, Coupon coupon, LocalDateTime issuedAt) {
+        this.memberId = member.getId();
+        this.couponId = coupon.getId();
         this.used = false;
-        this.issuedAt = LocalDateTime.now();
+        this.issuedAt = issuedAt;
         this.expiredAt = calculateExpiredAt(this.issuedAt);
+    }
+
+    public static MemberCoupon issue(Member member, Coupon coupon) {
+        LocalDateTime issuedAt = LocalDateTime.now();
+        coupon.issue(issuedAt);
+        return new MemberCoupon(member, coupon, issuedAt);
     }
 
     private LocalDateTime calculateExpiredAt(LocalDateTime issuedAt) {
         return issuedAt.plusDays(7).with(LocalTime.of(23, 59, 59, 999_999_000));
-    }
-
-    public Coupon getCoupon() {
-        return coupon;
     }
 
     public LocalDateTime getIssuedAt() {
@@ -59,5 +59,9 @@ public class MemberCoupon {
 
     public LocalDateTime getExpiredAt() {
         return expiredAt;
+    }
+
+    public Long getCouponId() {
+        return couponId;
     }
 }

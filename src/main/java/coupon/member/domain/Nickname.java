@@ -1,4 +1,4 @@
-package coupon.coupon.domain;
+package coupon.member.domain;
 
 import java.util.Objects;
 import jakarta.persistence.Column;
@@ -6,20 +6,21 @@ import jakarta.persistence.Embeddable;
 import coupon.CouponException;
 
 @Embeddable
-public class CouponName {
+public class Nickname {
 
-    private static final int MAX_LENGTH = 30;
-    private static final String NAME_LENGTH_MESSAGE = String.format("쿠폰은 %d자 이하의 이름을 설정해주세요.", MAX_LENGTH);
+    private static final String NO_NICKNAME_MESSAGE = "회원명이 누락되었습니다.";
+    private static final int MAX_LENGTH = 10;
+    private static final String NAME_LENGTH_MESSAGE = String.format("회원명은 %d자 이하로 설정해주세요.", MAX_LENGTH);
 
     @Column(nullable = false, length = MAX_LENGTH)
-    private String name;
+    private String nickname;
 
-    protected CouponName() {
+    protected Nickname() {
     }
 
-    public CouponName(String name) {
-        validate(name);
-        this.name = name;
+    public Nickname(String nickname) {
+        validate(nickname);
+        this.nickname = nickname;
     }
 
     private void validate(String name) {
@@ -29,7 +30,7 @@ public class CouponName {
 
     private void validateNull(String name) {
         if (Objects.isNull(name)) {
-            throw new CouponException("쿠폰 이름이 누락되었습니다.");
+            throw new CouponException(NO_NICKNAME_MESSAGE);
         }
     }
 
@@ -45,12 +46,12 @@ public class CouponName {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        CouponName that = (CouponName) o;
-        return Objects.equals(name, that.name);
+        Nickname nickname1 = (Nickname) o;
+        return Objects.equals(nickname, nickname1.nickname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(nickname);
     }
 }

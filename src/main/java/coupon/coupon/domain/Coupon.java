@@ -2,6 +2,7 @@ package coupon.coupon.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -11,10 +12,12 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import coupon.coupon.CouponException;
+import coupon.CouponException;
 
 @Entity
 public class Coupon {
+
+    public static final String COUPON_ISSUE_MESSAGE = "쿠폰을 발급할 수 있는 기한이 지났습니다.";
 
     public static final String CATEGORY_NON_NULL_MESSAGE = "카테고리를 선택해주세요.";
     private static final BigDecimal MINIMUM_DISCOUNT_RATE = BigDecimal.valueOf(3);
@@ -28,15 +31,20 @@ public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Embedded
     private CouponName name;
+
     @Embedded
     private DiscountAmount discountAmount;
+
     @Embedded
     private MinimumOrderAmount minimumOrderAmount;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Category category;
+
     @Embedded
     private Term term;
 
@@ -70,7 +78,13 @@ public class Coupon {
         }
     }
 
-    public long getId() {
+    public void issue(LocalDateTime issuedAt) {
+        if (term.doesNotContain(issuedAt)) {
+            throw new CouponException(COUPON_ISSUE_MESSAGE);
+        }
+    }
+
+    public Long getId() {
         return id;
     }
 }

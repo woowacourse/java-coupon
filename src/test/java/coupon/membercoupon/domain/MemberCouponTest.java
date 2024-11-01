@@ -1,8 +1,12 @@
-package coupon.coupon.domain;
+package coupon.membercoupon.domain;
 
 import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import coupon.coupon.domain.Coupon;
+import coupon.fixture.CouponFixture;
+import coupon.fixture.MemberFixture;
+import coupon.member.domain.Member;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -12,12 +16,11 @@ class MemberCouponTest {
     @Test
     void calculateExpiredAt() {
         // given
-        Coupon coupon = new Coupon("name", 1000, 30000, Category.FASHION, LocalDate.now(), LocalDate.now()
-                .plusDays(10));
-        Member member = new Member();
+        Coupon coupon = CouponFixture.create(LocalDate.now(), LocalDate.now().plusDays(10));
+        Member member = MemberFixture.create();
 
         // when
-        MemberCoupon memberCoupon = new MemberCoupon(coupon, member);
+        MemberCoupon memberCoupon = MemberCoupon.issue(member, coupon);
 
         //then
         assertThat(memberCoupon.getIssuedAt().plusDays(7)).isBeforeOrEqualTo(memberCoupon.getExpiredAt());

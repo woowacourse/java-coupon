@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import coupon.coupon.CouponException;
+import coupon.CouponException;
 
 @Embeddable
 public class Term {
@@ -39,5 +39,9 @@ public class Term {
         if (endAt.isBefore(startAt)) {
             throw new CouponException(TERM_MESSAGE);
         }
+    }
+
+    public boolean doesNotContain(LocalDateTime now) {
+        return startAt.isAfter(now) || endAt.isBefore(now);
     }
 }

@@ -2,7 +2,7 @@ package coupon.coupon.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import coupon.coupon.CouponException;
+import coupon.CouponException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 

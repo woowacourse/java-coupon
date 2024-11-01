@@ -4,41 +4,30 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import coupon.coupon.CouponException;
-import coupon.coupon.domain.Category;
+import coupon.CouponException;
+import coupon.ServiceTest;
 import coupon.coupon.domain.Coupon;
-import coupon.coupon.repository.CouponRepository;
+import coupon.fixture.CouponFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-@SpringBootTest
-public class CouponServiceTest {
+public class CouponServiceTest extends ServiceTest {
 
     @Autowired
     private CouponService couponService;
-
-    @Autowired
-    private CouponRepository couponRepository;
 
     @DisplayName("요청한 쿠폰을 조회한다.")
     @Test
     void getCoupon() {
         // given
-        Coupon coupon = new Coupon(
-                "linirini",
-                1000,
-                10000,
-                Category.FASHION,
-                LocalDate.now(),
-                LocalDate.now().plusDays(7));
+        Coupon coupon = CouponFixture.create(LocalDate.now(), LocalDate.now().plusDays(7));
+        couponRepository.save(coupon);
 
         // when
-        couponService.create(coupon);
+        Coupon savedCoupon = couponService.getCoupon(coupon.getId());
 
         // then
-        Coupon savedCoupon = couponService.getCouponByAdmin(coupon.getId());
         assertThat(savedCoupon).isNotNull();
     }
 
@@ -49,7 +38,7 @@ public class CouponServiceTest {
         long notExistCouponId = 0;
 
         // when & then
-        assertThatThrownBy(() -> couponService.getCouponByAdmin(notExistCouponId))
+        assertThatThrownBy(() -> couponService.getCoupon(notExistCouponId))
                 .isInstanceOf(CouponException.class)
                 .hasMessage("요청하신 쿠폰을 찾을 수 없어요.");
     }
@@ -58,13 +47,7 @@ public class CouponServiceTest {
     @DisplayName("쿠폰을 생성한다.")
     void createCoupon() {
         // given
-        Coupon coupon = new Coupon(
-                "linirini",
-                1000,
-                10000,
-                Category.FASHION,
-                LocalDate.now(),
-                LocalDate.now().plusDays(7));
+        Coupon coupon = CouponFixture.create(LocalDate.now(), LocalDate.now().plusDays(7));
 
         // when
         couponService.create(coupon);
