@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl.auto: create-drop
+
+coupon:
+  datasource:
+    writer:
+      jdbcUrl: jdbc:mysql://localhost:33306/test?characterEncoding=UTF-8&serverTimezone=UTC
+    reader:
+      jdbcUrl: jdbc:mysql://localhost:33307/test?characterEncoding=UTF-8&serverTimezone=UTC
+  cache:
+    prefix: test
+    ttl-second: 30

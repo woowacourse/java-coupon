@@ -3,11 +3,9 @@ package coupon.domain.coupon;
 import coupon.exception.CouponException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import lombok.AccessLevel;
@@ -28,8 +26,8 @@ public class MemberCoupon {
     @Column(nullable = false)
     private Long memberId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Coupon coupon;
+    @Column(nullable = false)
+    private Long couponId;
 
     @Column(nullable = false)
     private boolean isUsed;
@@ -43,7 +41,7 @@ public class MemberCoupon {
     public MemberCoupon(Long memberId, Coupon coupon, LocalDateTime issuedAt) {
         validateCoupon(coupon, issuedAt);
         this.memberId = memberId;
-        this.coupon = coupon;
+        this.couponId = coupon.getId();
         this.isUsed = false;
         this.issuedAt = issuedAt;
         this.expiredAt = getExpiredAt(issuedAt);
@@ -57,9 +55,5 @@ public class MemberCoupon {
 
     private LocalDateTime getExpiredAt(LocalDateTime issuedAt) {
         return LocalDateTime.of(issuedAt.toLocalDate().plusDays(COUPON_USABLE_DATE), LocalTime.MAX);
-    }
-
-    public boolean isExpired() {
-        return !expiredAt.isAfter(LocalDateTime.now());
     }
 }
