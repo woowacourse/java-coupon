@@ -8,6 +8,9 @@ import coupon.domain.Coupon;
 import coupon.domain.CouponRepository;
 import coupon.dto.CouponResponse;
 import java.time.LocalDate;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -94,5 +97,46 @@ class CouponServiceTest {
                 () -> assertThat(cacheCoupon.startDate()).isEqualTo(coupon.getStartDate()),
                 () -> assertThat(cacheCoupon.endDate()).isEqualTo(coupon.getEndDate())
         );
+    }
+
+    @DisplayName("쿠폰 수정 기능의 동시성 이슈")
+    @Test
+    void changeConcurrent() throws InterruptedException {
+        Coupon coupon = new Coupon("CouponName", 1_500, 8_000, "가구", LocalDate.now(), LocalDate.now());
+        Long id = couponRepository.save(coupon).getId();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        CountDownLatch startLatch = new CountDownLatch(1);
+        CountDownLatch downLatch = new CountDownLatch(2);
+        executorService.execute(() -> {
+            try {
+                startLatch.await();
+                couponService.updateDiscountAmount(id, 1_000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                downLatch.countDown();
+            }
+        });
+        executorService.execute(() -> {
+            try {
+                startLatch.await();
+                couponService.updateMinOrderAmount(id, 40_000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                downLatch.countDown();
+            }
+        });
+
+        startLatch.countDown();
+        downLatch.await();
+
+        executorService.shutdown();
+
+        Thread.sleep(3000);
+        Coupon foundCoupon = couponRepository.findById(id).get();
+        assertThat((foundCoupon.getDiscountAmount() * 100) / foundCoupon.getMinOrderAmount()).isBetween(3, 20);
     }
 }
