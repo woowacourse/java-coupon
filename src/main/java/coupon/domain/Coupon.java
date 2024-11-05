@@ -12,9 +12,11 @@ import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @Entity
 public class Coupon {
 
@@ -114,5 +116,17 @@ public class Coupon {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("Start date must be before or equal to end date.");
         }
+    }
+
+    public void changeDiscountAmount(int discountAmount) {
+        validateDiscountAmount(discountAmount);
+        validateDiscountRate(discountAmount, minOrderAmount);
+        this.discountAmount = discountAmount;
+    }
+
+    public void changeMinOrderAmount(int minOrderAmount) {
+        validateMinOrderAmount(minOrderAmount);
+        validateDiscountRate(discountAmount, minOrderAmount);
+        this.minOrderAmount = minOrderAmount;
     }
 }

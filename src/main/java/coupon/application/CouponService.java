@@ -24,10 +24,26 @@ public class CouponService {
     @ReplicationLag
     @Cacheable(value = "coupons", key = "#couponId")
     @Transactional(readOnly = true)
-    public CouponResponse getCoupon(Long couponId) {
-        Coupon coupon = couponRepository.findById(couponId)
-                .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
+    public CouponResponse findCoupon(Long couponId) {
+        Coupon coupon = getCoupon(couponId);
 
         return CouponResponse.from(coupon);
+    }
+
+    @Transactional
+    public void updateDiscountAmount(Long couponId, int discountAmount) {
+        Coupon coupon = getCoupon(couponId);
+        coupon.changeDiscountAmount(discountAmount);
+    }
+
+    @Transactional
+    public void updateMinOrderAmount(Long couponId, int minOrderAmount) {
+        Coupon coupon = getCoupon(couponId);
+        coupon.changeMinOrderAmount(minOrderAmount);
+    }
+
+    private Coupon getCoupon(Long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalArgumentException("쿠폰이 존재하지 않습니다."));
     }
 }

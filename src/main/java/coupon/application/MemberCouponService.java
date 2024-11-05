@@ -39,7 +39,7 @@ public class MemberCouponService {
     }
 
     private void validateCouponIssuancePeriod(MemberCouponRequest memberCouponRequest) {
-        CouponResponse coupon = couponService.getCoupon(memberCouponRequest.couponId());
+        CouponResponse coupon = couponService.findCoupon(memberCouponRequest.couponId());
         LocalDate issueDate = memberCouponRequest.issueDate();
         if (issueDate.isBefore(coupon.startDate()) || issueDate.isAfter(coupon.endDate())) {
             throw new IllegalArgumentException("Invalid issuance period");
@@ -55,7 +55,7 @@ public class MemberCouponService {
 
     private MemberCouponResponse getMemberCouponResponse(MemberCoupon memberCoupon) {
         Long couponId = memberCoupon.getCouponId();
-        CouponResponse couponResponse = couponService.getCoupon(couponId);
+        CouponResponse couponResponse = couponService.findCoupon(couponId);
 
         return MemberCouponResponse.of(memberCoupon, couponResponse);
     }
