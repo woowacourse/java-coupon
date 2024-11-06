@@ -1,6 +1,6 @@
-package coupon.redissonLock;
+package coupon.aop.redissonLock;
 
-import coupon.replication.ReplicationLagService;
+import coupon.aop.AopForTransaction;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.stream.IntStream;
@@ -17,14 +17,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 @Aspect
-public class RedisLockAspect {
+public class DistributedLockAspect {
 
     private static final String REDISSON_LOCK_PREFIX = "LOCK:";
 
     private final RedissonClient redissonClient;
-    private final ReplicationLagService replicationLagService;
+    private final AopForTransaction aopForTransaction;
 
-    @Pointcut("@annotation(coupon.redissonLock.DistributedLock)")
+    @Pointcut("@annotation(coupon.aop.redissonLock.DistributedLock)")
     private void redisLock() {}
 
     @Around("redisLock()")
@@ -37,7 +37,7 @@ public class RedisLockAspect {
         Parameter[] parameters = method.getParameters();
         Object[] args = joinPoint.getArgs();
 
-        String key = getKey(parameters, args, keyName);
+        String key = distributedLock.value() + ":" + getKey(parameters, args, keyName);
 
         RLock lock = redissonClient.getLock(key);
         try {
@@ -46,7 +46,7 @@ public class RedisLockAspect {
                 System.out.println("redisson lock timeout");
                 throw new IllegalArgumentException();
             }
-            return replicationLagService.getByWriter(joinPoint);
+            return aopForTransaction.getByWriter(joinPoint);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
@@ -54,11 +54,11 @@ public class RedisLockAspect {
         }
     }
 
-    private String getKey(Parameter[] parameters, Object[] args, String keyName) {
+    private Object getKey(Parameter[] parameters, Object[] args, String keyName) {
         return IntStream.range(0, parameters.length)
                        .filter(i -> parameters[i].getName().equals(keyName))
                        .mapToObj(i -> args[i])
                        .findFirst()
-                       .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 파라미터입니다.")) + "";
+                       .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 파라미터입니다."));
     }
 }

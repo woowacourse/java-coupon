@@ -3,8 +3,8 @@ package coupon.application;
 import coupon.domain.Coupon;
 import coupon.domain.CouponRepository;
 import coupon.dto.CouponResponse;
-import coupon.redissonLock.DistributedLock;
-import coupon.replication.ReplicationLag;
+import coupon.aop.redissonLock.DistributedLock;
+import coupon.aop.replication.ReplicationLag;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RedissonClient;
 import org.springframework.cache.annotation.Cacheable;
@@ -33,14 +33,14 @@ public class CouponService {
         return CouponResponse.from(coupon);
     }
 
-    @DistributedLock(key = "couponId")
+    @DistributedLock(value = "couponLock", key = "couponId")
     @Transactional
     public void updateDiscountAmount(Long couponId, int discountAmount) {
         Coupon coupon = getCoupon(couponId);
         coupon.changeDiscountAmount(discountAmount);
     }
 
-    @DistributedLock(key = "couponId")
+    @DistributedLock(value = "couponLock", key = "couponId")
     @Transactional
     public void updateMinOrderAmount(Long couponId, int minOrderAmount) {
         Coupon coupon = getCoupon(couponId);

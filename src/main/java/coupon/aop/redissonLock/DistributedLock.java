@@ -1,4 +1,4 @@
-package coupon.redissonLock;
+package coupon.aop.redissonLock;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +10,9 @@ import java.util.concurrent.TimeUnit;
 @Target(ElementType.METHOD)
 public @interface DistributedLock {
 
-    String key();
+    String key() default "";
+
+    String value();
 
     TimeUnit timeUnit() default TimeUnit.SECONDS;
 
