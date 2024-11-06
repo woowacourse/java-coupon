@@ -1,5 +1,6 @@
-package coupon.replication;
+package coupon.aop.replication;
 
+import coupon.aop.AopForTransaction;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,9 +13,9 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class ReplicationLagAspect {
 
-    private final ReplicationLagService replicationLagService;
+    private final AopForTransaction aopForTransaction;
 
-    @Pointcut("@annotation(coupon.replication.ReplicationLag)")
+    @Pointcut("@annotation(coupon.aop.replication.ReplicationLag)")
     private void replicationLag() {}
 
     @Around("replicationLag()")
@@ -22,7 +23,7 @@ public class ReplicationLagAspect {
         try {
             return joinPoint.proceed();
         } catch (Throwable ex) {
-            return replicationLagService.getByWriter(joinPoint);
+            return aopForTransaction.getByWriter(joinPoint);
         }
     }
 }

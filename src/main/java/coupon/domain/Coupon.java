@@ -8,14 +8,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 @Entity
+@Table(name = "coupon")
 public class Coupon {
 
     private static final int MAX_NAME_LENGTH = 30;
@@ -114,5 +118,17 @@ public class Coupon {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("Start date must be before or equal to end date.");
         }
+    }
+
+    public void changeDiscountAmount(int discountAmount) {
+        validateDiscountAmount(discountAmount);
+        validateDiscountRate(discountAmount, minOrderAmount);
+        this.discountAmount = discountAmount;
+    }
+
+    public void changeMinOrderAmount(int minOrderAmount) {
+        validateMinOrderAmount(minOrderAmount);
+        validateDiscountRate(discountAmount, minOrderAmount);
+        this.minOrderAmount = minOrderAmount;
     }
 }
