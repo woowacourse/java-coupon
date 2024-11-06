@@ -54,9 +54,6 @@ public class Coupon {
     @Column(nullable = false)
     private LocalDate endDate;
 
-//    @Version
-//    private Long version;
-
     public Coupon(
             String name, int discountAmount, int minOrderAmount, String category,
             LocalDate startDate, LocalDate endDate
