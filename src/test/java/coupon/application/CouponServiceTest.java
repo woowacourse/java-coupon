@@ -135,8 +135,10 @@ class CouponServiceTest {
 
         executorService.shutdown();
 
-        Thread.sleep(3000);
+        Thread.sleep(4000);
         Coupon foundCoupon = couponRepository.findById(id).get();
+
+        System.out.println(String.format("discountAmount : %d, minOrderAmount : %d", foundCoupon.getDiscountAmount(), foundCoupon.getMinOrderAmount()));
         assertThat((foundCoupon.getDiscountAmount() * 100) / foundCoupon.getMinOrderAmount()).isBetween(3, 20);
     }
 }

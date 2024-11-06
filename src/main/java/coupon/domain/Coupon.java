@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 @Entity
+@Table(name = "coupon")
 public class Coupon {
 
     private static final int MAX_NAME_LENGTH = 30;
@@ -51,6 +53,9 @@ public class Coupon {
 
     @Column(nullable = false)
     private LocalDate endDate;
+
+//    @Version
+//    private Long version;
 
     public Coupon(
             String name, int discountAmount, int minOrderAmount, String category,
