@@ -14,14 +14,12 @@ public class CouponSynchronizedService {
 
     @Transactional
     public void updateDiscountAmount(Long couponId, int discountAmount) {
-        Coupon coupon = getCoupon(couponId);
-        coupon.changeDiscountAmount(discountAmount);
+
     }
 
     @Transactional
     public void updateMinOrderAmount(Long couponId, int minOrderAmount) {
-        Coupon coupon = getCoupon(couponId);
-        coupon.changeMinOrderAmount(minOrderAmount);
+
     }
 
     private Coupon getCoupon(Long couponId) {
