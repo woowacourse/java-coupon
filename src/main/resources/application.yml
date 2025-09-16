@@ -2,14 +2,14 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.mariadb.jdbc.Driver
-    jdbc-url: jdbc:mariadb://{{rds endpoint}}:3306/coupon?useSSL=false&serverTimezone=Asia/Seoul
-    username: {{username}}
-    password: {{password}}
+    jdbc-url: jdbc:mariadb://localhost:33306/coupon?useSSL=false&serverTimezone=Asia/Seoul
+    username: root
+    password: root
     auto-commit: false
-    connectionTimeout: 3000
-    maxLifeTime: 50000
-    maximumPoolSize: 30
-    poolName: Hikari-coupon
+    connection-timeout: 3000
+    max-life-time: 50000
+    maximum-pool-size: 30
+    pool-name: Hikari-coupon
   jpa:
     hibernate:
       naming:

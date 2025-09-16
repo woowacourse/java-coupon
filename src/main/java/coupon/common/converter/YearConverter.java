@@ -1,8 +1,9 @@
 package coupon.common.converter;
 
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+
 import java.time.Year;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 
 @Converter(autoApply = true)
 public class YearConverter implements AttributeConverter<Year, Short> {

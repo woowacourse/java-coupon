@@ -1,14 +1,14 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.15'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.springframework.boot' version '3.5.5'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'io.github.woowacourse'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '17'
+    sourceCompatibility = '21'
 }
 
 repositories {
@@ -16,14 +16,15 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.projectlombok:lombok'
-    implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
+    implementation 'net.logstash.logback:logstash-logback-encoder:8.1'
     implementation 'org.mariadb.jdbc:mariadb-java-client'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.rest-assured:rest-assured:4.5.1'
+    testImplementation 'io.rest-assured:rest-assured'
 
     annotationProcessor 'org.projectlombok:lombok'
 }

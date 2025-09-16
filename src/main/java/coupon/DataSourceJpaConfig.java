@@ -1,11 +1,7 @@
 package coupon;
 
-import static coupon.DataSourceJpaConfig.ENTITY_MANAGER_FACTORY;
-import static coupon.DataSourceJpaConfig.TRANSACTION_MANAGER;
-
 import com.zaxxer.hikari.HikariDataSource;
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
@@ -22,6 +18,11 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.sql.DataSource;
+
+import static coupon.DataSourceJpaConfig.ENTITY_MANAGER_FACTORY;
+import static coupon.DataSourceJpaConfig.TRANSACTION_MANAGER;
 
 @Configuration
 @EnableJpaRepositories(

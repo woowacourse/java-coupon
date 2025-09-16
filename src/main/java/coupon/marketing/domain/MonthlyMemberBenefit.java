@@ -1,17 +1,18 @@
 package coupon.marketing.domain;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.Year;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Year;
 
 @Entity
 @Table(name = "monthly_member_benefit")
