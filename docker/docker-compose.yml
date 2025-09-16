@@ -6,7 +6,7 @@ services:
       context: ./writer
       dockerfile: Dockerfile
     ports:
-      - 33306:3306
+      - "33306:3306"
     networks:
       coupon_dock_net:
         ipv4_address: 172.20.0.10
@@ -16,6 +16,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: coupon
       TZ: Asia/Seoul
 
   mysql_reader:
@@ -24,7 +25,7 @@ services:
       context: ./reader
       dockerfile: Dockerfile
     ports:
-      - 33307:3306
+      - "33307:3306"
     networks:
       coupon_dock_net:
         ipv4_address: 172.20.0.11
@@ -33,6 +34,7 @@ services:
     container_name: mysql_reader
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: coupon
       TZ: Asia/Seoul
     depends_on:
       - mysql_writer

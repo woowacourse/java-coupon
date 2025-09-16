@@ -1,4 +1,10 @@
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+
   jpa:
     hibernate:
       naming:
@@ -20,15 +26,15 @@ spring:
 coupon.datasource:
   writer:
     type: com.zaxxer.hikari.HikariDataSource
-    driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbc-url: jdbc:mysql://localhost:33306/coupon?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
-    maximumPoolSize: 10
+    maximum-pool-size: 10
   reader:
     type: com.zaxxer.hikari.HikariDataSource
-    driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://localhost:33307/coupon?characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbc-url: jdbc:mysql://localhost:33307/coupon?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
-    maximumPoolSize: 10
+    maximum-pool-size: 10
