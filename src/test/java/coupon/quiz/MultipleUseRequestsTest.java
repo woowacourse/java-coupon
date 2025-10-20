@@ -5,6 +5,8 @@ import static coupon.quiz.QuizHelper.getCoupon;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,14 +55,14 @@ public class MultipleUseRequestsTest {
     }
 
     @Test
-    void 동시_사용_요청() throws InterruptedException {
+    void 동시_사용_요청_ID_순차_스캔() throws InterruptedException {
         AtomicInteger successCount = new AtomicInteger(0);
         AtomicInteger requestCount = new AtomicInteger(0);
         AtomicBoolean requestStart = new AtomicBoolean(false);
 
         ExecutorService executorService = Executors.newFixedThreadPool(CONCURRENT_REQUEST_COUNT);
         for (int i = 0; i < CONCURRENT_REQUEST_COUNT; i++) {
-            executorService.submit(() -> useCoupon(requestCount, successCount, requestStart));
+            executorService.submit(() -> useCoupon(requestCount, successCount, requestStart, false));
         }
 
         Thread.sleep(1000L);    // 스레드에 실행 요청 후 1초간 대기한 후 요청을 시작하도록 변경한다.
@@ -77,12 +79,42 @@ public class MultipleUseRequestsTest {
         assertThat(useCount).isEqualTo(5);
     }
 
-    private static void useCoupon(AtomicInteger requestCount, AtomicInteger successCount, AtomicBoolean requestStart) {
+    @Test
+    void 동시_사용_요청_ID_랜덤_스캔() throws InterruptedException {
+        AtomicInteger successCount = new AtomicInteger(0);
+        AtomicInteger requestCount = new AtomicInteger(0);
+        AtomicBoolean requestStart = new AtomicBoolean(false);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(CONCURRENT_REQUEST_COUNT);
+        for (int i = 0; i < CONCURRENT_REQUEST_COUNT; i++) {
+            executorService.submit(() -> useCoupon(requestCount, successCount, requestStart, true));
+        }
+
+        Thread.sleep(1000L);    // 스레드에 실행 요청 후 1초간 대기한 후 요청을 시작하도록 변경한다.
+        requestStart.set(true);
+
+        executorService.shutdown();
+        executorService.awaitTermination(30, TimeUnit.SECONDS);
+
+        assertThat(successCount.get()).isEqualTo(5);
+        assertThat(requestCount.get()).isEqualTo(100);
+
+        Response couponResponse = getCoupon(USE_LIMIT_COUPON_ID);
+        long useCount = couponResponse.body().jsonPath().getLong("useCount");
+        assertThat(useCount).isEqualTo(5);
+    }
+
+    private static void useCoupon(AtomicInteger requestCount, AtomicInteger successCount, AtomicBoolean requestStart, boolean randomized) {
         while (requestStart.get() == false) {
             // 요청을 시작하기 전까지 대기한다.
         }
 
-        for (Long memberCouponId : MEMBER_COUPON_IDS) {
+        List<Long> ids = new ArrayList<>(MEMBER_COUPON_IDS);
+        if (randomized) {
+            Collections.shuffle(ids);
+        }
+
+        for (Long memberCouponId : ids) {
             String requestBody = "{ \"memberCouponId\": " + memberCouponId + ", \"memberId\": " + MEMBER_ID + " }";
             Response response = RestAssured.given()
                     .header(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
